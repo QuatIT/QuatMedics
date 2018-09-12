@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>QUAT MEDICS ADMIN</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="css/fullcalendar.css" />
+<link rel="stylesheet" href="css/colorpicker.css" />
+<link rel="stylesheet" href="css/datepicker.css" />
+<link rel="stylesheet" href="css/uniform.css" />
+<link rel="stylesheet" href="css/select2.css" />
+<link rel="stylesheet" href="css/maruti-style.css" />
+<link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .active{
+            background-color: #209fbf;
+        }
+    </style>
+</head>
+<body>
+
+<!--Header-part-->
+<div id="header">
+  <h1><a href="admin-medics-index.html"> QUAT MEDICS <small>Medical Center Name</small></a> </h1>
+</div>
+<!--close-Header-part--> 
+
+<!--top-Header-messaages-->
+<div class="btn-group rightzero"> 
+    <a class="top_message tip-left" title="Manage Files"><i class="icon-file"></i></a> 
+    <a class="top_message tip-bottom" title="Manage Users"><i class="icon-user"></i></a> 
+    <a class="top_message tip-bottom" title="Manage Comments"><i class="icon-comment"></i>
+        <span class="label label-important">5</span>
+    </a> 
+    <a class="top_message tip-bottom" title="Manage Orders"><i class="icon-shopping-cart"></i></a> 
+</div>
+<!--close-top-Header-messaages--> 
+
+<!--top-Header-menu-->
+<div id="user-nav" class="navbar navbar-inverse">
+  <ul class="nav">
+    <li class="" ><a title="" href="opd-index.html"><i class="icon icon-user"></i> <span class="text">OPD</span></a></li>
+    <li class="" ><a title="" href="consult-index.html"><i class="icon icon-briefcase"></i> <span class="text">CONSULTATION</span></a></li>
+    <li class="active" ><a title="" href="lab-index.html"><i class="icon icon-warning-sign"></i> <span class="text">LABORATORY</span></a></li>
+    <li class="" ><a title="" href="pharmacy-index.html"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
+    <li class="" ><a title="" href="ward-index.html"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
+    <li class=" dropdown" id="settings">
+        <a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle">
+            <i class="icon icon-cog"></i> 
+            <span class="text">Settings</span> 
+            <b class="caret"></b>
+        </a>
+      <ul class="dropdown-menu">
+        <li><a title="" href="#"><i class="icon icon-user"></i> Profile</a></li>
+        <li><a title="Logout" href="index.html"><i class="icon icon-share-alt"></i> Logout</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<div id="search">
+  <input type="text" placeholder="Search here..."/>
+  <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
+</div>
+<!--close-top-Header-menu-->
+
+<div id="sidebar">
+    <ul>
+<!--    <li class="active"><a href="medics-index.html"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
+    <li class="active"><a href="lab-index.html"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
+    <li> <a href="lab-bloodbank.html"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
+    </ul>
+</div>
+    
+    
+    
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb">
+        <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a title="Laboratory" class="tip-bottom"><i class="icon-warning-sign"></i> LABORATORY</a>
+    </div>
+  </div>
+  <div class="container">
+      <h3 class="quick-actions">LAB REQUEST LIST</h3>
+      
+          <div class="row-fluid">
+             <div class="widget-box">
+                  <div class="widget-title">
+                  </div>
+                  <div class="widget-content nopadding">
+                    <table class="table table-bordered data-table">
+                      <thead>
+                        <tr>
+                          <th>PATIENT ID</th>
+                          <th>PATIENT NAME</th>
+                          <th>DOCTOR</th>
+                          <th>LAB TYPE</th>
+                          <th>ACTION</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>PNT-HSP001</td>
+                          <td>Kofi Mensah Addo</td>
+                          <td>Mrs Kanfah</td>
+                          <td>MALARIA TEST</td>
+                          <td style="text-align: center;">
+                               <a href="lab-patient.html"> <span class="btn btn-primary fa fa-eye"></span></a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>PNT-HSP001</td>
+                          <td>Kofi Mensah Addo</td>
+                          <td>Mrs Kanfah</td>
+                          <td>HIV TEST</td>
+                          <td style="text-align: center;">
+                               <a href="lab-patient.html"> <span class="btn btn-primary fa fa-eye"></span></a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>PNT-HSP001</td>
+                          <td>Kofi Mensah Addo</td>
+                          <td>Mrs Kanfah</td>
+                          <td> CT SCAN</td>
+                          <td style="text-align: center;">
+                               <a href="lab-patient.html"> <span class="btn btn-primary fa fa-eye"></span></a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+          </div>
+  </div>
+</div>
+<div class="row-fluid">
+  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+</div>
+<script src="js/excanvas.min.js"></script> 
+<script src="js/jquery.min.js"></script> 
+<script src="js/jquery.ui.custom.js"></script> 
+<script src="js/bootstrap.min.js"></script> 
+<script src="js/bootstrap-colorpicker.js"></script> 
+<script src="js/bootstrap-datepicker.js"></script> 
+<script src="js/jquery.flot.min.js"></script> 
+<script src="js/jquery.flot.resize.min.js"></script> 
+<script src="js/jquery.peity.min.js"></script> 
+<script src="js/fullcalendar.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script> 
+<script src="js/bootstrap-colorpicker.js"></script> 
+<script src="js/bootstrap-datepicker.js"></script> 
+<script src="js/jquery.uniform.js"></script> 
+<script src="js/select2.min.js"></script> 
+<script src="js/maruti.js"></script>
+<script src="js/maruti.tables.js"></script>
+<script src="js/maruti.dashboard.js"></script> 
+<script src="js/maruti.chat.js"></script> 
+<script src="js/maruti.form_common.js"></script>
+
+<!--<script src="js/maruti.js"></script> -->
+
+ 
+
+<script type="text/javascript">
+  // This function is called from the pop-up menus to transfer to
+  // a different page. Ignore if the value returned is a null string:
+  function goPage (newURL) {
+
+      // if url is empty, skip the menu dividers and reset the menu selection to default
+      if (newURL != "") {
+      
+          // if url is "-", it is this page -- reset the menu:
+          if (newURL == "-" ) {
+              resetMenu();            
+          } 
+          // else, send page to designated URL            
+          else {  
+            document.location.href = newURL;
+          }
+      }
+  }
+
+// resets the menu selection upon entry to this page:
+function resetMenu() {
+   document.gomenu.selector.selectedIndex = 2;
+}
+</script>
+</body>
+</html>
