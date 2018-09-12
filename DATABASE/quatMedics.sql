@@ -1,6 +1,27 @@
+/*
+ACCESS LEVELS
+    1 - Super Admin
+    2 - Medical Center Admin
+    3 - Doctors
+    4 - etc
+*/
+
 Create database `quatMedics`;
     use `quatMedics`;
-    
+
+create table `quatAdmin`(
+    `adminID` varchar(255) not null primary key,
+    `firstName` varchar(255) not null,
+    `lastName` varchar(255) not null,
+    `gender` varchar(10) not null,
+    `email` varchar(50) not null,
+    `phone` varchar(20) not null,
+    `userName` varchar(50) not null,
+    `password` varchar(50) not null,
+    `dateRegistered` varchar(50) not null,
+    `doe` timestamp
+)engine = InnoDB;
+
 create table `medicalCenter`(
     `centerID` varchar(255) not null primary key,
     `centerName` varchar(255) not null,
@@ -12,8 +33,21 @@ create table `medicalCenter`(
     `numOfBranches` varchar(50) null,
     `userName` varchar(255) not null,
     `password` varchar(50) not null,
+    `accessLevel` varchar(50) not null,
     `doe` timestamp
 )engine = InnoDB;
+
+create table `centerUser`(
+    `userID` varchar(255) not null primary key,
+    `centerID` varchar(255) not null,
+    `userName` varchar(50) not null,
+    `password` varchar(50) not null,
+    `accessLevel` varchar(10) not null,
+    `dateRegistered` varchar(255) not null,
+    `doe` timestamp,
+    index(centerID),
+    foreign key(centerID) references `medicalCenter`(centerID)
+) engine = InnoDB;
 
 create table `department`(
     `departmentID` varchar(255) not null primary key,
@@ -115,7 +149,7 @@ create table `doctorAppointment`(
     `appointmentTime` varchar(255) not null,
     `doe` timestamp,
     index(doctorID),
-    foreign key(doctorID) references `doctor`(doctorID)
+    foreign key(doctorID) references `doctors`(doctorID)
 )engine = InnoDB;
 
 create table `pharmacy`(
