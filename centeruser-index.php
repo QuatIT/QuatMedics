@@ -21,7 +21,49 @@
 </style>
 </head>
 <body>
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+
+    $success = '';
+    $error = '';
+
+    if(isset($_POST['btnSave'])){
+
+        $staffID = trim(filter_var($_POST['staffID'], FILTER_SANITIZE_STRING));
+        $firstName = trim(filter_var($_POST['firstName'], FILTER_SANITIZE_STRING));
+        $lastName = trim(filter_var($_POST['lastName'], FILTER_SANITIZE_STRING));
+        $otherName = trim(filter_var($_POST['otherName'], FILTER_SANITIZE_STRING));
+        $gender = trim(filter_var($_POST['gender'], FILTER_SANITIZE_STRING));
+        $dob = trim(filter_var($_POST['dob'], FILTER_SANITIZE_STRING));
+        $specialty = trim(filter_var($_POST['specialty'], FILTER_SANITIZE_STRING));
+        $staffCategory = trim(filter_var($_POST['staffCategory'], FILTER_SANITIZE_STRING));
+        $staffDepartment = trim(filter_var($_POST['staffDepartment'], FILTER_SANITIZE_STRING));
+
+        $username = trim(filter_var($_POST['userName'], FILTER_SANITIZE_STRING));
+        $password = trim(filter_var($_POST['password'], FILTER_SANITIZE_STRING));
+
+        //add new staff
+        $addStaffData = User::saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment);
+
+            if($addStaffData){
+
+                //add userCenter logins
+                $accessLevel = $staffDepartment;
+                $addUserLogin = User::saveUserCredential($username,$password,$accessLevel,$centerID);
+
+                $success =  "USER DATA CREATED SUUCESSFULLY";
+            }else{
+                $error =  "ERROR: USER DATA COULD NOT CREATE";
+            }
+
+
+
+
+
+
+    }
+
+    ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -43,6 +85,19 @@
   </div>
   <div class="container">
       <h3 class="quick-actions">STAFF MANAGEMENT</h3>
+<?php
+      if($success){
+      ?>
+      <div class="alert alert-success">
+  <strong>Success!</strong> Indicates a successful or positive action.
+</div>
+      <?php } if($error){
+          ?>
+      <div class="alert alert-danger">
+  <strong>Success!</strong> Indicates a successful or positive action.
+</div>
+      <?php
+      } ?>
 
       <div class="row-fluid">
         <div class="widget-box">
@@ -132,7 +187,7 @@
                                <div class="control-group">
                                 <label class="control-label"> Staff Category</label>
                                 <div class="controls">
-                                  <select name="consultRoom" >
+                                  <select name="staffCategory" >
                                     <option value=""> </option>
                                     <option value="Doctor"> Doctor</option>
                                     <option value="Nurse"> Nurse</option>
@@ -161,7 +216,7 @@
                               <div class="control-group">
                                 <label class="control-label"> Staff Department</label>
                                 <div class="controls">
-                                  <select name="consultRoom" >
+                                  <select name="staffDepartment" >
                                     <option value=""> </option>
                                     <option value="ODP"> ODP</option>
                                     <option value="CONSULTATION"> Consultation</option>
@@ -187,7 +242,7 @@
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Staff</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Staff</button>
                               </div>
                           </div>
                       </div>

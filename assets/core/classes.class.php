@@ -12,12 +12,29 @@
       return $result;
     }
 
+    public function saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment){
+      $result=query("INSERT INTO staff(stffID,firstName,lastName,otherName,gender,dob,specialty,staffCategory,departmentID) VALUES('$staffID','$firstName','$lastName','$otherName','$gender','$dob','$specialty','$staffCategory','$staffDepartment') ") ;
+      return $result;
+    }
+
+    public function saveUserCredential($username,$password,$accessLevel,$centerID){
+      $result=query("INSERT INTO centerUser(userName,password,accessLevel,centerID,dateRegistered) VALUES('$username','$password','$accessLevel','$centerID',now() ) ") ;
+      return $result;
+    }
+
+    public function centerUserLogin($username,$password){
+      $result=query("SELECT * FROM centerUser WHERE username='$username' && password='$password' ") ;
+      return $result;
+    }
+
     public function find_num_centerID(){
       $result=query("SELECT * FROM medicalcenter ");
       $num = count($result);
 
       return $num;
     }
+
+
 
     public function find_all(){
       $result=query("SELECT * FROM student ") ;
