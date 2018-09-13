@@ -9,6 +9,7 @@ ACCESS LEVELS
 Create database `quatMedics`;
     use `quatMedics`;
 
+/* Table For QuatADdmin Users*/
 create table `quatAdmin`(
     `adminID` varchar(255) not null primary key,
     `firstName` varchar(255) not null,
@@ -18,6 +19,7 @@ create table `quatAdmin`(
     `phone` varchar(20) not null,
     `userName` varchar(50) not null,
     `password` varchar(50) not null,
+    `accessLevel` varchar(255) not null, /* Access Level 1*/
     `dateRegistered` varchar(50) not null,
     `doe` timestamp
 )engine = InnoDB;
@@ -33,16 +35,17 @@ create table `medicalCenter`(
     `numOfBranches` varchar(50) null,
     `userName` varchar(255) not null,
     `password` varchar(50) not null,
-    `accessLevel` varchar(50) not null,
+    `accessLevel` varchar(50) not null, /*AccessLvl 2*/
     `doe` timestamp
 )engine = InnoDB;
 
+/* Table For Medical Center Users*/
 create table `centerUser`(
     `userID` varchar(255) not null primary key,
     `centerID` varchar(255) not null,
     `userName` varchar(50) not null,
     `password` varchar(50) not null,
-    `accessLevel` varchar(10) not null,
+    `accessLevel` varchar(10) not null, /* access level 3,4,5 depending on staff Type*/
     `dateRegistered` varchar(255) not null,
     `doe` timestamp,
     index(centerID),
@@ -68,7 +71,7 @@ create table `staff`(
     `otherName` varchar(255) not null,
     `gender` varchar(10) not null,
     `dob` varchar(50) not null,
-    `specialty` varchar(200) null,
+    `speci   alty` varchar(200) null,
     `license` varchar(255) not null,
     `dateEmployed` varchar(255) not null,
     `dateRegistered` varchar(255) not null,
@@ -93,26 +96,6 @@ create table `patient`(
     index (centerID),
     foreign key (centerID) REFERENCES medicalCenter(centerID)
 )engine = InnoDB;
-
-
-
-/*
-create table `nurses`(
-    `nurseID` varchar(255) not null,
-    `departmentID` varchar(255) not null,
-    `firstName` varchar(255) not null,
-    `lastName` varchar(255) not null,
-    `otherName` varchar(255) not null,
-    `dob` date not null,
-    `gender` varchar(10) not null,
-    `license` varchar(255) not null,
-    `dateEmployed` varchar(255) not null,
-    `dateRegistered` varchar(255) not null,
-    `doe` timestamp,
-    index(departmentID),
-    foreign key (departmentID) references `department`(departmentID)
-)engine = InnoDB;
-*/
 
 create table `wardList`(
     `wardID` varchar(255) not null primary key,
