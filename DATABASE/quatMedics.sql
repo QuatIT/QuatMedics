@@ -22,18 +22,6 @@ create table `quatAdmin`(
     `doe` timestamp
 )engine = InnoDB;
 
-create table `centerUser`(
-    `userID` varchar(255) not null primary key,
-    `centerID` varchar(255) not null,
-    `userName` varchar(50) not null,
-    `password` varchar(50) not null,
-    `accessLevel` varchar(10) not null,
-    `dateRegistered` varchar(255) not null,
-    `doe` timestamp,
-    index(centerID),
-    foreign key(centerID) references `medicalCenter`(centerID)
-) engine = InnoDB;
-
 create table `medicalCenter`(
     `centerID` varchar(255) not null primary key,
     `centerName` varchar(255) not null,
@@ -48,6 +36,18 @@ create table `medicalCenter`(
     `accessLevel` varchar(50) not null,
     `doe` timestamp
 )engine = InnoDB;
+
+create table `centerUser`(
+    `userID` varchar(255) not null primary key,
+    `centerID` varchar(255) not null,
+    `userName` varchar(50) not null,
+    `password` varchar(50) not null,
+    `accessLevel` varchar(10) not null,
+    `dateRegistered` varchar(255) not null,
+    `doe` timestamp,
+    index(centerID),
+    foreign key(centerID) references `medicalCenter`(centerID)
+) engine = InnoDB;
 
 create table `department`(
     `departmentID` varchar(255) not null primary key,
