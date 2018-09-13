@@ -4,11 +4,15 @@ require_once '../assets/core/connection.php';
 $success = '';
 $error = '';
 
+//generate centerID
+$centerIDs = User::find_num_centerID() + 1;
+
 if(isset($_POST['btnSave'])){
 
 //declare and assign variables
-$centerID = $_POST['centerID'];
+$centerID = substr($_POST['centerName'], 0, 5)."-".sprintf('%06s',$centerIDs);
 $centerName = $_POST['centerName'];
+$centerCategory = $_POST['centerCategory'];
 $centerLocation = $_POST['centerLocation'];
 $numOfStaff = $_POST['numOfStaff'];
 $aboutCenter = $_POST['aboutCenter'];
@@ -17,8 +21,14 @@ $userName = $_POST['userName'];
 $password = $_POST['password'];
 $accessLevel = 'center_admin';
 
+//   $id= "AFL-".sprintf('%06s',$count) ;
 
-$registerCenterAdmin = insert("INSERT INTO medicalcenter(centerID,centerName,centerLocation,numOfStaff,centerHistory,numOfBranches,userName,password,accessLevel) VALUES('$centerID','$centerName','$centerLocation','$numOfStaff','$aboutCenter','$numOfBranches','$userName','$password','$accessLevel') ");
+if(count(User::find_by_centerID($centerID)) >= 1){
+//    $centerID = randomString('10'); //regenerate centerID
+    $centerID = substr($_POST['centerName'], 0, 5)."-".sprintf('%06s',$centerIDs);//regenerate centerID
+
+//create center admin
+$registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel);
 
 if($registerCenterAdmin){
     $success =  "FACILITY ADMIN CREATED SUUCESSFULLY";
@@ -26,6 +36,20 @@ if($registerCenterAdmin){
     $error =  "ERROR: FACILITY ADMIN COULD NOT CREATE";
 }
 
+
+}else{
+
+//create center admin
+$registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel);
+
+if($registerCenterAdmin){
+    $success =  "FACILITY ADMIN CREATED SUUCESSFULLY";
+}else{
+    $error =  "ERROR: FACILITY ADMIN COULD NOT CREATE";
+}
+
+
+}
 
 }
 
@@ -102,7 +126,19 @@ if($registerCenterAdmin){
   </div>
   <div class="container">
       <h3 class="quick-actions">MEDCENTERS MANAGEMENT</h3>
-
+<?php
+      if($success){
+      ?>
+      <div class="alert alert-success">
+  <strong>Success!</strong> Indicates a successful or positive action.
+</div>
+      <?php } if($error){
+          ?>
+      <div class="alert alert-danger">
+  <strong>Success!</strong> Indicates a successful or positive action.
+</div>
+      <?php
+      } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -116,32 +152,11 @@ if($registerCenterAdmin){
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Patients</h5>
+                        <h5>List Of Medical Centers</h5>
                       </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>Center ID</th>
-                              <th>Center Name</th>
-                              <th>Center Location</th>
-                              <th>Center Number</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>MDC001</td>
-                              <td> LAPAZ COMMUNITY HOSPITAL</td>
-                              <td> ACCRA LAPAZ</td>
-                              <td style="text-align: center;"> 0245885545</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+
+                              <div id="load_med_center"></div>
+
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
@@ -151,7 +166,7 @@ if($registerCenterAdmin){
                               <div class="control-group">
                                 <label class="control-label">Center ID :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="centerID" value="CenterID" required readonly/>
+                                  <input type="text" class="span11" name="centerID" value="<?php echo $centerIDs; ?>" required readonly/>
                                 </div>
                               </div>
                                <div class="control-group">
@@ -252,6 +267,20 @@ if($registerCenterAdmin){
 <script src="../js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
 
+
+    <script>
+    function dis(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","load_MedCenter.php",false);
+        xmlhttp.send(null);
+        document.getElementById("load_med_center").innerHTML=xmlhttp.responseText;
+    }
+        dis();
+
+        setInterval(function(){
+            dis();
+        },2000);
+    </script>
 
 
 <script type="text/javascript">

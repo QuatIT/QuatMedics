@@ -93,5 +93,4 @@ function randomString($length)
     <?php
 include 'mail/gmail.php';
 include 'classes.class.php';
-include 'login_classes.class.php';
 ?>

@@ -1,43 +1,22 @@
 <?php
-Class notification{
-    public function fire_msg($prompt){
-     $disburse = query ("SELECT * FROM schedule_loan_detail WHERE DATE(due_date) >= DATE('".$prompt."') + INTERVAL 7 DAY GROUP BY loan_no");
-//     $disburse = query ("SELECT * FROM schedule_loan_detail WHERE DATE(due_date) < date_sub(date('".$prompt."'),INTERVAL -1 WEEK)");
-//     $disburse = query ("SELECT * FROM schedule_loan_detail WHERE DATE(due_date) >= DATE('".$prompt."') - INTERVAL 10 DAY ");
-     return $disburse;
-    }
-    function fetch_by_loan_id($loan_no){
-$By_loan_id= query("SELECT * FROM customer_loan_detail WHERE loan_no = '$loan_no'" );
-return $By_loan_id;
-}
-function fetch_all_schedule(){
-    $fetch_schedule= query("SELECT * FROM schedule_loan_detail GROUP BY due_date" );
-    return $fetch_schedule;
-}
-function fire_3($prompt){
-    $disburse = query ("SELECT * FROM schedule_loan_detail WHERE DATE(due_date) > date_sub(date('".$prompt."'),INTERVAL -3 DAY)");
-    return $disburse;
-   }
 
+  class User{
 
-function fire_day($prompt){
-    $disburse = query ("SELECT * FROM schedule_loan_detail WHERE DATE(due_date)=CURDATE()");
-    return $disburse;
-   }
-
-
-}
-?>
-
-
-
-<?php
-
-  class School{
-
-    public function add_faculty($faculty_id,$faculty_name) {
-      $result= insert("INSERT INTO faculty(faculty_id,faculty_name) VALUES ('$faculty_id','$faculty_name')") ;
+    public function createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel) {
+      $result= insert("INSERT INTO medicalcenter(centerID,centerName,centerCategory,centerLocation,numOfStaff,centerHistory,numOfBranches,userName,password,accessLevel) VALUES('$centerID','$centerName','$centerCategory','$centerLocation','$numOfStaff','$aboutCenter','$numOfBranches','$userName','$password','$accessLevel') ");
       return $result;
+    }
+
+    public function find_by_centerID($centerID){
+      $result=query("SELECT * FROM medicalcenter WHERE centerID='$centerID' ") ;
+      return $result;
+    }
+
+    public function find_num_centerID(){
+      $result=query("SELECT * FROM medicalcenter ");
+      $num = count($result);
+
+      return $num;
     }
 
     public function find_all(){
