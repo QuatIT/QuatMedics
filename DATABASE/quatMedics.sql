@@ -13,7 +13,7 @@ create table `quatAdmin`(
     `adminID` varchar(255) not null primary key,
     `firstName` varchar(255) not null,
     `lastName` varchar(255) not null,
-    `gender` varchar(10) not null,
+    `gender` varchar(10) not null
     `email` varchar(50) not null,
     `phone` varchar(20) not null,
     `userName` varchar(50) not null,
@@ -21,6 +21,18 @@ create table `quatAdmin`(
     `dateRegistered` varchar(50) not null,
     `doe` timestamp
 )engine = InnoDB;
+
+create table `centerUser`(
+    `userID` varchar(255) not null primary key,
+    `centerID` varchar(255) not null,
+    `userName` varchar(50) not null,
+    `password` varchar(50) not null,
+    `accessLevel` varchar(10) not null,
+    `dateRegistered` varchar(255) not null,
+    `doe` timestamp,
+    index(centerID),
+    foreign key(centerID) references `medicalCenter`(centerID)
+) engine = InnoDB;
 
 create table `medicalCenter`(
     `centerID` varchar(255) not null primary key,
@@ -37,18 +49,6 @@ create table `medicalCenter`(
     `doe` timestamp
 )engine = InnoDB;
 
-create table `centerUser`(
-    `userID` varchar(255) not null primary key,
-    `centerID` varchar(255) not null,
-    `userName` varchar(50) not null,
-    `password` varchar(50) not null,
-    `accessLevel` varchar(10) not null,
-    `dateRegistered` varchar(255) not null,
-    `doe` timestamp,
-    index(centerID),
-    foreign key(centerID) references `medicalCenter`(centerID)
-) engine = InnoDB;
-
 create table `department`(
     `departmentID` varchar(255) not null primary key,
     `centerID` varchar(255) not null,
@@ -57,6 +57,24 @@ create table `department`(
     `doe` timestamp,
     index(centerID),
     foreign key (centerID) references `medicalCenter`(centerID)
+)engine = InnoDB;
+
+create table `staff`(
+    `staffID` varchar(255) not null primary key,
+    `staffType` varchar(255) not null,
+    `departmentID` varchar(255) not null,
+    `firstName` varchar(255) not null,
+    `lastName` varchar(255) not null,
+    `otherName` varchar(255) not null,
+    `gender` varchar(10) not null,
+    `dob` varchar(50) not null,
+    `specialty` varchar(200) null,
+    `license` varchar(255) not null,
+    `dateEmployed` varchar(255) not null,
+    `dateRegistered` varchar(255) not null,
+    `doe` timestamp,
+    index(departmentID),
+    foreign key (departmentID) references `department`(departmentID)
 )engine = InnoDB;
 
 create table `patient`(
@@ -76,24 +94,9 @@ create table `patient`(
     foreign key (centerID) references `medicalCenter`(centerID)
 )engine = InnoDB;
 
-create table `doctors`(
-    `doctorID` varchar(255) not null primary key,
-    `departmentID` varchar(255) not null,
-    `title` varchar(20) not null,
-    `firstName` varchar(255) not null,
-    `lastName` varchar(255) not null,
-    `otherName` varchar(255) not null,
-    `gender` varchar(10) not null,
-    `dob` varchar(50) not null,
-    `specialty` varchar(200) not null,
-    `license` varchar(255) not null,
-    `dateEmployed` varchar(255) not null,
-    `dateRegistered` varchar(255) not null,
-    `doe` timestamp,
-    index(departmentID),
-    foreign key (departmentID) references `department`(departmentID)
-)engine = InnoDB;
 
+
+/*
 create table `nurses`(
     `nurseID` varchar(255) not null,
     `departmentID` varchar(255) not null,
@@ -109,6 +112,7 @@ create table `nurses`(
     index(departmentID),
     foreign key (departmentID) references `department`(departmentID)
 )engine = InnoDB;
+*/
 
 create table `wardList`(
     `wardID` varchar(255) not null primary key,
@@ -149,7 +153,7 @@ create table `doctorAppointment`(
     `appointmentTime` varchar(255) not null,
     `doe` timestamp,
     index(doctorID),
-    foreign key(doctorID) references `doctors`(doctorID)
+    foreign key(doctorID) references `doctor`(doctorID)
 )engine = InnoDB;
 
 create table `pharmacy`(
