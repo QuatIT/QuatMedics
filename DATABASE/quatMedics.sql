@@ -39,28 +39,17 @@ create table `medicalCenter`(
     `doe` timestamp
 )engine = InnoDB;
 
-<<<<<<< HEAD
-=======
 /* Table For Medical Center Users*/
->>>>>>> QuatMedics/master
 create table `centerUser`(
     `userID` varchar(255) not null primary key,
     `centerID` varchar(255) not null,
     `userName` varchar(50) not null,
     `password` varchar(50) not null,
-<<<<<<< HEAD
-    `accessLevel` varchar(10) not null,
-    `dateRegistered` varchar(255) not null,
-    `doe` timestamp,
-    index(centerID),
-    foreign key(centerID) references `medicalCenter`(centerID)
-=======
     `accessLevel` varchar(10) not null, /* access level 3,4,5 depending on staff Type*/
     `dateRegistered` varchar(255) not null,
     `doe` timestamp,
     index(centerID),
     foreign key (centerID) REFERENCES medicalCenter(centerID)
->>>>>>> QuatMedics/master
 ) engine = InnoDB;
 
 create table `department`(
@@ -105,33 +94,8 @@ create table `patient`(
     `dateRegistered` varchar(50) not null,
     `doe` timestamp,
     index (centerID),
-<<<<<<< HEAD
-    foreign key (centerID) references `medicalCenter`(centerID)
-)engine = InnoDB;
-
-
-
-/*
-create table `nurses`(
-    `nurseID` varchar(255) not null,
-    `departmentID` varchar(255) not null,
-    `firstName` varchar(255) not null,
-    `lastName` varchar(255) not null,
-    `otherName` varchar(255) not null,
-    `dob` date not null,
-    `gender` varchar(10) not null,
-    `license` varchar(255) not null,
-    `dateEmployed` varchar(255) not null,
-    `dateRegistered` varchar(255) not null,
-    `doe` timestamp,
-    index(departmentID),
-    foreign key (departmentID) references `department`(departmentID)
-)engine = InnoDB;
-*/
-=======
     foreign key (centerID) REFERENCES medicalCenter(centerID)
 )engine = InnoDB;
->>>>>>> QuatMedics/master
 
 create table `wardList`(
     `wardID` varchar(255) not null primary key,
