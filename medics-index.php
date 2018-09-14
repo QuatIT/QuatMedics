@@ -39,11 +39,11 @@
 
    	<div class="quick-actions_homepage">
     <ul class="quick-actions">
-          <li> <a href="centerdepartment-index.php"> <i class="icon-cabinet"></i> Department</a></li>
-          <li> <a href="centeruser-index.php"> <i class="icon-people"></i> Staff </a> </li>
-          <li> <a href="centerward-index.php"> <i class="icon-graph"></i> Ward </a> </li>
+          <li> <a href="centerdepartment-index"> <i class="icon-cabinet"></i> Department</a></li>
+          <li> <a href="centeruser-index"> <i class="icon-people"></i> Staff </a> </li>
+          <li> <a href="centerward-index"> <i class="icon-graph"></i> Ward </a> </li>
           <li> <a href="#"> <i class="icon-home"></i> Pharmacy</a> </li>
-          <li> <a href="centerlab-index.php"> <i class="icon-search"></i> Laboratory </a> </li>
+          <li> <a href="centerlab-index"> <i class="icon-search"></i> Laboratory </a> </li>
         </ul>
    </div>
 

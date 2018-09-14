@@ -3,8 +3,9 @@ require_once 'assets/core/connection.php';
 session_start();
 
 if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
-    echo "<script>window.location.href=index</script>";
+    echo "<script>window.location.href='index'</script>";
 }
+
 
 //search and display hospital name
 $centerName_sql = select("SELECT * FROM medicalCenter WHERE centerID='".$_SESSION['centerID']."' ");
@@ -46,7 +47,7 @@ foreach($centerName_sql as $centerName){}
         </a>
       <ul class="dropdown-menu">
         <li><a title="" href="#"><i class="icon icon-user"></i> Profile</a></li>
-        <li><a title="Logout" href="index.php"><i class="icon icon-share-alt"></i> Logout</a></li>
+        <li><a title="Logout" href="logout"><i class="icon icon-share-alt"></i> Logout</a></li>
       </ul>
     </li>
   </ul>

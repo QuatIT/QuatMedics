@@ -95,7 +95,7 @@ if($registerCenterAdmin){
         </a>
       <ul class="dropdown-menu">
         <li><a title="" href="#"><i class="icon icon-user"></i> Profile</a></li>
-        <li><a title="Logout" href="index.html"><i class="icon icon-share-alt"></i> Logout</a></li>
+        <li><a title="Logout" href="../logout"><i class="icon icon-share-alt"></i> Logout</a></li>
       </ul>
     </li>
   </ul>
