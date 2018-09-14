@@ -21,7 +21,6 @@ $userName = $_POST['userName'];
 $password = $_POST['password'];
 $accessLevel = 'center_admin';
 
-//   $id= "AFL-".sprintf('%06s',$count) ;
 
 if(count(User::find_by_centerID($centerID)) >= 1){
 //    $centerID = randomString('10'); //regenerate centerID
@@ -130,12 +129,12 @@ if($registerCenterAdmin){
       if($success){
       ?>
       <div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
+  <strong>Success!</strong> <?php echo $success; ?>
 </div>
       <?php } if($error){
           ?>
       <div class="alert alert-danger">
-  <strong>Success!</strong> Indicates a successful or positive action.
+  <strong>Error!</strong> <?php echo $error; ?>
 </div>
       <?php
       } ?>
