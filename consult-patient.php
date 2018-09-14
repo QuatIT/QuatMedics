@@ -106,7 +106,7 @@
                                       <div class="control-group">
                                         <label class="control-label">Other Health Vitals :</label>
                                         <div class="controls">
-                                            <textarea class="span12" name="healthVitals" rows="5"></textarea>
+                                            <textarea class="span12" name="healthVitals"></textarea>
                                         </div>
                                       </div>
                                   </div>
@@ -176,12 +176,20 @@
                                   <div class="widget-content nopadding">
                                       <table class="table table-bordered" id="dynamic_field">
                                           <tr>
-                                            <td colspan="2"><textarea class="span11" name="diagnoses" placeholder="Diagnosis"></textarea>  </td>
+                                            <td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis"></textarea>  </td>
+                                          </tr>
+                                          <tr>
+                                            <td colspan="3"><textarea class="span12" name="Symptoms" placeholder="Symptoms"></textarea>  </td>
                                           </tr>
                                         <tr>
-                                            <td><input type="text" name="drugName[]" placeholder="Medication Name" class="span11" /></td>
-                                            <td><button type="button" name="add" id="add" class="btn btn-primary">Add Medication</button></td>
+                                            <td><input type="text" name="drugName[]" placeholder="Medicine" class="span11" /></td>
+                                            <td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td>
+                                            <td><button type="button" name="add" id="add" class="btn btn-primary">Add Medicine</button></td>
                                         </tr>
+                                          <tr>
+                                            <td></td>
+                                            <td></td>
+                                          </tr>
                                     </table>
                                       <div class="form-actions">
                                           <i class="span1"></i>
@@ -311,7 +319,7 @@ function resetMenu() {
         var i=1;
         $('#add').click(function(){
             i++;
-            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="drugName[]" placeholder="Medication Name" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="drugName[]" placeholder="Medicine" class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){

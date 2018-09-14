@@ -18,6 +18,14 @@
         .active{
             background-color: #209fbf;
         }
+
+        .text-danger{
+            color: #e01e1e;
+        }
+
+        label{
+            display: inline;
+        }
     </style>
 </head>
 <body>
@@ -49,67 +57,107 @@
       <h3 class="quick-actions">PATIENT PRESCRIPTION</h3>
 
       <div class="row-fluid">
-          <div class="span12">
-                <div class="widget-box">
+          <div class="span6">
+<!--                <div class="widget-box">-->
+<!--
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#tab1">Prescription Details</a></li>
+                            <li class="active"><a data-toggle="tab" href="#tab1"></a></li>
                         </ul>
                     </div>
-                    <div class="widget-content tab-content">
-                        <div id="tab1" class="tab-pane active">
+-->
+<!--                    <div class="widget-content tab-content">-->
+<!--                        <div id="tab1" class="tab-pane active">-->
                             <form action="#" method="post" class="form-horizontal">
-                                <div class="span6">
-                                    <div class="widget-content nopadding">
-                                      <div class="control-group">
-                                        <label class="control-label">Patient ID :</label>
-                                        <div class="controls">
-                                          <input type="text" class="span11" name="patientID" value="Patient ID" readonly/>
-                                        </div>
+                                <div class="span12">
+                                    <div class="widget-box">
+
+                                    <div class="widget-title">
+                                         <span class="icon"><i class="icon-th"></i></span>
+                                        <h5>Prescription Details</h5>
                                       </div>
+                                    <div class="widget-content nopadding">
                                     <div class="control-group">
                                         <label class="control-label"> Consulting Room :</label>
                                         <div class="controls">
                                             <input type="text" name="consultingRoom" class="span11" value="Consulting Room 1" readonly/>
                                         </div>
                                       </div>
-                                    <div class="control-group">
-                                        <label class="control-label"> Prescription Details:</label>
+                                      <div class="control-group">
+                                        <label class="control-label">Patient ID :</label>
                                         <div class="controls">
-                                            <textarea class="span11" name="prescription"></textarea>
+                                          <input type="text" class="span11" name="patientID" value="Patient ID" readonly/>
                                         </div>
                                       </div>
-                                  </div>
-                                </div>
-                                <div class="span6">
-                                    <div class="widget-content nopadding">
-                                      <div class="control-group">
+                                        <div class="control-group">
                                         <label class="control-label">Patient Name :</label>
                                         <div class="controls">
-                                          <input type="text" class="span11" name="patientName" value="Patient Name" required/>
+                                          <input type="text" class="span11" name="patientName" value="Patient Name" readonly/>
                                         </div>
                                       </div>
-                                    <div class="control-group">
+                                        <div class="control-group">
                                         <label class="control-label"> Doctor Name :</label>
                                         <div class="controls">
                                             <input type="text" name="doctorName" class="span11" value="Mr Doctor" readonly/>
                                         </div>
                                       </div>
-                                      <div class="form-actions">
-                                          <i class="span1"></i>
-                                        <button type="submit" class="btn btn-primary btn-block span10">Send Lab Results</button>
-                                      </div>
                                   </div>
                                 </div>
-
+                                </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
           </div>
 
-      </div>
-  </div>
+          <div class="span6">
+              <div class="widget-content">
+                  <form>
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Number</th>
+                          <th>Medicine</th>
+                          <th>Dosage</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td> Zentel</td>
+                          <td> 1 x 3</td>
+                          <td style="text-align: center;">
+                              <label><input type="radio" name="medstat1" value="YES"> <i class="fa fa-check-circle fa-lg text-success"></i></label>
+                              <label><input type="radio" name="medstat1" value="NO"> <i class="fa fa-times-circle fa-lg text-danger"></i></label>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>Paracetamol</td>
+                          <td> 2 x 3</td>
+                          <td style="text-align: center;">
+                              <label><input type="radio" name="medstat2" value="YES"> <i class="fa fa-check-circle fa-lg text-success"></i></label>
+                              <label><input type="radio" name="medstat2" value="NO"> <i class="fa fa-times-circle fa-lg text-danger"></i></label>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                      <div class="control-group">
+                        <div class="controls">
+                            <textarea class="span12" rows="5" placeholder="Notes On Prescription"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="form-actions">
+                          <i class="span6"></i>
+                        <button type="submit" class="btn btn-primary btn-block span6">Save</button>
+                      </div>
+                  </form>
+              </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row-fluid">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
