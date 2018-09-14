@@ -3,16 +3,19 @@ require_once 'assets/core/connection.php';
 session_start();
 
 
-if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] ){
+if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
     echo "<script>window.location.href='index'</script>";
 }
 
+//medical center name
+$med_name = select("SELECT * FROM medicalCenter WHERE centerID='".$_SESSION['centerID']."' ");
+foreach($med_name as $medi_name){}
 
 ?>
 
 <!--Header-part-->
 <div id="header">
-  <h1><a> QUAT MEDICS <small>Medical Center Name</small></a> </h1>
+  <h1><a> QUAT MEDICS | <small><?php echo $medi_name['centerName']; ?></small></a> </h1>
 </div>
 <!--close-Header-part-->
 

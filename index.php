@@ -1,14 +1,19 @@
 <?php
 include 'assets/core/connection.php';
+session_start();
+
+$success = '';
+$error = '';
 
 if(isset($_POST['btnSave'])){
 
-    $username = trim(filter_var($_POST['username'], FILTER_SANITIZE_STRING));
-    $password = trim(filter_var($_POST['password'], FILTER_SANITIZE_STRING));
+    $username = trim(filter_input(INPUT_POST,"username", FILTER_SANITIZE_STRING));
+    $password = trim(filter_input(INPUT_POST,"password", FILTER_SANITIZE_STRING));
 
-    //login detail
+    //staff login detail
     $centerUserLogin = User::centerUserLogin($username,$password);
 
+    if($centerUserLogin){
     if(count($centerUserLogin) >= 1){
         foreach($centerUserLogin as $centerLogin){
             $username_row = $centerLogin['username'];
@@ -24,9 +29,83 @@ if(isset($_POST['btnSave'])){
             $_SESSION['accessLevel'] = $accessLevel_row;
             $_SESSION['centerID'] = $centerID_row;
 
-            echo "<script>document.write('LOGIN SUCCESSFUL');
+            $success = "<script>document.write('LOGIN SUCCESSFUL');
+                    window.location.href='opd-index'</script>";
+
+        }elseif($accessLevel_row = 'CONSULTATION'){
+
+            $_SESSION['username'] = $username_row;
+            $_SESSION['password'] = $password_row;
+            $_SESSION['accessLevel'] = $accessLevel_row;
+            $_SESSION['centerID'] = $centerID_row;
+
+            $success = "<script>document.write('LOGIN SUCCESSFUL');
+                    window.location.href='consult-index'</script>";
+
+        }elseif($accessLevel_row = 'WARD'){
+
+            $_SESSION['username'] = $username_row;
+            $_SESSION['password'] = $password_row;
+            $_SESSION['accessLevel'] = $accessLevel_row;
+            $_SESSION['centerID'] = $centerID_row;
+
+            $success = "<script>document.write('LOGIN SUCCESSFUL');
+                    window.location.href='ward-index'</script>";
+
+        }elseif($accessLevel_row = 'PHARMACY'){
+
+            $_SESSION['username'] = $username_row;
+            $_SESSION['password'] = $password_row;
+            $_SESSION['accessLevel'] = $accessLevel_row;
+            $_SESSION['centerID'] = $centerID_row;
+
+            $success = "<script>document.write('LOGIN SUCCESSFUL');
+                    window.location.href='pharmacy-index'</script>";
+
+        }elseif($accessLevel_row = 'LABORATORY'){
+
+            $_SESSION['username'] = $username_row;
+            $_SESSION['password'] = $password_row;
+            $_SESSION['accessLevel'] = $accessLevel_row;
+            $_SESSION['centerID'] = $centerID_row;
+
+            $success = "<script>document.write('LOGIN SUCCESSFUL');
+                    window.location.href='lab-index'</script>";
+
+        }else{
+           $error = "WRONG USERNAME AND PASSWORD1";
+        }
+    }
+    }else{
+
+        //centerAdmin login = medics-index
+        $centerAdminLogin = User::centerAdminLogin($username,$password);
+
+        if(count($centerAdminLogin) >= 1){
+            foreach($centerAdminLogin as $centerAdmin){
+                $adminUsername = $centerAdmin['userName'];
+                $adminPassword = $centerAdmin['password'];
+                $adminAccessLevel = $centerAdmin['accessLevel'];
+                $adminCenterID = $centerAdmin['centerID'];
+            }
+
+            if($adminAccessLevel = 'center_admin'){
+
+            $_SESSION['username'] = $adminUsername;
+            $_SESSION['password'] = $adminPassword;
+            $_SESSION['accessLevel'] = $adminAccessLevel;
+            $_SESSION['centerID'] = $adminCenterID;
+
+            $success = "<script>document.write('LOGIN SUCCESSFUL');
                     window.location.href='medics-index'</script>";
-        }elseif($accessLevel_row = 'CONSULTATION'){}elseif($accessLevel_row = 'WARD'){}elseif($accessLevel_row = 'PHARMACY'){}elseif($accessLevel_row = 'LABORATORY'){}
+
+        }else{
+           $error = "WRONG USERNAME AND PASSWORD2";
+        }
+
+        }else{
+           $error = "WRONG USERNAME AND PASSWORD";
+        }
     }
 
 }
@@ -45,10 +124,24 @@ if(isset($_POST['btnSave'])){
     </head>
     <body>
         <div id="loginbox">
-            <form id="loginform" class="form-vertical" action="">
+            <form id="loginform" class="form-vertical" action="" method="post">
 				 <div class="control-group normal_text">
                      <h3>QUAT MEDICS ADMIN</h3>
                 </div>
+
+                <?php
+                  if($success){
+                  ?>
+                  <div class="alert alert-success">
+              <strong>Success!</strong> <?php echo $success; ?>
+            </div>
+                  <?php } if($error){
+                      ?>
+                  <div class="alert alert-danger">
+              <strong>Error!</strong> <?php echo $error; ?>
+            </div>
+                <?php } ?>
+
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
@@ -68,7 +161,7 @@ if(isset($_POST['btnSave'])){
                     <span class="pull-right"><input type="submit" name="btnSave" class="btn btn-primary" value="Login" /></span>
                 </div>
             </form>
-            <form id="recoverform" action="#" class="form-vertical">
+            <form id="recoverform" action="" class="form-vertical">
 				<p class="normal_text">Enter your e-mail address below and we will send you a recovery guide</p>
 
                     <div class="controls">
