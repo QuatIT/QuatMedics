@@ -1,11 +1,20 @@
 <?php
 require_once 'assets/core/connection.php';
+session_start();
+
+if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
+    echo "<script>window.location.href=index</script>";
+}
+
+//search and display hospital name
+$centerName_sql = select("SELECT * FROM medicalCenter WHERE centerID='".$_SESSION['centerID']."' ");
+foreach($centerName_sql as $centerName){}
 
 ?>
 
 <!--Header-part-->
 <div id="header">
-  <h1><a> QUAT MEDICS <small>Medical Center Name</small></a> </h1>
+  <h1><a> QUAT MEDICS | <small><?php echo $centerName['centerName']; ?></small></a> </h1>
 </div>
 <!--close-Header-part-->
 

@@ -21,7 +21,46 @@
 </style>
 </head>
 <body>
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+
+    $success = '';
+    $error = '';
+
+    //generate centerID
+    $staffIDs = User::find_num_staffID() + 1;
+
+    if(isset($_POST['btnSave'])){
+
+        $staffID = substr(filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING), 0, 5)."-".sprintf('%06s',$staffIDs);
+        $firstName = filter_input(INPUT_POST, "firstName", FILTER_SANITIZE_STRING);
+        $lastName = filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING);
+        $otherName = filter_input(INPUT_POST, "otherName", FILTER_SANITIZE_STRING);
+        $gender = filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING);
+        $dob = filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING);
+        $specialty = filter_input(INPUT_POST, "specialty", FILTER_SANITIZE_STRING);
+        $staffCategory = filter_input(INPUT_POST, "staffCategory", FILTER_SANITIZE_STRING);
+        $staffDepartment = filter_input(INPUT_POST, "staffDepartment", FILTER_SANITIZE_STRING);
+
+        $username = filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING);
+        $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
+
+        $centerUser = User::saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment);
+
+        if($centerUser){
+
+            $accessLevel = $staffDepartment;
+            $centerID = $_SESSION['centerID'];
+
+            $userCredential = User::centerUserLogin($username,$password);
+
+            $success = "USER DATA CREATED SUCCESSFULLY";
+        }else{
+            $error = "FAILED TO CREATE USER DATA";
+        }
+    }
+
+?>
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -59,6 +98,19 @@
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
                         <h5>List Of Patients</h5>
+                          <?php
+                              if($success){
+                              ?>
+                              <div class="alert alert-success">
+                          <strong>Success!</strong> <?php echo $success; ?>
+                        </div>
+                              <?php } if($error){
+                                  ?>
+                              <div class="alert alert-danger">
+                          <strong>Error!</strong> <?php echo $error; ?>
+                        </div>
+                              <?php
+                              } ?>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
