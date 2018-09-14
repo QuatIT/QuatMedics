@@ -23,12 +23,12 @@ require_once 'assets/core/connection.php';
 <!--top-Header-menu-->
 <div id="user-nav" class="navbar navbar-inverse">
   <ul class="nav">
-    <li class="" ><a title="" href="opd-index.html"><i class="icon icon-user"></i> <span class="text">OPD</span></a></li>
-    <li class="" ><a title="" href="consult-index.html"><i class="icon icon-briefcase"></i> <span class="text">CONSULTATION</span></a></li>
-    <li class="" ><a title="" href="lab-index.html"><i class="icon icon-filter"></i> <span class="text">LABORATORY</span></a></li>
-    <li class="" ><a title="" href="pharmacy-index.html"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
-    <li class="" ><a title="" href="ward-index.html"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
-    <li class=" dropdown" id="settings">
+    <li class="" ><a title="" href="opd-index.php"><i class="icon icon-user"></i> <span class="text">OPD</span></a></li>
+    <li class="" ><a title="" href="consult-index.php"><i class="icon icon-briefcase"></i> <span class="text">CONSULTATION</span></a></li>
+    <li class="" ><a title="" href="lab-index.php"><i class="icon icon-filter"></i> <span class="text">LABORATORY</span></a></li>
+    <li class="" ><a title="" href="pharmacy-index.php"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
+    <li class="" ><a title="" href="ward-index.php"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
+    <li class="dropdown" id="settings">
         <a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle">
             <i class="icon icon-cog"></i>
             <span class="text">Settings</span>
@@ -37,7 +37,7 @@ require_once 'assets/core/connection.php';
         </a>
       <ul class="dropdown-menu">
         <li><a title="" href="#"><i class="icon icon-user"></i> Profile</a></li>
-        <li><a title="Logout" href="index.html"><i class="icon icon-share-alt"></i> Logout</a></li>
+        <li><a title="Logout" href="index.php"><i class="icon icon-share-alt"></i> Logout</a></li>
       </ul>
     </li>
   </ul>

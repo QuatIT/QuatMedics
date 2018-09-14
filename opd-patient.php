@@ -14,15 +14,15 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<style>
-.active{
-    background-color: #209fbf;
-}
-</style>
+        <style>
+        .active{
+            background-color: #209fbf;
+        }
+    </style>
 </head>
 <body>
-<?php include 'layout/head.php'; ?>
 
+<?php include 'layout/head.php'; ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -31,26 +31,32 @@
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"><a href="centeruser-index.php"><i class="icon icon-user"></i> <span>Staff Management</span></a> </li>
+<!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
+    <li> <a href="opd-index.php"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
+    <li class="active"> <a href="opd-patient.php"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
+    <li><a href="opd-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
     </ul>
 </div>
+
+
+
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Staff Management" class="tip-bottom"><i class="icon-user"></i> STAFF</a>
+        <a title="Out Patient Department" class="tip-bottom"><i class="icon-plus"></i> OPD</a>
+        <a title="Old Patients" class="tip-bottom"><i class="icon-user"></i> OPD OLD PATIENTS</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">STAFF MANAGEMENT</h3>
+      <h3 class="quick-actions">OUT PATIENT DEPARTMENT</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">MedCenter Staff</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Staff</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>
+                    <li><a data-toggle="tab" href="#tab2">Add New Out Patient</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -64,19 +70,38 @@
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Staff ID</th>
-                              <th>Staff Name</th>
-                              <th>Department</th>
-                              <th>Number</th>
+                              <th>Patient ID</th>
+                              <th>Patient Name</th>
+                              <th>Mobile Number</th>
+                              <th>Consulting Room</th>
                               <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
-                              <td>MDC001</td>
-                              <td> Goodman Effah</td>
-                              <td> Consultation</td>
-                              <td style="text-align: center;"> 0245885545</td>
+
+                              <td>PNT-HSP001</td>
+                              <td>Kofi Mensah Addo</td>
+                              <td>0541524233</td>
+                              <td style="text-align: center;"> Conssulting Room 1</td>
+                              <td style="text-align: center;">
+                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>PNT-HSP001</td>
+                              <td>Kofi Mensah Addo</td>
+                              <td>0541524233</td>
+                              <td style="text-align: center;"> Conssulting Room 2</td>
+                              <td style="text-align: center;">
+                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>PNT-HSP001</td>
+                              <td>Kofi Mensah Addo</td>
+                              <td>0541524233</td>
+                              <td style="text-align: center;"> Conssulting Room 4</td>
                               <td style="text-align: center;">
                                    <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
                               </td>
@@ -91,104 +116,75 @@
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Staff ID :</label>
+                                <label class="control-label">Patient :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="staffID" value="StaffID" required readonly/>
+                                  <select name="patientId" >
+                                    <option value="default"> -- Select Patient ID --</option>
+                                    <option value="patientId"> Patient ID 1 </option>
+                                    <option value="patientId"> Patient ID 2 </option>
+                                    <option value="patientId"> Patient DI 3 </option>
+                                    <option value="patientId"> Patient DI 4 </option>
+                                  </select>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">First Name :</label>
+                                <label class="control-label">Body Temperature:</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="First Name" name="firstName" required/>
+                                  <input type="text" class="span11" placeholder="Body Temperature" name="bodytemp" required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Other Name :</label>
+                                <label class="control-label">Respiration Rate :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Other Name(s)" name="otherName" />
+                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Date Of Birth</label>
+                                <label class="control-label">Other Health Details :</label>
                                 <div class="controls">
-                                  <input type="date" class="span11" name="dob" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label"> Specialty</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" name="specialty" placeholder="specialized In..." />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label"> User Name</label>
-                                <div class="controls">
-                                  <input type="text"  class="span11" name="userName" placeholder="User Name..." required />
+                                    <textarea class="span11" name="otherHealth"></textarea>
                                 </div>
                               </div>
                           </div>
                       </div>
                     <div class="span6">
                           <div class="widget-content nopadding">
-                               <div class="control-group">
-                                <label class="control-label"> Staff Category</label>
+                              <div class="control-group">
+                                <label class="control-label">Full Name :</label>
                                 <div class="controls">
-                                  <select name="consultRoom" >
-                                    <option value=""> </option>
-                                    <option value="Doctor"> Doctor</option>
-                                    <option value="Nurse"> Nurse</option>
-                                    <option value="Midwife"> Midwife</option>
-                                    <option value="Psychologist"> Psychologist</option>
-                                    <option value="Therapist"> Therapist</option>
-                                  </select>
+                                  <input type="text" class="span11" placeholder="Full name" name="FullName" />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Last Name :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="lastName" placeholder="Last Name" required/>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label"> Gender</label>
+                                <label class="control-label">Pulse Rate :</label>
                                 <div class="controls">
-                                  <select name="gender" >
-                                        <option value=""> </option>
-                                        <option value="Male"> Male</option>
-                                        <option value="Female"> Female</option>
-                                    </select>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label"> Staff Department</label>
-                                <div class="controls">
-                                  <select name="consultRoom" >
-                                    <option value=""> </option>
-                                    <option value="ODP"> ODP</option>
-                                    <option value="CONSULTATION"> Consultation</option>
-                                    <option value="WARD"> Ward</option>
-                                    <option value="PHARMACY"> Pharmacy</option>
-                                    <option value="LABORATORY"> Laboratory</option>
-                                  </select>
+                                  <input type="text" class="span11" placeholder="Pulse Rate" name="pulseRate" />
                                 </div>
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label"> Work License</label>
+                                <label class="control-label">Blood Pressure</label>
                                 <div class="controls">
-                                  <input type="file" accept="application/pdf" class="span11" name="license" required />
+                                  <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" required />
                                 </div>
                               </div>
-                              <div class="control-group">
-                                <label class="control-label">Password</label>
+                               <div class="control-group">
+                                <label class="control-label">Assign Consulting Room</label>
                                 <div class="controls">
-                                  <input type="password"  class="span11" name="password" placeholder="Password..." required />
+                                  <select name="consultRoom" >
+                                    <option value="default"> -- Select Consulting Room --</option>
+                                    <option value="consultRoom"> Consulting Room 1 Name</option>
+                                    <option value="consultRoom"> Consulting Room 2 Name</option>
+                                    <option value="consultRoom"> Consulting Room 3 Name</option>
+                                    <option value="consultRoom"> Consulting Room 4 Name</option>
+                                  </select>
                                 </div>
+                                   <div class="controls"></div>
                               </div>
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Staff</button>
+                                <button type="submit" class="btn btn-primary btn-block span10">Save Out Patient</button>
                               </div>
                           </div>
                       </div>
@@ -224,6 +220,8 @@
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
 
+
+
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to
   // a different page. Ignore if the value returned is a null string:
@@ -242,6 +240,7 @@
           }
       }
   }
+
 // resets the menu selection upon entry to this page:
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;

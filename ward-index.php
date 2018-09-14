@@ -14,52 +14,14 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<style>
-.active{
-    background-color: #209fbf;
-}
-</style>
+    <style>
+        .active{
+            background-color: #209fbf;
+        }
+    </style>
 </head>
 <body>
-<!--Header-part-->
-<div id="header">
-  <h1><a> QUAT MEDICS <small>Medical Center Name</small></a> </h1>
-</div>
-<!--close-Header-part-->
-
-<!--top-Header-messaages-->
-<div class="btn-group rightzero">
-    <a class="top_message tip-left" title="Manage Files"><i class="icon-file"></i></a>
-    <a class="top_message tip-bottom" title="Manage Users"><i class="icon-user"></i></a>
-    <a class="top_message tip-bottom" title="Manage Comments"><i class="icon-comment"></i>
-        <span class="label label-important">5</span>
-    </a>
-    <a class="top_message tip-bottom" title="Manage Orders"><i class="icon-shopping-cart"></i></a>
-</div>
-<!--close-top-Header-messaages-->
-
-<!--top-Header-menu-->
-<div id="user-nav" class="navbar navbar-inverse">
-  <ul class="nav">
-    <li class="" ><a title="" href="opd-index.html"><i class="icon icon-user"></i> <span class="text">OPD</span></a></li>
-    <li class="" ><a title="" href="consult-index.html"><i class="icon icon-briefcase"></i> <span class="text">CONSULTATION</span></a></li>
-    <li class="" ><a title="" href="lab-index.html"><i class="icon icon-filter"></i> <span class="text">LABORATORY</span></a></li>
-    <li class="" ><a title="" href="pharmacy-index.html"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
-    <li class="" ><a title="" href="ward-index.html"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
-    <li class=" dropdown" id="settings">
-        <a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle">
-            <i class="icon icon-cog"></i>
-            <span class="text">Settings</span>
-<!--            <span class="label label-important">5</span> -->
-            <b class="caret"></b>
-        </a>
-      <ul class="dropdown-menu">
-        <li><a title="" href="#"><i class="icon icon-user"></i> Profile</a></li>
-        <li><a title="Logout" href="index.html"><i class="icon icon-share-alt"></i> Logout</a></li>
-      </ul>
-    </li>
-  </ul>
-</div>
+<?php include 'layout/head.php'; ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -68,48 +30,72 @@
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index.html"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"><a href="centerdepartment-index.html"><i class="icon icon-tasks"></i> <span>Department Management</span></a> </li>
+    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li class="active"> <a href="ward-index.php"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
+    <li> <a href="ward-patient.php"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
 </div>
+
+
+
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Department Management" class="tip-bottom"><i class="icon-tasks"></i> DEPARTMENT</a>
+        <a href="medics-index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a href="ward-index.php" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">DEPARTMENT MANAGEMENT</h3>
+      <h3 class="quick-actions">WARD MANAGEMENT</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">MedCenter Department</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Department</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Bed List</a></li>
+                    <li><a data-toggle="tab" href="#tab2">Add New Bed</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
                     <div class="widget-box">
                       <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Department</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Department ID</th>
-                              <th>Department Name</th>
+                              <th>Bed Number</th>
+                              <th>Bed Type</th>
+                              <th>Charge</th>
+                              <th>Description</th>
                               <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
-                              <td>MDCDEP001</td>
-                              <td>Department Name</td>
+                              <td>HPS01W2B4</td>
+                              <td>Bed Type</td>
+                              <td>Ghc 200</td>
+                              <td>A comfortable Bed :)</td>
+                              <td style="text-align: center;">
+                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>HPS01W2B5</td>
+                              <td>Bed Type</td>
+                              <td>Ghc 500</td>
+                              <td>A comfortable Bed :)</td>
+                              <td style="text-align: center;">
+                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>HPS01W2B6</td>
+                              <td>Bed Type</td>
+                              <td>Ghc 400</td>
+                              <td>A comfortable Bed :)</td>
                               <td style="text-align: center;">
                                    <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
                               </td>
@@ -122,26 +108,54 @@
                 <div id="tab2" class="tab-pane">
                     <form action="#" method="post" class="form-horizontal">
                     <div class="span6">
+<!--                        <div class="widget-box">-->
+                          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                            <h5>Bed-info</h5>
+                          </div>
                           <div class="widget-content nopadding">
+<!--                            <form action="#" method="post" class="form-horizontal">-->
+                               <div class="control-group">
+                                <label class="control-label">Bed Category</label>
+                                <div class="controls">
+                                  <select name="bedCategory" >
+                                    <option value="default"> -- Bed Category --</option>
+                                    <option value="categoryName"> Category Name</option>
+                                    <option value="categoryName"> Category Name</option>
+                                    <option value="categoryName"> Category Name</option>
+                                  </select>
+                                </div>
+                              </div>
+
                               <div class="control-group">
-                                <label class="control-label">Department ID :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="DepartmentID" value="DepartmentID" required readonly/>
+                                <label class="control-label">Bed Description :</label>
+                                <div class="controls">
+                                    <textarea class="span11" name="bedDesciption"></textarea>
                                 </div>
                               </div>
                           </div>
                       </div>
                     <div class="span6">
+                          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                            <h5>Bed-info</h5>
+                          </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Department Name :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="departmentName" placeholder="Department Name" required/>
+                                <label class="control-label">Bed Number :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" placeholder="Bed Number" name="bedNumber" />
                                 </div>
                               </div>
+                              <div class="control-group">
+                                <label class="control-label">Charge :</label>
+                                <div class="controls">
+                                  <input type="number" class="span11" placeholder="Bed Charge" name="bedCharge" required />
+                                </div>
+                                  <br/>
+                              </div>
+<!--                              <div class="controls"></div>-->
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Department</button>
+                                <button type="submit" class="btn btn-primary btn-block span10">Save Bed</button>
                               </div>
                           </div>
                       </div>
@@ -177,6 +191,8 @@
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
 
+
+
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to
   // a different page. Ignore if the value returned is a null string:
@@ -190,11 +206,12 @@
               resetMenu();
           }
           // else, send page to designated URL
-          else {
+        else {
             document.location.href = newURL;
           }
       }
   }
+
 // resets the menu selection upon entry to this page:
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
