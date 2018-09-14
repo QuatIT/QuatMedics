@@ -27,9 +27,13 @@
     $success = '';
     $error = '';
 
+    //generate centerID
+    $staffIDs = User::find_num_staffID() + 1;
+
+
     if(isset($_POST['btnSave'])){
 
-        $staffID = trim(filter_var($_POST['staffID'], FILTER_SANITIZE_STRING));
+        $staffID = substr(trim(filter_var($_POST['lastName'], FILTER_SANITIZE_STRING)), 0, 5)."-".sprintf('%06s',$staffIDs);//regenerate centerID;
         $firstName = trim(filter_var($_POST['firstName'], FILTER_SANITIZE_STRING));
         $lastName = trim(filter_var($_POST['lastName'], FILTER_SANITIZE_STRING));
         $otherName = trim(filter_var($_POST['otherName'], FILTER_SANITIZE_STRING));
@@ -49,7 +53,8 @@
 
                 //add userCenter logins
                 $accessLevel = $staffDepartment;
-                $addUserLogin = User::saveUserCredential($username,$password,$accessLevel,$centerID);
+                $centerID = $_SESSION['centerID'];
+                $addUserLogin = User::saveUserCredential($staffID,$username,$password,$accessLevel,$centerID);
 
                 $success =  "USER DATA CREATED SUUCESSFULLY";
             }else{
@@ -89,12 +94,12 @@
       if($success){
       ?>
       <div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
+  <strong>Success!</strong> <?php echo $success; ?>
 </div>
       <?php } if($error){
           ?>
       <div class="alert alert-danger">
-  <strong>Success!</strong> Indicates a successful or positive action.
+  <strong>Error!</strong> <?php echo $error; ?>
 </div>
       <?php
       } ?>
@@ -141,13 +146,13 @@
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
+                    <form action="" method="post" class="form-horizontal">
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
                                 <label class="control-label">Staff ID :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="staffID" value="StaffID" required readonly/>
+                                  <input type="text" class="span11" name="staffID" value="<?php echo $staffIDs; ?>" required readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
@@ -230,7 +235,7 @@
                               <div class="control-group">
                                 <label class="control-label"> Work License</label>
                                 <div class="controls">
-                                  <input type="file" accept="application/pdf" class="span11" name="license" required />
+                                  <input type="file" accept="application/pdf" class="span11" name="license"  />
                                 </div>
                               </div>
                               <div class="control-group">

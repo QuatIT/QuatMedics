@@ -13,12 +13,12 @@
     }
 
     public function saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment){
-      $result=query("INSERT INTO staff(stffID,firstName,lastName,otherName,gender,dob,specialty,staffCategory,departmentID) VALUES('$staffID','$firstName','$lastName','$otherName','$gender','$dob','$specialty','$staffCategory','$staffDepartment') ") ;
+      $result=insert("INSERT INTO staff(staffID,firstName,lastName,otherName,gender,dob,specialty,staffCategory,departmentID,dateRegistered) VALUES('$staffID','$firstName','$lastName','$otherName','$gender','$dob','$specialty','$staffCategory','$staffDepartment',CURDATE() ) ");
       return $result;
     }
 
-    public function saveUserCredential($username,$password,$accessLevel,$centerID){
-      $result=query("INSERT INTO centerUser(userName,password,accessLevel,centerID,dateRegistered) VALUES('$username','$password','$accessLevel','$centerID',now() ) ") ;
+    public function saveUserCredential($staffID,$username,$password,$accessLevel,$centerID){
+      $result=insert("INSERT INTO centerUser(userID,userName,password,accessLevel,centerID,dateRegistered) VALUES('$staffID','$username','$password','$accessLevel','$centerID',CURDATE() ) ") ;
       return $result;
     }
 
@@ -34,6 +34,13 @@
 
     public function find_num_centerID(){
       $result=query("SELECT * FROM medicalcenter ");
+      $num = count($result);
+
+      return $num;
+    }
+
+    public function find_num_staffID(){
+      $result=query("SELECT * FROM centerUser ");
       $num = count($result);
 
       return $num;
