@@ -62,7 +62,7 @@
                 <ul class="nav nav-tabs">
                     <li class=""><a data-toggle="tab" href="#tab1">Out Patient List</a></li>
 <!--                    <li class="active"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>-->
-                    <li class="<?php echo $tab; ?>"><a data-toggle="tab" href="#tab2">Add Vitals</a></li>
+                    <li class="<?php echo $tab; ?>"><a data-toggle="tab" href="#tab2">Add Vitals </a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
