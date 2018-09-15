@@ -468,6 +468,30 @@ ALTER TABLE `wardassigns`
 --
 ALTER TABLE `wardlist`
   ADD CONSTRAINT `wardlist_ibfk_1` FOREIGN KEY (`centerID`) REFERENCES `medicalcenter` (`centerID`);
+  
+  
+create table`consultingRoom`(
+    `roomID` varchar(255) not null primary key,
+    `roomName` varchar(255) not null,
+    `dateRegistered` varchar(255) not null,
+    `doe` timestamp
+)engine = InnoDB;
+
+create table `consultation`(
+    `consultID` varchar(255) not null,
+    `patientID` varchar(255) not null,
+    `staffID` varchar(255) not null,
+    `bodyTemperature` varchar(255) not null,
+    `pulseRate` varchar(255) not null,
+    `respirationRate` varchar(255) not null,
+    `bloodPressure` varchar(255) not null,
+    `weight` varchar(255) not null,
+    `otherHealth` longtext null,
+    `roomID` varchar(255) not null,
+    `doe` timestamp,
+    index(patientID),
+    foreign key (patientID) REFERENCES patient(patientID)
+)engine = InnoDB;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
