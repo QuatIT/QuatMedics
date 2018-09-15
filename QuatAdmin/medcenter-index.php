@@ -165,8 +165,8 @@ if($registerCenterAdmin){
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
-                              <tr id="load_med_center"></tr>
+                          <tbody id="load_med_center">
+<!--                              <tr></tr>-->
                           </tbody>
                         </table>
 
