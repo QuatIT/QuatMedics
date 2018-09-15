@@ -22,7 +22,12 @@
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+
+<?php
+    include 'layout/head.php';
+
+    $tab = $_GET['tab'];
+    ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -55,12 +60,14 @@
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Out Patient</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab1">Out Patient List</a></li>
+<!--                    <li class="active"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>-->
+                    <li class="<?php echo $tab; ?>"><a data-toggle="tab" href="#tab2">Add Vitals</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
-                <div id="tab1" class="tab-pane active">
+                <div id="tab1" class="tab-pane ">
+<!--                <div id="tab1" class="tab-pane active">-->
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
@@ -111,9 +118,9 @@
                       </div>
                     </div>
                 </div>
-                <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
-                    <div class="span6">
+                <div id="tab2" class="tab-pane <?php echo $tab; ?>">
+                    <form action="" method="post" id="vitals" class="form-horizontal">
+                    <div class="span6" id="vitals">
                           <div class="widget-content nopadding">
                               <div class="control-group">
                                 <label class="control-label">Patient :</label>

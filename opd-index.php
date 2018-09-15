@@ -54,7 +54,7 @@
 
         if($createPatient){
              $success = "<script>document.write('PATIENT DETAIL ADDED SUCCESSFULLY');
-                                    window.location.href='opd-patient#tab2' </script>";
+                                    window.location.href='opd-patient?tab=active' </script>";
         }
     }
 
