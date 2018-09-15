@@ -1,21 +1,12 @@
+
 <?php
 include '../assets/core/connection.php';
 
 $load_MedCenter = select("SELECT * FROM medicalCenter ORDER BY centerID ASC");
 
 ?>
-<div class="widget-content nopadding">
-    <table class="table table-bordered data-table">
-      <thead>
-        <tr>
-          <th>Center ID</th>
-          <th>Center Name</th>
-          <th>Center Location</th>
-          <th>Number of Branches</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
+
+
 <?php
 foreach($load_MedCenter as $medCenterRow){
 ?>
@@ -32,6 +23,3 @@ foreach($load_MedCenter as $medCenterRow){
 
 <?php } ?>
 
-      </tbody>
-    </table>
-     </div>

@@ -153,9 +153,24 @@ if($registerCenterAdmin){
                          <span class="icon"><i class="icon-th"></i></span>
                         <h5>List Of Medical Centers</h5>
                       </div>
+                    <div class="widget-content nopadding">
 
-                              <div id="load_med_center"></div>
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th>Center ID</th>
+                              <th>Center Name</th>
+                              <th>Center Location</th>
+                              <th>Number of Branches</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              <tr id="load_med_center"></tr>
+                          </tbody>
+                        </table>
 
+                         </div>
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
@@ -278,7 +293,7 @@ if($registerCenterAdmin){
 
         setInterval(function(){
             dis();
-        },2000);
+        },1000);
     </script>
 
 
