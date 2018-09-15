@@ -28,6 +28,9 @@
     //generate $PatientID
     $PatientIDs = Patient::find_num_Patient() + 1;
 
+    $success = '';
+    $error = '';
+
     if(isset($_POST['btnSave'])){
 
       $centerID = $_SESSION['centerID'];
@@ -49,6 +52,10 @@
 
         $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress);
 
+        if($createPatient){
+             $success = "<script>document.write('PATIENT DETAIL ADDED SUCCESSFULLY');
+                                    window.location.href='opd-patient#tab2' </script>";
+        }
     }
 
 
@@ -80,7 +87,19 @@
   </div>
   <div class="container">
       <h3 class="quick-actions">OUT PATIENT DEPARTMENT</h3>
-
+                <?php
+                      if($success){
+                      ?>
+                      <div class="alert alert-success">
+                  <strong>Success!</strong> <?php echo $success; ?>
+                </div>
+                      <?php } if($error){
+                          ?>
+                      <div class="alert alert-danger">
+                  <strong>Error!</strong> <?php echo $error; ?>
+                </div>
+                      <?php
+                      } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
