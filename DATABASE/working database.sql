@@ -109,6 +109,8 @@ CREATE TABLE `lablist` (
   `labName` varchar(255) NOT NULL,
   `centerID` varchar(255) NOT NULL,
   `labType` varchar(255) NOT NULL,
+    `consultingRoom` varchar(255) not null,
+    `status` varchar(255) not null,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -173,6 +175,11 @@ CREATE TABLE `patient` (
   `bloodGroup` varchar(100) NOT NULL,
   `homeAddress` varchar(255) NOT NULL,
   `phoneNumber` varchar(20) NOT NULL,
+    `hometown` varchar(255) not null,
+    `guardianName` varchar(255) not null,
+    `guardianGender` varchar(255) not null,
+    `guardianPhone` varchar(255) not null,
+    `guardianRelation` varchar(255) not null,
   `dateRegistered` varchar(50) NOT NULL,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
