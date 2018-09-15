@@ -152,6 +152,19 @@
                                     <textarea class="span11" name="otherHealth"></textarea>
                                 </div>
                               </div>
+                               <div class="control-group">
+                                <label class="control-label">Assign Consulting Room</label>
+                                <div class="controls">
+                                  <select name="consultRoom" >
+                                    <option value="default"> -- Select Consulting Room --</option>
+                                    <option value="consultRoom"> Consulting Room 1 Name</option>
+                                    <option value="consultRoom"> Consulting Room 2 Name</option>
+                                    <option value="consultRoom"> Consulting Room 3 Name</option>
+                                    <option value="consultRoom"> Consulting Room 4 Name</option>
+                                  </select>
+                                </div>
+                                   <div class="controls"></div>
+                              </div>
                           </div>
                       </div>
                     <div class="span6">
@@ -175,18 +188,13 @@
                                   <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" required />
                                 </div>
                               </div>
-                               <div class="control-group">
-                                <label class="control-label">Assign Consulting Room</label>
+
+                              <div class="control-group">
+                                <label class="control-label">Weight</label>
                                 <div class="controls">
-                                  <select name="consultRoom" >
-                                    <option value="default"> -- Select Consulting Room --</option>
-                                    <option value="consultRoom"> Consulting Room 1 Name</option>
-                                    <option value="consultRoom"> Consulting Room 2 Name</option>
-                                    <option value="consultRoom"> Consulting Room 3 Name</option>
-                                    <option value="consultRoom"> Consulting Room 4 Name</option>
-                                  </select>
+                                  <input type="text"  class="span11" name="weight" placeholder="Weight" required />
                                 </div>
-                                   <div class="controls"></div>
+                                  <div class="controls"></div>
                               </div>
 
                               <div class="form-actions">

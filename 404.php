@@ -7,22 +7,34 @@
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
+<link rel="stylesheet" href="css/colorpicker.css" />
+<link rel="stylesheet" href="css/datepicker.css" />
+<link rel="stylesheet" href="css/uniform.css" />
+<link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php include 'layout/404head.php'; ?>
+
 <div id="search">
+<!--
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
+-->
 </div>
 <!--close-top-Header-menu-->
 
 <div id="sidebar">
     <ul>
+<!--
     <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li> <a href="opd-index.php"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
+    <li> <a href="opd-patient.php"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
+    <li><a href="opd-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+-->
     </ul>
 </div>
 
@@ -31,47 +43,20 @@
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="" class="tip-bottom"><i class="icon-piechart"></i> STATISTICS</a>
+<!--        <a href="logout.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>-->
     </div>
   </div>
   <div class="container">
 
-   	<div class="quick-actions_homepage">
-    <ul class="quick-actions">
-          <li> <a href="centerconsultation-index.php"> <i class="icon-cabinet"></i> Consultation</a></li>
-          <li> <a href="centeruser-index"> <i class="icon-people"></i> Staff </a> </li>
-          <li> <a href="centerward-index"> <i class="icon-graph"></i> Ward </a> </li>
-          <li> <a href="#"> <i class="icon-home"></i> Pharmacy</a> </li>
-          <li> <a href="centerlab-index"> <i class="icon-search"></i> Laboratory </a> </li>
-        </ul>
-   </div>
-
-        <div class="row-fluid">
-      <div class="span6">
-        <div class="widget-box">
-          <div class="widget-title"> <span class="icon"> <i class="icon-signal"></i> </span>
-            <h5>Line chart</h5>
-          </div>
-          <div class="widget-content">
-            <div class="chart"></div>
+      <div class="row-fluid" style="margin-top:150px;">
+          <div class="span12" id="404div">
+            <h1 class="text-info text-center" style="font-size: 980%;"> 404</h1>
+            <h1 class="text-info text-center" style="font-size: 980%;">
+              <small class="text-info">Page Not Found, Return  <a href="logout.php"><i class="fa fa-home"></i> Home</a></small>
+            </h1>
           </div>
         </div>
-      </div>
-      <div class="span6">
-        <div class="widget-box">
-          <div class="widget-title"> <span class="icon"> <i class="icon-signal"></i> </span>
-            <h5>Pie chart</h5>
-          </div>
-          <div class="widget-content">
-            <div class="pie"></div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-<!--</div>-->
-<!--</div>-->
 </div>
 <div class="row-fluid">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
@@ -80,13 +65,24 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.flot.min.js"></script>
-<script src="js/jquery.flot.pie.min.js"></script>
 <script src="js/jquery.flot.resize.min.js"></script>
-<script src="js/maruti.js"></script>
-<script src="js/maruti.charts.js"></script>
-<script src="js/maruti.dashboard.js"></script>
 <script src="js/jquery.peity.min.js"></script>
+<script src="js/fullcalendar.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/jquery.uniform.js"></script>
+<script src="js/select2.min.js"></script>
+<script src="js/maruti.js"></script>
+<script src="js/maruti.tables.js"></script>
+<script src="js/maruti.dashboard.js"></script>
+<script src="js/maruti.chat.js"></script>
+<script src="js/maruti.form_common.js"></script>
+<!--<script src="js/maruti.js"></script> -->
+
 
 
 <script type="text/javascript">
@@ -102,7 +98,7 @@
               resetMenu();
           }
           // else, send page to designated URL
-          else {
+        else {
             document.location.href = newURL;
           }
       }
