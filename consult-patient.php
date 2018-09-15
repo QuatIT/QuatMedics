@@ -24,7 +24,21 @@
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+include 'layout/head.php';
+
+    $conid = $_GET['conid'];
+
+    $consultdet = select("SELECT * from consultation WHERE consultID='$conid'");
+    foreach($consultdet as $consultrow){
+           $patientID = $consultrow['patientID'];
+        $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID'");
+        foreach($fetchpatient as $ptndetails){
+            $name = $ptndetails['firstName']." ".$ptndetails['otherName']." ".$ptndetails['lastName'];
+        }
+    }
+
+?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -70,43 +84,49 @@
                                       <div class="control-group">
                                         <label class="control-label">Patient ID :</label>
                                         <div class="controls">
-                                          <input type="text" class="span12" name="patientID" value="Patient ID" readonly/>
+                                          <input type="text" class="span12" name="patientID" value="<?php echo $patientID;?>" readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">
                                         <label class="control-label">Patient Name :</label>
                                         <div class="controls">
-                                          <input type="text" class="span12" name="patientName" value="Patient Name" required/>
+                                          <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">
                                         <label class="control-label">Body Temperature :</label>
                                         <div class="controls">
-                                          <input type="text" class="span12" name="bloodTemp" value="Blood Temperature" required/>
+                                          <input type="text" class="span12" name="bodyTemp" value="<?php echo $consultrow['bodyTemperature'];?>" readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">
                                         <label class="control-label">Pulse Rate :</label>
                                         <div class="controls">
-                                          <input type="text" class="span12" name="bloodPressure" value="Pulse Rate" required/>
+                                          <input type="text" class="span12" name="bloodPressure" value="<?php echo $consultrow['pulseRate'];?>" readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">
                                         <label class="control-label">Respiration Rate :</label>
                                         <div class="controls">
-                                          <input type="text" class="span12" name="respirationRate" value="Respiration Rate" required/>
+                                          <input type="text" class="span12" name="respirationRate" value="<?php echo $consultrow['respirationRate'];?>" readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">
                                         <label class="control-label">Blood Pressure :</label>
                                         <div class="controls">
-                                          <input type="text" class="span12" name="bloodPressure" value="Blood Pressure" required/>
+                                          <input type="text" class="span12" name="bloodPressure" value="<?php echo $consultrow['bloodPressure'];?>" readonly/>
+                                        </div>
+                                      </div>
+                                      <div class="control-group">
+                                        <label class="control-label">Weight :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span12" name="weight" value="<?php echo $consultrow['weight'];?>" readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">
                                         <label class="control-label">Other Health Vitals :</label>
                                         <div class="controls">
-                                            <textarea class="span12" name="healthVitals"></textarea>
+                                            <textarea class="span12" name="healthVitals" readonly><?php echo $consultrow['otherHealth'];?></textarea>
                                         </div>
                                       </div>
                                   </div>
