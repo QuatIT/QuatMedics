@@ -22,7 +22,38 @@
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+
+    //generate $PatientID
+    $PatientIDs = Patient::find_num_Patient() + 1;
+
+    if(isset($_POST['btnSave'])){
+
+      $centerID = $_SESSION['centerID'];
+      $patientId = substr(filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING), 0, 5)."-".sprintf('%06s',$PatientIDs);
+      $firstName = filter_input(INPUT_POST, "firstName", FILTER_SANITIZE_STRING);
+      $lastName = filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING);
+      $otherName = filter_input(INPUT_POST, "otherName", FILTER_SANITIZE_STRING);
+      $dob = filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING);
+      $gender = filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING);
+      $bloodGroup = filter_input(INPUT_POST, "bloodGroup", FILTER_SANITIZE_STRING);
+      $homeAddress = filter_input(INPUT_POST, "homeAddress", FILTER_SANITIZE_STRING);
+      $phoneNumber = filter_input(INPUT_POST, "mobileNumber", FILTER_SANITIZE_STRING);
+
+      $guardianName = filter_input(INPUT_POST, "guardianName", FILTER_SANITIZE_STRING);
+      $guardianGender = filter_input(INPUT_POST, "guardianGender", FILTER_SANITIZE_STRING);
+      $guardianPhone = filter_input(INPUT_POST, "guardianPhone", FILTER_SANITIZE_STRING);
+      $guardianRelation = filter_input(INPUT_POST, "guardianRelation", FILTER_SANITIZE_STRING);
+      $guardianAddress = filter_input(INPUT_POST, "guardianAddress", FILTER_SANITIZE_STRING);
+
+        $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress);
+
+    }
+
+
+    ?>
+
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -121,8 +152,10 @@
                       </div>
                     </div>
                 </div>
+
+
                 <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
+                    <form action="" method="post" class="form-horizontal">
                     <div class="span6">
                           <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                             <h5>Personal-info</h5>
@@ -131,7 +164,7 @@
                               <div class="control-group">
                                 <label class="control-label">Patient ID :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" value="HSP01-PT002" name="patientId" required readonly />
+                                  <input type="text" class="span11" value="<?php echo $PatientIDs; ?>" name="patientId" required readonly />
                                 </div>
                               </div>
                               <div class="control-group">
@@ -218,43 +251,37 @@
                               </div>
                           </div>
                       </div>
-                    </form>
+
 
                 </div>
+
                 <div id="tab3" class="tab-pane">
-                     <form action="#" method="post" class="form-horizontal">
                     <div class="span6">
                           <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                             <h5>Guardian-info</h5>
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Guardian ID :</label>
+                                <label class="control-label">Guardian Name :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Guardian Name" name="guardianID" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Last Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Last Name" name="glastName" required />
+                                  <input type="text" class="span11" placeholder="Guardian Name" name="guardianName" required />
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Gender:</label>
                                 <div class="controls">
                                   <label>
-                                    <input type="radio" name="ggender" value="Male" /> Male
+                                    <input type="radio" name="guardianGender" value="Male" /> Male
                                     </label>
                                   <label>
-                                    <input type="radio" name="ggender" value="Female" /> Female
+                                    <input type="radio" name="guardianGender" value="Female" /> Female
                                     </label>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Mobile Number :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Active Mobile Number" name="gMobilelPhone" />
+                                  <input type="text" class="span11" placeholder="Active Mobile Number" name="guardianPhone" />
                                 </div>
                               </div>
                           </div>
@@ -263,23 +290,11 @@
                           <div class="widget-title">
                           </div>
                           <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">First Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="First name" name="gfirstName" />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Other Name(s) :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Other names" name="gotherName" />
-                                </div>
-                              </div>
 
                               <div class="control-group">
                                 <label class="control-label">Relationship</label>
                                 <div class="controls">
-                                  <input type="text"  class="span11" name="relationship" placeholder="Relationship with Guardian" required />
+                                  <input type="text"  class="span11" name="guardianRelation" placeholder="Relationship with Guardian" required />
                                 </div>
                                 <div class="controls">
                                 </div>
@@ -287,108 +302,22 @@
                               <div class="control-group">
                                 <label class="control-label">Home Address :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Home Address" name="homeAddress" />
+                                  <input type="text" class="span11" placeholder="Home Address" name="guardianAddress" />
                                 </div>
                               </div>
+
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                  <a data-toggle="tab" href="#tab4" class="btn btn-primary btn-block" > Next Step >></a>
+                                <button type="submit" class="btn btn-primary btn-block span10" name="btnSave">Save Patient</button>
                               </div>
                           </div>
                       </div>
-                    </form>
 
-                </div>
-                <div id="tab4" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
-                    <div class="span6">
-                          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Admission-info</h5>
-                          </div>
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Admit Date: </label>
-                                <div class="controls">
-                                  <input type="date" class="span11" name="adminDate" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Patient Station :</label>
-                                <div class="controls">
-                                  <select name="patientStations" >
-                                    <option value="default"> -- Select Station --</option>
-                                    <option value="Station Name"> Station Name</option>
-                                    <option value="Station Name"> Station Name</option>
-                                    <option value="Station Name"> Station Name</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Assign Doctor :</label>
-                                <div class="controls">
-                                  <select name="assignDoctors" >
-                                    <option value="default"> -- Select Doctor --</option>
-                                    <option value="Station Name"> Doctor Name</option>
-                                    <option value="Station Name"> Doctor Name</option>
-                                    <option value="Station Name"> Doctor Name</option>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="control-group">
-                                <label class="control-label">Symptoms :</label>
-                                <div class="controls">
-                                    <textarea class="span11" name="symptoms"></textarea>
-                                </div>
-                              </div>
-                      </div>
-                        </div>
-                    <div class="span6">
-                          <div class="widget-title">
-                          </div>
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Admit Time :</label>
-                                <div class="controls">
-                                  <input type="time" class="span11" placeholder="admit Time" name="admitTime" />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Mode Of Paymente :</label>
-                                <div class="controls">
-                                    <select name="modeOfPayment" >
-                                    <option value="default"> -- Select Mode Of Paymeny --</option>
-                                    <option value="Payment Method Name"> Payment Method Name</option>
-                                    <option value="Payment Method Name"> Payment Method Name</option>
-                                    <option value="Payment Method Name"> Payment Method Name</option>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="control-group">
-                                <label class="control-label">insurance Name</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" placeholder="Insurance Name" name="insuranceName" />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Amount</label>
-                                <div class="controls">
-                                  <input type="number"  class="span11" name="amount" required />
-                                </div>
-                                <div class="controls">
-                                </div>
-                              </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Patient</button>
-                              </div>
-                          </div>
-                        </div>
-                    </form>
+                </form>
 
                 </div>
             </div>
+
         </div>
       </div>
   </div>
