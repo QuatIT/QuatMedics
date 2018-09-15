@@ -1,3 +1,12 @@
+<?php
+require "assets/core/connection.php";
+
+ // $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
+ //    $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -124,21 +133,16 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td>1</td>
-                          <td> Zentel</td>
-                          <td> 1 x 3</td>
+                          <?php
+                            $pharm_pre=select("SELECT * FROM prescriptions");
+                            foreach($pharm_pre as $pharm_pres){}
+                          ?>
+                          <td><?php echo $pharm_pres['prescribeID']?></td>
+                          <td> <?php echo $pharm_pres['prescription']?></td>
+                          <td> <?php echo $pharm_pres['prescribeStatus']?></td>
                           <td style="text-align: center;">
                               <label><input type="radio" name="medstat1" value="YES"> <i class="fa fa-check-circle fa-lg text-success"></i></label>
                               <label><input type="radio" name="medstat1" value="NO"> <i class="fa fa-times-circle fa-lg text-danger"></i></label>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Paracetamol</td>
-                          <td> 2 x 3</td>
-                          <td style="text-align: center;">
-                              <label><input type="radio" name="medstat2" value="YES"> <i class="fa fa-check-circle fa-lg text-success"></i></label>
-                              <label><input type="radio" name="medstat2" value="NO"> <i class="fa fa-times-circle fa-lg text-danger"></i></label>
                           </td>
                         </tr>
                       </tbody>

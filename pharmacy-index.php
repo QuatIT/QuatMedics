@@ -1,3 +1,10 @@
+<?php
+require "assets/core/connection.php";
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,33 +72,14 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
-                          <td style="text-align: center;">
-                               <a href="pharmacy-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
-                          <td style="text-align: center;">
-                               <a href="pharmacy-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
-                          <td style="text-align: center;">
-                               <a href="pharmacy-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
+                          <?php
+                          $get_pharm= select("SELECT * FROM patient");
+                            foreach($get_pharm as $get_pharms){
+
+                              }?>
+                          <td><?php echo $get_pharms['patientID'];?></td>
+                          <td><?php echo $get_pharms['firstName']." ".$get_pharms['otherName']." ".$get_pharms['lastName'];?></td>
+                          <td>--------</td>
                           <td style="text-align: center;">
                                <a href="pharmacy-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
                           </td>

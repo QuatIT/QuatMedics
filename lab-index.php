@@ -1,3 +1,11 @@
+<?php
+require "assets/core/connection.php";
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,30 +74,23 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
-                          <td>MALARIA TEST</td>
+                          <?php 
+                          $fet_pat=select("SELECT * FROM patient");
+                          foreach($fet_pat as $fet_pats){}?>
+                          <td><?php echo $fet_pats['patientID'];?></td>
+                          <td><?php echo $fet_pats['firstName']." ".$fet_pats['otherName']." ".$fet_pats['lastName'];?></td>
+                          <td></td>
+                          <td></td>
                           <td style="text-align: center;">
-                               <a href="lab-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
+
+
+
+                                <a href="lab-patient.php?patientID=<?php echo $fet_pats['patientID']; ?>"><span class="btn btn-primary fa fa-eye"></span></a> 
+                                
                           </td>
                         </tr>
-                        <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
-                          <td>HIV TEST</td>
-                          <td style="text-align: center;">
-                               <a href="lab-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
-                          <td> CT SCAN</td>
-                          <td style="text-align: center;">
-                               <a href="lab-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
+                     
+                         
                           </td>
                         </tr>
                       </tbody>

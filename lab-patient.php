@@ -1,3 +1,34 @@
+<?php
+require "assets/core/connection.php";
+
+
+
+$patientID=$_REQUEST['patientID'];
+
+
+if(isset($_POST['lab_result'])){
+  $patientID=trim(htmlspecialchars($_POST['patientID']));
+
+   $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
+ 
+
+$l_result = insert("INSERT INTO labresults(patientID) VALUES('".$patientID."')");
+
+
+
+}
+
+
+//fetching uder status 1=uploaded  0=pending
+
+
+
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +91,7 @@
                                       <div class="control-group">
                                         <label class="control-label">Patient ID :</label>
                                         <div class="controls">
-                                          <input type="text" class="span11" name="patientID" value="Patient ID" readonly/>
+                                          <input type="text" class="span11" name="patientID" id="patientID" value="<?php echo $patientID;  ?>" readonly/>
                                         </div>
                                       </div>
                                     <div class="control-group">
@@ -76,7 +107,7 @@
                                       <div class="control-group">
                                         <label class="control-label">Patient Name :</label>
                                         <div class="controls">
-                                          <input type="text" class="span11" name="patientName" value="Patient Name" required/>
+                                          <input type="text" class="span11" name="patientName"value=""readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">
@@ -88,7 +119,7 @@
                                       </div>
                                       <div class="form-actions">
                                           <i class="span1"></i>
-                                        <button type="submit" class="btn btn-primary btn-block span10">Send Lab Results</button>
+                                        <button type="submit" class="btn btn-primary btn-block span10" name="lab_result" >Send Lab Results</button>
                                       </div>
                                   </div>
                                 </div>

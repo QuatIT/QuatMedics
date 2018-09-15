@@ -165,8 +165,8 @@ if($registerCenterAdmin){
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
-                              <tr id="load_med_center"></tr>
+                          <tbody id="load_med_center">
+                              <!-- <tr ></tr> -->
                           </tbody>
                         </table>
 
@@ -180,7 +180,10 @@ if($registerCenterAdmin){
                               <div class="control-group">
                                 <label class="control-label">Center ID :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="centerID" value="<?php echo $centerIDs; ?>" required readonly/>
+                              
+                                
+                                  <input type="text" class="span11" name="centerID" value="<?php$centerID = select("SELECT * FROM medicalcenter"); echo $centerIDs['centerID']; ?>" required readonly/>
+                              
                                 </div>
                               </div>
                                <div class="control-group">
