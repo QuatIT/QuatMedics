@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
--- https://www.phpmyadmin.net/
+-- version 4.5.0.2
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 17, 2018 at 09:53 PM
--- Server version: 10.1.28-MariaDB
--- PHP Version: 7.1.11
+-- Generation Time: Sep 14, 2018 at 08:05 PM
+-- Server version: 10.0.17-MariaDB
+-- PHP Version: 5.5.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,6 +15,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
+
+create database `quatmedics`;
+use `quatmedics`;
 
 --
 -- Database: `quatmedics`
@@ -43,7 +44,6 @@ CREATE TABLE `bedlist` (
 CREATE TABLE `centeruser` (
   `userID` varchar(255) NOT NULL,
   `centerID` varchar(255) NOT NULL,
-  `staffID` varchar(255) NOT NULL,
   `userName` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `accessLevel` varchar(10) NOT NULL,
@@ -55,57 +55,8 @@ CREATE TABLE `centeruser` (
 -- Dumping data for table `centeruser`
 --
 
-INSERT INTO `centeruser` (`userID`, `centerID`, `staffID`, `userName`, `password`, `accessLevel`, `dateRegistered`, `doe`) VALUES
-('dsdf-000001', 'ABCD -000001', 'staff-0001', 'asd', '1234', 'CONSULTATI', '2018-09-14', '2018-09-16 11:16:45');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `consultation`
---
-
-CREATE TABLE `consultation` (
-  `consultID` varchar(255) NOT NULL,
-  `patientID` varchar(255) NOT NULL,
-  `staffID` varchar(255) NOT NULL,
-  `bodyTemperature` varchar(255) NOT NULL,
-  `pulseRate` varchar(255) NOT NULL,
-  `respirationRate` varchar(255) NOT NULL,
-  `bloodPressure` varchar(255) NOT NULL,
-  `weight` varchar(255) NOT NULL,
-  `otherHealth` longtext,
-  `roomID` varchar(255) NOT NULL,
-  `status` varchar(30) NOT NULL,
-  `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `consultation`
---
-
-INSERT INTO `consultation` (`consultID`, `patientID`, `staffID`, `bodyTemperature`, `pulseRate`, `respirationRate`, `bloodPressure`, `weight`, `otherHealth`, `roomID`, `status`, `doe`) VALUES
-('consult-0001', 'PNT-0001', 'staff-0001', '50', '45', '45', '45', '90', NULL, '1', 'CONSULTED', '2018-09-17 18:08:51'),
-('consult-0002', 'PNT-0001', 'staff-0001', '52', '25', '25', '15', '90', NULL, '1', 'CONSULTED', '2018-09-16 13:46:52');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `consultingroom`
---
-
-CREATE TABLE `consultingroom` (
-  `roomID` varchar(255) NOT NULL,
-  `roomName` varchar(255) NOT NULL,
-  `dateRegistered` varchar(255) NOT NULL,
-  `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `consultingroom`
---
-
-INSERT INTO `consultingroom` (`roomID`, `roomName`, `dateRegistered`, `doe`) VALUES
-('1', 'Consulting Room 1', '2018-15-9', '2018-09-15 13:49:55');
+INSERT INTO `centeruser` (`userID`, `centerID`, `userName`, `password`, `accessLevel`, `dateRegistered`, `doe`) VALUES
+('dsdf-000001', 'ABCD -000001', 'asd', '1234', 'CONSULTATI', '2018-09-14', '2018-09-14 11:31:04');
 
 -- --------------------------------------------------------
 
@@ -157,17 +108,11 @@ CREATE TABLE `lablist` (
   `labID` varchar(255) NOT NULL,
   `labName` varchar(255) NOT NULL,
   `centerID` varchar(255) NOT NULL,
+  `labType` varchar(255) NOT NULL,
+    `consultingRoom` varchar(255) not null,
+    `status` varchar(255) not null,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `lablist`
---
-
-INSERT INTO `lablist` (`labID`, `labName`, `centerID`, `doe`) VALUES
-('lab001', 'Malaria Test', 'ABCD -000001', '2018-09-16 10:41:49'),
-('lab002', 'DNA Test', 'ABCD -000001', '2018-09-16 10:56:12'),
-('lab003', 'CT Scan', 'ABCD -000001', '2018-09-16 10:56:12');
 
 -- --------------------------------------------------------
 
@@ -176,26 +121,14 @@ INSERT INTO `lablist` (`labID`, `labName`, `centerID`, `doe`) VALUES
 --
 
 CREATE TABLE `labresults` (
-  `labResultID` int(255) NOT NULL,
+  `labResultID` varchar(255) NOT NULL,
   `labID` varchar(255) NOT NULL,
   `patientID` varchar(255) NOT NULL,
   `staffID` varchar(255) NOT NULL,
   `labResult` varchar(255) NOT NULL,
   `labDate` varchar(255) NOT NULL,
-  `consultingRoom` varchar(255) NOT NULL,
-  `status` varchar(255) NOT NULL,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `labresults`
---
-
-INSERT INTO `labresults` (`labResultID`, `labID`, `patientID`, `staffID`, `labResult`, `labDate`, `consultingRoom`, `status`, `doe`) VALUES
-(1, 'lab001', 'PNT-0001', 'staff-0001', '', '', '1', 'Requested', '2018-09-16 12:38:44'),
-(2, 'lab002', 'PNT-0001', 'staff-0001', '', '', '1', 'Requested', '2018-09-16 12:38:44'),
-(3, 'lab003', 'PNT-0001', 'staff-0001', '', '', '1', 'Requested', '2018-09-16 12:38:44'),
-(4, 'lab001', 'PNT-0001', 'staff-0001', '', '', '1', 'Requested', '2018-09-16 13:44:06');
 
 -- --------------------------------------------------------
 
@@ -242,21 +175,15 @@ CREATE TABLE `patient` (
   `bloodGroup` varchar(100) NOT NULL,
   `homeAddress` varchar(255) NOT NULL,
   `phoneNumber` varchar(20) NOT NULL,
-  `hometown` varchar(255) NOT NULL,
-  `guardianName` varchar(255) NOT NULL,
-  `guardianGender` varchar(255) NOT NULL,
-  `guardianPhone` varchar(255) NOT NULL,
-  `guardianRelation` varchar(255) NOT NULL,
+    `hometown` varchar(255) not null,
+    `guardianName` varchar(255) not null,
+    `guardianGender` varchar(255) not null,
+    `guardianPhone` varchar(255) not null,
+    `guardianRelation` varchar(255) not null,
+    `guardianAddress` varchar(255) not null,
   `dateRegistered` varchar(50) NOT NULL,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `patient`
---
-
-INSERT INTO `patient` (`centerID`, `patientID`, `firstName`, `otherName`, `lastName`, `dob`, `gender`, `bloodGroup`, `homeAddress`, `phoneNumber`, `hometown`, `guardianName`, `guardianGender`, `guardianPhone`, `guardianRelation`, `dateRegistered`, `doe`) VALUES
-('ABCD -000001', 'PNT-0001', 'Godwin', 'Goodman', 'Effah', '1995-05-0', 'Male', 'O-Positive', 'Accra', '0541524233', 'Obuasi', 'Mr Effah', 'Male', '0269807823', 'Father', '2018-15-09', '2018-09-15 13:58:50');
 
 -- --------------------------------------------------------
 
@@ -267,40 +194,9 @@ INSERT INTO `patient` (`centerID`, `patientID`, `firstName`, `otherName`, `lastN
 CREATE TABLE `pharmacy` (
   `pharmacyID` varchar(255) NOT NULL,
   `centerID` varchar(255) NOT NULL,
-  `pharmacyName` varchar(255) NOT NULL,
   `dateRegistered` varchar(50) NOT NULL,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `pharmacy`
---
-
-INSERT INTO `pharmacy` (`pharmacyID`, `centerID`, `pharmacyName`, `dateRegistered`, `doe`) VALUES
-('pharmacy-1', 'ABCD -000001', 'ABCD HOSPITAL PHARMACY', '2018-09-17', '2018-09-17 18:19:10');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `prescribedmeds`
---
-
-CREATE TABLE `prescribedmeds` (
-  `prescribeid` int(255) NOT NULL,
-  `prescribeCode` varchar(255) NOT NULL,
-  `medicine` varchar(255) NOT NULL,
-  `dosage` varchar(255) NOT NULL,
-  `prescribeStatus` varchar(255) NOT NULL,
-  `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `prescribedmeds`
---
-
-INSERT INTO `prescribedmeds` (`prescribeid`, `prescribeCode`, `medicine`, `dosage`, `prescribeStatus`, `doe`) VALUES
-(1, 'PRSCB-1', 'PARA', '2X1', 'Prescibed', '2018-09-17 19:48:13'),
-(2, 'PRSCB-2', 'Malaquine', '1x3', 'Prescibed', '2018-09-17 19:49:35');
 
 -- --------------------------------------------------------
 
@@ -309,25 +205,15 @@ INSERT INTO `prescribedmeds` (`prescribeid`, `prescribeCode`, `medicine`, `dosag
 --
 
 CREATE TABLE `prescriptions` (
-  `prescribeID` int(255) NOT NULL,
+  `prescribeID` varchar(255) NOT NULL,
   `patientID` varchar(255) NOT NULL,
-  `prescribeCode` varchar(255) NOT NULL,
   `staffID` varchar(255) NOT NULL,
   `pharmacyID` varchar(255) NOT NULL,
-  `symptoms` longtext NOT NULL,
-  `diagnose` longtext NOT NULL,
+  `prescription` varchar(255) NOT NULL,
   `prescribeStatus` varchar(255) NOT NULL,
   `datePrescribe` varchar(255) NOT NULL,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `prescriptions`
---
-
-INSERT INTO `prescriptions` (`prescribeID`, `patientID`, `prescribeCode`, `staffID`, `pharmacyID`, `symptoms`, `diagnose`, `prescribeStatus`, `datePrescribe`, `doe`) VALUES
-(1, 'PNT-0001', 'PRSCB-1', 'staff-0001', 'pharmacy-1', 'headache', 'has fever', 'Prescibed', '2018-09-17', '2018-09-17 19:48:13'),
-(2, 'PNT-0001', 'PRSCB-2', 'staff-0001', 'pharmacy-1', 'feverish, cold,', 'has malaria', 'Prescibed', '2018-09-17', '2018-09-17 19:49:35');
 
 -- --------------------------------------------------------
 
@@ -377,7 +263,7 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`staffID`, `staffType`, `departmentID`, `firstName`, `lastName`, `otherName`, `gender`, `staffCategory`, `dob`, `specialty`, `license`, `dateEmployed`, `dateRegistered`, `doe`) VALUES
-('staff-0001', '', 'CONSULTATION', 'asdas', 'dsdf', 'asdas', 'Male', 'Doctor', '2017-03-03', 'nkjh', '', '', '2018-09-14', '2018-09-15 14:45:02');
+('dsdf-000001', '', 'CONSULTATION', 'asdas', 'dsdf', 'asdas', 'Male', 'Doctor', '2017-03-03', 'nkjh', '', '', '2018-09-14', '2018-09-14 11:31:04');
 
 -- --------------------------------------------------------
 
@@ -392,20 +278,8 @@ CREATE TABLE `wardassigns` (
   `staffID` varchar(255) NOT NULL,
   `admitDate` varchar(255) NOT NULL,
   `dischargeDate` varchar(255) NOT NULL,
-  `admitDetails` longtext NOT NULL,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `wardassigns`
---
-
-INSERT INTO `wardassigns` (`assignID`, `wardID`, `patientID`, `staffID`, `admitDate`, `dischargeDate`, `admitDetails`, `doe`) VALUES
-('assign-0001', 'ward-002', 'PNT-0001', 'staff-0001', '2018-09-17', '2018-09-27', '', '2018-09-17 17:56:53'),
-('assign-2', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-19', '2018-09-27', '', '2018-09-17 18:01:44'),
-('assign-3', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-28', '2018-09-26', '', '2018-09-17 18:04:21'),
-('assign-4', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-26', '2018-09-25', 'Treatment And Observation', '2018-09-17 18:05:43'),
-('assign-5', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-26', '2018-09-25', 'Treatment And Observation', '2018-09-17 18:08:51');
 
 -- --------------------------------------------------------
 
@@ -423,14 +297,6 @@ CREATE TABLE `wardlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `wardlist`
---
-
-INSERT INTO `wardlist` (`wardID`, `centerID`, `wardName`, `numOfBeds`, `dateRegistered`, `doe`) VALUES
-('ward-001', 'ABCD -000001', 'Maternity Ward', '20', '2018-09-16', '2018-09-16 12:40:20'),
-('ward-002', 'ABCD -000001', 'Emergency Ward', '10', '2018-09-16', '2018-09-16 12:41:10');
-
---
 -- Indexes for dumped tables
 --
 
@@ -445,22 +311,7 @@ ALTER TABLE `bedlist`
 --
 ALTER TABLE `centeruser`
   ADD PRIMARY KEY (`userID`),
-  ADD UNIQUE KEY `staffID_2` (`staffID`),
-  ADD KEY `centerID` (`centerID`),
-  ADD KEY `staffID` (`staffID`);
-
---
--- Indexes for table `consultation`
---
-ALTER TABLE `consultation`
-  ADD PRIMARY KEY (`consultID`),
-  ADD KEY `patientID` (`patientID`);
-
---
--- Indexes for table `consultingroom`
---
-ALTER TABLE `consultingroom`
-  ADD PRIMARY KEY (`roomID`);
+  ADD KEY `centerID` (`centerID`);
 
 --
 -- Indexes for table `department`
@@ -510,12 +361,6 @@ ALTER TABLE `pharmacy`
   ADD KEY `centerID` (`centerID`);
 
 --
--- Indexes for table `prescribedmeds`
---
-ALTER TABLE `prescribedmeds`
-  ADD PRIMARY KEY (`prescribeid`);
-
---
 -- Indexes for table `prescriptions`
 --
 ALTER TABLE `prescriptions`
@@ -550,28 +395,6 @@ ALTER TABLE `wardlist`
   ADD KEY `centerID` (`centerID`);
 
 --
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `labresults`
---
-ALTER TABLE `labresults`
-  MODIFY `labResultID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `prescribedmeds`
---
-ALTER TABLE `prescribedmeds`
-  MODIFY `prescribeid` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `prescriptions`
---
-ALTER TABLE `prescriptions`
-  MODIFY `prescribeID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- Constraints for dumped tables
 --
 
@@ -586,12 +409,6 @@ ALTER TABLE `bedlist`
 --
 ALTER TABLE `centeruser`
   ADD CONSTRAINT `centeruser_ibfk_1` FOREIGN KEY (`centerID`) REFERENCES `medicalcenter` (`centerID`);
-
---
--- Constraints for table `consultation`
---
-ALTER TABLE `consultation`
-  ADD CONSTRAINT `consultation_ibfk_1` FOREIGN KEY (`patientID`) REFERENCES `patient` (`patientID`);
 
 --
 -- Constraints for table `department`
@@ -652,7 +469,40 @@ ALTER TABLE `wardassigns`
 --
 ALTER TABLE `wardlist`
   ADD CONSTRAINT `wardlist_ibfk_1` FOREIGN KEY (`centerID`) REFERENCES `medicalcenter` (`centerID`);
-COMMIT;
+  
+  
+create table`consultingRoom`(
+    `roomID` varchar(255) not null primary key,
+    `roomName` varchar(255) not null,
+    `dateRegistered` varchar(255) not null,
+    `doe` timestamp
+)engine = InnoDB;
+
+create table `consultation`(
+    `consultID` varchar(255) not null,
+    `patientID` varchar(255) not null,
+    `staffID` varchar(255) not null,
+    `bodyTemperature` varchar(255) not null,
+    `pulseRate` varchar(255) not null,
+    `respirationRate` varchar(255) not null,
+    `bloodPressure` varchar(255) not null,
+    `weight` varchar(255) not null,
+    `otherHealth` longtext null,
+    `roomID` varchar(255) not null,
+    `doe` timestamp,
+    index(patientID),
+    foreign key (patientID) REFERENCES patient(patientID)
+)engine = InnoDB;
+
+
+create table `prescribedMeds`(
+    `prescribeid` int(255) not null primary key auto_increment,
+    `prescribeCode` varchar(255) not null,
+    `medicine` varchar(255) not null,
+    `dosage` varchar(255) not null,
+    `doe` timestamp
+)engine = InnoDB;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -11,6 +11,7 @@ $load_consultation = select("SELECT * FROM consultation WHERE roomID='$roomID' O
 foreach($load_consultation as $consultRow){
     $patientID = $consultRow['patientID'];
     $staffID = $consultRow['staffID'];
+    $status = $consultRow['status'];
     $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID'");
     $fetchstaff = select("SELECT firstName,lastName,otherName from staff WHERE staffID='$staffID'");
 
@@ -28,8 +29,15 @@ foreach($load_consultation as $consultRow){
   <td><?php echo $patientID;?></td>
   <td><?php echo $name;?></td>
   <td><?php echo $staffname;?></td>
+  <td>
+      <?php if($status == "OPD"){?>
+      <span class="label label-warning">Awaiting</span>
+      <?php } if($status == "CONSULTED"){?>
+      <span class="label label-success">Consulted</span>
+      <?php }?>
+    </td>
   <td style="text-align: center;">
-       <a href="consult-patient.php?conid=<?php echo $consultRow['consultID'];?>"> <span class="btn btn-primary fa fa-eye"></span></a>
+       <a href="consult-patient.php?conid=<?php echo $consultRow['consultID'];?>&roomID=<?php echo $roomID;?>"> <span class="btn btn-primary fa fa-eye"></span></a>
   </td>
 </tr>
 
