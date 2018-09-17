@@ -45,7 +45,10 @@
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+    $roomID = 1;
+    ?>
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -103,7 +106,7 @@
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTATION LIST</h3>
+      <h3 class="quick-actions">CONSULTING ROOM <?php echo $roomID;?></h3>
       <div class="row-fluid">
           <div class="span8">
                 <div class="widget-box">
@@ -116,6 +119,7 @@
                           <th>Patient Number</th>
                           <th>Patient Name</th>
                           <th>Nurse Name</th>
+                          <th>Status</th>
                           <th>Action</th>
                         </tr>
                       </thead>
