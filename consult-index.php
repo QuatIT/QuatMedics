@@ -18,6 +18,29 @@
         .active{
             background-color: #209fbf;
         }
+
+
+#modal {
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99999;
+    height: 100%;
+    width: 100%;
+}
+
+.modalconent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    width: 80%;
+    padding: 20px;
+}
+
     </style>
 </head>
 <body>
@@ -38,7 +61,39 @@
     </ul>
 </div>
 
+<!--
+<?php //if(empty($_GET['s']) || empty($_GET['mid']) ){ ?>
 
+<div id="modal">
+    <div class="modalconent" style="width:300px;">
+         <h4 class="text-center"> Select Consulting Room</h4>
+            <hr/>
+            <form class="form-horizontal" action="" method="post">
+
+                <input type="number" name="roomNumber" class="span3" min="1" placeholder="Consulting Room Number" />
+
+                <select name="s_min">
+                    <option>sdfsdf</option>
+                    <option>sdfsdf</option>
+                    <option>sdfsdf</option>
+                    <option>sdfsdf</option>
+                    <option>sdfsdf</option>
+                    <option>sdfsdf</option>
+                    <option>sdfsdf</option>
+                    <?php //foreach($min_sql as $min_row){ ?>
+                    <option value="<?php //echo $min_row['group_id']; ?>"><?php// echo $min_row['group_name']; ?></option>
+                    <?php //} ?>
+                </select>
+
+                <hr/>
+                <input type="submit" class="btn btn-primary" value="Proceed" name="btnProceed">
+                <a href="logout" class="btn btn-dark pull-right">Close</a>
+            </form>
+
+    </div>
+</div>
+<?php //} ?>
+-->
 
 <div id="content">
   <div id="content-header">
@@ -64,39 +119,7 @@
                           <th>Action</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
-                          <td style="text-align: center;">
-                               <a href="consult-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
-                          <td style="text-align: center;">
-                               <a href="consult-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
-                          <td style="text-align: center;">
-                               <a href="consult-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>PNT-HSP001</td>
-                          <td>Kofi Mensah Addo</td>
-                          <td>Mrs Kanfah</td>
-                          <td style="text-align: center;">
-                               <a href="consult-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                          </td>
-                        </tr>
+                      <tbody id="consultindex">
                       </tbody>
                     </table>
                   </div>
@@ -174,8 +197,28 @@
 <script src="js/maruti.form_common.js"></script>
 
 <!--<script src="js/maruti.js"></script> -->
+<script>
+window.onload = function () {
+    document.getElementById('button').onclick = function () {
+        document.getElementById('modal').style.display = "none"
+    };
+};
+</script>
 
 
+<script>
+function dis(){
+    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","loads/consultindex-load.php",false);
+    xmlhttp.send(null);
+    document.getElementById("consultindex").innerHTML=xmlhttp.responseText;
+}
+    dis();
+
+    setInterval(function(){
+        dis();
+    },1000);
+</script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

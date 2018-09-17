@@ -33,25 +33,25 @@
 <div id="sidebar">
     <ul>
     <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"><a href="centerdepartment-index.php"><i class="icon icon-tasks"></i> <span>Department Management</span></a> </li>
+    <li class="active"><a href="centerconsultation-index.php"><i class="icon icon-tasks"></i> <span>Consultation Management</span></a> </li>
     </ul>
 </div>
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Department Management" class="tip-bottom"><i class="icon-tasks"></i> DEPARTMENT</a>
+        <a title="Department Management" class="tip-bottom"><i class="icon-tasks"></i> CONSULTATION</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">DEPARTMENT MANAGEMENT</h3>
+      <h3 class="quick-actions">CONSULTATION MANAGEMENT</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">MedCenter Department</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Department</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Consultation Rooms</a></li>
+                    <li><a data-toggle="tab" href="#tab2">Add New Consulting Room</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -59,21 +59,21 @@
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Department</h5>
+                        <h5>List Of Consulting Rooms</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Department ID</th>
-                              <th>Department Name</th>
+                              <th>Consulting Room ID</th>
+                              <th>Consulting Room Name</th>
                               <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
                               <td>MDCDEP001</td>
-                              <td>Department Name</td>
+                              <td>Consulting Room Name</td>
                               <td style="text-align: center;">
                                    <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
                               </td>
@@ -88,9 +88,9 @@
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Department ID :</label>
+                                <label class="control-label">Consulting Room ID :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="DepartmentID" value="DepartmentID" required readonly/>
+                                  <input type="text" class="span11" name="consultID" value="Consulting Room ID" required readonly/>
                                 </div>
                               </div>
                           </div>
@@ -98,14 +98,14 @@
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Department Name :</label>
+                                <label class="control-label">Consultation Room Name :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="departmentName" placeholder="Department Name" required/>
+                                  <input type="text" class="span11" name="departmentName" placeholder="Consultation Room Name" required/>
                                 </div>
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Department</button>
+                                <button type="submit" class="btn btn-primary btn-block span10">Save Consulting Room</button>
                               </div>
                           </div>
                       </div>

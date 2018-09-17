@@ -11,6 +11,7 @@ $load_MedCenter = select("SELECT * FROM medicalCenter ORDER BY centerID ASC");
 foreach($load_MedCenter as $medCenterRow){
 ?>
 
+
 <tr>
   <td><?php echo $medCenterRow['centerID']; ?></td>
   <td> <?php echo $medCenterRow['centerName']; ?></td>

@@ -19,7 +19,7 @@ $aboutCenter = $_POST['aboutCenter'];
 $numOfBranches = $_POST['numOfBranches'];
 $userName = $_POST['userName'];
 $password = $_POST['password'];
-$accessLevel = 'center_admin';
+$accessLevel = $_POST['center_admin';
 
 
 if(count(User::find_by_centerID($centerID)) >= 1){
@@ -166,7 +166,11 @@ if($registerCenterAdmin){
                             </tr>
                           </thead>
                           <tbody id="load_med_center">
+<<<<<<< HEAD
                               <!-- <tr ></tr> -->
+=======
+<!--                              <tr></tr>-->
+>>>>>>> e01b15aa418db283cc0b65b49028195416eb6a5e
                           </tbody>
                         </table>
 
