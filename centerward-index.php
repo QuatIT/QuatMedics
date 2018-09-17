@@ -21,7 +21,34 @@
 </style>
 </head>
 <body>
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+
+
+    //generate $PatientID
+    $wardIDs = Ward::find_num_ward() + 1;
+
+    $success = '';
+    $error = '';
+
+    if(isset($_POST['btnSave'])){
+
+      $centerID = $_SESSION['centerID'];
+      $WardID = "WD-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$wardIDs);
+      $wardName = filter_input(INPUT_POST, "WardName", FILTER_SANITIZE_STRING);
+      $numOfBeds = filter_input(INPUT_POST, "numOfBeds", FILTER_SANITIZE_STRING);
+
+        $wardRoom = Ward::createWard($WardID,$centerID,$wardName,$numOfBeds);
+
+        if($wardRoom){
+            $success = "WARD CREATED";
+        }else{
+            $error = "WARD NOT CREATED";
+        }
+
+    }
+
+    ?>
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -44,7 +71,19 @@
   </div>
   <div class="container">
       <h3 class="quick-actions">WARD MANAGEMENT</h3>
-
+  <?php
+                      if($success){
+                      ?>
+                      <div class="alert alert-success">
+                  <strong>Success!</strong> <?php echo $success; ?>
+                </div>
+                      <?php } if($error){
+                          ?>
+                      <div class="alert alert-danger">
+                  <strong>Error!</strong> <?php echo $error; ?>
+                </div>
+                      <?php
+                      } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -69,27 +108,19 @@
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td>MDCDEP001</td>
-                              <td>Ward Name</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                          </tbody>
+                          <tbody id="ward_room"></tbody>
                         </table>
                       </div>
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
+                    <form action="" method="post" class="form-horizontal">
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
                                 <label class="control-label">Ward ID :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="WardID" value="WardID" required readonly/>
+                                  <input type="text" class="span11" name="WardID" value="<?php echo $wardIDs; ?>" required readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
@@ -111,7 +142,7 @@
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Ward</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Ward</button>
                               </div>
                           </div>
                       </div>
@@ -146,6 +177,23 @@
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
+
+
+    <script>
+  function ward_Room(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/wardroom-load.php",false);
+        xmlhttp.send(null);
+        document.getElementById("ward_room").innerHTML=xmlhttp.responseText;
+    }
+        ward_Room();
+
+        setInterval(function(){
+            ward_Room();
+        },3000);
+    </script>
+
+
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

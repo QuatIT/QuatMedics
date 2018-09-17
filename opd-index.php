@@ -54,7 +54,7 @@
 
         if($createPatient){
              $success = "<script>document.write('PATIENT DETAIL ADDED SUCCESSFULLY');
-                                    window.location.href='opd-patient?tab=active' </script>";
+                                    window.location.href='opd-patient?tab=vitals&pid={$patientId}' </script>";
         }
     }
 
@@ -72,7 +72,7 @@
     <ul>
     <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="active"> <a href="opd-index.php"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
-    <li> <a href="opd-patient.php"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
+    <li> <a href="opd-patient.php?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
     <li><a href="opd-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
     </ul>
 </div>
@@ -127,7 +127,9 @@
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody id="newpatient">
+
+<!--
                             <tr>
                               <td class="span2">
                                 <a class="thumbnail lightbox_trigger" href="images/gallery/imgbox2.jpg">
@@ -141,32 +143,8 @@
                                    <a href="opd-patientinfo.php"> <span class="btn btn-primary fa fa-eye"></span></a>
                               </td>
                             </tr>
-                            <tr>
-                              <td class="span2">
-                                <a class="thumbnail lightbox_trigger" href="images/gallery/imgbox5.jpg">
-                                    <img src="images/gallery/imgbox5.jpg" alt="" >
-                                </a>
-                              </td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;">
-                                   <a href="opd-patientinfo.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="span2">
-                                <a class="thumbnail lightbox_trigger" href="images/gallery/imgbox1.jpg">
-                                    <img src="images/gallery/imgbox1.jpg" alt="" >
-                                </a>
-                              </td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;">
-                                   <a href="opd-patientinfo.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
+-->
+
                           </tbody>
                         </table>
                       </div>
@@ -366,8 +344,19 @@
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
+<script>
+  function newpatient(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/newpatient-load.php",false);
+        xmlhttp.send(null);
+        document.getElementById("newpatient").innerHTML=xmlhttp.responseText;
+    }
+        newpatient();
 
-
+        setInterval(function(){
+            newpatient();
+        },3000);
+    </script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

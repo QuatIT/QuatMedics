@@ -473,9 +473,12 @@ ALTER TABLE `wardlist`
   
 create table`consultingRoom`(
     `roomID` varchar(255) not null primary key,
+    `centerID` varchar(255) not null primary key,
     `roomName` varchar(255) not null,
     `dateRegistered` varchar(255) not null,
-    `doe` timestamp
+    `doe` timestamp,
+     index(centerID),
+    foreign key (centerID) REFERENCES patient(centerID)
 )engine = InnoDB;
 
 create table `consultation`(
