@@ -1,7 +1,6 @@
 <?php
 require "assets/core/connection.php";
 
-
 ?>
 
 

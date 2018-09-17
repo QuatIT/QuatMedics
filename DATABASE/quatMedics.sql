@@ -172,6 +172,7 @@ create table `labList`(
     foreign key (centerID) REFERENCES medicalCenter(centerID)
 )engine = InnoDB;
 
+
 create table `labResults`(
     `labResultID` varchar(255) not null primary key,
     `labID` varchar(255) not null,

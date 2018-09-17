@@ -6,7 +6,6 @@ $load_consultation = select("SELECT * FROM consultation WHERE roomID='$roomID' O
 
 ?>
 
-
 <?php
 foreach($load_consultation as $consultRow){
     $patientID = $consultRow['patientID'];

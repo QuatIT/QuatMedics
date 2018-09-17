@@ -39,7 +39,6 @@
 </div>
 
 
-
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">

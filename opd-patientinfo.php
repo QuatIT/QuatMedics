@@ -17,6 +17,7 @@
 </head>
 <body>
 
+
 <?php include 'layout/head.php'; ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>

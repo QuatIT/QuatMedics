@@ -49,7 +49,6 @@
   }
 
 
-
   class Consultation{
 
       public function consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID){

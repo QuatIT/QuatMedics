@@ -24,7 +24,6 @@ foreach($load_patient_name as $patient_name){}
                               </div>
 
 
-
 <?php  }else{ ?>
      <div class="control-group">
                                 <label class="control-label">Full Name :</label>

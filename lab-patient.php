@@ -19,6 +19,7 @@ $l_result = insert("INSERT INTO labresults(patientID) VALUES('".$patientID."')")
 }
 
 
+
 //fetching uder status 1=uploaded  0=pending
 
 

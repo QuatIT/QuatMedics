@@ -1,4 +1,3 @@
-
 <?php
 include '../assets/core/connection.php';
 session_start();

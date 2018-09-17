@@ -21,6 +21,7 @@
 </style>
 </head>
 <body>
+
 <?php include 'layout/head.php'; ?>
 
 <div id="search">

@@ -28,6 +28,7 @@
   <input type="text" placeholder="Search here..." disabled/>
   <button type="submit" class="tip-left" title="Search" disabled><i class="icon-search icon-white"></i></button>
 </div>
+
 <!--close-top-Header-menu-->
 
 <div id="sidebar">

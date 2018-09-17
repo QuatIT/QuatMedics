@@ -4,6 +4,7 @@ require_once '../assets/core/connection.php';
 $success = '';
 $error = '';
 
+
 //generate centerID
 $centerIDs = User::find_num_centerID() + 1;
 

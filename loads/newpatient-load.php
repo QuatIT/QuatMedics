@@ -12,6 +12,7 @@ foreach($load_newpatient as $newpatient){
 
 ?>
 
+
 <tr>
   <td class="span2">
       <i class="fa fa-user"></i>

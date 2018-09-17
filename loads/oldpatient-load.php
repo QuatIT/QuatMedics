@@ -24,4 +24,3 @@ foreach($load_patient as $patient){
 
 
 <?php  } ?>
-
