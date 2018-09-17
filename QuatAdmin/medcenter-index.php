@@ -19,7 +19,7 @@ $aboutCenter = $_POST['aboutCenter'];
 $numOfBranches = $_POST['numOfBranches'];
 $userName = $_POST['userName'];
 $password = $_POST['password'];
-$accessLevel = 'center_admin';
+$accessLevel = $_POST['center_admin';
 
 
 if(count(User::find_by_centerID($centerID)) >= 1){
@@ -166,7 +166,11 @@ if($registerCenterAdmin){
                             </tr>
                           </thead>
                           <tbody id="load_med_center">
+<<<<<<< HEAD
+                              <!-- <tr ></tr> -->
+=======
 <!--                              <tr></tr>-->
+>>>>>>> e01b15aa418db283cc0b65b49028195416eb6a5e
                           </tbody>
                         </table>
 
@@ -180,7 +184,10 @@ if($registerCenterAdmin){
                               <div class="control-group">
                                 <label class="control-label">Center ID :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="centerID" value="<?php echo $centerIDs; ?>" required readonly/>
+                              
+                                
+                                  <input type="text" class="span11" name="centerID" value="<?php$centerID = select("SELECT * FROM medicalcenter"); echo $centerIDs['centerID']; ?>" required readonly/>
+                              
                                 </div>
                               </div>
                                <div class="control-group">
