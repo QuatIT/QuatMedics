@@ -1,5 +1,6 @@
 <?php
 require "assets/core/connection.php";
+ echo $_GET['patientID'] ;
 
  // $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
  //    $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
@@ -95,7 +96,7 @@ require "assets/core/connection.php";
                                       <div class="control-group">
                                         <label class="control-label">Patient ID :</label>
                                         <div class="controls">
-                                          <input type="text" class="span11" name="patientID" value="Patient ID" readonly/>
+                                          <input type="text" class="span11" name="patientID" value="<?php echo $_GET['patientID']?>" readonly/>
                                         </div>
                                       </div>
                                         <div class="control-group">
@@ -132,19 +133,21 @@ require "assets/core/connection.php";
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                       
                           <?php
                             $pharm_pre=select("SELECT * FROM prescriptions");
-                            foreach($pharm_pre as $pharm_pres){}
-                          ?>
-                          <td><?php echo $pharm_pres['prescribeID']?></td>
-                          <td> <?php echo $pharm_pres['prescription']?></td>
-                          <td> <?php echo $pharm_pres['prescribeStatus']?></td>
-                          <td style="text-align: center;">
-                              <label><input type="radio" name="medstat1" value="YES"> <i class="fa fa-check-circle fa-lg text-success"></i></label>
-                              <label><input type="radio" name="medstat1" value="NO"> <i class="fa fa-times-circle fa-lg text-danger"></i></label>
+                            foreach($pharm_pre as $pharm_pres){
+
+                              echo  "<tr>
+                          <td>'".$pharm_pres['prescribeID']."'</td>
+                          <td> '".$pharm_pres['prescription']."'</td>
+                          <td>'".$pharm_pres['prescribeStatus']."'</td>
+                          <td style='text-align:center;'>
+                              <label><input type='radio' name='medstat1' value='YES'> <i class='fa fa-check-circle fa-lg text-success'></i></label>
+                              <label><input type='radio' name='medstat1' value='NO'> <i class='fa fa-times-circle fa-lg text-danger'></i></label>
                           </td>
-                        </tr>
+                        </tr>";
+                    }?>
                       </tbody>
                     </table>
                       <div class="control-group">

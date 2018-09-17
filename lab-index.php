@@ -1,6 +1,7 @@
 <?php
 require "assets/core/connection.php";
 
+$fet_pat=select("SELECT * FROM patient");
 
 ?>
 
@@ -73,26 +74,21 @@ require "assets/core/connection.php";
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <?php 
-                          $fet_pat=select("SELECT * FROM patient");
-                          foreach($fet_pat as $fet_pats){}?>
-                          <td><?php echo $fet_pats['patientID'];?></td>
-                          <td><?php echo $fet_pats['firstName']." ".$fet_pats['otherName']." ".$fet_pats['lastName'];?></td>
-                          <td></td>
-                          <td></td>
-                          <td style="text-align: center;">
+                
+                          <?php
+                          foreach($fet_pat as $fet_pats){
 
-
-
-                                <a href="lab-patient.php?patientID=<?php echo $fet_pats['patientID']; ?>"><span class="btn btn-primary fa fa-eye"></span></a> 
-                                
+                            echo "<tr>
+                          <td>".$fet_pats['patientID']."</td>
+                          <td>".$fet_pats['firstName']." ".$fet_pats['otherName']." ".$fet_pats['lastName']."</td>
+                          <td>Doctor</td>
+                          <td>Lab</td>
+                          <td style='text-align: center;'>
+                          <a href='lab-patient.php?patientID=".$fet_pats['patientID']."'><span class='btn btn-primary fa fa-eye'></span></a> 
+                           
                           </td>
-                        </tr>
-                     
-                         
-                          </td>
-                        </tr>
+                        </tr>";
+                      }?>
                       </tbody>
                     </table>
                   </div>

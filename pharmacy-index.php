@@ -1,6 +1,8 @@
 <?php
 require "assets/core/connection.php";
 
+$get_pharm= select("SELECT * FROM patient");
+
 
 ?>
 
@@ -71,19 +73,20 @@ require "assets/core/connection.php";
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                      
                           <?php
-                          $get_pharm= select("SELECT * FROM patient");
+                         
                             foreach($get_pharm as $get_pharms){
 
-                              }?>
-                          <td><?php echo $get_pharms['patientID'];?></td>
-                          <td><?php echo $get_pharms['firstName']." ".$get_pharms['otherName']." ".$get_pharms['lastName'];?></td>
+                          echo"<tr>
+                          <td>".$get_pharms['patientID']."</td>
+                          <td>".$get_pharms['firstName']." ".$get_pharms['otherName']." ".$get_pharms['lastName']."</td>
                           <td>--------</td>
-                          <td style="text-align: center;">
-                               <a href="pharmacy-patient.php"> <span class="btn btn-primary fa fa-eye"></span></a>
+                          <td style='text-align: center;'>
+                               <a href='pharmacy-patient.php?patientID=".$get_pharms['patientID']."'><span class='btn btn-primary fa fa-eye'></span></a>
                           </td>
-                        </tr>
+                        </tr>";
+                      }?>
                       </tbody>
                     </table>
                   </div>

@@ -1,28 +1,38 @@
 <?php
-require "assets/core/connection.php";
+include "assets/core/connection.php";
+
+
 
 
 
 $patientID=$_REQUEST['patientID'];
+ //$patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
+ //$labResults=filter_input(INPUT_POST, "labResults", FILTER_SANITIZE_STRING);
 
 
-if(isset($_POST['lab_result'])){
-  $patientID=trim(htmlspecialchars($_POST['patientID']));
-
-   $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
  
+if(isset($_POST['lab_result'])){
+ //$labResults=filter_input(INPUT_POST, "labResults", FILTER_SANITIZE_STRING);
 
-$l_result = insert("INSERT INTO labresults(patientID) VALUES('".$patientID."')");
+// File upload path
+$targetDir = "uploads/";
+$fileName = basename($_FILES["labResults"]["name"]);
+//$targetFilePath = $targetDir . $fileName;
+$targetFilePath = "uploads";
+$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+
+// if(isset($_POST["lab_result"]) && !empty($_FILES["labResults"]["name"])){
+    // Allow certain file formats
+    $allowTypes = array('application','pdf');
+    if(in_array($fileType, $allowTypes)){
+        // Upload file to server
+        if(move_uploaded_file($_FILES["labResults"]["tmp_name"], $targetFilePath)){
+            // Insert image file name into database
+            $insert = insert("INSERT INTO labresults(labResult) VALUES ('".$fileName."'");
 
 
 
-}
-
-
-//fetching uder status 1=uploaded  0=pending
-
-
-
+}}}
 
 
 ?>
