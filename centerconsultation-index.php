@@ -22,7 +22,32 @@
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+
+    //generate $PatientID
+    $consultRoomIDs = Consultation::loadConsultRoom() + 1;
+
+    $success = '';
+    $error = '';
+
+    if(isset($_POST['btnSave'])){
+
+      $centerID = $_SESSION['centerID'];
+      $consultRoomID = "CR-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultRoomIDs);
+      $roomName = filter_input(INPUT_POST, "departmentName", FILTER_SANITIZE_STRING);
+
+        $consultRoom = Consultation::createConsultRoom($consultRoomID,$centerID,$roomName);
+
+        if($consultRoom){
+            $success = "CONSULTING ROOM CREATED";
+        }else{
+            $error = "CONSULTING ROOM FAILED";
+        }
+
+    }
+
+    ?>
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -45,7 +70,19 @@
   </div>
   <div class="container">
       <h3 class="quick-actions">CONSULTATION MANAGEMENT</h3>
-
+                    <?php
+                      if($success){
+                      ?>
+                      <div class="alert alert-success">
+                  <strong>Success!</strong> <?php echo $success; ?>
+                </div>
+                      <?php } if($error){
+                          ?>
+                      <div class="alert alert-danger">
+                  <strong>Error!</strong> <?php echo $error; ?>
+                </div>
+                      <?php
+                      } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -70,15 +107,7 @@
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td>MDCDEP001</td>
-                              <td>Consulting Room Name</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                          </tbody>
+                          <tbody id="consultroom"></tbody>
                         </table>
                       </div>
                     </div>
@@ -90,7 +119,7 @@
                               <div class="control-group">
                                 <label class="control-label">Consulting Room ID :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="consultID" value="Consulting Room ID" required readonly/>
+                                  <input type="text" class="span11" name="consultRoomID" value="<?php echo $consultRoomIDs; ?>" required readonly/>
                                 </div>
                               </div>
                           </div>
@@ -105,7 +134,7 @@
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Consulting Room</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Consulting Room</button>
                               </div>
                           </div>
                       </div>
@@ -140,6 +169,20 @@
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
+
+    <script>
+  function consult_Room(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/consultroom-load.php",false);
+        xmlhttp.send(null);
+        document.getElementById("consultroom").innerHTML=xmlhttp.responseText;
+    }
+        consult_Room();
+
+        setInterval(function(){
+            consult_Room();
+        },3000);
+    </script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

@@ -32,9 +32,9 @@
 <div id="sidebar">
     <ul>
 <!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li> <a href="opd-index.php"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
-    <li> <a href="opd-patient.php"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
-    <li class="active"> <a href="opd-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+    <li> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
+    <li> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
+    <li class="active"> <a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
     </ul>
 </div>
 
