@@ -17,6 +17,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
+create database `quatmedics`;
+use `quatmedics`;
 
 --
 -- Database: `quatmedics`
@@ -96,6 +98,7 @@ INSERT INTO `consultation` (`consultID`, `patientID`, `staffID`, `bodyTemperatur
 CREATE TABLE `consultingroom` (
   `roomID` varchar(255) NOT NULL,
   `roomName` varchar(255) NOT NULL,
+  `centerID` varchar(255) NOT NULL,
   `dateRegistered` varchar(255) NOT NULL,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -250,6 +253,7 @@ CREATE TABLE `patient` (
   `guardianGender` varchar(255) NOT NULL,
   `guardianPhone` varchar(255) NOT NULL,
   `guardianRelation` varchar(255) NOT NULL,
+  `guardianAddress` varchar(255) NOT NULL,
   `dateRegistered` varchar(50) NOT NULL,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
