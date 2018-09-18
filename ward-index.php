@@ -19,9 +19,51 @@
             background-color: #209fbf;
         }
     </style>
+    <style>
+    #modal {
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99997;
+    height: 100%;
+    width: 100%;
+}
+.modalconent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    width: 20%;
+    padding: 20px;
+    z-index: 999999 !important;
+}
+    </style>
 </head>
 <body>
 <?php include 'layout/head.php'; ?>
+
+    <div id="modal">
+    <div class="modalconent text-center">
+         <h4>Kindly select your Ward Number</h4>
+            <form action="" method="post" >
+                <select class="form-control" name="wardNumber">
+                    <option style="z-index:99999 !important;">--Select Ward Number--</option>
+                    <option >Ward 1</option>
+                    <option >Ward 2</option>
+                </select>
+                <br>
+                <br>
+                <p class="text-center"><input type="submit" name="btnSend" class="btn btn-primary"> <button class="btn btn-light" id="button">Close</button></p>
+        </form>
+
+
+    </div>
+</div>
+
+
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -193,6 +235,14 @@
 <!--<script src="js/maruti.js"></script> -->
 
 
+
+<script>
+window.onload = function () {
+    document.getElementById('button').onclick = function () {
+        document.getElementById('modal').style.display = "none"
+    };
+};
+</script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to
