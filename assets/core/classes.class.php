@@ -90,6 +90,11 @@
     }
 
 
+    public function find_by_ward_id($wardID){
+      $result=query("SELECT * FROM wardlist WHERE wardID='".$wardID."' ");
+      return $result;
+    }
+
     public function find_ward(){
       $result=query("SELECT * FROM wardlist ");
       return $result;

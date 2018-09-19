@@ -30,8 +30,8 @@
 
 <div id="sidebar">
     <ul>
-    <li> <a href="ward-index.php"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
-    <li class="active"> <a href="ward-patient.php"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
+    <li> <a href="ward-index"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
+    <li class="active"> <a href="ward-patient"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
 </div>
 
@@ -40,9 +40,9 @@
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a href="medics-index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a href="ward-index.php" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
-        <a href="ward-patient.php" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
+        <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a href="ward-index" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
+        <a href="ward-patient" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
     </div>
   </div>
   <div class="container">

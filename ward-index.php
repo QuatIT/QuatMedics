@@ -47,7 +47,14 @@
 
     include 'layout/head.php';
 
-    $ward = Ward::find_ward();
+    $wardID = $_GET['wrdno'];
+
+//    if(!empty($wardID)){
+        $wardByID = Ward::find_by_ward_id($wardID);
+        foreach($wardByID as $ward_id){}
+//    }else{
+        $ward = Ward::find_ward();
+//    }
 
     ?>
 
@@ -86,7 +93,7 @@
     <ul>
     <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="active"> <a href="ward-index.php"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
-    <li> <a href="ward-patient.php"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
+    <li> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
 </div>
 
@@ -95,8 +102,8 @@
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a href="medics-index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a href="ward-index.php" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
+        <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a href="ward-index" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
     </div>
   </div>
   <div class="container">
@@ -160,7 +167,7 @@
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
+                    <form action="" method="post" class="form-horizontal">
                     <div class="span6">
 <!--                        <div class="widget-box">-->
                           <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
@@ -209,7 +216,7 @@
 <!--                              <div class="controls"></div>-->
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Bed</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Bed</button>
                               </div>
                           </div>
                       </div>
