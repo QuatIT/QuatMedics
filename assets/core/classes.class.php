@@ -90,6 +90,12 @@
     }
 
 
+    public function find_ward(){
+      $result=query("SELECT * FROM wardlist ");
+      return $result;
+    }
+
+
     public function find_num_ward(){
       $result=query("SELECT * FROM wardlist ");
       $num = count($result);

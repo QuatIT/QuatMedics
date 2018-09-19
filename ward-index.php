@@ -43,27 +43,38 @@
     </style>
 </head>
 <body>
-<?php include 'layout/head.php'; ?>
+<?php
 
+    include 'layout/head.php';
+
+    $ward = Ward::find_ward();
+
+    ?>
+
+    <?php if(empty($_GET['wrdno'])){ ?>
     <div id="modal">
     <div class="modalconent text-center">
          <h4>Kindly select your Ward Number</h4>
-            <form action="" method="post" >
-                <select class="form-control" name="wardNumber">
-                    <option style="z-index:99999 !important;">--Select Ward Number--</option>
-                    <option >Ward 1</option>
-                    <option >Ward 2</option>
-                </select>
-                <br>
-                <br>
-                <p class="text-center"><input type="submit" name="btnSend" class="btn btn-primary"> <button class="btn btn-light" id="button">Close</button></p>
-        </form>
-
+<!--
+                <form action="" method="post" >
+                    <select class="form-control" name="wardNumber">
+                        <option style="z-index:99999 !important;">--Select Ward Number--</option>
+                        <option >Ward 1</option>
+                        <option >Ward 2</option>
+                    </select>
+                    <br>
+                    <br>
+                    <p class="text-center"><input type="submit" name="btnSend" class="btn btn-primary"> <button class="btn btn-light" id="button">Close</button></p>
+            </form>
+-->
+        <?php foreach($ward as $wardNo){ ?>
+            <a href="ward-index?wrdno=<?php echo $wardNo['wardID'] ;?>" class="btn btn-warning"><?php echo $wardNo['wardName'];?></a>
+        <?php } ?>
 
     </div>
 </div>
 
-
+<?php } ?>
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
