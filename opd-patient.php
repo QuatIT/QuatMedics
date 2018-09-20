@@ -47,10 +47,13 @@
 
     //generate consultID
     $consultIDs = Consultation::find_num_consults() + 1;
+    $consultRoom = Consultation::loadConsultRoomByID($_SESSION['centerID']);
 
     //get StaffID
     $staffIDss = select("SELECT * FROM centeruser WHERE userName='".$_SESSION['username']."' AND  password='".$_SESSION['password']."'  AND  centerID='".$_SESSION['centerID']."' ");
    foreach($staffIDss as $staffIDy){}
+
+
 
     if(isset($_POST['btnSave'])){
 
@@ -189,10 +192,13 @@
                                 <div class="controls">
                                   <select name="consultRoom" >
                                     <option value="default"> -- Select Consulting Room --</option>
-                                    <option value="consultRoom1"> Consulting Room 1 Name</option>
-                                    <option value="consultRoom2"> Consulting Room 2 Name</option>
-                                    <option value="consultRoom3"> Consulting Room 3 Name</option>
-                                    <option value="consultRoom4"> Consulting Room 4 Name</option>
+                                      <?php
+                                        foreach($consultRoom as $consult){
+                                            ?>
+                                      <option value="<?php echo $consult['roomID']; ?>"><?php echo $consult['roomName']; ?></option>
+                                      <?php
+                                        }
+                                      ?>
                                   </select>
                                 </div>
                                    <div class="controls"></div>
