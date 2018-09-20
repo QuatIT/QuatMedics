@@ -31,9 +31,12 @@ use `quatmedics`;
 --
 
 CREATE TABLE `bedlist` (
-  `bedNumber` varchar(255) NOT NULL,
-  `wardID` varchar(255) NOT NULL,
-  `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    `bedNumber` varchar(255) NOT NULL,
+    `bedcategory` varchar(255) not null,
+    `bedDescription` varchar(255) not null,
+    `BedCharge` varchar(255) not null,
+    `wardID` varchar(255) NOT NULL,
+    `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -436,8 +439,19 @@ CREATE TABLE `wardlist` (
 --
 
 INSERT INTO `wardlist` (`wardID`, `centerID`, `wardName`, `numOfBeds`, `dateRegistered`, `doe`) VALUES
-('WARD-001', 'ABCD -000001', 'Maternity Ward', '20', '2018-09-16', '2018-09-16 12:40:20'),
-('WARD-002', 'ABCD -000001', 'Emergency Ward', '10', '2018-09-16', '2018-09-16 12:41:10');
+('WARD-001', 'ABCD-000001', 'Maternity Ward', '20', '2018-09-16', '2018-09-16 12:40:20'),
+('WARD-002', 'ABCD-000001', 'Emergency Ward', '10', '2018-09-16', '2018-09-16 12:41:10');
+
+-- --------------------------------------------------------
+
+create table `wardTreatmet`(
+    `id` int(255) not null primary key auto_increment,
+    `assignID` varchar(255) not null,
+    `patientID` varchar(255) not null,
+    `treatment` varchar(255) not null,
+    `datetime` varchar(255) not null,
+    `doe` timestamp
+)engine = InnoDB;
 
 --
 -- Indexes for dumped tables

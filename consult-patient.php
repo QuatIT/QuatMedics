@@ -269,9 +269,9 @@ include 'layout/head.php';
                                           </div>
                                       </div>
                                       <div class="control-group">
-                                        <label class="control-label"> Consulting Room</label>
+                                        <label class="control-label"> Staff ID</label>
                                           <div class="controls">
-                                            <input type="text" name="consultroom" class="span11" value="<?php echo $staffID?>" readonly>
+                                            <input type="text" name="consultroom" class="span11" value="<?php echo $staffID;?>" readonly>
                                           </div>
                                       </div>
                                     <div class="control-group">

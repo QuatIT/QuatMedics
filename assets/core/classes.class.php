@@ -61,7 +61,15 @@
           return $result;
     }
 
+    public function find_by_room_id($roomID){
+      $result=query("SELECT * FROM consultingroom WHERE roomID='".$roomID."'");
+      return $result;
+    }
 
+    public function find_consultingroom(){
+      $result=query("SELECT * FROM consultingroom");
+      return $result;
+    }
 
     public function loadConsultRoom(){
       $result=query("SELECT * FROM consultingroom ") ;

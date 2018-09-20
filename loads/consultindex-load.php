@@ -1,12 +1,10 @@
 
 <?php
 include '../assets/core/connection.php';
-$roomID = 1;
+
+$roomID = $_GET['roomID'];
 $load_consultation = select("SELECT * FROM consultation WHERE roomID='$roomID' ORDER BY doe ASC");
 
-?>
-
-<?php
 foreach($load_consultation as $consultRow){
     $patientID = $consultRow['patientID'];
     $staffID = $consultRow['staffID'];
@@ -41,4 +39,5 @@ foreach($load_consultation as $consultRow){
 </tr>
 
 <?php }?>
-
+<!--<tr><td colspan="5"> No Data Available in table</td></tr>-->
+<?php// }?>

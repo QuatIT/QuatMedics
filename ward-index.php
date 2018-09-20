@@ -61,19 +61,7 @@
     <?php if(empty($_GET['wrdno'])){ ?>
     <div id="modal">
     <div class="modalconent text-center">
-         <h4>Kindly select your Ward Number</h4>
-<!--
-                <form action="" method="post" >
-                    <select class="form-control" name="wardNumber">
-                        <option style="z-index:99999 !important;">--Select Ward Number--</option>
-                        <option >Ward 1</option>
-                        <option >Ward 2</option>
-                    </select>
-                    <br>
-                    <br>
-                    <p class="text-center"><input type="submit" name="btnSend" class="btn btn-primary"> <button class="btn btn-light" id="button">Close</button></p>
-            </form>
--->
+         <h4>Kindly select your Ward</h4>
         <?php foreach($ward as $wardNo){ ?>
             <a href="ward-index?wrdno=<?php echo $wardNo['wardID'] ;?>" class="btn btn-warning"><?php echo $wardNo['wardName'];?></a>
         <?php } ?>
@@ -91,7 +79,7 @@
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+<!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
     <li class="active"> <a href="ward-index.php"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
     <li> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>

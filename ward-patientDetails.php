@@ -43,88 +43,21 @@
         <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
         <a href="ward-index" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
         <a href="ward-patient" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
+        <a href="#" title="" class="tip-bottom"><i class="icon-user"></i>PATIENTS ADMITTION</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">WARD PATIENT MANAGEMENT</h3>
+      <h3 class="quick-actions">PATIENT MANAGEMENT</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Admitted Patient List</a></li>
-<!--                    <li><a data-toggle="tab" href="#tab2">Admit New Patient</a></li>-->
+                    <li class="active"><a data-toggle="tab" href="#tab1">Patient Admittion Details</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
-                    <div class="widget-box">
-                      <div class="widget-title">
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>Bed Category</th>
-                              <th>Bed Number</th>
-                              <th>Patient</th>
-                              <th>Nurse</th>
-                              <th>Admitted</th>
-                              <th>Discharged</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
-                              <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
-                              <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
-                              <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
-                              <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                </div>
-                <div id="tab2" class="tab-pane">
                     <form action="#" method="post" class="form-horizontal">
                     <div class="span6">
 <!--                        <div class="widget-box">-->
@@ -136,35 +69,25 @@
                                <div class="control-group">
                                 <label class="control-label">Patient : </label>
                                 <div class="controls">
-                                  <select name="patientID" >
-                                    <option value="default"> -- Select Patient --</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                  </select>
+                                    <input type="text" name="patientName" class="span11" readonly>
                                 </div>
                               </div>
                                <div class="control-group">
                                 <label class="control-label">Bed Number : </label>
                                 <div class="controls">
-                                  <select name="bedNumber" >
-                                    <option value="default"> -- Select Bed --</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                  </select>
+                                  <input type="text" name="bedNumber" class="span11" readonly>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Admission Date :</label>
                                 <div class="controls">
-                                    <input name="admitDate" class="span11" type="datetime-local" />
+                                    <input name="admitDate" class="span11" type="text" readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Description :</label>
                                 <div class="controls">
-                                    <textarea class="span11" name="description"></textarea>
+                                    <textarea class="span11" name="description" readonly></textarea>
                                 </div>
                               </div>
                           </div>
@@ -176,42 +99,66 @@
                                <div class="control-group">
                                 <label class="control-label">Patient Status: </label>
                                 <div class="controls">
-                                  <select name="nurseID" >
-                                    <option value="default"> -- Select Status --</option>
-                                    <option value="nurseID"> Admit</option>
-                                    <option value="nurseID"> Under Treatment</option>
-                                    <option value="nurseID"> Operation</option>
-                                  </select>
+                                  <input type="text" name="patientstatus" class="span11" readonly>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Bed Type :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Bed Type" name="bedType" required />
+                                  <input type="text" class="span11" name="bedType" readonly />
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Discharge Date :</label>
                                 <div class="controls">
-                                  <input type="datetime-local" class="span11" name="dischargeDate" required />
+                                  <input type="text" class="span11" name="dischargeDate" readonly />
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Assign Nurse : </label>
                                 <div class="controls">
-                                  <select name="nurseID" >
-                                    <option value="default"> -- Select Nurse --</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                  </select>
+                                  <input type="text" name="AssignedNurse" class="span11" readonly>
                                     <br/>
                                     <br/>
                                 </div>
                               </div>
+                          </div>
+                      </div>
+                    </form>
+                </div>
+            </div>
+            <hr/>
+            <div class="widget-content tab-content">
+                <div id="tab1" class="tab-pane active">
+                    <form action="#" method="post" class="form-horizontal">
+                    <div class="span6">
+<!--                        <div class="widget-box">-->
+                          <div class="widget-title">
+                              <span class="icon"> <i class="icon-align-justify"></i> </span>
+                            <h5>Treatement Details</h5>
+                          </div>
+                          <div class="widget-content nopadding">
+                               <div class="control-group">
+                                <label class="control-label"> Treatment : </label>
+                                <div class="controls">
+                                    <input type="text" name="patientName" class="span11">
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                    <div class="span6">
+                          <div class="widget-title">
+                          </div>
+                          <div class="widget-content nopadding">
+                               <div class="control-group">
+                                <label class="control-label"> Date & Time: </label>
+                                <div class="controls">
+                                  <input type="datetime-local" name="treatmentTime" class="span11">
+                                </div>
+                              </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Admit Patient</button>
+                                <button type="submit" class="btn btn-primary btn-block span10"> Save</button>
                               </div>
                           </div>
                       </div>

@@ -184,19 +184,6 @@
                                     <textarea class="span11" name="otherHealth"></textarea>
                                 </div>
                               </div>
-                               <div class="control-group">
-                                <label class="control-label">Assign Consulting Room</label>
-                                <div class="controls">
-                                  <select name="consultRoom" >
-                                    <option value="default"> -- Select Consulting Room --</option>
-                                    <option value="consultRoom1"> Consulting Room 1 Name</option>
-                                    <option value="consultRoom2"> Consulting Room 2 Name</option>
-                                    <option value="consultRoom3"> Consulting Room 3 Name</option>
-                                    <option value="consultRoom4"> Consulting Room 4 Name</option>
-                                  </select>
-                                </div>
-                                   <div class="controls"></div>
-                              </div>
                           </div>
                       </div>
                     <div class="span6">
@@ -228,6 +215,20 @@
                                 <label class="control-label">Weight</label>
                                 <div class="controls">
                                   <input type="text"  class="span11" name="weight" placeholder="Weight" required />
+                                </div>
+                              </div>
+                               <div class="control-group">
+                                <label class="control-label">Assign Consulting Room</label>
+                                <div class="controls">
+                                  <select name="consultRoom">
+                                    <option value="default"> -- Select Consulting Room --</option>
+                                      <?php
+                                        $consultingroom = Consultation::find_consultingroom();
+                                        foreach($consultingroom as $roomRow){
+                                      ?>
+                                    <option value="<?php echo $roomRow['roomID'];?>"> <?php echo $roomRow['roomName'];?></option>
+                                      <?php }?>
+                                  </select>
                                 </div>
                                   <div class="controls"></div>
                               </div>
