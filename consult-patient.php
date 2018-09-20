@@ -33,6 +33,11 @@ include 'layout/head.php';
     $roomID = $_GET['roomID'];
     $consultdet = select("SELECT * from consultation WHERE consultID='$conid'");
 
+    $staff = select("SELECT staffID from centeruser where userName='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
+    foreach($staff as $staffrow){
+        $staffID = $staffrow['staffID'];
+    }
+
     foreach($consultdet as $consultrow){
            $patientID = $consultrow['patientID'];
         $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID'");
@@ -521,18 +526,18 @@ function resetMenu() {
             $('#row'+button_id+'').remove();
         });
 
-        $('#submit').click(function(){
-            $.ajax({
-                url:"name.php",
-                method:"POST",
-                data:$('#add_name').serialize(),
-                success:function(data)
-                {
-                    alert(data);
-                    $('#add_name')[0].reset();
-                }
-            });
-        });
+//        $('#submit').click(function(){
+//            $.ajax({
+//                url:"name.php",
+//                method:"POST",
+//                data:$('#add_name').serialize(),
+//                success:function(data)
+//                {
+//                    alert(data);
+//                    $('#add_name')[0].reset();
+//                }
+//            });
+//        });
 //    });
 </script>
 <!--

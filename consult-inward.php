@@ -23,20 +23,8 @@
 <body>
 <?php
     include 'layout/head.php';
-
-
-    $wardID = $_GET['wrdno'];
-
-//    if(!empty($wardID)){
-        $wardByID = Ward::find_by_ward_id($wardID);
-        foreach($wardByID as $ward_id){}
-//    }else{
-        $ward = Ward::find_ward();
-//    }
-
-
-
-    ?>
+        $roomID = $_GET['roomID'];
+?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -45,23 +33,22 @@
 
 <div id="sidebar">
     <ul>
-    <li> <a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
-    <li class="active"> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
+<!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
+    <li class="active"> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
+    <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
+    <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
     </ul>
 </div>
-
-
 
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a href="ward-index?wrdno=<?php echo $wardID;?>" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
-        <a href="ward-patient?wrdno=<?php echo $wardID;?>" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
+        <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">WARD PATIENT MANAGEMENT</h3>
+      <h3 class="quick-actions">INWARD FROM CONSULTING ROOM <?php echo $roomID;?></h3>
 
       <div class="row-fluid">
         <div class="widget-box">
@@ -98,7 +85,7 @@
                               <td> 15/2/1998</td>
                               <td> 25/2/1998</td>
                               <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
+<!--                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>-->
                                    <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
                               </td>
                             </tr>
@@ -110,7 +97,7 @@
                               <td> 15/2/1998</td>
                               <td> 25/2/1998</td>
                               <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
+<!--                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>-->
                                    <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
                               </td>
                             </tr>
@@ -122,7 +109,7 @@
                               <td> 15/2/1998</td>
                               <td> 25/2/1998</td>
                               <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
+<!--                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>-->
                                    <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
                               </td>
                             </tr>
@@ -134,7 +121,7 @@
                               <td> 15/2/1998</td>
                               <td> 25/2/1998</td>
                               <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
+<!--                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>-->
                                    <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
                               </td>
                             </tr>

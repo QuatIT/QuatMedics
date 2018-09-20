@@ -46,30 +46,7 @@
 <?php
 
     include 'layout/head.php';
-
-    $wardID = $_GET['wrdno'];
-
-//    if(!empty($wardID)){
-        $wardByID = Ward::find_by_ward_id($wardID);
-        foreach($wardByID as $ward_id){}
-//    }else{
-        $ward = Ward::find_ward();
-//    }
-
-    ?>
-
-    <?php if(empty($_GET['wrdno'])){ ?>
-    <div id="modal">
-    <div class="modalconent text-center">
-         <h4>Kindly select your Ward</h4>
-        <?php foreach($ward as $wardNo){ ?>
-            <a href="ward-index?wrdno=<?php echo $wardNo['wardID'] ;?>" class="btn btn-warning"><?php echo $wardNo['wardName'];?></a>
-        <?php } ?>
-
-    </div>
-</div>
-
-<?php } ?>
+?>
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -79,9 +56,8 @@
 
 <div id="sidebar">
     <ul>
-<!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li class="active"> <a href="ward-index.php"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
-    <li> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
+    <li> <a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
+    <li class="active"> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
 </div>
 
@@ -91,108 +67,73 @@
   <div id="content-header">
     <div id="breadcrumb">
         <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a href="ward-index" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
+        <a href="ward-index?wrdno=<?php echo $wardID;?>" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
+        <a href="ward-patient?wrdno=<?php echo $wardID;?>" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">WARD MANAGEMENT</h3>
+      <h3 class="quick-actions">WARD PATIENT MANAGEMENT</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Bed List</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Bed</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Assign Patient To Staff</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
-                    <div class="widget-box">
-                      <div class="widget-title">
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>Bed Number</th>
-                              <th>Bed Type</th>
-                              <th>Charge</th>
-                              <th>Description</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>HPS01W2B4</td>
-                              <td>Bed Type</td>
-                              <td>Ghc 200</td>
-                              <td>A comfortable Bed :)</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>HPS01W2B5</td>
-                              <td>Bed Type</td>
-                              <td>Ghc 500</td>
-                              <td>A comfortable Bed :)</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>HPS01W2B6</td>
-                              <td>Bed Type</td>
-                              <td>Ghc 400</td>
-                              <td>A comfortable Bed :)</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                </div>
-                <div id="tab2" class="tab-pane">
                     <form action="" method="post" class="form-horizontal">
                     <div class="span6">
-<!--                        <div class="widget-box">-->
-                          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Bed-info</h5>
+                          <div class="widget-title">
+                              <span class="icon"> <i class="icon-align-justify"></i> </span>
+                                <h5>Patient Details</h5>
                           </div>
                           <div class="widget-content nopadding">
-<!--                            <form action="#" method="post" class="form-horizontal">-->
                              <div class="control-group">
-                                <label class="control-label">Bed Number :</label>
+                                <label class="control-label">Patient ID :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Bed Number" name="bedNumber" />
+                                  <input type="text" class="span11" value="" name="patientID" readonly/>
                                 </div>
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label">Bed Description :</label>
+                                <label class="control-label">Patient Name :</label>
                                 <div class="controls">
-                                    <textarea class="span11" name="bedDesciption"></textarea>
+                                    <input type="text" class="span11" value="" name="patientName" readonly/>
                                 </div>
                               </div>
                           </div>
                       </div>
                     <div class="span6">
-                          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Bed-info</h5>
+                          <div class="widget-title">
+                              <span class="icon"> <i class="icon-align-justify"></i> </span>
+                                <h5>Assignment Details</h5>
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Charge :</label>
+                                <label class="control-label">Assign To :</label>
                                 <div class="controls">
-                                  <input type="number" class="span11" placeholder="Bed Charge" name="bedCharge" required />
+                                    <select name="assignTo">
+                                        <option value=""> </option>
+                                        <option value="Staff"> Staff </option>
+                                        <option value="Consulting Room"> Consulting Room </option>
+                                    </select>
                                 </div>
                               </div>
-<!--                              <div class="controls"></div>-->
+                              <div class="control-group">
+                                <label class="control-label"> Staff / Consulting Room :</label>
+                                <div class="controls">
+                                    <select name="assignTo">
+                                        <option value=""> </option>
+                                        <option value="option1"> Option 1 </option>
+                                        <option value="option2"> Option 2 </option>
+                                    </select>
+                                </div>
+                              </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Bed</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Assign Patient</button>
                               </div>
                           </div>
                       </div>
