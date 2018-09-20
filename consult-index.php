@@ -37,7 +37,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
-    width: 80%;
+    width: 40%;
     padding: 20px;
 }
 
@@ -47,7 +47,7 @@
 <?php
 
     include 'layout/head.php';
-//    error_reporting(0);
+
     $roomID = $_GET['roomID'];
 
 //    if(!empty($wardID)){

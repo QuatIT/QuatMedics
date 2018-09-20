@@ -9,6 +9,7 @@ foreach($load_consultation as $consultRow){
     $patientID = $consultRow['patientID'];
     $staffID = $consultRow['staffID'];
     $status = $consultRow['status'];
+
     $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID'");
     $fetchstaff = select("SELECT firstName,lastName,otherName from staff WHERE staffID='$staffID'");
 

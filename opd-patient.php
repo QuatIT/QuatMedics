@@ -18,7 +18,36 @@
         .active{
             background-color: #209fbf;
         }
+            label{
+                font-weight: bolder;
+            }
     </style>
+  <style type="text/css">
+        .center {
+    margin-top:50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+    	padding: 0;
+	}
+
+.modal-footer .btn-group button {
+	height:40px;
+	border-top-left-radius : 0;
+	border-top-right-radius : 0;
+	border: none;
+	border-right: 1px solid #ddd;
+}
+
+.modal-footer .btn-group:last-child > button {
+	border-right: 0;
+}
+    </style>
+
 </head>
 <body>
 
@@ -78,6 +107,11 @@
 
 
     ?>
+
+
+
+
+
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -144,8 +178,139 @@
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody id="outpatientlist"></tbody>
+<!--                          <tbody id="outpatientlist"></tbody>-->
+                          <tbody id="outpatientlist">
+                  <?php
+                        $load_patient = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' ORDER BY patientID ASC");
+
+                            foreach($load_patient as $patient){
+
+                            ?>
+
+                            <tr>
+                              <td><?php echo $patient['patientID']; ?></td>
+                              <td> <?php echo $patient['firstName']." ".$patient['otherName']." ".$patient['lastName']; ?></td>
+                              <td> <?php echo $patient['phoneNumber']; ?></td>
+                              <td style="text-align: center;"> <?php echo $patient['dob']; ?></td>
+                              <td style="text-align: center;">
+                                   <a href="#" data-toggle="modal" data-target="#squarespaceModal<?php echo $patient['patientID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
+                              </td>
+                            </tr>
+
+
+
+
+
+                            <!-- line modal -->
+                            <div class="modal fade" id="squarespaceModal<?php echo $patient['patientID']; ?>" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                        <h3 class="modal-title" id="lineModalLabel"><?php echo $patient['firstName']." ".$patient['otherName']." ".$patient['lastName']; ?> (<?php echo $patient['patientID']; ?>)</h3>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <!-- content goes here -->
+                                        <form>
+                                            <div class="span6">
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputEmail1">Date of Brith</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['dob']; ?>" id="exampleInputEmail1" readonly >
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Blood Group</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['bloodGroup']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputEmail1">Phone Number</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['phoneNumber']; ?>" id="exampleInputEmail1" readonly >
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Guardian Name</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianName']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Guardian Phone Number</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianPhone']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputEmail1">Guardian Address</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianAddress']; ?>" id="exampleInputEmail1" readonly >
+                                                  </div>
+
+                                            </div>
+
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputEmail1">Gender</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['gender']; ?>" id="exampleInputEmail1" readonly >
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Home Address</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['homeAddress']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputEmail1">Home Town</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['hometown']; ?>" id="exampleInputEmail1" readonly >
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Guardian Gender</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianGender']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Guardian Relation</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianRelation']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">&nbsp;</label>
+                                                    <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
+                                                  </div>
+
+<!--                                          <button type="submit" class="btn btn-default">Submit</button>-->
+                                        </form>
+
+                                    </div>
+<!--
+                                    <div class="modal-footer">
+                                        <div class="btn-group btn-group-justified" role="group" aria-label="group button">
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+                                            </div>
+                                            <div class="btn-group btn-delete" role="group">
+                                                <a href="opd-patient?tab=vitals&pid=<?php #echo $patient['patientID']; ?>" ><button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Check Vitals</button></a>
+                                                <a href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" data-dismiss="modal"role="button" >Check Vitals</a>
+                                            </div>
+                                            <div class="btn-group" role="group">
+                                                <button type="button" id="saveImage" class="btn btn-default btn-hover-green" data-action="save" role="button">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+-->
+                                </div>
+                              </div>
+                            </div>
+
+
+
+                               <?php } ?>
+
+
+                            </tbody>
                         </table>
+
+
+
+
+
+
                       </div>
                     </div>
                 </div>
@@ -271,6 +436,8 @@
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
 
+
+
      <?php if(empty($_GET['pid'])){  ?>
        <script>
     function dis(){
@@ -297,6 +464,7 @@
     </script>
 <?php } ?>
 
+<!--
        <script>
     function out_patient_list(){
         xmlhttp=new XMLHttpRequest();
@@ -310,8 +478,15 @@
             out_patient_list();
         },1000);
     </script>
+-->
 
-
+<script type="text/javascript">
+    setInterval("my_function();",5000);
+    function my_function(){
+//      $('#outpatientlist').load('loads/oldpatient-load.php');
+        document.getElementById("outpatientlist").innerHTML
+    }
+  </script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

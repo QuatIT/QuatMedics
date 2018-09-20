@@ -146,7 +146,7 @@
                               <div class="control-group">
                                 <label class="control-label">Staff ID :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="staffID" value="StaffID" required readonly/>
+                                  <input type="text" class="span11" name="staffID" value="<?php echo $staffIDs; ?>" required readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
