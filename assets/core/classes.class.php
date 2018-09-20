@@ -71,6 +71,12 @@
       return $result;
     }
 
+    public function loadConsultRoomByID($centerID){
+      $result=query("SELECT * FROM consultingroom WHERE centerID='$centerID' ") ;
+      return $result;
+    }
+
+
     public function loadConsultRoom(){
       $result=query("SELECT * FROM consultingroom ") ;
       $num = count($result);
