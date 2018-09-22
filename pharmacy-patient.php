@@ -1,6 +1,7 @@
 <?php
 require "assets/core/connection.php";
- echo $_GET['patientID'] ;
+ $_GET['patientID'] ;
+
 
  // $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
  //    $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);

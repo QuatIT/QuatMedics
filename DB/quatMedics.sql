@@ -158,3 +158,29 @@ create table `labResults`(
     index(patientID),
     foreign key(patientID) references `patient`(patientID)
 )engine = InnoDB;
+
+-- new tables
+create table `bloodBank`(
+    `bloodID` varchar(255) not null primary key,
+     `donorID` varchar(255) not null,
+    `charge` varchar(255) not null,
+    `amtAvail` varchar(255) not null,
+    `donorName` varchar(255) not null,
+    `gender` varchar(10) not null,
+    `bloodGroup` varchar(100) not null,
+    `homeAddress` varchar(255) not null,
+    `phoneNumber` varchar(20) not null,
+     `dob` varchar(50) not null,
+    `doe` timestamp,
+    index(donorID),
+    foreign key(bloodID) references `bloodGroup_tb`(bloodID)
+)engine = InnoDB;
+
+create table `bloodGroup_tb`(
+    `bloodID` varchar(255) not null primary key,
+    `bloodGroup` varchar(255) not null,
+    `bloodBags` varchar(255) not null,
+    `doe` timestamp,
+    index(bloodID),
+    foreign key(bloodGroup) references `bloodBank`(bloodGroup_tb)
+)engine = InnoDB;

@@ -2,39 +2,63 @@
 include "assets/core/connection.php";
 
 
-
-
-
 $patientID=$_REQUEST['patientID'];
- //$patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
- //$labResults=filter_input(INPUT_POST, "labResults", FILTER_SANITIZE_STRING);
+//avoid undefined index msg
 
 
- 
+
+
+
+//generate labResultID
+//$labResultID = substr("donor",0,3);
+$labResultID = mt_rand(0,99).mt_rand(101,998);
+//$labResultID= $labResultID1;
+
+
 if(isset($_POST['lab_result'])){
- //$labResults=filter_input(INPUT_POST, "labResults", FILTER_SANITIZE_STRING);
 
-// File upload path
-$targetDir = "uploads/";
-$fileName = basename($_FILES["labResults"]["name"]);
-//$targetFilePath = $targetDir . $fileName;
-$targetFilePath = "uploads";
-$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
-
-// if(isset($_POST["lab_result"]) && !empty($_FILES["labResults"]["name"])){
-    // Allow certain file formats
-    $allowTypes = array('application','pdf');
-    if(in_array($fileType, $allowTypes)){
-        // Upload file to server
-        if(move_uploaded_file($_FILES["labResults"]["tmp_name"], $targetFilePath)){
-            // Insert image file name into database
-            $insert = insert("INSERT INTO labresults(labResult) VALUES ('".$fileName."'");
+$patient_ID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
+$labResults=filter_input(INPUT_POST, "labResults", FILTER_SANITIZE_STRING);
 
 
 
-}}}
+if(isset($_FILES['file'])){
+	$file = $_FILES['file'];
 
+	//file properties
+	$file_name=$file['name'];
+	$file_tmp=$file['tmp_name'];
+	$file_size= $file['size'];
+	$file_error = $file['error'];
 
+	//etract extension
+	$file_ext =explode('.',$file_name);
+	$file_ext = strtolower(end($file_ext));
+	$allowed = array('application','pdf');
+
+	if(in_array($file_ext, $allowed)){
+		if($file_error===0){
+			if($file_size <= 4097152){
+
+			 $file_name_new=uniqid('', true).'.'.$file_ext;
+                  $file_destination = 'uploads/' .$file_name_new;
+
+			 	//check if file has been loaded earlier and move it from temporary location into folder
+			 	if(move_uploaded_file($file_tmp,$file_destination)){
+                    // echo $file_destination;
+            $qry =insert("INSERT INTO labresults(labResultID,patientID,labResult)VALUES($labResultID,'".$patient_ID."','".$file_name."')");
+            if($qry){
+
+                echo "<script>alert('File Upload Successful');
+                document.location.assign('lab-index.php')</script>";
+            }
+			 	}
+			}
+
+		}
+	}
+}
+}
 ?>
 
 
@@ -95,13 +119,13 @@ $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
                     </div>
                     <div class="widget-content tab-content">
                         <div id="tab1" class="tab-pane active">
-                            <form action="#" method="post" class="form-horizontal">
+                            <form action="#" method="post" class="form-horizontal" enctype="multipart/form-data">
                                 <div class="span6">
                                     <div class="widget-content nopadding">
                                       <div class="control-group">
                                         <label class="control-label">Patient ID :</label>
                                         <div class="controls">
-                                          <input type="text" class="span11" name="patientID" id="patientID" value="<?php echo $patientID;  ?>" readonly/>
+                                          <input type="text" class="span11" name="patientID" id="patientID" value="<?php echo $patientID;?>" readonly/>
                                         </div>
                                       </div>
                                     <div class="control-group">
@@ -117,13 +141,13 @@ $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
                                       <div class="control-group">
                                         <label class="control-label">Patient Name :</label>
                                         <div class="controls">
-                                          <input type="text" class="span11" name="patientName"value=""readonly/>
+                                          <input type="text" class="span11" name="patientName" value=""readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">
                                         <label class="control-label">Patient Lab Result :</label>
                                         <div class="controls">
-                                          <input type="file" class="span11" name="labResults" accept="application/pdf" required/>
+                                          <input type="file" class="span11" name="file" accept="application/pdf" required/>
                                         </div>
                                           <div class="controls"></div>
                                       </div>
