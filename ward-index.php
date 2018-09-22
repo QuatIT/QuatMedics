@@ -47,6 +47,9 @@
 
     include 'layout/head.php';
 
+    $success = '';
+    $error = '';
+
     $wardID = $_GET['wrdno'];
 
 //    if(!empty($wardID)){
@@ -55,6 +58,23 @@
 //    }else{
         $ward = Ward::find_ward();
 //    }
+
+    if(isset($_POST['btnSave'])){
+        $bedNumber = filter_input(INPUT_POST, "bedNumber", FILTER_SANITIZE_STRING);
+        $bedDescription = filter_input(INPUT_POST, "bedDescription", FILTER_SANITIZE_STRING);
+        $bedCharge = filter_input(INPUT_POST, "bedCharge", FILTER_SANITIZE_STRING);
+        $bedStatus = "occupied";
+
+        $bed = Ward::saveBeds($bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
+
+
+        if($bed){
+            $success = "BED CREATED SUCCESSFULLY;";
+        }else{
+            $error = "BED NOT CREATED";
+        }
+
+    }
 
     ?>
 
@@ -115,41 +135,12 @@
                           <thead>
                             <tr>
                               <th>Bed Number</th>
-                              <th>Bed Type</th>
-                              <th>Charge</th>
                               <th>Description</th>
-                              <th>Action</th>
+                              <th>Charge</th>
+                              <th>Status</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td>HPS01W2B4</td>
-                              <td>Bed Type</td>
-                              <td>Ghc 200</td>
-                              <td>A comfortable Bed :)</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>HPS01W2B5</td>
-                              <td>Bed Type</td>
-                              <td>Ghc 500</td>
-                              <td>A comfortable Bed :)</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>HPS01W2B6</td>
-                              <td>Bed Type</td>
-                              <td>Ghc 400</td>
-                              <td>A comfortable Bed :)</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                          </tbody>
+                          <tbody id="load_bed"></tbody>
                         </table>
                       </div>
                     </div>
@@ -173,7 +164,7 @@
                               <div class="control-group">
                                 <label class="control-label">Bed Description :</label>
                                 <div class="controls">
-                                    <textarea class="span11" name="bedDesciption"></textarea>
+                                    <textarea class="span11" name="bedDescription"></textarea>
                                 </div>
                               </div>
                           </div>
@@ -237,6 +228,23 @@ window.onload = function () {
     };
 };
 </script>
+
+
+    <script>
+    function load_bed(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/load_bed.php?warID=<?php echo $wardID; ?>",false);
+        xmlhttp.send(null);
+        document.getElementById("load_bed").innerHTML=xmlhttp.responseText;
+    }
+        load_bed();
+
+        setInterval(function(){
+            load_bed();
+        },1000);
+    </script>
+
+
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

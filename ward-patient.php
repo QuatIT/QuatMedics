@@ -27,12 +27,11 @@
 
     $wardID = $_GET['wrdno'];
 
-//    if(!empty($wardID)){
-        $wardByID = Ward::find_by_ward_id($wardID);
-        foreach($wardByID as $ward_id){}
-//    }else{
-        $ward = Ward::find_ward();
-//    }
+    $wardByID = Ward::find_by_ward_id($wardID);
+    foreach($wardByID as $ward_id){}
+
+    $ward = Ward::find_ward();
+
 
 
 
@@ -80,9 +79,8 @@
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Bed Category</th>
-                              <th>Bed Number</th>
-                              <th>Patient</th>
+                              <th>Patient ID</th>
+                              <th>Admin Details</th>
                               <th>Nurse</th>
                               <th>Admitted</th>
                               <th>Discharged</th>
@@ -90,54 +88,21 @@
                             </tr>
                           </thead>
                           <tbody>
+                              <?php
+                                $wrd=Ward::find_by_wardAssign_id($wardID);
+                                foreach($wrd as $wrd_assign){ ?>
                             <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
+                              <td><?php echo $wrd_assign['patientID']; ?></td>
+                              <td><?php echo $wrd_assign['admitDetails']; ?></td>
+                              <td><?php echo $wrd_assign['staffID']; ?></td>
+                              <td><?php echo $wrd_assign['admitDate']; ?></td>
+                              <td> <?php echo $wrd_assign['dischargeDate']; ?></td>
                               <td style="text-align: center;">
                                    <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
                                    <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
                               </td>
                             </tr>
-                            <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
-                              <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
-                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
-                              <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
-                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
-                              <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
-                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
-                              </td>
-                            </tr>
+                              <?php } ?>
                           </tbody>
                         </table>
                       </div>

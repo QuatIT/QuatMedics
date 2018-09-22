@@ -274,26 +274,10 @@
                                                     <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
                                                   </div>
 
-<!--                                          <button type="submit" class="btn btn-default">Submit</button>-->
                                         </form>
 
                                     </div>
-<!--
-                                    <div class="modal-footer">
-                                        <div class="btn-group btn-group-justified" role="group" aria-label="group button">
-                                            <div class="btn-group" role="group">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
-                                            </div>
-                                            <div class="btn-group btn-delete" role="group">
-                                                <a href="opd-patient?tab=vitals&pid=<?php #echo $patient['patientID']; ?>" ><button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Check Vitals</button></a>
-                                                <a href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" data-dismiss="modal"role="button" >Check Vitals</a>
-                                            </div>
-                                            <div class="btn-group" role="group">
-                                                <button type="button" id="saveImage" class="btn btn-default btn-hover-green" data-action="save" role="button">Save</button>
-                                            </div>
-                                        </div>
-                                    </div>
--->
+
                                 </div>
                               </div>
                             </div>

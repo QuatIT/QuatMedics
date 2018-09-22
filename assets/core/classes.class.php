@@ -109,6 +109,11 @@
       return $result;
     }
 
+    public function find_by_wardAssign_id($wardID){
+      $result=query("SELECT * FROM wardassigns WHERE wardID='".$wardID."' ");
+      return $result;
+    }
+
     public function find_ward(){
       $result=query("SELECT * FROM wardlist ");
       return $result;
@@ -123,6 +128,10 @@
     }
 
 
+      public function saveBeds($bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus){
+        $result = insert("INSERT INTO bedlist(bedNumber,bedDescription,bedCharge,wardID,bedStatus) VALUES('$bedNumber','$bedDescription','$bedCharge','$wardID',$bedStatus) ");
+           return $result;
+    }
 
   }
 
