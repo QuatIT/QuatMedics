@@ -37,16 +37,47 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
-    width: 80%;
+    width: 40%;
     padding: 20px;
 }
 
     </style>
 </head>
 <body>
+<?php
 
-<?php include 'layout/head.php'; ?>
+    include 'layout/head.php';
 
+    $roomID = $_GET['roomID'];
+
+//    if(!empty($wardID)){
+        $roomByID = Consultation::find_by_room_id($roomID);
+        foreach($roomByID as $room_id){}
+//    }else{
+        $room = Consultation::find_consultingroom();
+//    if($room){
+//           foreach($room as $roomno){
+//            $roomID = $roomno['roomID'];
+//            $roomName = $roomno['roomName'];
+//        }
+//    }
+
+//    }
+
+    ?>
+
+<?php if(empty($_GET['roomID'])){ ?>
+    <div id="modal">
+    <div class="modalconent text-center">
+         <h4>Kindly Select Your Consulting Room Number</h4>
+        <?php foreach($room as $roomno){ ?>
+            <a href="consult-index?roomID=<?php echo $roomno['roomID'];?>" class="btn btn-warning"><?php echo $roomno['roomName'];?></a>
+        <?php } ?>
+
+    </div>
+</div>
+
+<?php } ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -56,54 +87,21 @@
 <div id="sidebar">
     <ul>
 <!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li class="active"> <a href="consult-index.php"><i class="icon icon-briefcase"></i> <span>Consultation</span></a> </li>
-    <li> <a href="consult-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a> </li>
+    <li class="active"> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
+    <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
+    <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
     </ul>
 </div>
-
-<!--
-<?php //if(empty($_GET['s']) || empty($_GET['mid']) ){ ?>
-
-<div id="modal">
-    <div class="modalconent" style="width:300px;">
-         <h4 class="text-center"> Select Consulting Room</h4>
-            <hr/>
-            <form class="form-horizontal" action="" method="post">
-
-                <input type="number" name="roomNumber" class="span3" min="1" placeholder="Consulting Room Number" />
-
-                <select name="s_min">
-                    <option>sdfsdf</option>
-                    <option>sdfsdf</option>
-                    <option>sdfsdf</option>
-                    <option>sdfsdf</option>
-                    <option>sdfsdf</option>
-                    <option>sdfsdf</option>
-                    <option>sdfsdf</option>
-                    <?php //foreach($min_sql as $min_row){ ?>
-                    <option value="<?php //echo $min_row['group_id']; ?>"><?php// echo $min_row['group_name']; ?></option>
-                    <?php //} ?>
-                </select>
-
-                <hr/>
-                <input type="submit" class="btn btn-primary" value="Proceed" name="btnProceed">
-                <a href="logout" class="btn btn-dark pull-right">Close</a>
-            </form>
-
-    </div>
-</div>
-<?php //} ?>
--->
 
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a href="medics-index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a href="consult-index.php" title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
+        <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTATION LIST</h3>
+      <h3 class="quick-actions">CONSULTING ROOM <?php echo $roomID;?></h3>
       <div class="row-fluid">
           <div class="span8">
                 <div class="widget-box">
@@ -116,6 +114,7 @@
                           <th>Patient Number</th>
                           <th>Patient Name</th>
                           <th>Nurse Name</th>
+                          <th>Status</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -172,7 +171,7 @@
       </div>
   </div>
 </div>
-<div class="row-fluid">
+<div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>
@@ -209,7 +208,7 @@ window.onload = function () {
 <script>
 function dis(){
     xmlhttp=new XMLHttpRequest();
-    xmlhttp.open("GET","loads/consultindex-load.php",false);
+    xmlhttp.open("GET","loads/consultindex-load?roomID=<?php echo $roomID;?>",false);
     xmlhttp.send(null);
     document.getElementById("consultindex").innerHTML=xmlhttp.responseText;
 }
@@ -219,6 +218,7 @@ function dis(){
         dis();
     },1000);
 </script>
+
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

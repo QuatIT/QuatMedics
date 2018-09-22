@@ -49,7 +49,6 @@
   }
 
 
-
   class Consultation{
 
       public function consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID){
@@ -62,6 +61,20 @@
           return $result;
     }
 
+    public function find_by_room_id($roomID){
+      $result=query("SELECT * FROM consultingroom WHERE roomID='".$roomID."'");
+      return $result;
+    }
+
+    public function find_consultingroom(){
+      $result=query("SELECT * FROM consultingroom");
+      return $result;
+    }
+
+    public function loadConsultRoomByID($centerID){
+      $result=query("SELECT * FROM consultingroom WHERE centerID='$centerID' ") ;
+      return $result;
+    }
 
 
     public function loadConsultRoom(){
@@ -91,6 +104,22 @@
     }
 
 
+    public function find_by_ward_id($wardID){
+      $result=query("SELECT * FROM wardlist WHERE wardID='".$wardID."' ");
+      return $result;
+    }
+
+    public function find_by_wardAssign_id($wardID){
+      $result=query("SELECT * FROM wardassigns WHERE wardID='".$wardID."' ");
+      return $result;
+    }
+
+    public function find_ward(){
+      $result=query("SELECT * FROM wardlist ");
+      return $result;
+    }
+
+
     public function find_num_ward(){
       $result=query("SELECT * FROM wardlist ");
       $num = count($result);
@@ -99,6 +128,10 @@
     }
 
 
+      public function saveBeds($bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus){
+        $result = insert("INSERT INTO bedlist(bedNumber,bedDescription,bedCharge,wardID,bedStatus) VALUES('$bedNumber','$bedDescription','$bedCharge','$wardID',$bedStatus) ");
+           return $result;
+    }
 
   }
 

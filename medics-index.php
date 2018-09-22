@@ -14,6 +14,7 @@
 <body>
 
 <?php include 'layout/head.php'; ?>
+
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -73,7 +74,7 @@
 <!--</div>-->
 <!--</div>-->
 </div>
-<div class="row-fluid">
+<div class="row-fluid navbar-fixed-bottom" >
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>

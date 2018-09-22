@@ -24,18 +24,134 @@
 </head>
 <body>
 
+
 <?php
 include 'layout/head.php';
-
+    $success = "";
+    $error = "";
     $conid = $_GET['conid'];
-
+    $roomID = $_GET['roomID'];
     $consultdet = select("SELECT * from consultation WHERE consultID='$conid'");
+
+    $staff = select("SELECT staffID from centeruser where userName='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
+    foreach($staff as $staffrow){
+        $staffID = $staffrow['staffID'];
+    }
+
     foreach($consultdet as $consultrow){
            $patientID = $consultrow['patientID'];
         $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID'");
         foreach($fetchpatient as $ptndetails){
             $name = $ptndetails['firstName']." ".$ptndetails['otherName']." ".$ptndetails['lastName'];
         }
+    }
+
+         //generate presciptionCode
+        $codesql = select("SELECT * From prescriptions order by prescribeCode DESC limit 1");
+        if(count($codesql) >=1){
+            foreach($codesql as $coderow){
+                $code = $coderow['prescribeCode'];
+                $oldcode = explode("-",$code);
+                $newID = $oldcode[1]+1;
+                $prescribeCode = $oldcode[0]."-".$newID;
+            }
+        }else{
+            $prescribeCode = "PRSCB-1";
+        }
+
+
+    if(isset($_POST['reqLab'])){
+        $labNumber = count($_POST['labName']);
+
+        if($labNumber > 0) {
+            for($i=0; $i<$labNumber; $i++){
+                    if(trim($_POST["labName"][$i] != '')) {
+                        $labID = trim($_POST["labName"][$i]);
+                        $status = trim("Requested");
+                        $insertLabReq = insert("INSERT INTO labresults(labID,patientID,staffID,consultingRoom,status) VALUES('$labID','$patientID','$staffID','$roomID','$status')");
+
+                            if($insertLabReq){
+                                 $success =  "LAB REQUEST SENT SUCCESSFULLY";
+            $updatePatient = update("UPDATE consultation set status='CONSULTED' where patientID='$patientID' AND consultID='$conid'");
+                                echo "<script>window.location='consult-index';</script>";
+                            }else{
+                                $error =  "ERROR: LAB REQUEST NOT SENT";
+                            }
+                        }
+            }
+        }else{
+           $error =  "ERROR: NO LAB REQUEST MADE";
+        }
+    }
+
+
+    if(isset($_POST['adWard'])){
+        $wardID = filter_input(INPUT_POST, "wardID", FILTER_SANITIZE_STRING);
+        $admitDetails = filter_input(INPUT_POST, "admitDetails", FILTER_SANITIZE_STRING);
+        $admitDate = filter_input(INPUT_POST, "admitDate", FILTER_SANITIZE_STRING);
+        $dischargeDate = filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING);
+
+        //generate wardassign IDs
+        $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
+        if(count($wardasignsql) >=1){
+            foreach($wardasignsql as $assignrow){
+                $id = $assignrow['assignID'];
+                $oldid = explode("-",$id);
+                $newID = $oldid[1]+1;
+                $assignID = $oldid[0]."-".$newID;
+            }
+        }else{
+            $assignID = "assign-1";
+        }
+
+        $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails')");
+
+        if($insertassign){
+            $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
+            $updatePatient = update("UPDATE consultation set status='CONSULTED' where patientID='$patientID' AND consultID='$conid'");
+            echo "<script>window.location='consult-index';</script>";
+        }else{
+            $error =  "ERROR: PATIENT ADMITTION NOT SAVED";
+        }
+    }
+
+    if(isset($_POST['presMeds'])){
+        $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
+        $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
+        $pharmacyID = filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING);
+//        $prescribeCode = trim($_POST['prescribeCode']);
+        $prescribeStatus = trim("Prescibed");
+        $datePrescribe = trim(date("Y-m-d"));
+
+        $medNum = count($_POST['medicine']);
+        $dosageNum = count($_POST['dosage']);
+
+        if($medNum > 0 && $dosageNum > 0) {
+
+        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe')");
+
+
+            for($m=0, $d=0; $m<$medNum, $d<$dosageNum; $m++,$d++){
+                    if(trim($_POST["medicine"][$m] != '') && trim($_POST['dosage'][$d] != '')) {
+                        $medicine = trim($_POST["medicine"][$m]);
+                        $dosage = trim($_POST["dosage"][$d]);
+
+                $insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus')");
+                        }
+
+            }
+
+              if($insertpresciption && $insertMeds){
+                    $success =  "PRESCRIPTION SENT SUCCESSFULLY";
+                    $updatePatient = update("UPDATE consultation set status='CONSULTED' where patientID='$patientID' AND consultID='$conid'");
+                    echo "<script>window.location='consult-index';</script>";
+                }else{
+                    $error =  "ERROR: PRESCRIPTION NOT SENT";
+                }
+        }else{
+            $error =  "ERROR: NO PRESCRIPTION RECORED";
+        }
+
     }
 
 ?>
@@ -64,8 +180,24 @@ include 'layout/head.php';
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTATION ROOM</h3>
-
+      <h3 class="quick-actions">CONSULTATION ROOM <?php echo $roomID;?></h3>
+<div class="row-fluid">
+    <div class="span12">
+        <?php
+      if($success){
+      ?>
+      <div class="alert alert-success">
+  <strong>Success!</strong> <?php echo $success; ?>
+</div>
+      <?php } if($error){
+          ?>
+      <div class="alert alert-danger">
+  <strong>Error!</strong> <?php echo $error; ?>
+</div>
+      <?php
+      } ?>
+    </div>
+</div>
       <div class="row-fluid">
           <div class="span6">
                 <div class="widget-box">
@@ -135,18 +267,30 @@ include 'layout/head.php';
                         <div id="tab2" class="tab-pane">
                              <form action="#" method="post" class="form-horizontal">
                                   <div class="widget-content nopadding">
+                                      <div class="control-group">
+                                        <label class="control-label"> Consulting Room</label>
+                                          <div class="controls">
+                                            <input type="text" name="consultroom" class="span11" value="<?php echo $roomID?>" readonly>
+                                          </div>
+                                      </div>
+                                      <div class="control-group">
+                                        <label class="control-label"> Staff ID</label>
+                                          <div class="controls">
+                                            <input type="text" name="consultroom" class="span11" value="<?php echo $staffID;?>" readonly>
+                                          </div>
+                                      </div>
                                     <div class="control-group">
                                         <label class="control-label">Request lab</label>
                                         <div class="controls">
-                                          <select multiple>
-                                            <option>First option</option>
-                                            <option>Second option</option>
-                                            <option>Third option</option>
-                                            <option>Fourth option</option>
-                                            <option>Fifth option</option>
-                                            <option>Sixth option</option>
-                                            <option>Seventh option</option>
-                                            <option>Eighth option</option>
+
+                                          <select multiple name="labName[]">
+                                              <option></option>
+                                               <?php
+                                            $lablist = select("SELECT * from lablist");
+                                            foreach($lablist as $labrow){
+                                            ?>
+                                            <option value="<?php echo $labrow['labID'];?>"><?php echo $labrow['labName'];?></option>
+                                              <?php }?>
                                           </select>
                                         </div>
                                       </div>
@@ -163,26 +307,39 @@ include 'layout/head.php';
                                        <div class="control-group">
                                         <label class="control-label">Admit To ward</label>
                                         <div class="controls">
-                                          <select>
-                                            <option value=""> </option>
-                                            <option value="labName">Ward1 Name </option>
-                                            <option value="labName">Ward2 Name </option>
-                                            <option value="labName">Ward3 Name </option>
-                                            <option value="labName">Ward4 Name </option>
-                                            <option value="labName">Ward5 Name </option>
+                                          <select name="wardID">
+                                            <option value=""></option>
+                                              <?php
+                                                $wardsql = select("SELECT * From wardlist");
+                                              foreach($wardsql as $wardrow){
+                                              ?>
+                                            <option value="<?php echo $wardrow['wardID'];?>"> <?php echo $wardrow['wardName'];?> </option>
+                                              <?php }?>
                                           </select>
                                         </div>
                                       </div>
                                        <div class="control-group">
                                         <label class="control-label">Admission Details</label>
                                         <div class="controls">
-                                          <select>
+                                          <select name="admitDetails">
                                             <option value=""> </option>
-                                            <option value="admitDetails"> Treatment And Observation </option>
-                                            <option value="admitDetails"> Operation</option>
-                                            <option value="admitDetails"> Other Reasons</option>
+                                            <option value="Treatment And Observation"> Treatment And Observation </option>
+                                            <option value="Operation"> Operation</option>
+                                            <option value="Other Reasons"> Other Reasons</option>
                                           </select>
                                         </div>
+                                      </div>
+                                      <div class="control-group">
+                                        <label class="control-label"> Date Admitted</label>
+                                          <div class="controls">
+                                            <input type="date" class="span11" name="admitDate" required/>
+                                          </div>
+                                      </div>
+                                      <div class="control-group">
+                                        <label class="control-label"> Discharge Date</label>
+                                          <div class="controls">
+                                            <input type="date" class="span11" name="dischargeDate" required/>
+                                          </div>
                                       </div>
                                       <div class="form-actions">
                                           <i class="span1"></i>
@@ -196,14 +353,35 @@ include 'layout/head.php';
                                   <div class="widget-content nopadding">
                                       <table class="table table-bordered" id="dynamic_field">
                                           <tr>
-                                            <td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis"></textarea>  </td>
+                                              <td> Presciption Code</td>
+                                              <td colspan="2">  <input type="text" name="prescribeCode" value="<?php echo $prescribeCode;?>" readonly class="span11" /></td>
                                           </tr>
                                           <tr>
-                                            <td colspan="3"><textarea class="span12" name="Symptoms" placeholder="Symptoms"></textarea>  </td>
+                                            <td> Pharmacy</td>
+                                            <td colspan="2">
+                                              <select name="pharmacyID" required>
+                                                    <option value=""></option>
+                                                  <?php
+                                                    $pharmsql = select("SELECT * from pharmacy WHERE centerID='".$_SESSION['centerID']."'");
+                                                    if(count($pharmsql)>=1){
+                                                        foreach($pharmsql as $pharmow){
+                                                  ?>
+                                        <option value="<?php echo $pharmow['pharmacyID'];?>" ><?php echo $pharmow['pharmacyName'];?></option>
+                                                  <?php }}else{?>
+                                                  <option value=""> No Pharmacy Available </option>
+                                                  <?php }?>
+                                                </select>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                            <td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>
+                                          </tr>
+                                          <tr>
+                                            <td colspan="3"><textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea>  </td>
                                           </tr>
                                         <tr>
-                                            <td><input type="text" name="drugName[]" placeholder="Medicine" class="span11" /></td>
-                                            <td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td>
+                                            <td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" required /></td>
+                                            <td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" required /></td>
                                             <td><button type="button" name="add" id="add" class="btn btn-primary">Add Medicine</button></td>
                                         </tr>
                                           <tr>
@@ -282,7 +460,7 @@ include 'layout/head.php';
   </div>
 </div>
 
-<div class="row-fluid">
+<div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>
@@ -340,7 +518,7 @@ function resetMenu() {
         var i=1;
         $('#add').click(function(){
             i++;
-            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="drugName[]" placeholder="Medicine" class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){
@@ -348,20 +526,35 @@ function resetMenu() {
             $('#row'+button_id+'').remove();
         });
 
-        $('#submit').click(function(){
-            $.ajax({
-                url:"name.php",
-                method:"POST",
-                data:$('#add_name').serialize(),
-                success:function(data)
-                {
-                    alert(data);
-                    $('#add_name')[0].reset();
-                }
-            });
-        });
+//        $('#submit').click(function(){
+//            $.ajax({
+//                url:"name.php",
+//                method:"POST",
+//                data:$('#add_name').serialize(),
+//                success:function(data)
+//                {
+//                    alert(data);
+//                    $('#add_name')[0].reset();
+//                }
+//            });
+//        });
 //    });
 </script>
+<!--
+<script>
+function dis(){
+    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","loads/prescribeCode.php",false);
+    xmlhttp.send(null);
+    document.getElementById("prescribeCode").innerHTML=xmlhttp.responseText;
+}
+    dis();
+
+    setInterval(function(){
+        dis();
+    },1000);
+</script>
+-->
 </body>
 </html>
 

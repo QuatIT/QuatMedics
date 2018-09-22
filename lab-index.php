@@ -1,10 +1,12 @@
 <?php
 require "assets/core/connection.php";
 
+<<<<<<< HEAD
 $fet_pat=select("SELECT * FROM patient");
 
+=======
+>>>>>>> origin/master
 ?>
-
 
 
 <!DOCTYPE html>
@@ -96,7 +98,7 @@ $fet_pat=select("SELECT * FROM patient");
           </div>
   </div>
 </div>
-<div class="row-fluid">
+<div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>

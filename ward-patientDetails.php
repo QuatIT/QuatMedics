@@ -16,26 +16,12 @@
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         .active{
-            background-color: #209fbf;
+/*            background-color: #209fbf;*/
         }
     </style>
 </head>
 <body>
-<?php
-    include 'layout/head.php';
-
-
-    $wardID = $_GET['wrdno'];
-
-    $wardByID = Ward::find_by_ward_id($wardID);
-    foreach($wardByID as $ward_id){}
-
-    $ward = Ward::find_ward();
-
-
-
-
-    ?>
+<?php include 'layout/head.php'; ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -44,71 +30,33 @@
 
 <div id="sidebar">
     <ul>
-    <li> <a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
-    <li class="active"> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
+    <li> <a href="ward-index"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
+    <li class="active" style="background-color:#209fbf;"> <a href="ward-patient"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
 </div>
-
-
-
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
         <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a href="ward-index?wrdno=<?php echo $wardID;?>" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
-        <a href="ward-patient?wrdno=<?php echo $wardID;?>" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
+        <a href="ward-index" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
+        <a href="ward-patient" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
+        <a href="#" title="" class="tip-bottom"><i class="icon-user"></i>PATIENTS ADMITTION</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">WARD PATIENT MANAGEMENT</h3>
+      <h3 class="quick-actions">PATIENT MANAGEMENT</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Admitted Patient List</a></li>
-<!--                    <li><a data-toggle="tab" href="#tab2">Admit New Patient</a></li>-->
+                    <li class="active"><a data-toggle="tab" href="#tab1">Patient Admittion Details</a></li>
+                    <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li>
+                    <li><a data-toggle="tab" href="#tab3">Treatment History</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
-                    <div class="widget-box">
-                      <div class="widget-title">
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>Patient ID</th>
-                              <th>Admin Details</th>
-                              <th>Nurse</th>
-                              <th>Admitted</th>
-                              <th>Discharged</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                              <?php
-                                $wrd=Ward::find_by_wardAssign_id($wardID);
-                                foreach($wrd as $wrd_assign){ ?>
-                            <tr>
-                              <td><?php echo $wrd_assign['patientID']; ?></td>
-                              <td><?php echo $wrd_assign['admitDetails']; ?></td>
-                              <td><?php echo $wrd_assign['staffID']; ?></td>
-                              <td><?php echo $wrd_assign['admitDate']; ?></td>
-                              <td> <?php echo $wrd_assign['dischargeDate']; ?></td>
-                              <td style="text-align: center;">
-                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>
-                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
-                              </td>
-                            </tr>
-                              <?php } ?>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                </div>
-                <div id="tab2" class="tab-pane">
                     <form action="#" method="post" class="form-horizontal">
                     <div class="span6">
 <!--                        <div class="widget-box">-->
@@ -120,35 +68,25 @@
                                <div class="control-group">
                                 <label class="control-label">Patient : </label>
                                 <div class="controls">
-                                  <select name="patientID" >
-                                    <option value="default"> -- Select Patient --</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                  </select>
+                                    <input type="text" name="patientName" class="span11" readonly>
                                 </div>
                               </div>
                                <div class="control-group">
                                 <label class="control-label">Bed Number : </label>
                                 <div class="controls">
-                                  <select name="bedNumber" >
-                                    <option value="default"> -- Select Bed --</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                  </select>
+                                  <input type="text" name="bedNumber" class="span11" readonly>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Admission Date :</label>
                                 <div class="controls">
-                                    <input name="admitDate" class="span11" type="datetime-local" />
+                                    <input name="admitDate" class="span11" type="text" readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Description :</label>
                                 <div class="controls">
-                                    <textarea class="span11" name="description"></textarea>
+                                    <textarea class="span11" name="description" readonly></textarea>
                                 </div>
                               </div>
                           </div>
@@ -160,45 +98,91 @@
                                <div class="control-group">
                                 <label class="control-label">Patient Status: </label>
                                 <div class="controls">
-                                  <select name="patientStatus" >
-                                    <option value="default"> -- Select Status --</option>
-                                    <option > Admit</option>
-                                    <option > Under Treatment</option>
-                                    <option > Operation</option>
-                                  </select>
+                                  <input type="text" name="patientstatus" class="span11" readonly>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Bed Type :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Bed Type" name="bedType" required />
+                                  <input type="text" class="span11" name="bedType" readonly />
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Discharge Date :</label>
                                 <div class="controls">
-                                  <input type="datetime-local" class="span11" name="dischargeDate" required />
+                                  <input type="text" class="span11" name="dischargeDate" readonly />
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Assign Nurse : </label>
                                 <div class="controls">
-                                  <select name="nurseID" >
-                                    <option value="default"> -- Select Nurse --</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                  </select>
+                                  <input type="text" name="AssignedNurse" class="span11" readonly>
                                     <br/>
                                     <br/>
                                 </div>
                               </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Admit Patient</button>
+                          </div>
+                      </div>
+                    </form>
+                </div>
+<!--            </div>-->
+<!--            <hr/>-->
+<!--            <div class="widget-content tab-content">-->
+                <div id="tab2" class="tab-pane">
+                    <form action="#" method="post" class="form-horizontal">
+                    <div class="span6">
+<!--                        <div class="widget-box">-->
+                          <div class="widget-title">
+                              <span class="icon"> <i class="icon-align-justify"></i> </span>
+                            <h5>Treatement Details</h5>
+                          </div>
+                          <div class="widget-content nopadding">
+                               <div class="control-group">
+                                <label class="control-label"> Treatment : </label>
+                                <div class="controls">
+                                    <input type="text" name="patientName" class="span11">
+                                </div>
                               </div>
                           </div>
                       </div>
+                    <div class="span6">
+                          <div class="widget-title">
+                          </div>
+                          <div class="widget-content nopadding">
+                               <div class="control-group">
+                                <label class="control-label"> Date & Time: </label>
+                                <div class="controls">
+                                  <input type="datetime-local" name="treatmentTime" class="span11">
+                                </div>
+                              </div>
+                              <div class="form-actions">
+                                  <i class="span1"></i>
+                                <button type="submit" class="btn btn-primary btn-block span10"> Save</button>
+                              </div>
+                          </div>
+                      </div>
+                    </form>
+                </div>
+
+                <div id="tab3" class="tab-pane">
+                     <form action="#" method="post" id="add_name" class="form-horizontal">
+                          <div class="widget-content nopadding">
+                              <table class="table table-bordered" id="dynamic_field">
+                                <tr>
+                                    <td><input type="text" name="treatment[]" placeholder="Treatment / Medicine" class="span11" required /></td>
+                                    <td><input type="text" name="dosage[]" placeholder="Dosage / Details" class="span11" required /></td>
+                                    <td><button type="button" name="add" id="add" class="btn btn-primary">Add Treatement</button></td>
+                                </tr>
+                                  <tr>
+                                    <td></td>
+                                    <td></td>
+                                  </tr>
+                            </table>
+                              <div class="form-actions">
+                                  <i class="span1"></i>
+                                <button type="submit" name="saveTreatment" class="btn btn-primary pull-right"> Save Treatement</button>
+                              </div>
+                          </div>
                     </form>
                 </div>
             </div>
@@ -256,6 +240,34 @@
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
+</script>
+
+<script>
+//    $(document).ready(function(){
+        var i=1;
+        $('#add').click(function(){
+            i++;
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="treatment[]" placeholder="Treatment / Medicine"  class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage / Details" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+
+//        $('#submit').click(function(){
+//            $.ajax({
+//                url:"name.php",
+//                method:"POST",
+//                data:$('#add_name').serialize(),
+//                success:function(data)
+//                {
+//                    alert(data);
+//                    $('#add_name')[0].reset();
+//                }
+//            });
+//        });
+//    });
 </script>
 </body>
 </html>

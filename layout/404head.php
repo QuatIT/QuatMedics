@@ -13,6 +13,7 @@ foreach($centerName_sql as $centerName){}
 
 ?>
 
+
 <!--Header-part-->
 <div id="header">
   <h1><a> QUAT MEDICS | <small><?php echo $centerName['centerName']; ?></small></a> </h1>

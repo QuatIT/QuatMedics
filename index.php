@@ -52,7 +52,7 @@ if(isset($_POST['btnSave'])){
                 $centerIDRow1 = $centerUserRow['centerID'];
             }
 
-            if($accessLevelRow1 = 'OPD'){
+            if($accessLevelRow1 == 'OPD'){
 
                 $_SESSION['username'] = $usernameRow1;
                 $_SESSION['password'] = $passwordRow1;
@@ -62,7 +62,7 @@ if(isset($_POST['btnSave'])){
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
                                     window.location.href='opd-index' </script>";
 
-            }elseif($accessLevelRow1 = 'CONSULTATION'){
+            }elseif($accessLevelRow1 == 'CONSULTATION'){
 
                 $_SESSION['username'] = $usernameRow1;
                 $_SESSION['password'] = $passwordRow1;
@@ -72,7 +72,7 @@ if(isset($_POST['btnSave'])){
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
                                     window.location.href='consult-index' </script>";
 
-            }elseif($accessLevelRow1 = 'WARD'){
+            }elseif($accessLevelRow1 == 'WARD'){
 
                 $_SESSION['username'] = $usernameRow1;
                 $_SESSION['password'] = $passwordRow1;
@@ -82,7 +82,7 @@ if(isset($_POST['btnSave'])){
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
                                     window.location.href='ward-index' </script>";
 
-            }elseif($accessLevelRow1 = 'PHARMACY'){
+            }elseif($accessLevelRow1 == 'PHARMACY'){
 
                 $_SESSION['username'] = $usernameRow1;
                 $_SESSION['password'] = $passwordRow1;
@@ -92,7 +92,7 @@ if(isset($_POST['btnSave'])){
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
                                     window.location.href='pharmacy-index' </script>";
 
-            }elseif($accessLevelRow1 = 'LABORATORY'){
+            }elseif($accessLevelRow1 == 'LABORATORY'){
 
                 $_SESSION['username'] = $usernameRow1;
                 $_SESSION['password'] = $passwordRow1;
@@ -115,6 +115,8 @@ if(isset($_POST['btnSave'])){
 }
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 

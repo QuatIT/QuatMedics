@@ -18,7 +18,36 @@
         .active{
             background-color: #209fbf;
         }
+            label{
+                font-weight: bolder;
+            }
     </style>
+  <style type="text/css">
+        .center {
+    margin-top:50px;
+}
+
+.modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+    	padding: 0;
+	}
+
+.modal-footer .btn-group button {
+	height:40px;
+	border-top-left-radius : 0;
+	border-top-right-radius : 0;
+	border: none;
+	border-right: 1px solid #ddd;
+}
+
+.modal-footer .btn-group:last-child > button {
+	border-right: 0;
+}
+    </style>
+
 </head>
 <body>
 
@@ -78,6 +107,11 @@
 
 
     ?>
+
+
+
+
+
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -91,7 +125,6 @@
     <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
     </ul>
 </div>
-
 
 
 <div id="content">
@@ -145,8 +178,123 @@
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody id="outpatientlist"></tbody>
+<!--                          <tbody id="outpatientlist"></tbody>-->
+                          <tbody id="outpatientlist">
+                  <?php
+                        $load_patient = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' ORDER BY patientID ASC");
+
+                            foreach($load_patient as $patient){
+
+                            ?>
+
+                            <tr>
+                              <td><?php echo $patient['patientID']; ?></td>
+                              <td> <?php echo $patient['firstName']." ".$patient['otherName']." ".$patient['lastName']; ?></td>
+                              <td> <?php echo $patient['phoneNumber']; ?></td>
+                              <td style="text-align: center;"> <?php echo $patient['dob']; ?></td>
+                              <td style="text-align: center;">
+                                   <a href="#" data-toggle="modal" data-target="#squarespaceModal<?php echo $patient['patientID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
+                              </td>
+                            </tr>
+
+
+
+
+
+                            <!-- line modal -->
+                            <div class="modal fade" id="squarespaceModal<?php echo $patient['patientID']; ?>" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                        <h3 class="modal-title" id="lineModalLabel"><?php echo $patient['firstName']." ".$patient['otherName']." ".$patient['lastName']; ?> (<?php echo $patient['patientID']; ?>)</h3>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <!-- content goes here -->
+                                        <form>
+                                            <div class="span6">
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputEmail1">Date of Brith</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['dob']; ?>" id="exampleInputEmail1" readonly >
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Blood Group</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['bloodGroup']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputEmail1">Phone Number</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['phoneNumber']; ?>" id="exampleInputEmail1" readonly >
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Guardian Name</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianName']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Guardian Phone Number</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianPhone']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputEmail1">Guardian Address</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianAddress']; ?>" id="exampleInputEmail1" readonly >
+                                                  </div>
+
+                                            </div>
+
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputEmail1">Gender</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['gender']; ?>" id="exampleInputEmail1" readonly >
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Home Address</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['homeAddress']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputEmail1">Home Town</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['hometown']; ?>" id="exampleInputEmail1" readonly >
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Guardian Gender</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianGender']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">Guardian Relation</label>
+                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianRelation']?>" id="exampleInputPassword1" readonly >
+                                                  </div>
+
+                                                  <div class="form-group">
+                                                    <label for="exampleInputPassword1">&nbsp;</label>
+                                                    <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
+                                                  </div>
+
+                                        </form>
+
+                                    </div>
+
+                                </div>
+                              </div>
+                            </div>
+
+
+
+                               <?php } ?>
+
+
+                            </tbody>
                         </table>
+
+
+
+
+
+
                       </div>
                     </div>
                 </div>
@@ -185,19 +333,6 @@
                                     <textarea class="span11" name="otherHealth"></textarea>
                                 </div>
                               </div>
-                               <div class="control-group">
-                                <label class="control-label">Assign Consulting Room</label>
-                                <div class="controls">
-                                  <select name="consultRoom" >
-                                    <option value="default"> -- Select Consulting Room --</option>
-                                    <option value="consultRoom1"> Consulting Room 1 Name</option>
-                                    <option value="consultRoom2"> Consulting Room 2 Name</option>
-                                    <option value="consultRoom3"> Consulting Room 3 Name</option>
-                                    <option value="consultRoom4"> Consulting Room 4 Name</option>
-                                  </select>
-                                </div>
-                                   <div class="controls"></div>
-                              </div>
                           </div>
                       </div>
                     <div class="span6">
@@ -230,6 +365,20 @@
                                 <div class="controls">
                                   <input type="text"  class="span11" name="weight" placeholder="Weight" required />
                                 </div>
+                              </div>
+                               <div class="control-group">
+                                <label class="control-label">Assign Consulting Room</label>
+                                <div class="controls">
+                                  <select name="consultRoom">
+                                    <option value="default"> -- Select Consulting Room --</option>
+                                      <?php
+                                        $consultingroom = Consultation::find_consultingroom();
+                                        foreach($consultingroom as $roomRow){
+                                      ?>
+                                    <option value="<?php echo $roomRow['roomID'];?>"> <?php echo $roomRow['roomName'];?></option>
+                                      <?php }?>
+                                  </select>
+                                </div>
                                   <div class="controls"></div>
                               </div>
 
@@ -246,7 +395,7 @@
       </div>
   </div>
 </div>
-<div class="row-fluid">
+<div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>
@@ -270,6 +419,8 @@
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
+
+
 
      <?php if(empty($_GET['pid'])){  ?>
        <script>
@@ -297,6 +448,7 @@
     </script>
 <?php } ?>
 
+<!--
        <script>
     function out_patient_list(){
         xmlhttp=new XMLHttpRequest();
@@ -310,8 +462,15 @@
             out_patient_list();
         },1000);
     </script>
+-->
 
-
+<script type="text/javascript">
+    setInterval("my_function();",5000);
+    function my_function(){
+//      $('#outpatientlist').load('loads/oldpatient-load.php');
+        document.getElementById("outpatientlist").innerHTML
+    }
+  </script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

@@ -18,10 +18,10 @@ foreach($load_patient as $patient){
   <td> <?php echo $patient['phoneNumber']; ?></td>
   <td style="text-align: center;"> <?php echo $patient['dob']; ?></td>
   <td style="text-align: center;">
-       <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
+       <a href="#" data-toggle="modal" data-target="#squarespaceModal"> <span class="btn btn-primary fa fa-eye"></span></a>
   </td>
 </tr>
 
 
-<?php  } ?>
 
+<?php  } ?>

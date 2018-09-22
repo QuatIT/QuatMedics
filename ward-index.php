@@ -19,9 +19,78 @@
             background-color: #209fbf;
         }
     </style>
+    <style>
+    #modal {
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99997;
+    height: 100%;
+    width: 100%;
+}
+.modalconent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    width: 20%;
+    padding: 20px;
+    z-index: 999999 !important;
+}
+    </style>
 </head>
 <body>
-<?php include 'layout/head.php'; ?>
+<?php
+
+    include 'layout/head.php';
+
+    $success = '';
+    $error = '';
+
+    $wardID = $_GET['wrdno'];
+
+//    if(!empty($wardID)){
+        $wardByID = Ward::find_by_ward_id($wardID);
+        foreach($wardByID as $ward_id){}
+//    }else{
+        $ward = Ward::find_ward();
+//    }
+
+    if(isset($_POST['btnSave'])){
+        $bedNumber = filter_input(INPUT_POST, "bedNumber", FILTER_SANITIZE_STRING);
+        $bedDescription = filter_input(INPUT_POST, "bedDescription", FILTER_SANITIZE_STRING);
+        $bedCharge = filter_input(INPUT_POST, "bedCharge", FILTER_SANITIZE_STRING);
+        $bedStatus = "occupied";
+
+        $bed = Ward::saveBeds($bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
+
+
+        if($bed){
+            $success = "BED CREATED SUCCESSFULLY;";
+        }else{
+            $error = "BED NOT CREATED";
+        }
+
+    }
+
+    ?>
+
+    <?php if(empty($_GET['wrdno'])){ ?>
+    <div id="modal">
+    <div class="modalconent text-center">
+         <h4>Kindly select your Ward</h4>
+        <?php foreach($ward as $wardNo){ ?>
+            <a href="ward-index?wrdno=<?php echo $wardNo['wardID'] ;?>" class="btn btn-warning"><?php echo $wardNo['wardName'];?></a>
+        <?php } ?>
+
+    </div>
+</div>
+
+<?php } ?>
+
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -30,9 +99,9 @@
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+<!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
     <li class="active"> <a href="ward-index.php"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
-    <li> <a href="ward-patient.php"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
+    <li> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
 </div>
 
@@ -41,8 +110,8 @@
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a href="medics-index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a href="ward-index.php" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
+        <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a href="ward-index" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
     </div>
   </div>
   <div class="container">
@@ -66,47 +135,18 @@
                           <thead>
                             <tr>
                               <th>Bed Number</th>
-                              <th>Bed Type</th>
-                              <th>Charge</th>
                               <th>Description</th>
-                              <th>Action</th>
+                              <th>Charge</th>
+                              <th>Status</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td>HPS01W2B4</td>
-                              <td>Bed Type</td>
-                              <td>Ghc 200</td>
-                              <td>A comfortable Bed :)</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>HPS01W2B5</td>
-                              <td>Bed Type</td>
-                              <td>Ghc 500</td>
-                              <td>A comfortable Bed :)</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>HPS01W2B6</td>
-                              <td>Bed Type</td>
-                              <td>Ghc 400</td>
-                              <td>A comfortable Bed :)</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                          </tbody>
+                          <tbody id="load_bed"></tbody>
                         </table>
                       </div>
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
+                    <form action="" method="post" class="form-horizontal">
                     <div class="span6">
 <!--                        <div class="widget-box">-->
                           <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
@@ -114,22 +154,17 @@
                           </div>
                           <div class="widget-content nopadding">
 <!--                            <form action="#" method="post" class="form-horizontal">-->
-                               <div class="control-group">
-                                <label class="control-label">Bed Category</label>
+                             <div class="control-group">
+                                <label class="control-label">Bed Number :</label>
                                 <div class="controls">
-                                  <select name="bedCategory" >
-                                    <option value="default"> -- Bed Category --</option>
-                                    <option value="categoryName"> Category Name</option>
-                                    <option value="categoryName"> Category Name</option>
-                                    <option value="categoryName"> Category Name</option>
-                                  </select>
+                                  <input type="text" class="span11" placeholder="Bed Number" name="bedNumber" />
                                 </div>
                               </div>
 
                               <div class="control-group">
                                 <label class="control-label">Bed Description :</label>
                                 <div class="controls">
-                                    <textarea class="span11" name="bedDesciption"></textarea>
+                                    <textarea class="span11" name="bedDescription"></textarea>
                                 </div>
                               </div>
                           </div>
@@ -140,22 +175,15 @@
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Bed Number :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Bed Number" name="bedNumber" />
-                                </div>
-                              </div>
-                              <div class="control-group">
                                 <label class="control-label">Charge :</label>
                                 <div class="controls">
                                   <input type="number" class="span11" placeholder="Bed Charge" name="bedCharge" required />
                                 </div>
-                                  <br/>
                               </div>
 <!--                              <div class="controls"></div>-->
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Bed</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Bed</button>
                               </div>
                           </div>
                       </div>
@@ -166,7 +194,7 @@
       </div>
   </div>
 </div>
-<div class="row-fluid">
+<div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>
@@ -190,6 +218,31 @@
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
+
+
+
+<script>
+window.onload = function () {
+    document.getElementById('button').onclick = function () {
+        document.getElementById('modal').style.display = "none"
+    };
+};
+</script>
+
+
+    <script>
+    function load_bed(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/load_bed.php?warID=<?php echo $wardID; ?>",false);
+        xmlhttp.send(null);
+        document.getElementById("load_bed").innerHTML=xmlhttp.responseText;
+    }
+        load_bed();
+
+        setInterval(function(){
+            load_bed();
+        },1000);
+    </script>
 
 
 

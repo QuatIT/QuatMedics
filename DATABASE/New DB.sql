@@ -60,6 +60,7 @@ INSERT INTO `centeruser` (`userID`, `centerID`, `userName`, `password`, `accessL
 
 -- --------------------------------------------------------
 
+
 --
 -- Table structure for table `consultation`
 --

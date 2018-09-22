@@ -21,6 +21,7 @@
 </style>
 </head>
 <body>
+
 <?php include 'layout/head.php'; ?>
 
 <div id="search">
@@ -115,7 +116,7 @@
       </div>
   </div>
 </div>
-<div class="row-fluid">
+<div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>
