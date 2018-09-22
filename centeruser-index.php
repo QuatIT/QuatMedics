@@ -52,7 +52,8 @@
             $accessLevel = $staffDepartment;
             $centerID = $_SESSION['centerID'];
 
-            $userCredential = User::centerUserLogin($username,$password);
+//            $userCredential = User::centerUserLogin($staffID,$username,$password,$accessLevel,$centerID);
+            $userCredential = User::saveUserCredential($staffID,$username,$password,$accessLevel,$centerID);
 
             $success = "USER DATA CREATED SUCCESSFULLY";
         }else{
@@ -140,7 +141,7 @@
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
+                    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
@@ -186,8 +187,8 @@
                                <div class="control-group">
                                 <label class="control-label"> Staff Category</label>
                                 <div class="controls">
-                                  <select name="consultRoom" >
-                                    <option value=""> </option>
+                                  <select name="staffCategory" >
+                                    <option value="default"> </option>
                                     <option value="Doctor"> Doctor</option>
                                     <option value="Nurse"> Nurse</option>
                                     <option value="Midwife"> Midwife</option>
@@ -206,7 +207,7 @@
                                 <label class="control-label"> Gender</label>
                                 <div class="controls">
                                   <select name="gender" >
-                                        <option value=""> </option>
+                                        <option value="default"> </option>
                                         <option value="Male"> Male</option>
                                         <option value="Female"> Female</option>
                                     </select>
@@ -215,13 +216,14 @@
                               <div class="control-group">
                                 <label class="control-label"> Staff Department</label>
                                 <div class="controls">
-                                  <select name="consultRoom" >
-                                    <option value=""> </option>
-                                    <option value="ODP"> ODP</option>
-                                    <option value="CONSULTATION"> Consultation</option>
-                                    <option value="WARD"> Ward</option>
-                                    <option value="PHARMACY"> Pharmacy</option>
-                                    <option value="LABORATORY"> Laboratory</option>
+                                  <select name="staffDepartment" >
+                                    <option value="default"> </option>
+                                      <?php
+                                        $dep = select("SELECT * FROM department WHERE centerID='".$_SESSION['centerID']."' ");
+                                        foreach($dep as $dept){
+                                      ?>
+                                        <option value="<?php echo $dept['departmentID']; ?>"> <?php echo $dept['departmentName']; ?></option>
+                                    <?php } ?>
                                   </select>
                                 </div>
                               </div>
@@ -229,7 +231,7 @@
                               <div class="control-group">
                                 <label class="control-label"> Work License</label>
                                 <div class="controls">
-                                  <input type="file" accept="application/pdf" class="span11" name="license" required />
+                                  <input type="file" accept="application/pdf" class="span11" name="license"  />
                                 </div>
                               </div>
                               <div class="control-group">
@@ -241,7 +243,7 @@
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Staff</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Staff</button>
                               </div>
                           </div>
                       </div>
