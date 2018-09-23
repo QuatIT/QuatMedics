@@ -95,11 +95,17 @@
       $otherHealth = filter_input(INPUT_POST, "otherHealth", FILTER_SANITIZE_STRING);
       $roomID = filter_input(INPUT_POST, "consultRoom", FILTER_SANITIZE_STRING);
 
+        $patient_busy = PATIENT_BUSY;
+
         $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
 
         if($consultAssignPatient1){
-            $success = "<script>document.write('PATIENT ASSIGNED TO CONSULTING ROOM')
+            $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."' WHERE patientID='$patientID' ");
+
+            if($update_patient_status){
+                $success = "<script>document.write('PATIENT ASSIGNED TO CONSULTING ROOM')
                                 window.location.href='opd-patient?tab=opd-patient' </script>";
+            }
         }else{
             $error = "PATIENT NOT ASSIGNED";
         }
@@ -181,7 +187,7 @@
 <!--                          <tbody id="outpatientlist"></tbody>-->
                           <tbody id="outpatientlist">
                   <?php
-                        $load_patient = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' ORDER BY patientID ASC");
+                        $load_patient = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' && patient_status !='".PATIENT_BUSY."' ORDER BY patientID ASC");
 
                             foreach($load_patient as $patient){
 

@@ -21,7 +21,19 @@
     </style>
 </head>
 <body>
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+
+    $patientID = $_GET['patid'];
+    $wardID = $_REQUEST['wrdno'];
+
+    $patient = Ward::find_by_wardPatient_id($patientID);
+    foreach($patient as $pat){}
+//    echo "<script>alert('{$pat['patientID']}')</script>";
+    $pat_fxn = Patient::find_by_patient_id($patientID);
+    foreach($pat_fxn as $patDetails){}
+
+    ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -68,7 +80,7 @@
                                <div class="control-group">
                                 <label class="control-label">Patient : </label>
                                 <div class="controls">
-                                    <input type="text" name="patientName" class="span11" readonly>
+                                    <input type="text" value="<?php echo $patDetails['firstName'].' '.$patDetails['otherName'].' '.$patDetails['lastName']; ?>" name="patientName" class="span11" readonly>
                                 </div>
                               </div>
                                <div class="control-group">
@@ -80,13 +92,13 @@
                               <div class="control-group">
                                 <label class="control-label">Admission Date :</label>
                                 <div class="controls">
-                                    <input name="admitDate" class="span11" type="text" readonly/>
+                                    <input name="admitDate" value="<?php echo $pat['admitDate']; ?>" class="span11" type="text" readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Description :</label>
                                 <div class="controls">
-                                    <textarea class="span11" name="description" readonly></textarea>
+                                    <textarea class="span11" name="description" readonly><?php echo $pat['admitDetails']; ?></textarea>
                                 </div>
                               </div>
                           </div>
@@ -110,13 +122,13 @@
                               <div class="control-group">
                                 <label class="control-label">Discharge Date :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" name="dischargeDate" readonly />
+                                  <input type="text" value="<?php echo $pat['dischargeDate']; ?>"  class="span11" name="dischargeDate" readonly />
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Assign Nurse : </label>
                                 <div class="controls">
-                                  <input type="text" name="AssignedNurse" class="span11" readonly>
+                                  <input type="text" value="<?php echo $pat['staffID']; ?>"  name="AssignedNurse" class="span11" readonly>
                                     <br/>
                                     <br/>
                                 </div>
