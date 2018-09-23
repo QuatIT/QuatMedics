@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+<!--<link href="css/font-awesome.css" rel="stylesheet">-->
+
+<link rel="stylesheet" href="css/beotiger_main.css" type="text/css">
+<link rel="stylesheet" href="css/justmicrec.css" type="text/css">
+
+<!-- Note: jquery is needed just for demonstration script -->
+<script
+			  src="js/jquery-1.12.4.min.js"
+			  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+			  crossorigin="anonymous"></script>
+<script src="js/justmicrec_lib.js"></script>
+<script src="js/justmicrec.js"></script>
+
+<title>QuatMedics</title>
+</head>
+
+<body>
+
+<div id="main" style="width: 75%; margin: 40px auto">
+
+	<div id="myflashrec">
+
+		<div id="rec-ctrl">
+			<strong>Maximum Time</strong>:
+							<select id="maxtime" title="Select maximum time for recording">
+								<option value="15" >15 sec</option>
+								<option value="30">30 sec</option>
+								<option value="60" selected>1 min</option>
+								<option value="120">2 min</option>
+								<option value="180">3 min</option>
+								<option value="300">5 min</option>
+								<option value="600">10 min</option>
+							</select>
+			&nbsp;&nbsp;&nbsp;
+			<strong>Time left</strong>: <span id="time">00:00</span>
+			<input type="hidden" id="recn" value="%%RECN%%">
+
+		</div>
+		<br>
+		<div>
+			<strong>Microphone level</strong>: <span id="level"></span>
+		</div>
+
+		<div>
+			<div id="levelbase">
+				<canvas id="levelbar"></canvas>
+			</div>
+			<div id="levelbase2">
+				<div id="levelbar2"></div>
+			</div>
+
+		</div>
+
+<!--		<hr>-->
+
+		<div style="border-top: 1px solid #c6c6c6;padding-top: 20px;margin-top: 20px;">
+            <button type="button" id="start" class="btn btn-warning"><i class="fa fa-microphone"></i> Start</button>
+            <button disabled type="button" id="stop" class="btn btn-info">Stop/Pause</button>
+            <button disabled type="button" id="resume" class="btn btn-info">Resume</button>
+
+            <button disabled type="button" id="preview" class="btn btn-info">Preview</button>
+            <button disabled type="button" id="stoppreview" class="btn btn-info">Stop preview</button>
+
+			<br><br>
+
+            <button type="button" id="sendwav" class="btn btn-primary">Save Audio</button>
+
+			<br>
+		</div>
+
+		<hr hidden>
+
+		<hr hidden>
+		<h3 hidden>Events Log &nbsp;&nbsp;&nbsp;<button onclick="$('#log').val('')">Clear log</button></h3>
+		<div>
+			<textarea hidden id="log" cols="50" rows="8"></textarea>
+		</div>
+	</div>
+
+
+
+</div><!-- /#main -->
+</body>
+</html>
