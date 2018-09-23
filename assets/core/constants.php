@@ -6,6 +6,9 @@ define("DB_USER" , "root");
 define("DB_PASSWORD" , "");
 define("DB_NAME" , "quatMedics");
 
+
+define("PATIENT_BUSY" , "patient_busy");
+
 $encryption_key = "encryption_key-243423";
 
 
