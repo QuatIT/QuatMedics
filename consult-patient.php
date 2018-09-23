@@ -40,7 +40,7 @@ include 'layout/head.php';
 
     foreach($consultdet as $consultrow){
            $patientID = $consultrow['patientID'];
-        $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID'");
+        $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID' && lock_center='".$_SESSION['centerID']."' ");
         foreach($fetchpatient as $ptndetails){
             $name = $ptndetails['firstName']." ".$ptndetails['otherName']." ".$ptndetails['lastName'];
         }
@@ -73,7 +73,7 @@ include 'layout/head.php';
                             if($insertLabReq){
                                  $success =  "LAB REQUEST SENT SUCCESSFULLY";
             $updatePatient = update("UPDATE consultation set status='CONSULTED' where patientID='$patientID' AND consultID='$conid'");
-                                echo "<script>window.location='consult-index';</script>";
+                                echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
                             }else{
                                 $error =  "ERROR: LAB REQUEST NOT SENT";
                             }
