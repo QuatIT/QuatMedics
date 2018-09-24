@@ -68,7 +68,7 @@ include 'layout/head.php';
                     if(trim($_POST["labName"][$i] != '')) {
                         $labID = trim($_POST["labName"][$i]);
                         $status = trim("Requested");
-                        $insertLabReq = insert("INSERT INTO labresults(labID,patientID,staffID,consultingRoom,status) VALUES('$labID','$patientID','$staffID','$roomID','$status')");
+                        $insertLabReq = insert("INSERT INTO labresults(labID,patientID,staffID,consultingRoom,status,consultID) VALUES('$labID','$patientID','$staffID','$roomID','$status','".$_GET['conid']."')");
 
                             if($insertLabReq){
                                  $success =  "LAB REQUEST SENT SUCCESSFULLY";

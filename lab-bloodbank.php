@@ -148,12 +148,12 @@ $donorID=generateDonorID();
 
                           $blood_group=select("SELECT * FROM bloodgroup_tb");
                           foreach($blood_group as $blood_groups){
-
-                            echo "<tr>
-                              <td>".$blood_groups['bloodID']."</td>
-                              <td>".$blood_groups['bloodGroup']."</td>
-                              <td>".$blood_groups['charge']."</td>
-                              <td>".$blood_groups['bloodBags']."</td>
+                              ?>
+                            <tr>
+                              <td><?php echo $blood_groups['bloodID'];?></td>
+                              <td><?php echo $blood_groups['bloodGroup'];?></td>
+                              <td><?php echo $blood_groups['charge'];?></td>
+                              <td><?php echo $blood_groups['bloodBags'];?></td>
                               <td style='text-align: center;'>
                               <a href='lab-bloodbank.php?bloodGroup= hifriends'><span class='btn btn-primary fa fa-eye' data-toggle='modal' data-target='#myModal'></span></a></td>
 
@@ -163,7 +163,7 @@ $donorID=generateDonorID();
 
 
                                      //modal
-
+                                  <?php
                                    if(isset($_POST['ch_sub'])){
 
                                        $eff_chng = filter_input(INPUT_POST,'eff_chng',FILTER_SANITIZE_STRING);
@@ -182,7 +182,7 @@ $donorID=generateDonorID();
 
                                        }
 
-
+                                ?>
 
                                      <!--  content-->
                                      <div class='modal-content'>
@@ -202,8 +202,8 @@ $donorID=generateDonorID();
 
                                    </div>
                                  </div>
-                            </tr>";
-      }?>
+                            </tr>
+ <?php     }?>
                           </tbody>
                         </table>
                       </div>

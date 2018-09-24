@@ -50,19 +50,10 @@
 
     $roomID = $_GET['roomID'];
 
-//    if(!empty($wardID)){
         $roomByID = Consultation::find_by_room_id($roomID);
         foreach($roomByID as $room_id){}
-//    }else{
-        $room = Consultation::find_consultingroom();
-//    if($room){
-//           foreach($room as $roomno){
-//            $roomID = $roomno['roomID'];
-//            $roomName = $roomno['roomName'];
-//        }
-//    }
 
-//    }
+        $room = Consultation::find_consultingroom();
 
     ?>
 
@@ -126,17 +117,26 @@
           </div>
           <div class="span4">
                 <div class="widget-box">
-                  <div class="widget-title"> <span class="icon"> <i class="icon-refresh"></i> </span>
-                    <h5>News updates</h5>
+                  <div class="widget-title"> <span class="icon"> <i class="icon-file"></i> </span>
+                    <h5>Lab Results</h5>
                   </div>
                   <div class="widget-content nopadding updates">
+
+                    <?php
+                        $lab_update = select("SELECT * FROM labresults WHERE status='".SENT_TO_CONSULTING."' && consultingRoom='".$roomID."' && centerID='".$_SESSION['centerID']."' GROUP BY labRequestID ");
+                        foreach($lab_update as $labupdate){
+                      ?>
                     <div class="new-update clearfix">
                         <i class="icon-warning-sign"></i>
                         <div class="update-done">
-                          <a href="#" title=""><strong>Lab Result For Patient PTN001 Available</strong></a>
+                            <a href="consult-index" onclick="return popitup('consult-patient?roomID={$roomID}&conid={$}')"><strong>Lab Result For <?php echo $labupdate['patientID']; ?> Available</strong></a>
+<!--                          <a href="#" title=""><strong>Lab Result For Patient PTN001 Available</strong></a>-->
                         </div>
                       <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
                     </div>
+                      <?php } ?>
+
+<!--
                     <div class="new-update clearfix">
                         <i class="icon-user"></i>
                         <span class="update-notice">
@@ -165,6 +165,7 @@
                         </span>
                         <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
                     </div>
+-->
                   </div>
                 </div>
           </div>
@@ -218,6 +219,19 @@ function dis(){
         dis();
     },1000);
 </script>
+
+
+    <script language="javascript" type="text/javascript">
+
+function popitup(url) {
+newwindow=window.open(url,'name','height=500,width=550');
+if (window.focus) {newwindow.focus()}
+return false;
+}
+
+
+</script>
+
 
 
 <script type="text/javascript">

@@ -7,6 +7,12 @@ define("DB_PASSWORD" , "");
 define("DB_NAME" , "quatMedics");
 
 
+define("SENT_TO_CONSULTING" , "sent_to_consulting");
+define("SENT_TO_LAB" , "sent_to_lab");
+define("SENT_TO_WARD" , "sent_to_ward");
+define("SENT_TO_PHARMACY" , "sent_to_pharmacy");
+
+
 define("PATIENT_BUSY" , "patient_busy");
 
 $encryption_key = "encryption_key-243423";

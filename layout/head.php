@@ -21,7 +21,7 @@ foreach($centerName_sql as $centerName){}
 
 <!--Header-part-->
 <div id="header">
-  <h1><a> QUAT MEDICS | <small><?php echo $centerName['centerName']; ?></small></a> </h1>
+  <h1><a> <span style="color:#1860c3;">QUAT</span>MEDIC | <small><?php echo $centerName['centerName']; ?></small></a> </h1>
 </div>
 <!--close-Header-part-->
 
@@ -39,11 +39,11 @@ foreach($centerName_sql as $centerName){}
 <!--top-Header-menu-->
 <div id="user-nav" class="navbar navbar-inverse">
   <ul class="nav">
-    <li class="" ><a title="" href="opd-index.php"><i class="icon icon-user"></i> <span class="text">OPD</span></a></li>
-    <li class="" ><a title="" href="consult-index.php"><i class="icon icon-briefcase"></i> <span class="text">CONSULTATION</span></a></li>
-    <li class="" ><a title="" href="lab-index.php"><i class="icon icon-filter"></i> <span class="text">LABORATORY</span></a></li>
-    <li class="" ><a title="" href="pharmacy-index.php"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
-    <li class="" ><a title="" href="ward-index.php"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
+    <li class="" ><a title="" href="opd-index"><i class="icon icon-user"></i> <span class="text">OPD</span></a></li>
+    <li class="" ><a title="" href="consult-index"><i class="icon icon-briefcase"></i> <span class="text">CONSULTATION</span></a></li>
+    <li class="" ><a title="" href="lab-index"><i class="icon icon-filter"></i> <span class="text">LABORATORY</span></a></li>
+    <li class="" ><a title="" href="pharmacy-index"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
+    <li class="" ><a title="" href="ward-index"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
     <li class="dropdown" id="settings">
         <a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle">
             <i class="icon icon-cog"></i>
