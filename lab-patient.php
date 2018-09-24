@@ -1,9 +1,35 @@
-<?php
-include "assets/core/connection.php";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>QUAT MEDICS ADMIN</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="css/fullcalendar.css" />
+<link rel="stylesheet" href="css/colorpicker.css" />
+<link rel="stylesheet" href="css/datepicker.css" />
+<link rel="stylesheet" href="css/uniform.css" />
+<link rel="stylesheet" href="css/select2.css" />
+<link rel="stylesheet" href="css/maruti-style.css" />
+<link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
 
+<?php
+    include 'layout/head.php';
+ $success = '';
+ $error = '';
 
 $patientID=$_REQUEST['patientID'];
+$labRequestID=$_REQUEST['rID'];
 //avoid undefined index msg
+
+
+//extract patient name
+$pat = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' && patientID='".$patientID."' ");
+foreach($pat as $patname){}
 
 
 
@@ -21,11 +47,9 @@ $patient_ID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
 $labResults=filter_input(INPUT_POST, "labResults", FILTER_SANITIZE_STRING);
 
 
-<<<<<<< HEAD
-=======
 
 //fetching uder status 1=uploaded  0=pending
->>>>>>> origin/master
+
 
 if(isset($_FILES['file'])){
 	$file = $_FILES['file'];
@@ -51,10 +75,11 @@ if(isset($_FILES['file'])){
 			 	//check if file has been loaded earlier and move it from temporary location into folder
 			 	if(move_uploaded_file($file_tmp,$file_destination)){
                     // echo $file_destination;
-            $qry =insert("INSERT INTO labresults(labResultID,patientID,labResult)VALUES($labResultID,'".$patient_ID."','".$file_name."')");
+            $qry =update("UPDATE labresults SET labResult='$file_destination',status='".SENT_TO_CONSULTING."' WHERE labRequestID='".$labRequestID."' ");
+//            $qry =insert("INSERT INTO labresults(labResultID,patientID,labResult,status)VALUES('$labResultID','".$patient_ID."','".$file_destination."','')");
             if($qry){
 
-                echo "<script>alert('File Upload Successful');
+                $success = "<script>document.write('File Upload Successful');
                 document.location.assign('lab-index.php')</script>";
             }
 			 	}
@@ -64,30 +89,8 @@ if(isset($_FILES['file'])){
 	}
 }
 }
-?>
 
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>QUAT MEDICS ADMIN</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
-<link rel="stylesheet" href="css/fullcalendar.css" />
-<link rel="stylesheet" href="css/colorpicker.css" />
-<link rel="stylesheet" href="css/datepicker.css" />
-<link rel="stylesheet" href="css/uniform.css" />
-<link rel="stylesheet" href="css/select2.css" />
-<link rel="stylesheet" href="css/maruti-style.css" />
-<link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-</head>
-<body>
-
-<?php include 'layout/head.php'; ?>
+    ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -114,6 +117,21 @@ if(isset($_FILES['file'])){
   <div class="container">
       <h3 class="quick-actions">PATIENT LAB RESULTS</h3>
 
+            <?php
+                      if($success){
+                      ?>
+                      <div class="alert alert-success">
+                  <strong>Success!</strong> <?php echo $success; ?>
+                </div>
+                      <?php } if($error){
+                          ?>
+                      <div class="alert alert-danger">
+                  <strong>Error!</strong> <?php echo $error; ?>
+                </div>
+                      <?php
+                      } ?>
+
+
       <div class="row-fluid">
           <div class="span12">
                 <div class="widget-box">
@@ -136,7 +154,19 @@ if(isset($_FILES['file'])){
                                     <div class="control-group">
                                         <label class="control-label"> Lab Type :</label>
                                         <div class="controls">
-                                            <textarea class="span11" name="healthVitals"></textarea>
+                                            <textarea class="span11" rows="5" name="healthVitals" readonly><?php
+                                                $ltest = select("SELECT * FROM labresults WHERE labRequestID='".$labRequestID."' ");
+                                                foreach($ltest as $labtxt){
+//                                                    echo $labtxt['labt'];
+
+                                                    $labnam = select("SELECT GROUP_CONCAT(labName) as labt FROM lablist WHERE labID='".$labtxt['labID']."' ");
+                                                    foreach($labnam as $labname){
+                                                        echo $labname['labt'].",";
+                                                    }
+
+
+                                                } ?>
+                                            </textarea>
                                         </div>
                                       </div>
                                   </div>
@@ -146,7 +176,7 @@ if(isset($_FILES['file'])){
                                       <div class="control-group">
                                         <label class="control-label">Patient Name :</label>
                                         <div class="controls">
-                                          <input type="text" class="span11" name="patientName" value=""readonly/>
+                                          <input type="text" class="span11" name="patientName" value="<?php echo $patname['firstName'].' '.$patname['otherName'].' '.$patname['lastName']; ?>" readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">

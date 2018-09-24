@@ -1,13 +1,3 @@
-<?php
-require "assets/core/connection.php";
-
-<<<<<<< HEAD
-$fet_pat=select("SELECT * FROM patient");
-
-=======
->>>>>>> origin/master
-?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +23,12 @@ $fet_pat=select("SELECT * FROM patient");
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+
+    $fet_pat=select("SELECT * FROM labresults WHERE status='Requested' && centerID='".$_SESSION['centerID']."' GROUP BY labRequestID ");
+
+    ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -78,19 +73,35 @@ $fet_pat=select("SELECT * FROM patient");
                       <tbody>
                 
                           <?php
-                          foreach($fet_pat as $fet_pats){
+                                foreach($fet_pat as $fet_pats){
 
-                            echo "<tr>
-                          <td>".$fet_pats['patientID']."</td>
-                          <td>".$fet_pats['firstName']." ".$fet_pats['otherName']." ".$fet_pats['lastName']."</td>
-                          <td>Doctor</td>
-                          <td>Lab</td>
+                                $pat_sql = select("SELECT firstName,otherName,lastName FROM patient WHERE patientID='".$fet_pats['patientID']."' ");
+                                    foreach($pat_sql as $pname){}
+                            ?>
+                        <tr>
+                          <td><?php echo $fet_pats['patientID']; ?></td>
+                          <td><?php echo $pname['firstName']." ".$pname['otherName']." ".$pname['lastName']; ?></td>
+                          <td><?php echo $fet_pats['staffID']; ?></td>
+                          <td><?php
+                                    $ltest = select("SELECT * FROM labresults WHERE labRequestID='".$fet_pats['labRequestID']."' ");
+                                    foreach($ltest as $labtxt){
+//                                        echo $labtxt['labt'];
+
+                                        $labnam = select("SELECT GROUP_CONCAT(labName) as labt FROM lablist WHERE labID='".$labtxt['labID']."' ");
+                                        foreach($labnam as $labname){
+
+                                            echo $labname['labt'].",";
+                                        }
+
+
+                                    } ?>
+                                    </td>
                           <td style='text-align: center;'>
-                          <a href='lab-patient.php?patientID=".$fet_pats['patientID']."'><span class='btn btn-primary fa fa-eye'></span></a> 
+                          <a href='lab-patient.php?patientID=<?php echo $fet_pats['patientID']."&rID=".$fet_pats['labRequestID']; ?>'><span class='btn btn-primary fa fa-eye'></span></a>
                            
                           </td>
-                        </tr>";
-                      }?>
+                        </tr>
+                     <?php } ?>
                       </tbody>
                     </table>
                   </div>
