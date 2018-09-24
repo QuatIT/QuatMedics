@@ -414,7 +414,11 @@ include 'layout/head.php';
                           </div>
                           <div class="panel-content nopadding">
                             <ul class="contact-list">
-                              <li id="" class="online new"><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 13-05-2018</span></a></li>
+                                <li id="" class="online newbtn btn-primary">
+                                  <a href=""><i class="fa fa-calendar"></i><span> Medical Records</span></a>
+                                </li>
+
+
                               <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 15-05-2018</span></a></li>
                               <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 18-05-2018</span></a></li>
                               <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 23-06-2018</span></a></li>
@@ -425,6 +429,13 @@ include 'layout/head.php';
                         <div class="chat-content panel-left2" style="height: auto;">
                           <div class="chat-messages" id="chat-messages" style="height: auto;">
                             <div id="chat-messages-inner">
+                                <form class="form" method="post" action="">
+                                    <div class="form-groups">
+                                        <div class="controls">
+                                            <input type="email" name="staffEMail" class="span11" />
+                                        </div>
+                                    </div>
+                                </form>
                                 <p id="'+id+'" class="user-'+idname+'">
                                     <span class="msg-block"><i class="fa fa-user"></i>
                                         <strong>OPD</strong> <span class="time">9:15 am</span>
