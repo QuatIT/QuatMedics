@@ -23,6 +23,9 @@
 <body>
 <?php
     include 'layout/head.php';
+
+    if($_SESSION['accessLevel']=='CONSULTATION'){
+
         $roomID = $_GET['roomID'];
 ?>
 <div id="search">
@@ -282,3 +285,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>

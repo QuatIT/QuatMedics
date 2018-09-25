@@ -1,14 +1,3 @@
-<?php
-require "assets/core/connection.php";
- $_GET['patientID'] ;
-
-
- // $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
- //    $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
-
-
-?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +31,19 @@ require "assets/core/connection.php";
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+
+    if($_SESSION['accessLevel']=='PHARMACY'){
+
+    $_GET['patientID'] ;
+
+
+ // $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
+ //    $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
+
+
+    ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -223,3 +224,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>

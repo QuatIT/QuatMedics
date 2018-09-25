@@ -3,7 +3,7 @@
 include '../assets/core/connection.php';
 
 $roomID = $_GET['roomID'];
-$load_consultation = select("SELECT * FROM consultation WHERE roomID='$roomID' ORDER BY doe ASC");
+$load_consultation = select("SELECT * FROM consultation WHERE roomID='$roomID' && status='".SENT_TO_CONSULTING."' ORDER BY doe ASC");
 
 foreach($load_consultation as $consultRow){
     $patientID = $consultRow['patientID'];

@@ -44,6 +44,7 @@
 
         $username = filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING);
         $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
+        $userID = filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING);
 
         $centerUser = User::saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment);
 
@@ -53,7 +54,7 @@
             $centerID = $_SESSION['centerID'];
 
 //            $userCredential = User::centerUserLogin($staffID,$username,$password,$accessLevel,$centerID);
-            $userCredential = User::saveUserCredential($staffID,$username,$password,$accessLevel,$centerID);
+            $userCredential = User::saveUserCredential($staffID,$username,$password,$accessLevel,$centerID,$userID);
 
             $success = "USER DATA CREATED SUCCESSFULLY";
         }else{
@@ -125,17 +126,7 @@
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td>MDC001</td>
-                              <td> Goodman Effah</td>
-                              <td> Consultation</td>
-                              <td style="text-align: center;"> 0245885545</td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                          </tbody>
+                          <tbody id="centeruser"></tbody>
                         </table>
                       </div>
                     </div>
@@ -278,6 +269,19 @@
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
+<script>
+  function newpatient(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/centeruser-load.php",false);
+        xmlhttp.send(null);
+        document.getElementById("centeruser").innerHTML=xmlhttp.responseText;
+    }
+        newpatient();
+
+        setInterval(function(){
+            newpatient();
+        },3000);
+    </script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

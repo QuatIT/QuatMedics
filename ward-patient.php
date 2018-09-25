@@ -24,6 +24,7 @@
 <?php
     include 'layout/head.php';
 
+if($_SESSION['accessLevel']=='WARD'){
 
     $wardID = $_GET['wrdno'];
 
@@ -259,3 +260,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>

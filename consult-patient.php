@@ -27,6 +27,9 @@
 
 <?php
 include 'layout/head.php';
+
+    if($_SESSION['accessLevel']=='CONSULTATION'){
+
     $success = "";
     $error = "";
     $conid = $_GET['conid'];
@@ -575,3 +578,4 @@ function dis(){
 </body>
 </html>
 
+<?php }else{echo "<script>window.location='404'</script>";}?>

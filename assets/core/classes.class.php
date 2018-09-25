@@ -17,8 +17,8 @@
       return $result;
     }
 
-    public function saveUserCredential($staffID,$username,$password,$accessLevel,$centerID){
-      $result=insert("INSERT INTO centerUser(userID,userName,password,accessLevel,centerID,dateRegistered) VALUES('$staffID','$username','$password','$accessLevel','$centerID',CURDATE() ) ") ;
+    public function saveUserCredential($staffID,$username,$password,$accessLevel,$centerID,$userID){
+      $result=insert("INSERT INTO centerUser(userID,userName,password,accessLevel,centerID,dateRegistered,staffID) VALUES('$staffID','$username','$password','$accessLevel','$centerID',CURDATE(),'$userID' ) ") ;
       return $result;
     }
 

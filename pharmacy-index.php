@@ -1,10 +1,3 @@
-<?php
-require "assets/core/connection.php";
-
-$get_pharm= select("SELECT * FROM patient");
-
-?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +23,14 @@ $get_pharm= select("SELECT * FROM patient");
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+
+    if($_SESSION['accessLevel']=='PHARMACY'){
+
+        $get_pharm= select("SELECT * FROM patient");
+
+    ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -147,3 +147,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>

@@ -46,6 +46,9 @@
 <?php
 
     include 'layout/head.php';
+
+    if($_SESSION['accessLevel']=="CONSULTATION" || $_SESSION['accessLevel']=='WARD'){
+
 ?>
 
 <div id="search">
@@ -56,7 +59,16 @@
 
 <div id="sidebar">
     <ul>
+        <?php
+        if($_SESSION['accessLevel']=='WARD'){ ?>
     <li> <a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
+        <?php } ?>
+        <?php
+            if($_SESSION['accessLevel']=='CONSULTATION'){
+        ?>
+    <li> <a href="consult-index"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
+    <li> <a href="consult-appointment"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
+        <?php } ?>
     <li class="active"> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
 </div>
@@ -205,3 +217,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>
