@@ -3,14 +3,6 @@ require "assets/core/connection.php";
 
 
 
-//generate blood id
-//$bloodID ='BD - '.mt_rand(1,77).mt_rand(89,1992);
-
-
-//$_GET['bloodID'];
-//$_GET['bloodGroup']=$bloodgpx;
-
-
 
 
 $blood_grp=select("SELECT * FROM bloodgroup_tb");
@@ -168,22 +160,11 @@ $donorID=generateDonorID();
 
 
 
-<<<<<<< HEAD
-                          $blood_group=select("SELECT * FROM bloodgroup_tb");
-                          foreach($blood_group as $blood_groups){
-                              ?>
-                            <tr>
-                              <td><?php echo $blood_groups['bloodID'];?></td>
-                              <td><?php echo $blood_groups['bloodGroup'];?></td>
-                              <td><?php echo $blood_groups['charge'];?></td>
-                              <td><?php echo $blood_groups['bloodBags'];?></td>
-=======
                             <tr>
                               <td><?php echo $blood_grpx['bloodID']?></td>
                               <td><?php echo $blood_grpx['bloodGroup']?></td>
                               <td><?php echo  $blood_grpx['charge']?></td>
                               <td><?php echo $blood_grpx['bloodBags']?></td>
->>>>>>> QuatMedics/master
                               <td style='text-align: center;'>
                               <a href='lab-bloodbank.php'><span class='btn btn-primary fa fa-eye' data-toggle='modal' data-target='#squarespaceModal'></span></a></td>
 
@@ -214,38 +195,13 @@ if(isset($_POST['ch_sub'])){
                                      <div class='modal-dialog'>
                                      <div class='modal-content'>
                                        <div class='modal-header'name='mod_header' id='mod_header'>
-                                       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">Ã—</span><span class="sr-only">Close</span></button>
                                      <h3 class="modal-title" id="lineModalLabel">QuatMedic</h3>
                                     </div>
                                     <div class="modal-body">
 
-<<<<<<< HEAD
-
-                                     //modal
-                                  <?php
-                                   if(isset($_POST['ch_sub'])){
-
-                                       $eff_chng = filter_input(INPUT_POST,'eff_chng',FILTER_SANITIZE_STRING);
-
-                                        $eff_chngx= update("UPDATE bloodgroup_tb SET charge ='".$eff_chng."' WHERE bloodID= ");
-
-                                        //$eff_ch= insert("INSERT INTO bloodgroup_tb(charge)VALUES('2345'");
-                                         if($eff_chngx){
-
-                                            echo "<script>alert('Update Is Effected');
-                                          document.location.assign('lab-bloodbank.php')</script>";
-                                           exit();
-
-
-                                        }
-
-                                       }
-
-                                ?>
-=======
                                          <!--content-->
 
->>>>>>> QuatMedics/master
 
                                          <h4 class='modal-title text-center' name='lineModalLabel1'></h4>
 
@@ -262,11 +218,7 @@ if(isset($_POST['ch_sub'])){
                                    </div>
                                  </div>
                             </tr>
-<<<<<<< HEAD
- <?php     }?>
-=======
 
->>>>>>> QuatMedics/master
                           </tbody>
                         </table>
                       </div>

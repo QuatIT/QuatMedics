@@ -22,7 +22,35 @@
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+    include 'layout/head.php';
+
+
+    //generate centerLabID
+    $centerLabIDs = Lab::find_num_Lab() + 1;
+
+    $success = '';
+    $error = '';
+
+
+    if(isset($_POST['btnSave'])){
+
+
+      $centerID = $_SESSION['centerID'];
+      $centerLabID = "LAB-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$centerLabIDs);
+      $WardName = filter_input(INPUT_POST, "WardName", FILTER_SANITIZE_STRING);
+
+        $lab_sql = insert("INSERT INTO lablist(labID,labName,centerID) VALUES('$centerLabID','$WardName','$centerID') ");
+
+        if($lab_sql){
+            $success = "LAB created Successfully";
+        }else{
+            $error = "LAB couldn't Successfully";
+        }
+
+    }
+
+    ?>
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -45,7 +73,19 @@
   </div>
   <div class="container">
       <h3 class="quick-actions">LAB MANAGEMENT</h3>
-
+           <?php
+                              if($success){
+                              ?>
+                              <div class="alert alert-success">
+                          <strong>Success!</strong> <?php echo $success; ?>
+                        </div>
+                              <?php } if($error){
+                                  ?>
+                              <div class="alert alert-danger">
+                          <strong>Error!</strong> <?php echo $error; ?>
+                        </div>
+                              <?php
+                              } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -84,13 +124,13 @@
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
+                    <form action="" method="post" class="form-horizontal">
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
                                 <label class="control-label">Laboratory ID :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="labID" value="LabID" required readonly/>
+                                  <input type="text" class="span11" name="labID" value="<?php echo $centerLabIDs; ?>" required readonly/>
                                 </div>
                               </div>
                           </div>
@@ -105,7 +145,7 @@
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Laboratory</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Laboratory</button>
                               </div>
                           </div>
                       </div>
