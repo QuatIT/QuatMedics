@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.0.2
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2018 at 05:30 PM
--- Server version: 10.0.17-MariaDB
--- PHP Version: 5.5.30
+-- Generation Time: Sep 25, 2018 at 01:32 PM
+-- Server version: 10.1.28-MariaDB
+-- PHP Version: 7.1.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -15,8 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-create database `quatmedics`;
-use `quatmedics`;
+
 --
 -- Database: `quatmedics`
 --
@@ -100,7 +101,7 @@ CREATE TABLE `centeruser` (
 --
 
 INSERT INTO `centeruser` (`userID`, `centerID`, `staffID`, `userName`, `password`, `accessLevel`, `dateRegistered`, `doe`) VALUES
-('Kanfr-000001', 'ABCD -000001', '', 'rkanfrah', '12345', 'CONSULTATION', '2018-09-22', '2018-09-22 01:35:38');
+('Kanfr-000001', 'ABCD -000001', 'Kanfr-000001', 'rkanfrah', '12345', 'CONSULTATION', '2018-09-22', '2018-09-25 09:14:08');
 
 -- --------------------------------------------------------
 
@@ -128,12 +129,12 @@ CREATE TABLE `consultation` (
 --
 
 INSERT INTO `consultation` (`consultID`, `patientID`, `staffID`, `bodyTemperature`, `pulseRate`, `respirationRate`, `bloodPressure`, `weight`, `otherHealth`, `roomID`, `status`, `doe`) VALUES
-('CON-ABCD -000003', 'qqqqq-000004', 'Kanfr-000001', '434', '55q', '444', '434444444', '533', 'ggg', 'CR-ABCD -000002', 'CONSULTED', '2018-09-22 02:01:17'),
-('CON-ABCD -000004', 'dfdf-000002', 'Kanfr-000001', '24', '78', '987', '67', '9788', 'HJJ', 'CR-ABCD -000002', '', '2018-09-23 16:53:10'),
-('CON-ABCD -000005', 'dfdf-000002', 'Kanfr-000001', '243', '987', '9879', '77864', '878', 'hoh89', 'CR-ABCD -000002', '', '2018-09-23 17:33:13'),
-('CON-ABCD -000006', 'PNT-0001', 'Kanfr-000001', '768', '875', '756', '564', '3456', '87ghjgh', 'CR-ABCD -000001', 'CONSULTED', '2018-09-24 08:50:32'),
-('consult-0001', 'PNT-0001', 'staff-0001', '50', '45', '45', '45', '90', NULL, '1', 'CONSULTED', '2018-09-17 18:08:51'),
-('consult-0002', 'PNT-0001', 'staff-0001', '52', '25', '25', '15', '90', NULL, 'CR-ABCD -000003', 'CONSULTED', '2018-09-20 10:35:52');
+('CON-ABCD -000003', 'qqqqq-000004', 'Kanfr-000001', '434', '55q', '444', '434444444', '533', 'ggg', 'CR-ABCD -000002', 'sent_to_consulting', '2018-09-25 09:46:03'),
+('CON-ABCD -000004', 'dfdf-000002', 'Kanfr-000001', '24', '78', '987', '67', '9788', 'HJJ', 'CR-ABCD -000002', 'sent_to_consulting', '2018-09-25 09:45:59'),
+('CON-ABCD -000005', 'dfdf-000002', 'Kanfr-000001', '243', '987', '9879', '77864', '878', 'hoh89', 'CR-ABCD -000002', 'sent_to_consulting', '2018-09-25 09:46:09'),
+('CON-ABCD -000006', 'PNT-0001', 'Kanfr-000001', '768', '875', '756', '564', '3456', '87ghjgh', 'CR-ABCD -000001', 'sent_to_lab', '2018-09-25 09:37:26'),
+('consult-0001', 'PNT-0001', 'Kanfr-000001', '50', '45', '45', '45', '90', NULL, 'CR-ABCD -000003', 'sent_to_pharmacy', '2018-09-25 10:00:11'),
+('consult-0002', 'PNT-0001', 'Kanfr-000001', '52', '25', '25', '15', '90', NULL, 'CR-ABCD -000003', 'sent_to_lab', '2018-09-25 09:46:39');
 
 -- --------------------------------------------------------
 
@@ -154,10 +155,10 @@ CREATE TABLE `consultingroom` (
 --
 
 INSERT INTO `consultingroom` (`roomID`, `roomName`, `centerID`, `dateRegistered`, `doe`) VALUES
-('CR-ABCD -000001', '2', 'ABCD -000001', '2018-09-17', '2018-09-17 12:01:05'),
-('CR-ABCD -000002', '345', 'ABCD -000001', '2018-09-17', '2018-09-17 16:04:12'),
+('CR-ABCD -000001', '1', 'ABCD -000001', '2018-09-17', '2018-09-25 08:55:14'),
+('CR-ABCD -000002', '2', 'ABCD -000001', '2018-09-17', '2018-09-25 08:55:18'),
 ('CR-ABCD -000003', '3', 'ABCD -000001', '2018-09-17', '2018-09-17 16:04:51'),
-('CR-ABCD -000004', '5', 'ABCD -000001', '2018-09-17', '2018-09-17 16:08:00');
+('CR-ABCD -000004', '4', 'ABCD -000001', '2018-09-17', '2018-09-25 08:55:29');
 
 -- --------------------------------------------------------
 
@@ -198,6 +199,14 @@ CREATE TABLE `doctorappointment` (
   `appointmentTime` varchar(255) NOT NULL,
   `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `doctorappointment`
+--
+
+INSERT INTO `doctorappointment` (`appointNumber`, `staffID`, `patientID`, `appointmentDate`, `appointmentTime`, `doe`) VALUES
+('APTMNT-1', 'Kanfr-000001', 'PNT-0001', '2018-09-27', '15:01', '2018-09-25 11:12:37'),
+('APTMNT-2', 'Kanfr-000001', 'fgdfg-000003', '2018-09-14', '14:00', '2018-09-25 11:13:52');
 
 -- --------------------------------------------------------
 
@@ -247,8 +256,11 @@ CREATE TABLE `labresults` (
 --
 
 INSERT INTO `labresults` (`id`, `labRequestID`, `consultID`, `labID`, `centerID`, `patientID`, `staffID`, `labResult`, `labDate`, `consultingRoom`, `status`, `doe`) VALUES
-(1, 'REQUEST1', 'CON-ABCD -000006', 'lab001', 'ABCD -000001', 'PNT-0001', '', 'uploads/5ba8db3b253265.36862409.pdf', '', 'CR-ABCD -000001', 'sent_to_consulting', '2018-09-24 15:05:13'),
-(2, 'REQUEST1', 'CON-ABCD -000006', 'lab002', 'ABCD -000001', 'PNT-0001', '', 'uploads/5ba8db3b253265.36862409.pdf', '', 'CR-ABCD -000001', 'sent_to_consulting', '2018-09-24 15:05:06');
+(1, 'LABREQ-1', 'CON-ABCD -000006', 'lab001', 'ABCD -000001', 'PNT-0001', '', 'uploads/5ba8db3b253265.36862409.pdf', '', 'CR-ABCD -000001', 'sent_to_consulting', '2018-09-25 09:25:16'),
+(2, 'LABREQ-2', 'CON-ABCD -000006', 'lab002', 'ABCD -000001', 'PNT-0001', '', 'uploads/5ba8db3b253265.36862409.pdf', '', 'CR-ABCD -000001', 'sent_to_consulting', '2018-09-25 09:25:21'),
+(7, 'LABREQ-3', 'CON-ABCD -000006', 'lab001', 'ABCD -000001', 'PNT-0001', 'Kanfr-000001', '', '', 'CR-ABCD -000001', 'sent_to_lab', '2018-09-25 09:32:36'),
+(8, 'LABREQ-4', 'CON-ABCD -000006', 'lab001', 'ABCD -000001', 'PNT-0001', 'Kanfr-000001', '', '', 'CR-ABCD -000001', 'sent_to_lab', '2018-09-25 09:37:26'),
+(9, 'LABREQ-5', 'consult-0002', 'lab002', 'ABCD -000001', 'PNT-0001', 'Kanfr-000001', '', '', 'CR-ABCD -000003', 'sent_to_lab', '2018-09-25 09:46:39');
 
 -- --------------------------------------------------------
 
@@ -276,7 +288,7 @@ CREATE TABLE `medicalcenter` (
 --
 
 INSERT INTO `medicalcenter` (`centerID`, `centerName`, `centerCategory`, `centerLocation`, `numOfStaff`, `centerHistory`, `dateregistered`, `numOfBranches`, `userName`, `password`, `accessLevel`, `doe`) VALUES
-('ABCD -000001', 'ABCD HOSPITAL', 'Hospital', 'LAPAZ', '10', 'NA', '0000-00-00', '2', 'abc', '12345', 'center_admin', '2018-09-14 09:41:18');
+('ABCD -000001', 'ABCD HOSPITAL', 'Hospital', 'LAPAZ', '10', 'NA', '0000-00-00', '2', 'abc', '12345', 'center_admin', '2018-09-25 11:32:08');
 
 -- --------------------------------------------------------
 
@@ -315,7 +327,7 @@ INSERT INTO `patient` (`centerID`, `patientID`, `firstName`, `otherName`, `lastN
 ('ABCD -000001', 'dfdf-000002', 'fgsdfg', 'vcbcv', 'dfdf', '2002-03-29', 'Female', 'A-negative', 'gfhfh', '453455', '', 'fgdsf', '', '765', 'gbfd', 'gfb fdfb', 'ABCD -000001', 'patient_busy', '2018-09-17', '2018-09-23 17:33:13'),
 ('ABCD -000001', 'fgdfg-000003', 'bbdfb dfbdf', 'ewrt', 'fgdfgdfg', '2014-03-29', 'Male', 'O-negative', 'jhgdf', '34768693', '', 'fghh ghd ghdgh', '', '65474', 'gdfhdfhg fgndf', 'fhdfhdfgh fdghertwe etjytje', '', '', '2018-09-17', '2018-09-17 10:21:52'),
 ('ABCD -000001', 'PNT-0001', 'Godwin', 'Goodman', 'Effah', '1995-05-0', 'Male', 'O-Positive', 'Accra', '0541524233', 'Obuasi', 'Mr Effah', 'Male', '0269807823', 'Father', '', 'ABCD -000001', 'patient_busy', '2018-15-09', '2018-09-23 17:57:06'),
-('ABCD -000001', 'qqqqq-000004', 'kkkkkkkkkkkkkkkkkkkkkkkkkk', 'ccccccccccccc', 'qqqqqqqqqqqqqqqqqqqqqqqq', '2014-04-29', 'Male', 'B-positive', 'nnnnnnnnnnnnnnnnn', '66666666666666', '', 'tyuuuuuuuuuuuuuuu', '', '777777777777777777', 'fffffffffffff', 'iuuuuuuuuuuuuuuuu', '', '', '2018-09-21', '2018-09-21 11:08:51');
+('ABCD -000001', 'qqqqq-000004', 'kkkkkkk', 'ccccc', 'qqqqqq', '2014-04-29', 'Male', 'B-positive', 'nnn', '666666666', '', 'tyuuuuu', '', '77777', 'fffffffffffff', 'iuuuuuuu', '', '', '2018-09-21', '2018-09-25 10:06:47');
 
 -- --------------------------------------------------------
 
@@ -359,7 +371,8 @@ CREATE TABLE `prescribedmeds` (
 
 INSERT INTO `prescribedmeds` (`prescribeid`, `prescribeCode`, `medicine`, `dosage`, `prescribeStatus`, `doe`) VALUES
 (1, 'PRSCB-1', 'PARA', '2X1', 'Prescibed', '2018-09-17 19:48:13'),
-(2, 'PRSCB-2', 'Malaquine', '1x3', 'Prescibed', '2018-09-17 19:49:35');
+(2, 'PRSCB-2', 'Malaquine', '1x3', 'Prescibed', '2018-09-17 19:49:35'),
+(3, 'PRSCB-3', 'HIV Meds', '1x3', 'Prescibed', '2018-09-25 10:00:10');
 
 -- --------------------------------------------------------
 
@@ -386,7 +399,8 @@ CREATE TABLE `prescriptions` (
 
 INSERT INTO `prescriptions` (`prescribeID`, `patientID`, `prescribeCode`, `staffID`, `pharmacyID`, `symptoms`, `diagnose`, `prescribeStatus`, `datePrescribe`, `doe`) VALUES
 (1, 'PNT-0001', 'PRSCB-1', 'staff-0001', 'pharmacy-1', 'headache', 'has fever', 'Prescibed', '2018-09-17', '2018-09-17 19:48:13'),
-(2, 'PNT-0001', 'PRSCB-2', 'staff-0001', 'pharmacy-1', 'feverish, cold,', 'has malaria', 'Prescibed', '2018-09-17', '2018-09-17 19:49:35');
+(2, 'PNT-0001', 'PRSCB-2', 'staff-0001', 'pharmacy-1', 'feverish, cold,', 'has malaria', 'Prescibed', '2018-09-17', '2018-09-17 19:49:35'),
+(3, 'PNT-0001', 'PRSCB-3', 'Kanfr-000001', 'PHA-1', 'all the symptoms', 'Patient has HIV', 'Prescibed', '2018-09-25', '2018-09-25 10:00:10');
 
 -- --------------------------------------------------------
 
@@ -460,11 +474,12 @@ CREATE TABLE `wardassigns` (
 --
 
 INSERT INTO `wardassigns` (`assignID`, `wardID`, `patientID`, `staffID`, `admitDate`, `dischargeDate`, `admitDetails`, `doe`) VALUES
-('assign-0001', 'ward-002', 'PNT-0001', 'staff-0001', '2018-09-17', '2018-09-27', '', '2018-09-17 17:56:53'),
-('assign-2', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-19', '2018-09-27', '', '2018-09-17 18:01:44'),
-('assign-3', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-28', '2018-09-26', '', '2018-09-17 18:04:21'),
-('assign-4', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-26', '2018-09-25', 'Treatment And Observation', '2018-09-17 18:05:43'),
-('assign-5', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-26', '2018-09-25', 'Treatment And Observation', '2018-09-17 18:08:51');
+('ASSIGN-0001', 'ward-002', 'PNT-0001', 'staff-0001', '2018-09-17', '2018-09-27', '', '2018-09-25 09:58:44'),
+('ASSIGN-2', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-19', '2018-09-27', '', '2018-09-25 09:58:49'),
+('ASSIGN-3', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-28', '2018-09-26', '', '2018-09-25 09:59:06'),
+('ASSIGN-4', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-26', '2018-09-25', 'Treatment And Observation', '2018-09-25 09:59:11'),
+('ASSIGN-5', 'ward-001', 'PNT-0001', 'staff-0001', '2018-09-26', '2018-09-25', 'Treatment And Observation', '2018-09-25 09:59:15'),
+('ASSIGN-6', 'WARD-001', 'PNT-0001', 'Kanfr-000001', '2018-09-25', '2018-09-27', 'Operation', '2018-09-25 09:59:20');
 
 -- --------------------------------------------------------
 
@@ -651,22 +666,26 @@ ALTER TABLE `wardtreatmet`
 -- AUTO_INCREMENT for table `labresults`
 --
 ALTER TABLE `labresults`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
 --
 -- AUTO_INCREMENT for table `prescribedmeds`
 --
 ALTER TABLE `prescribedmeds`
-  MODIFY `prescribeid` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `prescribeid` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `prescriptions`
 --
 ALTER TABLE `prescriptions`
-  MODIFY `prescribeID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `prescribeID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `wardtreatmet`
 --
 ALTER TABLE `wardtreatmet`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
 --
 -- Constraints for dumped tables
 --
@@ -748,6 +767,7 @@ ALTER TABLE `staff`
 --
 ALTER TABLE `wardassigns`
   ADD CONSTRAINT `wardassigns_ibfk_1` FOREIGN KEY (`patientID`) REFERENCES `patient` (`patientID`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

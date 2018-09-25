@@ -160,11 +160,28 @@ $donorID=generateDonorID();
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+                          $blood_group=select("SELECT * FROM bloodgroup_tb");
+                          foreach($blood_group as $blood_groups){
+                              ?>
+                            <tr>
+                              <td><?php echo $blood_groups['bloodID'];?></td>
+                              <td><?php echo $blood_groups['bloodGroup'];?></td>
+                              <td><?php echo $blood_groups['charge'];?></td>
+                              <td><?php echo $blood_groups['bloodBags'];?></td>
+=======
+>>>>>>> QuatMedics/master
                             <tr>
                               <td><?php echo $blood_grpx['bloodID']?></td>
                               <td><?php echo $blood_grpx['bloodGroup']?></td>
                               <td><?php echo  $blood_grpx['charge']?></td>
                               <td><?php echo $blood_grpx['bloodBags']?></td>
+<<<<<<< HEAD
+=======
+>>>>>>> QuatMedics/master
+>>>>>>> QuatMedics/master
                               <td style='text-align: center;'>
                               <a href='lab-bloodbank.php'><span class='btn btn-primary fa fa-eye' data-toggle='modal' data-target='#squarespaceModal'></span></a></td>
 
@@ -200,8 +217,38 @@ if(isset($_POST['ch_sub'])){
                                     </div>
                                     <div class="modal-body">
 
+<<<<<<< HEAD
                                          <!--content-->
 
+=======
+<<<<<<< HEAD
+
+                                     //modal
+                                  <?php
+                                   if(isset($_POST['ch_sub'])){
+
+                                       $eff_chng = filter_input(INPUT_POST,'eff_chng',FILTER_SANITIZE_STRING);
+
+                                        $eff_chngx= update("UPDATE bloodgroup_tb SET charge ='".$eff_chng."' WHERE bloodID= ");
+
+                                        //$eff_ch= insert("INSERT INTO bloodgroup_tb(charge)VALUES('2345'");
+                                         if($eff_chngx){
+
+                                            echo "<script>alert('Update Is Effected');
+                                          document.location.assign('lab-bloodbank.php')</script>";
+                                           exit();
+
+
+                                        }
+
+                                       }
+
+                                ?>
+=======
+                                         <!--content-->
+
+>>>>>>> QuatMedics/master
+>>>>>>> QuatMedics/master
 
                                          <h4 class='modal-title text-center' name='lineModalLabel1'></h4>
 
@@ -218,7 +265,15 @@ if(isset($_POST['ch_sub'])){
                                    </div>
                                  </div>
                             </tr>
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+ <?php     }?>
+=======
+
+>>>>>>> QuatMedics/master
+>>>>>>> QuatMedics/master
                           </tbody>
                         </table>
                       </div>

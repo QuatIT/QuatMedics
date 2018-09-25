@@ -1,12 +1,8 @@
 <?php
 require "assets/core/connection.php";
 
-<<<<<<< HEAD
 $get_pharm= select("SELECT * FROM patient");
 
-
-=======
->>>>>>> origin/master
 ?>
 
 
