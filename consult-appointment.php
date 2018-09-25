@@ -22,7 +22,47 @@
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+include 'layout/head.php';
+$roomID = $_GET['roomID'];
+$consultation = new Consultation();
+
+//fetch all patients
+$patient = select("SELECT * FROM patient ORDER BY patientID ASC");
+
+//staffID
+$staff = select("SELECT staffID from centeruser where userName='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
+foreach($staff as $staffrow){
+    $staffID = $staffrow['staffID'];
+}
+
+//generate presciptionCode
+$codesql = select("SELECT * From doctorappointment order by appointNumber DESC limit 1");
+if(count($codesql) >=1){
+foreach($codesql as $coderow){
+    $code = $coderow['appointNumber'];
+    $oldcode = explode("-",$code);
+    $newID = $oldcode[1]+1;
+    $appointNumber = $oldcode[0]."-".$newID;
+}
+}else{
+$appointNumber = "APTMNT-1";
+}
+
+
+if(isset($_POST['addApptmnt'])){
+        $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
+        $appointDate = filter_input(INPUT_POST, "appointDate", FILTER_SANITIZE_STRING);
+        $appointTime = filter_input(INPUT_POST, "appointTime", FILTER_SANITIZE_STRING);
+    $addapointment = $consultation->createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime);
+    if($addapointment){
+        $success =  "APPOINTMENT SAVED SUCCESSFULLY";
+    }else{
+        $error =  "ERROR : APPOINTMENT NOT SAVED";
+    }
+}
+
+?>
 
 <div id="search">
   <input type="text" placeholder="Search here..." disabled/>
@@ -34,8 +74,9 @@
 <div id="sidebar">
     <ul>
 <!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li> <a href="consult-index.php"><i class="icon icon-briefcase"></i> <span>Consultation</span></a> </li>
-    <li class="active"> <a href="consult-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a> </li>
+    <li> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
+    <li class="active"> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
+    <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
     </ul>
 </div>
 
@@ -44,9 +85,9 @@
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a href="medics-index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a href="consult-index.php" title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
-        <a href="consult-appointment.php" title="Consultation" class="tip-bottom"><i class="icon-calendar"></i> APPOINTMENTS</a>
+        <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
+        <a title="Consultation" class="tip-bottom"><i class="icon-calendar"></i> APPOINTMENTS</a>
     </div>
   </div>
   <div class="container">
@@ -71,45 +112,14 @@
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Photo</th>
-                              <th>Patient Number</th>
+                              <th>Number</th>
                               <th>Patient Name</th>
-                              <th>Mobile Number</th>
-                              <th>Status</th>
+                              <th>Date</th>
+                              <th>Time</th>
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <td>Photo</td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;"><span class="btn btn-primary btn-block btn-mini">Status</span></td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Photo</td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;"><span class="btn btn-primary btn-block btn-mini">Status</span></td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Photo</td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;"><span class="btn btn-primary btn-block btn-mini">Status</span></td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
+                          <tbody id="appointment">
                           </tbody>
                         </table>
                       </div>
@@ -126,19 +136,19 @@
                               <div class="control-group">
                                 <label class="control-label">Appointment Date :</label>
                                 <div class="controls">
-                                  <input type="date" class="span11" name="appointmentDate" required/>
+                                  <input type="date" class="span11" name="appointDate" required/>
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">Appointment Time :</label>
+                                <div class="controls">
+                                  <input type="time" class="span11" name="appointTime" required/>
                                 </div>
                               </div>
                              <div class="control-group">
-                                <label class="control-label">Assign Doctor :</label>
+                                <label class="control-label">Staff :</label>
                                 <div class="controls">
-                                  <select name="bloodGroup" class="" >
-                                    <option value="default"> -- Select Doctor --</option>
-                                    <option value="doctorName"> Doctor Name</option>
-                                    <option value="doctorName"> Doctor Name</option>
-                                    <option value="doctorName"> Doctor Name</option>
-                                    <option value="doctorName"> Doctor Name</option>
-                                  </select>
+                                  <input type="text" class="span11" value="<?php echo $staffID;?>" readonly/>
                                 </div>
                               </div>
                           </div>
@@ -152,12 +162,15 @@
                              <div class="control-group">
                                 <label class="control-label">Patient :</label>
                                 <div class="controls">
-                                  <select name="bloodGroup" class="" >
+                                  <select name="patientID" class="" >
                                     <option value="default"> -- Select Patient --</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
+                                      <?php
+                                        if(!empty($patient)){
+                                            foreach($patient as $patientrow){
+
+                                      ?>
+                                    <option value="<?php echo $patientrow['patientID'];?>"><?php echo $patientrow['firstName']." ".$patientrow['otherName']." ".$patientrow['lastName'];?></option>
+                                      <?php }}?>
                                   </select>
                                 </div>
                               </div>
@@ -171,7 +184,7 @@
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Appointment</button>
+                                <button type="submit" name="addApptmnt" class="btn btn-primary btn-block span10">Save Appointment</button>
                               </div>
                           </div>
                       </div>
@@ -207,7 +220,19 @@
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
 
+<script>
+function dis(){
+    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","loads/consultappoint-load?staffID=<?php echo $staffID;?>",false);
+    xmlhttp.send(null);
+    document.getElementById("appointment").innerHTML=xmlhttp.responseText;
+}
+    dis();
 
+    setInterval(function(){
+        dis();
+    },1000);
+</script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to
@@ -227,7 +252,6 @@
           }
       }
   }
-
 // resets the menu selection upon entry to this page:
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;

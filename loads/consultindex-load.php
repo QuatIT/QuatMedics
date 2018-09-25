@@ -28,10 +28,14 @@ foreach($load_consultation as $consultRow){
   <td><?php echo $name;?></td>
   <td><?php echo $staffname;?></td>
   <td>
-      <?php if($status == "OPD"){?>
+      <?php if($status == "sent_to_consulting"){?>
       <span class="label label-warning">Awaiting</span>
-      <?php } if($status == "CONSULTED"){?>
-      <span class="label label-success">Consulted</span>
+      <?php } if($status == "sent_to_lab"){?>
+      <span class="label label-info">Lab Requested</span>
+      <?php } if($status == "sent_to_ward"){?>
+      <span class="label label-info">Admitted To Ward</span>
+      <?php } if($status == "sent_to_pharmacy"){?>
+      <span class="label label-success">Medicine Prescribed</span>
       <?php }?>
     </td>
   <td style="text-align: center;">

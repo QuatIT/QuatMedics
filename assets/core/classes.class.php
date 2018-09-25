@@ -61,6 +61,11 @@
           return $result;
     }
 
+      public function createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime){
+          $result= insert("INSERT INTO doctorappointment(appointNumber,staffID,patientID,appointmentDate,appointmentTime) VALUES('$appointNumber','$staffID','$patientID','$appointDate','$appointTime') ");
+          return $result;
+    }
+
     public function find_by_room_id($roomID){
       $result=query("SELECT * FROM consultingroom WHERE roomID='".$roomID."'");
       return $result;

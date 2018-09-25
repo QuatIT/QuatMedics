@@ -60,66 +60,80 @@ include 'layout/head.php';
         }
 
 
-    if(isset($_POST['reqLab'])){
-        $labNumber = count($_POST['labName']);
+         //generate labRequestID
+        $codesql = select("SELECT * From labresults order by labrequestID DESC limit 1");
+        if(count($codesql) >=1){
+            foreach($codesql as $coderow){
+                $code = $coderow['labRequestID'];
+                $oldcode = explode("-",$code);
+                $newID = $oldcode[1]+1;
+                $labReqID = $oldcode[0]."-".$newID;
+            }
+        }else{
+            $labReqID = "LABREQ-1";
+        }
 
-        if($labNumber > 0) {
-            for($i=0; $i<$labNumber; $i++){
-                    if(trim($_POST["labName"][$i] != '')) {
-                        $labID = trim($_POST["labName"][$i]);
-                        $status = trim("Requested");
-                        $insertLabReq = insert("INSERT INTO labresults(labID,patientID,staffID,consultingRoom,status,consultID) VALUES('$labID','$patientID','$staffID','$roomID','$status','".$_GET['conid']."')");
 
-                            if($insertLabReq){
-                                 $success =  "LAB REQUEST SENT SUCCESSFULLY";
-            $updatePatient = update("UPDATE consultation set status='CONSULTED' where patientID='$patientID' AND consultID='$conid'");
-                                echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
-                            }else{
-                                $error =  "ERROR: LAB REQUEST NOT SENT";
-                            }
+if(isset($_POST['reqLab'])){
+    $labNumber = count($_POST['labName']);
+
+    if($labNumber > 0) {
+        for($i=0; $i<$labNumber; $i++){
+                if(trim($_POST["labName"][$i] != '')) {
+                    $labID = trim($_POST["labName"][$i]);
+                    $status = SENT_TO_LAB;
+$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status')");
+
+                        if($insertLabReq){
+                             $success =  "LAB REQUEST SENT SUCCESSFULLY";
+        $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
+                            echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
+                        }else{
+                            $error =  "ERROR: LAB REQUEST NOT SENT";
                         }
-            }
-        }else{
-           $error =  "ERROR: NO LAB REQUEST MADE";
+                    }
         }
+    }else{
+       $error =  "ERROR: NO LAB REQUEST MADE";
+    }
+}
+
+
+if(isset($_POST['adWard'])){
+    $wardID = filter_input(INPUT_POST, "wardID", FILTER_SANITIZE_STRING);
+    $admitDetails = filter_input(INPUT_POST, "admitDetails", FILTER_SANITIZE_STRING);
+    $admitDate = filter_input(INPUT_POST, "admitDate", FILTER_SANITIZE_STRING);
+    $dischargeDate = filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING);
+    $status = SENT_TO_WARD;
+    //generate wardassign IDs
+    $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
+    if(count($wardasignsql) >=1){
+        foreach($wardasignsql as $assignrow){
+            $id = $assignrow['assignID'];
+            $oldid = explode("-",$id);
+            $newID = $oldid[1]+1;
+            $assignID = $oldid[0]."-".$newID;
+        }
+    }else{
+        $assignID = "ASSIGN-1";
     }
 
+    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails')");
 
-    if(isset($_POST['adWard'])){
-        $wardID = filter_input(INPUT_POST, "wardID", FILTER_SANITIZE_STRING);
-        $admitDetails = filter_input(INPUT_POST, "admitDetails", FILTER_SANITIZE_STRING);
-        $admitDate = filter_input(INPUT_POST, "admitDate", FILTER_SANITIZE_STRING);
-        $dischargeDate = filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING);
-
-        //generate wardassign IDs
-        $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
-        if(count($wardasignsql) >=1){
-            foreach($wardasignsql as $assignrow){
-                $id = $assignrow['assignID'];
-                $oldid = explode("-",$id);
-                $newID = $oldid[1]+1;
-                $assignID = $oldid[0]."-".$newID;
-            }
-        }else{
-            $assignID = "assign-1";
-        }
-
-        $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails')");
-
-        if($insertassign){
-            $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
-            $updatePatient = update("UPDATE consultation set status='CONSULTED' where patientID='$patientID' AND consultID='$conid'");
-            echo "<script>window.location='consult-index';</script>";
-        }else{
-            $error =  "ERROR: PATIENT ADMITTION NOT SAVED";
-        }
+    if($insertassign){
+        $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
+        $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
+        echo "<script>window.location='consult-index?roomID={$roomID}'';</script>";
+    }else{
+        $error =  "ERROR: PATIENT ADMITTION NOT SAVED";
     }
+}
 
     if(isset($_POST['presMeds'])){
         $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
         $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
         $pharmacyID = filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING);
-//        $prescribeCode = trim($_POST['prescribeCode']);
+        $status = SENT_TO_PHARMACY;
         $prescribeStatus = trim("Prescibed");
         $datePrescribe = trim(date("Y-m-d"));
 
@@ -143,8 +157,8 @@ include 'layout/head.php';
 
               if($insertpresciption && $insertMeds){
                     $success =  "PRESCRIPTION SENT SUCCESSFULLY";
-                    $updatePatient = update("UPDATE consultation set status='CONSULTED' where patientID='$patientID' AND consultID='$conid'");
-                    echo "<script>window.location='consult-index';</script>";
+                    $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
+                    echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
                 }else{
                     $error =  "ERROR: PRESCRIPTION NOT SENT";
                 }
@@ -164,8 +178,9 @@ include 'layout/head.php';
 <div id="sidebar">
     <ul>
 <!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li class="active" style="background-color: #209fbf;"> <a href="consult-index.php"><i class="icon icon-briefcase"></i> <span>Consultation</span></a> </li>
-    <li> <a href="consult-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a> </li>
+    <li class="active" style="background-color: #209fbf;"> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i> <span>Consultation</span></a> </li>
+    <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i> <span>Appointments</span></a> </li>
+    <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
     </ul>
 </div>
 
@@ -417,8 +432,6 @@ include 'layout/head.php';
                                 <li id="" class="online newbtn btn-primary">
                                   <a href=""><i class="fa fa-calendar"></i><span> Medical Records</span></a>
                                 </li>
-
-
                               <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 15-05-2018</span></a></li>
                               <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 18-05-2018</span></a></li>
                               <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 23-06-2018</span></a></li>
@@ -429,13 +442,6 @@ include 'layout/head.php';
                         <div class="chat-content panel-left2" style="height: auto;">
                           <div class="chat-messages" id="chat-messages" style="height: auto;">
                             <div id="chat-messages-inner">
-                                <form class="form" method="post" action="">
-                                    <div class="form-groups">
-                                        <div class="controls">
-                                            <input type="email" name="staffEMail" class="span11" />
-                                        </div>
-                                    </div>
-                                </form>
                                 <p id="'+id+'" class="user-'+idname+'">
                                     <span class="msg-block"><i class="fa fa-user"></i>
                                         <strong>OPD</strong> <span class="time">9:15 am</span>
@@ -471,7 +477,7 @@ include 'layout/head.php';
   </div>
 </div>
 
-<div class="row-fluid navbar-fixed-bottom">
+<div class="row-fluid">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>

@@ -221,7 +221,7 @@ function dis(){
 </script>
 
 
-    <script language="javascript" type="text/javascript">
+<script language="javascript" type="text/javascript">
 
 function popitup(url) {
 newwindow=window.open(url,'name','height=500,width=550');
