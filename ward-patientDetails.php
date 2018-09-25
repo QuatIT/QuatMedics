@@ -141,43 +141,7 @@
 <!--            <hr/>-->
 <!--            <div class="widget-content tab-content">-->
                 <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
-                    <div class="span6">
-<!--                        <div class="widget-box">-->
-                          <div class="widget-title">
-                              <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Treatement Details</h5>
-                          </div>
-                          <div class="widget-content nopadding">
-                               <div class="control-group">
-                                <label class="control-label"> Treatment : </label>
-                                <div class="controls">
-                                    <input type="text" name="patientName" class="span11">
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-title">
-                          </div>
-                          <div class="widget-content nopadding">
-                               <div class="control-group">
-                                <label class="control-label"> Date & Time: </label>
-                                <div class="controls">
-                                  <input type="datetime-local" name="treatmentTime" class="span11">
-                                </div>
-                              </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10"> Save</button>
-                              </div>
-                          </div>
-                      </div>
-                    </form>
-                </div>
-
-                <div id="tab3" class="tab-pane">
-                     <form action="#" method="post" id="add_name" class="form-horizontal">
+                    <form action="#" method="post" id="add_name" class="form-horizontal">
                           <div class="widget-content nopadding">
                               <table class="table table-bordered" id="dynamic_field">
                                 <tr>
@@ -185,10 +149,6 @@
                                     <td><input type="text" name="dosage[]" placeholder="Dosage / Details" class="span11" required /></td>
                                     <td><button type="button" name="add" id="add" class="btn btn-primary">Add Treatement</button></td>
                                 </tr>
-                                  <tr>
-                                    <td></td>
-                                    <td></td>
-                                  </tr>
                             </table>
                               <div class="form-actions">
                                   <i class="span1"></i>
@@ -196,6 +156,10 @@
                               </div>
                           </div>
                     </form>
+                </div>
+
+                <div id="tab3" class="tab-pane">
+
                 </div>
             </div>
         </div>

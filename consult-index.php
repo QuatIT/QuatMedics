@@ -131,7 +131,9 @@
                     <div class="new-update clearfix">
                         <i class="icon-warning-sign"></i>
                         <div class="update-done">
-                            <a href="consult-index" onclick="return popitup('consult-patient?roomID={$roomID}&conid={$}')"><strong>Lab Result For <?php echo $labupdate['patientID']; ?> Available</strong></a>
+                            <a href="<?php echo $labupdate['labResult']?>" onclick="return popitup('<?php echo $labupdate['labResult'];?>')">
+                                <strong>Lab Result For <?php echo $labupdate['patientID']; ?> Available</strong>
+                            </a>
 <!--                          <a href="#" title=""><strong>Lab Result For Patient PTN001 Available</strong></a>-->
                         </div>
                       <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
