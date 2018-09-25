@@ -3,14 +3,19 @@ require "assets/core/connection.php";
 
 
 
-
-//echo $bloodGroup;
-
-
-
-
 //generate blood id
-$bloodID ='BD - '.mt_rand(1,77).mt_rand(89,1992);
+//$bloodID ='BD - '.mt_rand(1,77).mt_rand(89,1992);
+
+
+//$_GET['bloodID'];
+//$_GET['bloodGroup']=$bloodgpx;
+
+
+
+
+$blood_grp=select("SELECT * FROM bloodgroup_tb");
+foreach($blood_grp as $blood_grpx){}
+
 
 //save into bloodGroup_tb
 if(isset($_POST['save_blood'])){
@@ -47,7 +52,8 @@ $donorID=generateDonorID();
     $phoneNumber = filter_input(INPUT_POST, 'phoneNumber',FILTER_SANITIZE_STRING);
     $lastDonate = filter_input(INPUT_POST, 'lastDonate',FILTER_SANITIZE_STRING);
 
-    $bank_insert=insert("INSERT INTO bloodBank(bloodID,donorID,donorName,gender,bloodGroup,phoneNumber,lastDonate,dob)VALUES('$bloodID','$donorID','".$fullname."','".$bloodGender."','".$bloodGroup."','".$phoneNumber."','".$dob."','".$lastDonate."')");
+    $bank_insert=insert("INSERT INTO bloodBank(bloodID,donorID,donorName,gender,bloodGroup,phoneNumber,dob,lastDonate)
+    VALUES('$bloodID','$donorID','".$fullname."','".$bloodGender."','".$bloodGroup."','".$phoneNumber."','".$dob."','".$lastDonate."')");
   if($bank_insert){
     echo "<script>alert('Entry Was Successful');
     document.location.assign('lab-bloodbank.php')</script>";
@@ -84,9 +90,25 @@ $donorID=generateDonorID();
         .active{
             background-color: #209fbf;
         }
-       .modal-header{ background-color: #209fbf}
-        .modal-footer{ background-color: #209fbf}
-      .modal-title{color:white; font-weight:bolder;}
+        .modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+    	padding: 0;
+	}
+
+.modal-footer .btn-group button {
+	height:40px;
+	border-top-left-radius : 0;
+	border-top-right-radius : 0;
+	border: none;
+	border-right: 1px solid #ddd;
+}
+
+.modal-footer .btn-group:last-child > button {
+	border-right: 0;
+}
     </style>
 </head>
 <body>
@@ -136,74 +158,75 @@ $donorID=generateDonorID();
                           <thead>
                             <tr>
                               <th>Blood ID</th>
-                              <th>Blood Type</th>
+                              <th>Blood Group</th>
                               <th>Charge</th>
                               <th>Amount Available</th>
                               <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                          <?php
+                         
 
 
-                          $blood_group=select("SELECT * FROM bloodgroup_tb");
-                          foreach($blood_group as $blood_groups){
-
-                            echo "<tr>
-                              <td>".$blood_groups['bloodID']."</td>
-                              <td>".$blood_groups['bloodGroup']."</td>
-                              <td>".$blood_groups['charge']."</td>
-                              <td>".$blood_groups['bloodBags']."</td>
+                            <tr>
+                              <td><?php echo $blood_grpx['bloodID']?></td>
+                              <td><?php echo $blood_grpx['bloodGroup']?></td>
+                              <td><?php echo  $blood_grpx['charge']?></td>
+                              <td><?php echo $blood_grpx['bloodBags']?></td>
                               <td style='text-align: center;'>
-                              <a href='lab-bloodbank.php?bloodGroup= hifriends'><span class='btn btn-primary fa fa-eye' data-toggle='modal' data-target='#myModal'></span></a></td>
+                              <a href='lab-bloodbank.php'><span class='btn btn-primary fa fa-eye' data-toggle='modal' data-target='#squarespaceModal'></span></a></td>
 
-                                   <!-- modal for changin charge amount-->
-                                   <div class='modal fade' id='myModal' name='myModal' role='dialog'>
+                           
+<?php
+ //modal codes
+
+if(isset($_POST['ch_sub'])){
+  
+    $eff_chng = filter_input(INPUT_POST,'eff_chng',FILTER_SANITIZE_STRING);
+    
+     $eff_chngx= update("UPDATE bloodgroup_tb SET charge ='".$eff_chng."' ");
+    
+   
+      if($eff_chngx){
+      
+         echo "<script>alert('Update Is Effected');
+       document.location.assign('lab-bloodbank.php')</script>";
+        exit();
+    
+    
+     }
+    
+    } 
+        ?>    
+                                   <!--  target modal-->
+                                   <div class='modal fade' id='squarespaceModal' name='squarespaceModal' role='dialog'>
                                      <div class='modal-dialog'>
-
-
-                                     //modal
-
-                                   if(isset($_POST['ch_sub'])){
-
-                                       $eff_chng = filter_input(INPUT_POST,'eff_chng',FILTER_SANITIZE_STRING);
-
-                                        $eff_chngx= update("UPDATE bloodgroup_tb SET charge ='".$eff_chng."' WHERE bloodID= ");
-
-                                        //$eff_ch= insert("INSERT INTO bloodgroup_tb(charge)VALUES('2345'");
-                                         if($eff_chngx){
-
-                                            echo "<script>alert('Update Is Effected');
-                                          document.location.assign('lab-bloodbank.php')</script>";
-                                           exit();
-
-
-                                        }
-
-                                       }
-
-
-
-                                     <!--  content-->
                                      <div class='modal-content'>
                                        <div class='modal-header'name='mod_header' id='mod_header'>
-                                         <button type='button' class='close' data-dismiss='modal'>&times;</button>
-                                         <h4 class='modal-title text-center' name='' id=''>QuatMedic </h4>
-                                       </div>
-                                       <div class='modal-body'>
-                                         <center><p>RESET CHARGE&nbsp;&nbsp;&nbsp;&nbsp;<input type='number' name='eff_chng' id='eff_chng' class='form-control' ></p>
-                                         <input type='submit' name='ch_sub' id='ch_sub' class='btn btn-info' value='CHANGE'></center>
-                                         ".$blood_groups['bloodID']."
+                                       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                     <h3 class="modal-title" id="lineModalLabel">QuatMedic</h3>
+                                    </div>
+                                    <div class="modal-body">
+
+                                         <!--content-->
+
+
+                                         <h4 class='modal-title text-center' name='lineModalLabel1'></h4>
+                                     
+                                       <div class='modal-body'>     
+                                         <center><p><b>RESET CHARGE</b>&nbsp;&nbsp;&nbsp;&nbsp;<input type='number' name='eff_chng' id='eff_chng' class='form-control' ></p>
+                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='ch_sub' id='ch_sub' class='btn btn-info' value='CHANGE'></center>
+                                       
                                        </div>
                                        <div class='modal-footer'>
                                          <button type='button' name='mod_dismiss' id='mod_dismiss' class='btn btn-default' data-dismiss='modal'><b>Close</b></button>
                                        </div>
                                      </div>
-
+                                     </div>
                                    </div>
                                  </div>
-                            </tr>";
-      }?>
+                            </tr>
+    
                           </tbody>
                         </table>
                       </div>
