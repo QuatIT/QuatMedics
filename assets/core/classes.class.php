@@ -173,4 +173,38 @@
 
   }
 
+
+
+
+  class Lab{
+
+    public function createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress) {
+      $result= insert("INSERT INTO patient(centerID,patientId,firstName,lastName,otherName,dob,gender,bloodGroup,homeAddress,phoneNumber,guardianName,guardianGender,guardianPhone,guardianRelation,guardianAddress,dateRegistered) VALUES('$centerID','$patientId','$firstName','$lastName','$otherName','$dob','$gender','$bloodGroup','$homeAddress','$phoneNumber','$guardianName','$guardianGender','$guardianPhone','$guardianRelation','$guardianAddress',CURDATE() ) ");
+      return $result;
+    }
+
+
+    public function find_by_patient_id($patientID){
+      $result=query("SELECT * FROM patient WHERE patientID='".$patientID."' ");
+      return $result;
+    }
+
+
+    public function find_num_Lab(){
+      $result=query("SELECT * FROM lablist ");
+      $num = count($result);
+
+      return $num;
+    }
+
+    public function find_num_staffID(){
+      $result=query("SELECT * FROM centerUser ");
+      $num = count($result);
+
+      return $num;
+    }
+
+
+  }
+
   ?>
