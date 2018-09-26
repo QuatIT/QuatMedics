@@ -44,7 +44,7 @@
 
         $username = filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING);
         $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
-        $userID = filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING);
+        $userID = $staffID;
 
         $centerUser = User::saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment);
 

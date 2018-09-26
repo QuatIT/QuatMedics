@@ -7,6 +7,7 @@ $error = '';
 
 //generate centerID
 $centerIDs = User::find_num_centerID() + 1;
+//$centerIDs = User::find_num_centerID() ;
 
 if(isset($_POST['btnSave'])){
 
@@ -181,7 +182,7 @@ if($registerCenterAdmin){
                                <div class="controls">
                               
                                 
-                                  <input type="text" class="span11" name="centerID" value="<?php$centerID = select("SELECT * FROM medicalcenter"); echo $centerIDs['centerID']; ?>" required readonly/>
+                                  <input type="text" class="span11" name="centerID" value="<?php echo $centerIDs; ?>" required readonly/>
                               
                                 </div>
                               </div>

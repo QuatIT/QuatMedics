@@ -3,7 +3,7 @@
   class User{
 
     public function createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel) {
-      $result= insert("INSERT INTO medicalcenter(centerID,centerName,centerCategory,centerLocation,numOfStaff,centerHistory,numOfBranches,userName,password,accessLevel) VALUES('$centerID','$centerName','$centerCategory','$centerLocation','$numOfStaff','$aboutCenter','$numOfBranches','$userName','$password','$accessLevel') ");
+      $result= insert("INSERT INTO medicalcenter(centerID,centerName,centerCategory,centerLocation,numOfStaff,centerHistory,numOfBranches,userName,password,accessLevel,dateregistered) VALUES('$centerID','$centerName','$centerCategory','$centerLocation','$numOfStaff','$aboutCenter','$numOfBranches','$userName','$password','$accessLevel',CURDATE() ) ");
       return $result;
     }
 

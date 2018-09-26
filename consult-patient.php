@@ -139,13 +139,14 @@ if(isset($_POST['adWard'])){
         $status = SENT_TO_PHARMACY;
         $prescribeStatus = trim("Prescibed");
         $datePrescribe = trim(date("Y-m-d"));
+        $prescriptionCode = randomString('8');
 
         $medNum = count($_POST['medicine']);
         $dosageNum = count($_POST['dosage']);
 
         if($medNum > 0 && $dosageNum > 0) {
 
-        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe')");
+        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode')");
 
 
             for($m=0, $d=0; $m<$medNum, $d<$dosageNum; $m++,$d++){
