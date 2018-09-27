@@ -44,7 +44,7 @@ foreach($centerName_sql as $centerName){}
     <li class="" ><a title="" href="lab-index"><i class="icon icon-filter"></i> <span class="text">LABORATORY</span></a></li>
     <li class="" ><a title="" href="pharmacy-index"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
     <li class="" ><a title="" href="ward-index"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
-    <li class="" ><a title="" href="#"><i class="icon icon-file"></i> <span class="text">REGISTRAR</span></a></li>
+    <li class="" ><a title="" href="center-registrarB"><i class="icon icon-file"></i> <span class="text">REGISTRAR</span></a></li>
     <li class="dropdown" id="settings">
         <a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle">
             <i class="icon icon-cog"></i>
