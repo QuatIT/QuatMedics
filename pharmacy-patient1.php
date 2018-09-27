@@ -222,7 +222,7 @@ input:checked + .slider:before {
                         </tr>
                       </thead>
                       <tbody>
-                       
+
                           <?php foreach($pre_med as $med){ ?>
 
                              <tr>
@@ -230,64 +230,20 @@ input:checked + .slider:before {
                                   <td><?php echo $med['medicine']; ?></td>
                                   <td><?php echo $med['dosage']; ?></td>
                                   <td style='text-align:center;'>
-<!--                                      <label for="medstat1"><input id="medstat1" type='radio' name='medstat1' value='YES'> <i class='fa fa-check-circle fa-lg text-success'></i></label>-->
 
-                                      <?php
-                                        if($med['prescribeStatus']!="served"){
-                                      ?>
-
-                                      <span class="switch">
-  <label for="switch-id<?php echo $med['prescribeid']; ?>"><input type="checkbox"  value="served" name="prescribe<?php echo $med['prescribeid']; ?>" class="switch" id="switch-id<?php echo $med['prescribeid']; ?>">Serve</label>
-</span>
-
-
-
-                                        <td><input type="text" <?php if($med['comment']){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php echo $med['comment']; ?>" placeholder="ENTER COMMENT / NOTE"></td>
-
-
-                                      <?php }else{ ?>
-                                                <span class="label label-success">Served</span>
-                                             <td><input type="text" <?php if(!empty($med['comment'])){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php echo $med['comment']; ?>" placeholder="ENTER COMMENT / NOTE"></td>
-
-                                     <?php   }
-
-
-                                            if(isset($_POST['prescribe'.$med['prescribeid']])){
-                                                $chkbox = $_POST['prescribe'.$med['prescribeid']];
-
-                                                if($chkbox=='served'){
-                                                    $checked = 'checked';
-
-                                                    $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='$chkbox' WHERE prescribeid='".$med['prescribeid']."' ");
-                                                    echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
-                                                }else{
-                                                    $checked = '';
-                                                     $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='Prescibed' WHERE prescribeid='".$med['prescribeid']."' ");
-                                                    echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
-                                                }
-                                            }
-
-
-                                                  if(isset($_POST['comment'.$med['prescribeid']])){
-                                                      $comment = $_POST['comment'.$med['prescribeid']];
-
-                                                        $comment_sql = update("UPDATE prescribedmeds SET comment='$comment' WHERE prescribeid='".$med['prescribeid']."' ");
-                                                      echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
-                                                  }
-
+                                     <input type="text" name="comment<?php echo $med['prescribeid'];?>" <?php if(!empty($med['comment'])){echo 'readonly';}else{echo '';} ?> value="<?php echo $med['comment']; ?>" class="form-control">
+                                 <?php
+                                        @$comment = $_POST['comment'.$med['prescribeid']];
+                                                echo "<script>alert('{$comment}')</script>";
 
                                       ?>
 
-
-<!--
-<label class="switch">
-  <input type="checkbox" checked>
-  <span class="slider round"></span>
-</label>
--->
-
+                                  <a href="serve?code=<?php echo $_GET['code'].'&ph='.$med['prescribeid'].'&comment='.$comment; ?>" class="btn btn-xs btn-primary"><i class="fa fa-check"></i></a>
 
                                   </td>
+
+
+
                                 </tr>
                  <?php   }?>
                       </tbody>
@@ -300,15 +256,12 @@ input:checked + .slider:before {
                       </div>
 -->
 
+<!--
                       <div class="form-actions">
                           <i class="span6"></i>
-                          <?php
-                            $pres_btn = select("SELECT * FROM prescribedmeds WHERE prescribeCode='$prescode' AND prescribeStatus='served' ");
-                            if(count($pres_btn)<=1){
-                          ?>
-                        <button type="submit" class="btn btn-primary btn-block span6">Serve</button>
-                          <?php } ?>
+                        <button type="submit" class="btn btn-primary btn-block span6"><?php #if($med['prescribeStatus']!="served"){ echo "Serve";}else{echo "Save Comment";} ?></button>
                       </div>
+-->
                   </form>
               </div>
             </div>
