@@ -276,6 +276,11 @@
                                                   </div>
 
                                                   <div class="form-group">
+                                                    <label for="exampleInputPassword1"> Upload Image</label>
+                                                    <input type="file" accept="image/*" name="image" class="form-control">
+                                                  </div>
+
+                                                  <div class="form-group">
                                                     <label for="exampleInputPassword1">&nbsp;</label>
                                                     <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
                                                   </div>
