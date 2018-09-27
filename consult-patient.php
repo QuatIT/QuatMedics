@@ -193,9 +193,9 @@ if(isset($_POST['adWard'])){
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a href="medics-index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a>
-        <a href="consult-index.php" title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
-        <a href="consult-patient.php" title="Consultation" class="tip-bottom"><i class="icon-user"></i> CONSULTATION ROOM</a>
+        <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a>
+        <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
+        <a title="Consultation" class="tip-bottom"><i class="icon-user"></i> CONSULTATION ROOM</a>
     </div>
   </div>
   <div class="container">
@@ -259,13 +259,13 @@ if(isset($_POST['adWard'])){
                                       <div class="control-group">
                                         <label class="control-label">Respiration Rate :</label>
                                         <div class="controls">
-                                          <input type="text" class="span12" name="respirationRate" value="<?php echo $consultrow['respirationRate'];?>" readonly/>
+                <input type="text" class="span12" name="respirationRate" value="<?php echo $consultrow['respirationRate'];?>" readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">
                                         <label class="control-label">Blood Pressure :</label>
                                         <div class="controls">
-                                          <input type="text" class="span12" name="bloodPressure" value="<?php echo $consultrow['bloodPressure'];?>" readonly/>
+                <input type="text" class="span12" name="bloodPressure" value="<?php echo $consultrow['bloodPressure'];?>" readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">

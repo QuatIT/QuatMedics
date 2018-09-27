@@ -12,7 +12,7 @@ $centerIDs = User::find_num_centerID() + 1;
 if(isset($_POST['btnSave'])){
 
 //declare and assign variables
-$centerID = substr($_POST['centerName'], 0, 5)."-".sprintf('%06s',$centerIDs);
+$centerID = trim(substr($_POST['centerName'], 0, 5))."-".trim(sprintf('%06s',$centerIDs));
 $centerName = $_POST['centerName'];
 $centerCategory = $_POST['centerCategory'];
 $centerLocation = $_POST['centerLocation'];
@@ -21,7 +21,7 @@ $aboutCenter = $_POST['aboutCenter'];
 $numOfBranches = $_POST['numOfBranches'];
 $userName = $_POST['userName'];
 $password = $_POST['password'];
-$accessLevel = $_POST['center_admin'];
+$accessLevel = CENTER_ADMIN;
 
 
 if(count(User::find_by_centerID($centerID)) >= 1){
@@ -110,8 +110,8 @@ if($registerCenterAdmin){
 
 <div id="sidebar">
     <ul>
-    <li><a href="quatadmin-index.html"><i class="icon icon-home"></i> <span>Dashboard</span></a></li>
-    <li class="active"><a href="medcenter-index.html"><i class="icon icon-plus-sign"></i> <span>Medical Centers</span></a></li>
+    <li><a href="quatadmin-index"><i class="icon icon-home"></i> <span>Dashboard</span></a></li>
+    <li class="active"><a href="medcenter-index"><i class="icon icon-plus-sign"></i> <span>Medical Centers</span></a></li>
     <li><a href="#"><i class="icon icon-calendar"></i> <span>Subscriptions</span></a> </li>
     </ul>
 </div>

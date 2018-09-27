@@ -11,6 +11,7 @@ define("SENT_TO_CONSULTING" , "sent_to_consulting");
 define("SENT_TO_LAB" , "sent_to_lab");
 define("SENT_TO_WARD" , "sent_to_ward");
 define("SENT_TO_PHARMACY" , "sent_to_pharmacy");
+define("CENTER_ADMIN" , "center_admin");
 
 
 define("PATIENT_BUSY" , "patient_busy");

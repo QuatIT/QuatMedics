@@ -75,9 +75,9 @@ if(isset($_POST['addApptmnt'])){
     <ul>
 <!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
     <li> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
-    <li class="active"> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
+    <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
     <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
-    <li> <a href="consult-transfers?roomID=<?php echo $roomID;?>"><i class="icon-resize-horizontal"></i> <span>Trasnfers</span></a> </li>
+    <li class="active"> <a href="consult-transfers?roomID=<?php echo $roomID;?>"><i class="icon-resize-horizontal"></i> <span>Trasnfers</span></a> </li>
     </ul>
 </div>
 
@@ -88,18 +88,18 @@ if(isset($_POST['addApptmnt'])){
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
         <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
-        <a title="Consultation" class="tip-bottom"><i class="icon-calendar"></i> APPOINTMENTS</a>
+        <a title="Transfers" class="tip-bottom"><i class="icon-resize-horizontal"></i> TRANSFERS</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTATION APPOINTMENTS</h3>
+      <h3 class="quick-actions">PATIENT TRANSFERS</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Appointment List</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Appointment</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Tranfer List</a></li>
+                    <li><a data-toggle="tab" href="#tab2">New Transfer</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -107,20 +107,20 @@ if(isset($_POST['addApptmnt'])){
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Doctors Appointment</h5>
+                        <h5>List OF Tranfers</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Number</th>
+                              <th>Patient ID</th>
                               <th>Patient Name</th>
-                              <th>Date</th>
-                              <th>Time</th>
+                              <th>New Center Name</th>
+                              <th>Date Tranfered</th>
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody id="appointment">
+                          <tbody id="appointmentss">
                           </tbody>
                         </table>
                       </div>
@@ -130,20 +130,16 @@ if(isset($_POST['addApptmnt'])){
                     <form action="#" method="post" class="form-horizontal">
                     <div class="span6">
 <!--                        <div class="widget-box">-->
+<!--
                           <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                             <h5>Make Appointment</h5>
                           </div>
+-->
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Appointment Date :</label>
+                                <label class="control-label">Center ID :</label>
                                 <div class="controls">
-                                  <input type="date" class="span11" name="appointDate" required/>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Appointment Time :</label>
-                                <div class="controls">
-                                  <input type="time" class="span11" name="appointTime" required/>
+                                  <input type="text" class="span11" name="centerID" value="<?php echo $_SESSION['centerID'];?>" readonly required/>
                                 </div>
                               </div>
                              <div class="control-group">
@@ -152,14 +148,39 @@ if(isset($_POST['addApptmnt'])){
                                   <input type="text" class="span11" value="<?php echo $staffID;?>" readonly/>
                                 </div>
                               </div>
+                              <div class="control-group">
+                                <label class="control-label">Transfer To :</label>
+                                <div class="controls">
+                                    <select name="newCenter">
+                                        <option value=""> -- New Center --</option>
+                                        <option value=""> Center Name</option>
+                                        <option value=""> Center Name</option>
+                                        <option value=""> Center Name</option>
+                                    </select>
+                                </div>
+                              </div>
+                             <div class="control-group">
+                                <label class="control-label">Reason For Transfer :</label>
+                                <div class="controls">
+                                    <textarea class="span11" name="transferReason"></textarea>
+                                </div>
+                              </div>
                           </div>
                       </div>
                     <div class="span6">
-                          <div class="widget-title">
-<!--                              <span class="icon"> <i class="icon-align-justify"></i> </span>-->
-<!--                            <h5>Make Appointment</h5>-->
-                          </div>
                           <div class="widget-content nopadding">
+                              <div class="control-group">
+                                <label class="control-label">Center Name :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" name="centerName" value="" readonly required/>
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">Staff Name :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" name="staffName" value="" readonly required/>
+                                </div>
+                              </div>
                              <div class="control-group">
                                 <label class="control-label">Patient :</label>
                                 <div class="controls">
@@ -168,24 +189,15 @@ if(isset($_POST['addApptmnt'])){
                                       <?php
                                         if(!empty($patient)){
                                             foreach($patient as $patientrow){
-
                                       ?>
                                     <option value="<?php echo $patientrow['patientID'];?>"><?php echo $patientrow['firstName']." ".$patientrow['otherName']." ".$patientrow['lastName'];?></option>
                                       <?php }}?>
                                   </select>
                                 </div>
                               </div>
-                              <div class="control-group">
-                                <label class="control-label">Send SMS :</label>
-                                <div class="controls">
-                                  <label>
-                                    <input type="checkbox" name="radios" />
-                                </label>
-                                </div>
-                              </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="addApptmnt" class="btn btn-primary btn-block span10">Save Appointment</button>
+                                <button type="submit" name="addApptmnt" class="btn btn-primary btn-block span10">Transfer Patient</button>
                               </div>
                           </div>
                       </div>

@@ -23,7 +23,7 @@
 
 <div id="sidebar">
     <ul>
-    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li class="active"><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     </ul>
 </div>
 
@@ -40,7 +40,7 @@
 
    	<div class="quick-actions_homepage">
     <ul class="quick-actions">
-          <li> <a href="centerconsultation-index.php"> <i class="icon-cabinet"></i> Consultation</a></li>
+          <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> Consultation</a></li>
           <li> <a href="centeruser-index"> <i class="icon-people"></i> Staff </a> </li>
           <li> <a href="centerward-index"> <i class="icon-graph"></i> Ward </a> </li>
           <li> <a href="#"> <i class="icon-home"></i> Pharmacy</a> </li>
