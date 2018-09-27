@@ -26,7 +26,9 @@
 <?php
     include 'layout/head.php';
 
-    $fet_pat=select("SELECT * FROM labresults WHERE status='Requested' && centerID='".$_SESSION['centerID']."' GROUP BY labRequestID ");
+    if($_SESSION['accessLevel']=='LABORATORY'){
+
+    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."' GROUP BY labRequestID ");
 
     ?>
 <div id="search">
@@ -90,7 +92,7 @@
                                         $labnam = select("SELECT GROUP_CONCAT(labName) as labt FROM lablist WHERE labID='".$labtxt['labID']."' ");
                                         foreach($labnam as $labname){
 
-                                            echo $labname['labt'].",";
+                                            echo $labname['labt'];
                                         }
 
 
@@ -163,3 +165,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>

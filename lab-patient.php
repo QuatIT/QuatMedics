@@ -19,6 +19,9 @@
 
 <?php
     include 'layout/head.php';
+
+    if($_SESSION['accessLevel']=='LABORATORY'){
+
  $success = '';
  $error = '';
 
@@ -161,7 +164,7 @@ if(isset($_FILES['file'])){
 
                                                     $labnam = select("SELECT GROUP_CONCAT(labName) as labt FROM lablist WHERE labID='".$labtxt['labID']."' ");
                                                     foreach($labnam as $labname){
-                                                        echo $labname['labt'].",";
+                                                        echo $labname['labt'];
                                                     }
 
 
@@ -257,3 +260,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>

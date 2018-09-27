@@ -7,6 +7,7 @@ $error = '';
 
 //generate centerID
 $centerIDs = User::find_num_centerID() + 1;
+//$centerIDs = User::find_num_centerID() ;
 
 if(isset($_POST['btnSave'])){
 
@@ -20,7 +21,7 @@ $aboutCenter = $_POST['aboutCenter'];
 $numOfBranches = $_POST['numOfBranches'];
 $userName = $_POST['userName'];
 $password = $_POST['password'];
-$accessLevel = $_POST['center_admin';
+$accessLevel = $_POST['center_admin'];
 
 
 if(count(User::find_by_centerID($centerID)) >= 1){
@@ -166,13 +167,7 @@ if($registerCenterAdmin){
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody id="load_med_center">
-<<<<<<< HEAD
-                              <!-- <tr ></tr> -->
-=======
-<!--                              <tr></tr>-->
->>>>>>> e01b15aa418db283cc0b65b49028195416eb6a5e
-                          </tbody>
+                          <tbody id="load_med_center"></tbody>
                         </table>
 
                          </div>
@@ -187,7 +182,7 @@ if($registerCenterAdmin){
                                <div class="controls">
                               
                                 
-                                  <input type="text" class="span11" name="centerID" value="<?php$centerID = select("SELECT * FROM medicalcenter"); echo $centerIDs['centerID']; ?>" required readonly/>
+                                  <input type="text" class="span11" name="centerID" value="<?php echo $centerIDs; ?>" required readonly/>
                               
                                 </div>
                               </div>

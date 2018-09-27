@@ -3,7 +3,7 @@
   class User{
 
     public function createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel) {
-      $result= insert("INSERT INTO medicalcenter(centerID,centerName,centerCategory,centerLocation,numOfStaff,centerHistory,numOfBranches,userName,password,accessLevel) VALUES('$centerID','$centerName','$centerCategory','$centerLocation','$numOfStaff','$aboutCenter','$numOfBranches','$userName','$password','$accessLevel') ");
+      $result= insert("INSERT INTO medicalcenter(centerID,centerName,centerCategory,centerLocation,numOfStaff,centerHistory,numOfBranches,userName,password,accessLevel,dateregistered) VALUES('$centerID','$centerName','$centerCategory','$centerLocation','$numOfStaff','$aboutCenter','$numOfBranches','$userName','$password','$accessLevel',CURDATE() ) ");
       return $result;
     }
 
@@ -17,8 +17,8 @@
       return $result;
     }
 
-    public function saveUserCredential($staffID,$username,$password,$accessLevel,$centerID){
-      $result=insert("INSERT INTO centerUser(userID,userName,password,accessLevel,centerID,dateRegistered) VALUES('$staffID','$username','$password','$accessLevel','$centerID',CURDATE() ) ") ;
+    public function saveUserCredential($staffID,$username,$password,$accessLevel,$centerID,$userID){
+      $result=insert("INSERT INTO centerUser(userID,userName,password,accessLevel,centerID,dateRegistered,staffID) VALUES('$staffID','$username','$password','$accessLevel','$centerID',CURDATE(),'$userID' ) ") ;
       return $result;
     }
 

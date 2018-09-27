@@ -46,7 +46,7 @@
 <?php
 
     include 'layout/head.php';
-
+    if($_SESSION['accessLevel']=='WARD'){
     $success = '';
     $error = '';
 
@@ -272,3 +272,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>

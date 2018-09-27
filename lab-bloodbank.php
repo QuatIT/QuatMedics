@@ -1,7 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>QUAT MEDICS ADMIN</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="css/fullcalendar.css" />
+<link rel="stylesheet" href="css/colorpicker.css" />
+<link rel="stylesheet" href="css/datepicker.css" />
+<link rel="stylesheet" href="css/uniform.css" />
+<link rel="stylesheet" href="css/select2.css" />
+<link rel="stylesheet" href="css/maruti-style.css" />
+<link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <style>
+        .active{
+            background-color: #209fbf;
+        }
+        .modal-header {
+	padding-bottom: 5px;
+}
+
+.modal-footer {
+    	padding: 0;
+	}
+
+.modal-footer .btn-group button {
+	height:40px;
+	border-top-left-radius : 0;
+	border-top-right-radius : 0;
+	border: none;
+	border-right: 1px solid #ddd;
+}
+
+.modal-footer .btn-group:last-child > button {
+	border-right: 0;
+}
+    </style>
+</head>
+<body>
+
 <?php
-require "assets/core/connection.php";
+    include 'layout/head.php';
 
-
+    if($_SESSION['accessLevel']=='LABORATORY'){
 
 
 
@@ -55,57 +103,7 @@ $donorID=generateDonorID();
 
 
 
-?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>QUAT MEDICS ADMIN</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
-<link rel="stylesheet" href="css/fullcalendar.css" />
-<link rel="stylesheet" href="css/colorpicker.css" />
-<link rel="stylesheet" href="css/datepicker.css" />
-<link rel="stylesheet" href="css/uniform.css" />
-<link rel="stylesheet" href="css/select2.css" />
-<link rel="stylesheet" href="css/maruti-style.css" />
-<link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-    <style>
-        .active{
-            background-color: #209fbf;
-        }
-        .modal-header {
-	padding-bottom: 5px;
-}
-
-.modal-footer {
-    	padding: 0;
-	}
-
-.modal-footer .btn-group button {
-	height:40px;
-	border-top-left-radius : 0;
-	border-top-right-radius : 0;
-	border: none;
-	border-right: 1px solid #ddd;
-}
-
-.modal-footer .btn-group:last-child > button {
-	border-right: 0;
-}
-    </style>
-</head>
-<body>
-
-<?php include 'layout/head.php'; ?>
+    ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -442,3 +440,4 @@ function resetMenu() {
 
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>

@@ -48,6 +48,8 @@
 
     include 'layout/head.php';
 
+    if($_SESSION['accessLevel']=='CONSULTATION'){
+
     $roomID = $_GET['roomID'];
 
         $roomByID = Consultation::find_by_room_id($roomID);
@@ -262,3 +264,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>

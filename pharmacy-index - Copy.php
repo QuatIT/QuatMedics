@@ -20,19 +20,6 @@
             background-color: #209fbf;
         }
     </style>
-
-     <style type="text/css">
-        .form-control-borderless {
-    border: none;
-}
-
-.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
-    </style>
-
 </head>
 <body>
 
@@ -68,16 +55,39 @@
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">SEARCH PATIENT PRESCRIPTION</h3>
+      <h3 class="quick-actions">PATIENT PRESCRIPTION LIST</h3>
 
           <div class="row-fluid">
              <div class="widget-box">
                   <div class="widget-title">
                   </div>
                   <div class="widget-content">
-                    <form action="" method="post">
-                        <input type="text" name="txtSearch" onkeyup="pharmSearch(this.value);" placeholder="ENTER PERSCRIPTION CODE" class="span12 form-control" style="height:50px;padding:2px;text-align:center;font-weight:bolder:font-size:22px;"><i type="submit" class="fa fa-search fa-3x" style="margin-left:-70px;margin-top:-40px;color:#ccc;"></i><p id="search" style="text-align:center;"></p><p id="loader" style="text-align:center;"></p>
-                      </form>
+                    <table class="table table-bordered data-table">
+                      <thead>
+                        <tr>
+                          <th>Patient Number</th>
+                          <th>Patient Name</th>
+                          <th>Doctor Name</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      
+                          <?php
+                         
+                            foreach($get_pharm as $get_pharms){
+
+                          echo"<tr>
+                          <td>".$get_pharms['patientID']."</td>
+                          <td>".$get_pharms['firstName']." ".$get_pharms['otherName']." ".$get_pharms['lastName']."</td>
+                          <td>--------</td>
+                          <td style='text-align: center;'>
+                               <a href='pharmacy-patient.php?patientID=".$get_pharms['patientID']."'><span class='btn btn-primary fa fa-eye'></span></a>
+                          </td>
+                        </tr>";
+                      }?>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
           </div>
@@ -109,17 +119,7 @@
 
 <!--<script src="js/maruti.js"></script> -->
 
-<script>
 
-        function pharmSearch(val){
-            // load the select option data into a div
-                $('#loader').html("<img src='gif-transparent-loading-4.gif' width=100 height=100>");
-                $('#loader').load('loads/search.php?id='+val, function(){
-                $('#loader').html("");
-               });
-        }
-
-    </script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

@@ -25,6 +25,8 @@
 <?php
     include 'layout/head.php';
 
+    if($_SESSION['accessLevel']=='OPD'){
+
     //generate $PatientID
     $PatientIDs = Patient::find_num_Patient() + 1;
 
@@ -383,3 +385,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
+<?php }else{echo "<script>window.location='404'</script>";}?>
