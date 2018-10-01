@@ -34,6 +34,10 @@ include 'layout/head.php';
     $error = "";
     $conid = $_GET['conid'];
     $roomID = $_GET['roomID'];
+
+        $rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
+        foreach($rm as $r){}
+
     $consultdet = select("SELECT * from consultation WHERE consultID='$conid'");
 
     $staff = select("SELECT staffID from centeruser where userName='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
@@ -199,7 +203,7 @@ if(isset($_POST['adWard'])){
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTATION ROOM <?php echo $roomID;?></h3>
+      <h3 class="quick-actions">CONSULTATION ROOM <?php echo $r['roomName'];?></h3>
 <div class="row-fluid">
     <div class="span12">
         <?php
