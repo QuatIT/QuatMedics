@@ -6,12 +6,18 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
     echo "<script>window.location.href='index'</script>";
 }
 
-//else{
-//    $staff = select("SELECT * from centeruser WHERE username='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
-//    foreach($staff as $staffrow){
-//        $staffID = $staffrow['staffID'];
-//    }
-//}
+else{
+    $staff = select("SELECT * from centeruser WHERE username='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
+    foreach($staff as $staffrow){
+        $staffID = $staffrow['staffID'];
+    }
+}
+
+$centerID=$_SESSION['centerID'];
+
+    $LICENCE_UPLOAD = PARENT_DIR.$centerID.'/licence/';
+    $LAB_RESULT_UPLOAD = PARENT_DIR.$centerID.'/labresults/';
+    $PATIENT_UPLOAD = PARENT_DIR.$centerID.'/patient/';
 
 //search and display hospital name
 $centerName_sql = select("SELECT * FROM medicalCenter WHERE centerID='".$_SESSION['centerID']."' ");

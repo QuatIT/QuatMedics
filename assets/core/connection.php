@@ -88,6 +88,44 @@ function randomString($length)
 }
 
 
+//folder creation
+
+ function uploadDir($centerID)
+
+{
+
+//	$sCurrDate = date("Y-m-d"); //Current Date
+//     $centerID = $_SESSION['centerID'];
+
+// 	$sDirPath = 'http://quatitsolutions.com/try/'.$sCurrDate.'/'; //Specified Pathname
+	$sDirPath = './'.$centerID.'/'; //Specified Pathname
+
+	if (!file_exists ($centerID))
+
+   	{
+
+	    	mkdir($centerID,0777,true);
+
+    	}
+
+}
+
+function make_dir($centerID)
+{
+  $parent = '../uploads/';
+
+   $the_dir = $parent.$centerID;
+   $licence = $parent.$centerID.'/licence';
+   $labresults = $parent.$centerID.'/labresults';
+   $patient = $parent.$centerID.'/patient';
+    if (!file_exists ($the_dir)){
+   @mkdir($the_dir, 0777, TRUE);
+   @mkdir($licence, 0777, TRUE);
+   @mkdir($labresults, 0777, TRUE);
+   @mkdir($patient, 0777, TRUE);
+    }
+}
+
 ?>
 
     <?php

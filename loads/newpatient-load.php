@@ -15,17 +15,19 @@ foreach($load_newpatient as $newpatient){
 
 <tr>
   <td class="span2">
-      <i class="fa fa-user"></i>
-    <a class="" href="images/gallery/imgbox2.jpg">
-        <img src="images/gallery/imgbox2.jpg" alt="" >
+<!--      <i class="fa fa-user"></i>-->
+    <a class="" href="<?php echo $newpatient['patient_image']; ?>">
+        <img src="<?php echo $newpatient['patient_image']; ?>" alt="" >
     </a>
   </td>
   <td><?php echo $newpatient['patientID']; ?></td>
   <td> <?php echo $newpatient['firstName']." ".$newpatient['otherName']." ".$newpatient['lastName']; ?></td>
   <td> <?php echo $newpatient['phoneNumber']; ?></td>
+<!--
   <td style="text-align: center;">
        <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
   </td>
+-->
 </tr>
 
 

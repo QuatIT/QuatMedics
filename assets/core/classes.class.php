@@ -51,8 +51,8 @@
 
   class Consultation{
 
-      public function consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID){
-          $result= insert("INSERT INTO consultation(consultID,staffID,bodyTemperature,pulseRate,respirationRate,bloodPressure,weight,otherHealth,roomID,patientID) VALUES('$consultID','$staffID','$bodyTemperature','$pulseRate','$respirationRate','$bloodPressure','$weight','$otherHealth','$roomID','$patientID') ");
+      public function consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status){
+          $result= insert("INSERT INTO consultation(consultID,staffID,bodyTemperature,pulseRate,respirationRate,bloodPressure,weight,otherHealth,roomID,patientID,mode,insuranceType,insuranceNumber,company,status) VALUES('$consultID','$staffID','$bodyTemperature','$pulseRate','$respirationRate','$bloodPressure','$weight','$otherHealth','$roomID','$patientID','$mode','$insuranceType','$insuranceNumber','$company','$status') ");
           return $result;
     }
 
@@ -92,6 +92,14 @@
 
     public function find_num_consults(){
       $result=query("SELECT * FROM consultation ");
+      $num = count($result);
+
+      return $num;
+    }
+
+
+    public function find_num_transfer(){
+      $result=query("SELECT * FROM transfer ");
       $num = count($result);
 
       return $num;
@@ -149,8 +157,14 @@
 
   class Patient{
 
-    public function createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress) {
-      $result= insert("INSERT INTO patient(centerID,patientId,firstName,lastName,otherName,dob,gender,bloodGroup,homeAddress,phoneNumber,guardianName,guardianGender,guardianPhone,guardianRelation,guardianAddress,dateRegistered) VALUES('$centerID','$patientId','$firstName','$lastName','$otherName','$dob','$gender','$bloodGroup','$homeAddress','$phoneNumber','$guardianName','$guardianGender','$guardianPhone','$guardianRelation','$guardianAddress',CURDATE() ) ");
+    public function createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination) {
+      $result= insert("INSERT INTO patient(centerID,patientId,firstName,lastName,otherName,dob,gender,bloodGroup,homeAddress,phoneNumber,guardianName,guardianGender,guardianPhone,guardianRelation,guardianAddress,dateRegistered,patient_image) VALUES('$centerID','$patientId','$firstName','$lastName','$otherName','$dob','$gender','$bloodGroup','$homeAddress','$phoneNumber','$guardianName','$guardianGender','$guardianPhone','$guardianRelation','$guardianAddress',CURDATE(),'$filedestination' ) ");
+      return $result;
+    }
+
+
+    public function find_patient(){
+      $result=query("SELECT * FROM patient ");
       return $result;
     }
 
@@ -175,6 +189,67 @@
       return $num;
     }
 
+
+  }
+
+
+
+  class Birth{
+
+    public function RegisterBaby($babyID,$babyFirstName,$babyOtherName,$babylastName,$babyName,$dob,$motherName,$fatherName,$birthTime,$country,$status) {
+      $result= insert("INSERT INTO birth(babyID,babyFirstName,babyOtherName,babylastName,fullname,dob,motherName,fatherName,birthTime,country,status,dateRegistered) VALUES('$babyID','$babyFirstName','$babyOtherName','$babylastName','$babyName','$dob','$motherName','$fatherName','$birthTime','$country','$status',CURDATE() ) ");
+      return $result;
+    }
+
+
+    public function find_by_baby_id($babyID){
+      $result=query("SELECT * FROM birth WHERE babyID='".$babyID."' ");
+      return $result;
+    }
+
+
+    public function find_birth(){
+      $result=query("SELECT * FROM birth ");
+      return $result;
+    }
+
+
+    public function find_num_Birth(){
+      $result=query("SELECT * FROM birth ");
+      $num = count($result);
+
+      return $num;
+    }
+
+  }
+
+
+  class Death{
+
+//    public function RegisterBaby($babyID,$babyFirstName,$babyOtherName,$babylastName,$babyName,$dob,$motherName,$fatherName,$birthTime,$country,$status) {
+//      $result= insert("INSERT INTO birth(babyID,babyFirstName,babyOtherName,babylastName,fullname,dob,motherName,fatherName,birthTime,country,status,dateRegistered) VALUES('$babyID','$babyFirstName','$babyOtherName','$babylastName','$babyName','$dob','$motherName','$fatherName','$birthTime','$country','$status',CURDATE() ) ");
+//      return $result;
+//    }
+//
+//
+//    public function find_by_baby_id($babyID){
+//      $result=query("SELECT * FROM birth WHERE babyID='".$babyID."' ");
+//      return $result;
+//    }
+
+
+//    public function find_birth(){
+//      $result=query("SELECT * FROM birth ");
+//      return $result;
+//    }
+
+
+    public function find_num_Death(){
+      $result=query("SELECT * FROM death ");
+      $num = count($result);
+
+      return $num;
+    }
 
   }
 

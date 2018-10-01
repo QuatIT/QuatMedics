@@ -8,6 +8,10 @@ $error = '';
 //generate centerID
 $centerIDs = User::find_num_centerID() + 1;
 //$centerIDs = User::find_num_centerID() ;
+//mkdir(date('YmdHis'));
+
+//echo mkdir(date('YmdHis').$centerIDs);
+
 
 if(isset($_POST['btnSave'])){
 
@@ -32,6 +36,9 @@ if(count(User::find_by_centerID($centerID)) >= 1){
 $registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel);
 
 if($registerCenterAdmin){
+
+echo make_dir($centerID);
+
     $success =  "FACILITY ADMIN CREATED SUUCESSFULLY";
 }else{
     $error =  "ERROR: FACILITY ADMIN COULD NOT CREATE";
@@ -44,6 +51,7 @@ if($registerCenterAdmin){
 $registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel);
 
 if($registerCenterAdmin){
+    echo make_dir($centerID);
     $success =  "FACILITY ADMIN CREATED SUUCESSFULLY";
 }else{
     $error =  "ERROR: FACILITY ADMIN COULD NOT CREATE";

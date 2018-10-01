@@ -24,6 +24,67 @@
 
 <?php
 include 'layout/head.php';
+
+//    $tab = $_GET['tab'];
+//
+//
+//    if($tab == 'tab'){
+//        $active='active';
+//        $bid = $_GET['bid'];
+//        //get individual by id
+//        $b_sql = select("SELECT * FROM birth WHERE babyID='$bid' ");
+//        foreach($b_sql as $b_row){}
+//
+//    }elseif($tab == 'tab1'){
+//        $active1='active';
+//    }
+//
+//    if(empty($tab)){
+//        $active1='active';
+//    }
+
+    $deathIDs = Death::find_num_Death() + 1;
+
+
+// function createNewDirectory1()
+//
+//{
+//
+//	$sCurrDate = date("Y-m-d"); //Current Date
+//     $centerID = $_SESSION['centerID'];
+//
+//// 	$sDirPath = 'http://quatitsolutions.com/try/'.$sCurrDate.'/'; //Specified Pathname
+//	$sDirPath = './'.$centerID.'/'; //Specified Pathname
+//
+//	if (!file_exists ($centerID))
+//
+//   	{
+//
+//	    	mkdir($centerID,0777,true);
+//
+//    	}
+//
+//}
+//echo createNewDirectory1();
+
+
+  if(isset($_POST['addApptmnt'])){      $centerID = $_SESSION['centerID'];
+        $deathId = substr(filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING), 0, 5)."-".sprintf('%06s',$deathIDs);
+        $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
+        $deathDate = filter_input(INPUT_POST, "dod", FILTER_SANITIZE_STRING);
+        $deathTime = filter_input(INPUT_POST, "deathTime", FILTER_SANITIZE_STRING);
+        $reason = filter_input(INPUT_POST, "reason", FILTER_SANITIZE_STRING);
+
+      $insert_death = insert("INSERT INTO death(deathID,patientID,deathDate,deathTime,reason,dateRegistered,centerID) VALUES('$deathId','$patientID','$deathDate','$deathTime','$reason',CURDATE(),'$centerID' ) ");
+
+      if($insert_death){
+          $update_patient = update("UPDATE patient SET status='".DEAD."' WHERE patientID='$patientID' ");
+
+           $success = "<script>document.write('DEATH RECORD REGISTERED');
+                                    window.location.href='center-registrarD' </script>";
+      }
+    }
+
 ?>
 
 <div id="search">
@@ -80,47 +141,70 @@ include 'layout/head.php';
                             </tr>
                           </thead>
                           <tbody>
+                              <?php
+                                $dsql = select("SELECT * FROM death WHERE centerID='$centerID' ");
+                                foreach($dsql as $drow){
+                              ?>
                               <tr>
-                                <td> DTH-ABCD-0001</td>
-                                <td> Richard</td>
-                                <td> 12/05/2018</td>
+                                <td> <?php echo $drow['deathID']; ?></td>
+                                <td> <?php echo $drow['patientID']; ?></td>
+                                <td> <?php echo $drow['deathDate']; ?></td>
                                 <td> <a href="#" class="btn btn-primary" title="View"><i class="fa fa-eye"></i></a></td>
                               </tr>
+                              <?php } ?>
                           </tbody>
                         </table>
                       </div>
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
+                    <form action="" method="post" class="form-horizontal">
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Death ID :</label>
+                                <label class="control-label">Patient ID :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" name="centerID" value="DTH-ABCD-00001" readonly required/>
+<!--                                  <input type="text" class="span11" name="centerID" value="<?php #echo $bid; ?>" readonly required/>-->
+                                    <select name="patientID" >
+                                        <option value="default"> -- Select ID --</option>
+                                        <?php
+                                            $patient=Patient::find_patient();
+                                            foreach($patient as $patID){ ?>
+                                            <option value="<?php echo $patID['patientID']; ?>"><?php echo $patID['firstName'].' '.$patID['otherName'].' '.$patID['lastName'];?> (<?php echo $patID['patientID']; ?>)</option>
+                                        <?php } ?>
+                                  </select>
                                 </div>
                               </div>
+
                               <div class="control-group">
-                                <label class="control-label">Date Of Death :</label>
+                                <label class="control-label">Reason Of Death :</label>
                                 <div class="controls">
-                                  <input type="date" class="span11" name="dob" required/>
+                                  <input type="text" class="span11" name="reason" required/>
                                 </div>
                               </div>
                           </div>
                       </div>
                     <div class="span6">
                           <div class="widget-content nopadding">
+<!--
                               <div class="control-group">
                                 <label class="control-label">Name :</label>
                                 <div class="controls">
                                   <input type="text" class="span11" name="name" required/>
+                                  <input type="text" class="span11" name="name" value="<?php #echo $b_row['fullname']; ?>" required readonly />
+                                </div>
+                              </div>
+-->
+                              <div class="control-group">
+                                <label class="control-label">Date Of Death :</label>
+                                <div class="controls">
+                                  <input type="date" class="span11" name="dod" required/>
                                 </div>
                               </div>
                              <div class="control-group">
                                 <label class="control-label">Time Of Death :</label>
                                 <div class="controls">
-                                  <input type="time" class="span11" name="birthTime" required/>
+                                  <input type="time" class="span11" name="deathTime" required/>
                                 </div>
                               </div>
                               <div class="form-actions">

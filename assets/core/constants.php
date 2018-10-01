@@ -14,6 +14,16 @@ define("SENT_TO_PHARMACY" , "sent_to_pharmacy");
 define("CENTER_ADMIN" , "center_admin");
 
 
+define("LIVING" , "living");
+define("DEAD" , "dead");
+
+
+define("PARENT_DIR" , "uploads/");
+define("LICENCE_DIR" , "../uploads/".PARENT_DIR."licence/");
+define("LAB_RESULT_DIR" , "../uploads/labresults/");
+define("PATIENT_DIR" , "../uploads/patient/");
+
+
 define("PATIENT_BUSY" , "patient_busy");
 
 $encryption_key = "encryption_key-243423";

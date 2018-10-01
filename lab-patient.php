@@ -66,6 +66,7 @@ if(isset($_FILES['file'])){
 	//etract extension
 	$file_ext =explode('.',$file_name);
 	$file_ext = strtolower(end($file_ext));
+//	$allowed = array("pdf","doc","docx","png","jpg","jpeg","gif");
 	$allowed = array('application','pdf');
 
 	if(in_array($file_ext, $allowed)){
@@ -73,7 +74,7 @@ if(isset($_FILES['file'])){
 			if($file_size <= 4097152){
 
 			 $file_name_new=uniqid('', true).'.'.$file_ext;
-                  $file_destination = 'uploads/' .$file_name_new;
+                  $file_destination = $LAB_RESULT_UPLOAD.$file_name_new;
 
 			 	//check if file has been loaded earlier and move it from temporary location into folder
 			 	if(move_uploaded_file($file_tmp,$file_destination)){
@@ -83,7 +84,7 @@ if(isset($_FILES['file'])){
             if($qry){
 
                 $success = "<script>document.write('File Upload Successful');
-                document.location.assign('lab-index.php')</script>";
+                                window.location.href='lab-index'</script>";
             }
 			 	}
 			}

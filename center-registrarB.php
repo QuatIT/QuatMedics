@@ -23,7 +23,46 @@
 <body>
 
 <?php
-include 'layout/head.php';
+    include 'layout/head.php';
+
+    $success='';
+    $error='';
+
+//     $birthIDs = Birth::find_num_Birth() + 1;
+    $PatientIDs = Patient::find_num_Patient() + 1;
+
+    if(isset($_POST['addApptmnt'])){
+
+        $babyID = substr(filter_input(INPUT_POST, "babylastName", FILTER_SANITIZE_STRING), 0, 5).date('y')."-".trim(sprintf('%06s',$PatientIDs));
+//        $babyID = filter_input(INPUT_POST, "babyID", FILTER_SANITIZE_STRING);
+        $babyFirstName = filter_input(INPUT_POST, "babyFirstName", FILTER_SANITIZE_STRING);
+        $babyOtherName = filter_input(INPUT_POST, "babyOtherName", FILTER_SANITIZE_STRING);
+        $babylastName = filter_input(INPUT_POST, "babylastName", FILTER_SANITIZE_STRING);
+        $babyName = $babyFirstName.' '.$babyOtherName.' '.$babylastName;
+        $dob = filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING);
+        $motherName = filter_input(INPUT_POST, "motherName", FILTER_SANITIZE_STRING);
+        $fatherName = filter_input(INPUT_POST, "fatherName", FILTER_SANITIZE_STRING);
+        $birthTime = filter_input(INPUT_POST, "birthTime", FILTER_SANITIZE_STRING);
+        $country = filter_input(INPUT_POST, "country", FILTER_SANITIZE_STRING);
+        $status = LIVING;
+
+        $baby = Birth::RegisterBaby($babyID,$babyFirstName,$babyOtherName,$babylastName,$babyName,$dob,$motherName,$fatherName,$birthTime,$country,$status);
+
+        if($baby){
+           $centerID=$_SESSION['centerID'];
+
+            $insert_baby = insert("INSERT INTO patient(centerID,patientID,firstName,otherName,lastName,dob,guardianName) VALUES('$centerID','$babyID','$babyFirstName','$babyOtherName','$babylastName','$dob','$motherName') ");
+//            createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress)
+
+            $success="<script>document.write('Baby Registered Successfullly')
+                        window.location.href='center-registrarB'</script>";
+        }else{
+            $error="Something Happened Somewhere";
+        }
+
+    }
+
+
 ?>
 
 <div id="search">
@@ -53,7 +92,19 @@ include 'layout/head.php';
   </div>
   <div class="container">
       <h3 class="quick-actions">BIRTH RECORDS</h3>
-
+              <?php
+                      if($success){
+                      ?>
+                      <div class="alert alert-success">
+                  <strong>Success!</strong> <?php echo $success; ?>
+                </div>
+                      <?php } if($error){
+                          ?>
+                      <div class="alert alert-danger">
+                  <strong>Error!</strong> <?php echo $error; ?>
+                </div>
+                      <?php
+                      } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -76,35 +127,137 @@ include 'layout/head.php';
                               <th> Birth ID</th>
                               <th> Baby Name</th>
                               <th> Date Of Birth</th>
-                              <th>Action</th>
+<!--                              <th>Action</th>-->
                             </tr>
                           </thead>
                           <tbody>
+                              <?php
+//                                    $fbirth = Patient::find_Patient();
+//                                    $fbirth = Birth::find_birth();
+                                    $fbirth = select("SELECT * FROM birth where centerID='".$_SESSION['centerID']."' ");
+                                    foreach($fbirth as $frow){
+                              ?>
                               <tr>
-                                <td> BTH-ABCD-0001</td>
-                                <td> Richard</td>
-                                <td> 12/05/2018</td>
-                                <td> <a href="#" class="btn btn-primary" title="View Record"><i class="fa fa-eye"></i></a></td>
+                                <td> <?php echo $frow['babyID']; ?></td>
+                                <td> <?php echo $frow['fullname']; ?></td>
+                                <td> <?php echo $frow['dob']; ?></td>
+<!--                                <td> -->
+<!--                                    <a href="#" class="btn btn-primary" title="View Record"><i class="fa fa-eye"></i></a>-->
+<!--                                    <a href="#" class="btn btn-danger"  data-toggle="modal" data-target="#myModal" title="View Record">Dead</a></td>-->
                               </tr>
+
+<!--
+                              <tr>
+                                <td> <?php #echo $frow['patientID']; ?></td>
+                                <td> <?php #echo $frow['firstName'].' '.$frow['otherName'].' '.$frow['lastName']; ?></td>
+                                <td> <?php #echo $frow['dob']; ?></td>
+                                <td>
+-->
+<!--                                    <a href="#" class="btn btn-primary" title="View Record"><i class="fa fa-eye"></i></a>-->
+<!--                                    <a href="#" class="btn btn-danger"  data-toggle="modal" data-target="#myModal<?php #echo $frow['patientID']; ?>" title="View Record">Dead</a></td>-->
+<!--                              </tr>-->
+
+
+
+<!-- Modal -->
+<div id="myModal<?php echo $frow['patientID']; ?>" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">RECORD DEATH</h4>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post" class="form-horizontal">
+                    <div class="span6">
+<!--                          <div class="widget-content nopadding">-->
+                              <div class="control-group">
+                                <label class="control-label">Death ID :</label>
+                                <div class="controls">
+                                  <input type="text" class="form-control" name="centerID" value="<?php echo $frow['patientID']; ?>" readonly required/>
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">Date Of Death :</label>
+                                <div class="controls">
+                                  <input type="date" class="form-control" name="dob" required/>
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">Reason Of Death :</label>
+                                <div class="controls">
+                                  <input type="text" class="form-control" name="reason" required/>
+                                </div>
+                              </div>
+                          </div>
+<!--                      </div>-->
+<!--                    <div class="span6">-->
+<!--                          <div class="widget-content nopadding">-->
+                              <div class="control-group">
+                                <label class="control-label">Name :</label>
+                                <div class="controls">
+                                  <input type="text" class="form-control" name="name" value="<?php echo $frow['firstName'].' '.$frow['otherName'].' '.$frow['lastName']; ?>" required readonly />
+                                </div>
+                              </div>
+                             <div class="control-group">
+                                <label class="control-label">Time Of Death :</label>
+                                <div class="controls">
+                                  <input type="time" class="form-control" name="birthTime" required/>
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                  <i class="span1"></i>
+                                <button type="submit" name="addApptmnt" class="btn btn-primary btn-block span6">Save Record</button>
+                              </div>
+<!--                          </div>-->
+<!--                      </div>-->
+                    </form>
+      </div>
+<!--
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+-->
+    </div>
+
+  </div>
+</div>
+
+
+                              <?php } ?>
                           </tbody>
                         </table>
                       </div>
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
+                    <form action="" method="post" class="form-horizontal">
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
                                 <label class="control-label">Birth ID :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" name="centerID" value="BTH-ABCD-00001" readonly required/>
+                                  <input type="text" class="span11" name="centerID" value="<?php echo $PatientIDs; ?>" readonly required/>
                                 </div>
                               </div>
                              <div class="control-group">
-                                <label class="control-label">Baby Name :</label>
+                                <label class="control-label">First Name :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" name="babyName" required/>
+                                  <input type="text" class="span11" name="babyFirstName" required/>
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">Other Name :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" name="babyOtherName" required/>
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">Last Name :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" name="babylastName" required/>
                                 </div>
                               </div>
                               <div class="control-group">
@@ -117,6 +270,15 @@ include 'layout/head.php';
                       </div>
                     <div class="span6">
                           <div class="widget-content nopadding">
+                              <div class="control-group">
+                                <label class="control-label">Country :</label>
+                                <div class="controls">
+                                  <select class="span11" name="country">
+                                        <option></option>
+                                        <option>GHANA</option>
+                                    </select>
+                                </div>
+                              </div>
                               <div class="control-group">
                                 <label class="control-label">Mother's Name :</label>
                                 <div class="controls">

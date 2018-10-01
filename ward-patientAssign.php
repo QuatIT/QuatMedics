@@ -49,6 +49,12 @@
 
     if($_SESSION['accessLevel']=="CONSULTATION" || $_SESSION['accessLevel']=='WARD'){
 
+        $patientID = $_GET['patid'];
+        $wardID = $_GET['wrdno'];
+
+        $get_patient = select("SELECT * FROM patient WHERE patientID='$patientID' ");
+        foreach($get_patient as $pat){}
+
 ?>
 
 <div id="search">
@@ -105,14 +111,14 @@
                              <div class="control-group">
                                 <label class="control-label">Patient ID :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" value="" name="patientID" readonly/>
+                                  <input type="text" class="span11" value="<?php echo $pat['patientID']; ?>" name="patientID" readonly/>
                                 </div>
                               </div>
 
                               <div class="control-group">
                                 <label class="control-label">Patient Name :</label>
                                 <div class="controls">
-                                    <input type="text" class="span11" value="" name="patientName" readonly/>
+                                    <input type="text" class="span11" value="<?php echo $pat['firstName'].' '.$pat['otherName'].' '.$pat['lastName']; ?>" name="patientName" readonly/>
                                 </div>
                               </div>
                           </div>
@@ -126,20 +132,21 @@
                               <div class="control-group">
                                 <label class="control-label">Assign To :</label>
                                 <div class="controls">
-                                    <select name="assignTo">
+                                    <select name="assignTo" onchange="staff_diff(this.value);">
                                         <option value=""> </option>
                                         <option value="Staff"> Staff </option>
-                                        <option value="Consulting Room"> Consulting Room </option>
+                                        <option value="Consulting"> Consulting Room </option>
                                     </select>
                                 </div>
                               </div>
+<!--                              <span id="cde"></span>-->
                               <div class="control-group">
                                 <label class="control-label"> Staff / Consulting Room :</label>
                                 <div class="controls">
-                                    <select name="assignTo">
+                                    <select name="assignTo" id="cde">
                                         <option value=""> </option>
-                                        <option value="option1"> Option 1 </option>
-                                        <option value="option2"> Option 2 </option>
+<!--                                        <option value="option1" > Option 1 </option>-->
+<!--                                        <option value="option2"> Option 2 </option>-->
                                     </select>
                                 </div>
                               </div>
@@ -190,6 +197,16 @@ window.onload = function () {
     };
 };
 </script>
+
+    <script>
+        function staff_diff(val){
+            // load the select option data into a div
+                $('#loader').html("Please Wait...");
+                $('#cde').load('staff_diff.php?id='+val, function(){
+                $('#loader').html("");
+               });
+        }
+    </script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

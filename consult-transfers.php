@@ -27,6 +27,9 @@ include 'layout/head.php';
 $roomID = $_GET['roomID'];
 $consultation = new Consultation();
 
+    $success='';
+    $error ='';
+
 //fetch all patients
 $patient = select("SELECT * FROM patient ORDER BY patientID ASC");
 
@@ -36,31 +39,38 @@ foreach($staff as $staffrow){
     $staffID = $staffrow['staffID'];
 }
 
-//generate presciptionCode
-$codesql = select("SELECT * From doctorappointment order by appointNumber DESC limit 1");
-if(count($codesql) >=1){
-foreach($codesql as $coderow){
-    $code = $coderow['appointNumber'];
-    $oldcode = explode("-",$code);
-    $newID = $oldcode[1]+1;
-    $appointNumber = $oldcode[0]."-".$newID;
-}
-}else{
-$appointNumber = "APTMNT-1";
-}
+    //fetch all centerID
+$center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['centerID']."' ");
 
+    //fetch patient
+    $patient = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' && status !='".DEAD."'  ");
 
-if(isset($_POST['addApptmnt'])){
-        $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
-        $appointDate = filter_input(INPUT_POST, "appointDate", FILTER_SANITIZE_STRING);
-        $appointTime = filter_input(INPUT_POST, "appointTime", FILTER_SANITIZE_STRING);
-    $addapointment = $consultation->createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime);
-    if($addapointment){
-        $success =  "APPOINTMENT SAVED SUCCESSFULLY";
-    }else{
-        $error =  "ERROR : APPOINTMENT NOT SAVED";
+    //fetch transfers
+    $tran=select("SELECT * FROM transfer WHERE from_centerID='".$_SESSION['centerID']."' ");
+
+    //transferID
+    $transID = Consultation::find_num_transfer() + 1;
+
+    if(isset($_POST['addApptmnt'])){
+      $centerID = $_SESSION['centerID'];
+      $transferID = "TRANS-".sprintf('%06s',$transID);
+      $from_center = filter_input(INPUT_POST, "fc", FILTER_SANITIZE_STRING);
+      $from_user = filter_input(INPUT_POST, "fu", FILTER_SANITIZE_STRING);
+      $to_center = filter_input(INPUT_POST, "newCenter", FILTER_SANITIZE_STRING);
+      $to_user = filter_input(INPUT_POST, "staffName", FILTER_SANITIZE_STRING);
+      $reason = filter_input(INPUT_POST, "transferReason", FILTER_SANITIZE_STRING);
+      $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
+
+        $transfer_query = insert("INSERT INTO transfer(transferID,from_centerID,to_centerID,from_staffID,to_staffID,reason,patientID,dateRegistered) VALUES('$transferID','$from_center','$to_center','$from_user','$to_user','$reason','$patientID',CURDATE() ) ");
+
+        if($transfer_query){
+            $success="<script>document.wrtie('PATIENT TRANSFERED SUCCESSFULLY')
+                                window.location.href='consult-transfers'; </script>";
+        }else{
+            $error = "PATIENT TRANSFER FAILED";
+        }
+
     }
-}
 
 ?>
 
@@ -93,7 +103,19 @@ if(isset($_POST['addApptmnt'])){
   </div>
   <div class="container">
       <h3 class="quick-actions">PATIENT TRANSFERS</h3>
-
+ <?php
+                      if($success){
+                      ?>
+                      <div class="alert alert-success">
+                  <strong>Success!</strong> <?php echo $success; ?>
+                </div>
+                      <?php } if($error){
+                          ?>
+                      <div class="alert alert-danger">
+                  <strong>Error!</strong> <?php echo $error; ?>
+                </div>
+                      <?php
+                      } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -117,10 +139,26 @@ if(isset($_POST['addApptmnt'])){
                               <th>Patient Name</th>
                               <th>New Center Name</th>
                               <th>Date Tranfered</th>
-                              <th>Action</th>
+<!--                              <th>Action</th>-->
                             </tr>
                           </thead>
-                          <tbody id="appointmentss">
+                          <tbody>
+                              <?php
+                                foreach($tran as $trans){
+                                $patt = select("SELECT * FROM patient WHERE patientID = '".$trans['patientID']."' ");
+                                    foreach($patt as $trans_p){}
+
+                                    $cen = select("SELECT * FROM medicalcenter WHERE centerID='".$trans['to_centerID']."' ");
+                                    foreach($cen as $centa){}
+                              ?>
+                              <tr>
+                                <td><?php echo $trans['patientID']; ?></td>
+                                <td><?php echo $trans_p['firstName']." ".$trans_p['otherName']." ".$trans_p['lastName'];?></td>
+                                <td><?php echo $centa['centerName']; ?></td>
+                                <td><?php echo $trans['dateRegistered']; ?></td>
+<!--                                <td></td>-->
+                              </tr>
+                              <?php } ?>
                           </tbody>
                         </table>
                       </div>
@@ -139,23 +177,23 @@ if(isset($_POST['addApptmnt'])){
                               <div class="control-group">
                                 <label class="control-label">Center ID :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" name="centerID" value="<?php echo $_SESSION['centerID'];?>" readonly required/>
+                                  <input type="text" class="span11" name="fc" value="<?php echo $_SESSION['centerID'];?>" readonly required/>
                                 </div>
                               </div>
                              <div class="control-group">
                                 <label class="control-label">Staff :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" value="<?php echo $staffID;?>" readonly/>
+                                  <input type="text" class="span11" name="fu" value="<?php echo $staffID;?>" readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Transfer To :</label>
                                 <div class="controls">
-                                    <select name="newCenter">
+                                    <select name="newCenter" onchange="transfer(this.value);">
                                         <option value=""> -- New Center --</option>
-                                        <option value=""> Center Name</option>
-                                        <option value=""> Center Name</option>
-                                        <option value=""> Center Name</option>
+                                        <?php foreach($center as $centerID){ ?>
+                                            <option value="<?php echo $centerID['centerID']; ?>"> <?php echo $centerID['centerName']; ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                               </div>
@@ -169,18 +207,8 @@ if(isset($_POST['addApptmnt'])){
                       </div>
                     <div class="span6">
                           <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Center Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" name="centerName" value="" readonly required/>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Staff Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" name="staffName" value="" readonly required/>
-                                </div>
-                              </div>
+                              <span id="transfer"></span>
+
                              <div class="control-group">
                                 <label class="control-label">Patient :</label>
                                 <div class="controls">
@@ -190,7 +218,7 @@ if(isset($_POST['addApptmnt'])){
                                         if(!empty($patient)){
                                             foreach($patient as $patientrow){
                                       ?>
-                                    <option value="<?php echo $patientrow['patientID'];?>"><?php echo $patientrow['firstName']." ".$patientrow['otherName']." ".$patientrow['lastName'];?></option>
+                                    <option value="<?php echo $patientrow['patientID'];?>"><?php echo $patientrow['firstName']." ".$patientrow['otherName']." ".$patientrow['lastName'];?> (<?php echo $patientrow['patientID'];?>)</option>
                                       <?php }}?>
                                   </select>
                                 </div>
@@ -246,6 +274,20 @@ function dis(){
         dis();
     },1000);
 </script>
+
+
+<script>
+
+        function transfer(val){
+            // load the select option data into a div
+                $('#loader').html("Please wait...");
+                $('#transfer').load('loads/transfer.php?id='+val, function(){
+                $('#loader').html("");
+               });
+        }
+
+    </script>
+
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

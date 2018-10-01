@@ -69,6 +69,7 @@
         $get_PID = $_GET['pid'];
         $patient = select("SELECT * FROM patient WHERE patientID='".$_GET['pid']."' ORDER BY patientID ASC");
         foreach($patient as $pID){}
+
     }elseif($tab == "opd-patient"){
         $active  = "active";
     }
@@ -96,10 +97,16 @@
       $weight = filter_input(INPUT_POST, "weight", FILTER_SANITIZE_STRING);
       $otherHealth = filter_input(INPUT_POST, "otherHealth", FILTER_SANITIZE_STRING);
       $roomID = filter_input(INPUT_POST, "consultRoom", FILTER_SANITIZE_STRING);
+      $mode = filter_input(INPUT_POST, "mode", FILTER_SANITIZE_STRING);
+      $insuranceType = filter_input(INPUT_POST, "insuranceType", FILTER_SANITIZE_STRING);
+      $insuranceNumber = filter_input(INPUT_POST, "insuranceNumber", FILTER_SANITIZE_STRING);
+      $company = filter_input(INPUT_POST, "company", FILTER_SANITIZE_STRING);
 
+        $status = SENT_TO_CONSULTING;
         $patient_busy = PATIENT_BUSY;
 
-        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
+//        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
+        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status);
 
         if($consultAssignPatient1){
             $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."' WHERE patientID='$patientID' ");
@@ -187,9 +194,9 @@
                             </tr>
                           </thead>
 <!--                          <tbody id="outpatientlist"></tbody>-->
-                          <tbody id="outpatientlist">
+                          <tbody id="outpatientlist11">
                   <?php
-                        $load_patient = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' && patient_status !='".PATIENT_BUSY."' ORDER BY patientID ASC");
+                        $load_patient = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' && patient_status !='".PATIENT_BUSY."' && status != 'dead' ORDER BY patientID ASC");
 
                             foreach($load_patient as $patient){
 
@@ -285,28 +292,21 @@
                                                   </div>
 -->
 
-                                        </form>
-
 <!--                                        <hr/>-->
 
-                                        <form method="post" name="form" action="">
-                                            <div class="span12">
-                                                <div class="span6">
-                                                    <div class="form-group">
-                                                    <label for="exampleInputPassword1"> Upload Image</label>
-                                                    <input type="file" accept="image/*" name="image" class="form-control">
+                                                <img src='<?php echo $patient['patient_image']; ?>' width=120 height=350 ><br><br>
+
+                                                         <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
                                                     </div>
-                                                     <div class="form-group">
-                                                <label for="exampleInputPassword1">&nbsp;</label>
-                                                <input type="submit" name="uploadImage" value="Upload Image" class="btn btn-primary" />
-                                                    </div>
-                                                </div>
-                                                <div class="span6">
+<!--                                                </div>-->
+<!--                                                <div class="span6">-->
+<!--
                                                    <div class="form-group">
                                                     <label for="exampleInputPassword1">&nbsp;</label>
-                                                    <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
+                                                    <a class="btn btn-primary" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php #echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
                                                   </div>
-                                                </div>
+-->
+<!--                                                </div>-->
                                             </div>
                                         </form>
 
@@ -350,15 +350,21 @@
                               </div>
 
                               <div class="control-group">
+                                <label class="control-label">Mode:</label>
+                                <div class="controls">
+                                  <select class="span11" name="mode" onchange="modey(this.value);">
+                                        <option value=""></option>
+                                        <option value="Private">Private</option>
+                                        <option value="Insurance">Health Insurance</option>
+                                        <option value="Company">Company</option>
+                                    </select>
+                                </div>
+                              </div>
+                             <span id="modeload"></span>
+                              <div class="control-group">
                                 <label class="control-label">Body Temperature:</label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Body Temperature" name="bodytemp" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Respiration Rate :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" />
                                 </div>
                               </div>
                               <div class="control-group">
@@ -387,6 +393,12 @@
                                 </div>
                               </div>
 
+                              <div class="control-group">
+                                <label class="control-label">Respiration Rate :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" />
+                                </div>
+                              </div>
                               <div class="control-group">
                                 <label class="control-label">Blood Pressure</label>
                                 <div class="controls">
@@ -454,6 +466,13 @@
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
 
+<script>
+window.onload = function () {
+    document.getElementById('button').onclick = function () {
+        document.getElementById('modal').style.display = "none"
+    };
+};
+</script>
 
 
      <?php if(empty($_GET['pid'])){  ?>
@@ -481,6 +500,18 @@
 
     </script>
 <?php } ?>
+
+<script>
+
+        function modey(val){
+            // load the select option data into a div
+                $('#loader').html("Please Wait...");
+                $('#modeload').load('loads/mode.php?id='+val, function(){
+                $('#loader').html("");
+               });
+        }
+
+</script>
 
 <!--
        <script>

@@ -100,7 +100,7 @@ if($_SESSION['accessLevel']=='WARD'){
                               <td> <?php echo $wrd_assign['dischargeDate']; ?></td>
                               <td style="text-align: center;">
                                    <a href="ward-patientDetails?patid=<?php echo $wrd_assign['patientID'].'&wrdno='.$wardID; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
-                                   <a href="ward-patientAssign?patid=<?php echo $wrd_assign['patientID'].'&wrdno='.$wardID; ?>"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
+<!--                                   <a href="ward-patientAssign?patid=<?php #echo $wrd_assign['patientID'].'&wrdno='.$wardID; ?>"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>-->
                               </td>
                             </tr>
                               <?php } ?>

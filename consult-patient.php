@@ -244,6 +244,38 @@ if(isset($_POST['adWard'])){
                                           <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
                                         </div>
                                       </div>
+                                      <?php if(!empty($consultrow['mode'])){ ?>
+                                      <div class="control-group">
+                                        <label class="control-label">Mode :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['mode'];?>" readonly/>
+                                        </div>
+                                      </div>
+                                      <?php } ?>
+                                        <?php if(!empty($consultrow['insuranceType'])){ ?>
+                                      <div class="control-group">
+                                        <label class="control-label">Insurance Type :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['insuranceType'];?>" readonly/>
+                                        </div>
+                                      </div>
+                                      <?php } ?>
+                                      <?php if(!empty($consultrow['insuranceNumber'])){ ?>
+                                      <div class="control-group">
+                                        <label class="control-label">Insurance Number :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['insuranceNumber'];?>" readonly/>
+                                        </div>
+                                      </div>
+                                      <?php } ?>
+                                      <?php if(!empty($consultrow['company'])){ ?>
+                                      <div class="control-group">
+                                        <label class="control-label">Company :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['company'];?>" readonly/>
+                                        </div>
+                                      </div>
+                                      <?php } ?>
                                       <div class="control-group">
                                         <label class="control-label">Body Temperature :</label>
                                         <div class="controls">

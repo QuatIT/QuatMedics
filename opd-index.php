@@ -52,7 +52,16 @@
       $guardianRelation = filter_input(INPUT_POST, "guardianRelation", FILTER_SANITIZE_STRING);
       $guardianAddress = filter_input(INPUT_POST, "guardianAddress", FILTER_SANITIZE_STRING);
 
-        $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress);
+
+                    //image upload
+                  $fileName =trim($_FILES['image']['tmp_name']);
+                    $image = explode(".",trim($_FILES['image']['name']));
+                    $new_image = $patientId."_".round(microtime(true)) . '.' . end($image);
+                    $filedestination = $PATIENT_UPLOAD.$new_image;
+//                  move_uploaded_file($fileName, "uploads/company/{$new_image}");
+                  move_uploaded_file($fileName, $filedestination);
+
+        $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination);
 
         if($createPatient){
              $success = "<script>document.write('PATIENT DETAIL ADDED SUCCESSFULLY');
@@ -125,7 +134,7 @@
                               <th>Patient Number</th>
                               <th>Patient Name</th>
                               <th>Mobile Number</th>
-                              <th>Action</th>
+<!--                              <th>Action</th>-->
                             </tr>
                           </thead>
                           <tbody id="newpatient">
@@ -154,8 +163,8 @@
 
 
                 <div id="tab2" class="tab-pane">
-                    <form action="" method="post" class="form-horizontal">
-                    <div class="span6">
+                    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <div class="span5">
                           <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                             <h5>Personal-info</h5>
                           </div>
@@ -205,9 +214,15 @@
                                   <input type="text" class="span11" placeholder="Home Address" name="homeAddress" />
                                 </div>
                               </div>
+                              <div class="control-group">
+                                <label class="control-label">Upload Image :</label>
+                                <div class="controls">
+                                  <input type="file" class="span11" placeholder="Home Address" name="image" />
+                                </div>
+                              </div>
                           </div>
                       </div>
-                    <div class="span6">
+                    <div class="span5">
                           <div class="widget-title">
                           </div>
                           <div class="widget-content nopadding">
@@ -244,6 +259,7 @@
                                   <input type="text" class="span11" placeholder="Mobile Number" name="mobileNumber" />
                                 </div>
                               </div>
+
                               <div class="form-actions">
                                   <i class="span1"></i>
                                   <a data-toggle="tab" href="#tab3" class="btn btn-primary btn-block" > Next Step >></a>
