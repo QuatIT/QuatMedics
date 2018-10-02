@@ -62,9 +62,10 @@
             $send_to = $email;
             $body = "Dear ".$firstName.", <br> Kindly find below your access to QUATMedic. <br><br> Username: ".$username."<br>Password: ".$password."<br><br> Thank you.";
             $subj = "QUATMEDIC LOGIN ACCESS";
+            $copy = '';
 
             //send mail
-            echo send_mail($send_to,$body,$subj);
+            echo send_mail($send_to,$copy,$body,$subj);
 
             $success = "USER DATA CREATED SUCCESSFULLY";
         }else{
