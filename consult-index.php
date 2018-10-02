@@ -55,7 +55,12 @@
         $roomByID = Consultation::find_by_room_id($roomID);
         foreach($roomByID as $room_id){}
 
-        $room = Consultation::find_consultingroom();
+        if(!empty($roomID)){
+            $update_room=update("UPDATE consultingroom SET status='".OCCUPIED."' WHERE roomID='$roomID' ");
+        }
+
+//        $room = Consultation::find_consultingroom();
+        $room = select("SELECT * FROM consultingroom WHERE status='".FREE."' || status='' ");
 
     ?>
 

@@ -36,8 +36,9 @@
       $centerID = $_SESSION['centerID'];
       $consultRoomID = "CR-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultRoomIDs);
       $roomName = filter_input(INPUT_POST, "departmentName", FILTER_SANITIZE_STRING);
+        $status = FREE;
 
-        $consultRoom = Consultation::createConsultRoom($consultRoomID,$centerID,$roomName);
+        $consultRoom = Consultation::createConsultRoom($consultRoomID,$centerID,$roomName,$status);
 
         if($consultRoom){
             $success = "CONSULTING ROOM CREATED";

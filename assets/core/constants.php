@@ -17,6 +17,8 @@ define("CENTER_ADMIN" , "center_admin");
 define("LIVING" , "living");
 define("DEAD" , "dead");
 
+define("OCCUPIED","occupied");
+define("FREE","free");
 
 define("PARENT_DIR" , "uploads/");
 define("LICENCE_DIR" , "../uploads/".PARENT_DIR."licence/");

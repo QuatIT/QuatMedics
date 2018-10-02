@@ -2,8 +2,8 @@
 
   class User{
 
-    public function createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel) {
-      $result= insert("INSERT INTO medicalcenter(centerID,centerName,centerCategory,centerLocation,numOfStaff,centerHistory,numOfBranches,userName,password,accessLevel,dateregistered) VALUES('$centerID','$centerName','$centerCategory','$centerLocation','$numOfStaff','$aboutCenter','$numOfBranches','$userName','$password','$accessLevel',CURDATE() ) ");
+    public function createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email) {
+      $result= insert("INSERT INTO medicalcenter(centerID,centerName,centerCategory,centerLocation,numOfStaff,centerHistory,numOfBranches,userName,password,accessLevel,dateregistered,centerEmail) VALUES('$centerID','$centerName','$centerCategory','$centerLocation','$numOfStaff','$aboutCenter','$numOfBranches','$userName','$password','$accessLevel',CURDATE(),$email ) ");
       return $result;
     }
 
@@ -12,8 +12,8 @@
       return $result;
     }
 
-    public function saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment){
-      $result=insert("INSERT INTO staff(staffID,firstName,lastName,otherName,gender,dob,specialty,staffCategory,departmentID,dateRegistered) VALUES('$staffID','$firstName','$lastName','$otherName','$gender','$dob','$specialty','$staffCategory','$staffDepartment',CURDATE() ) ");
+    public function saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$centerID){
+      $result=insert("INSERT INTO staff(staffID,firstName,lastName,otherName,gender,dob,specialty,staffCategory,departmentID,dateRegistered,email,centerID) VALUES('$staffID','$firstName','$lastName','$otherName','$gender','$dob','$specialty','$staffCategory','$staffDepartment',CURDATE(),'$email','$centerID' ) ");
       return $result;
     }
 
@@ -56,8 +56,8 @@
           return $result;
     }
 
-      public function createConsultRoom($consultRoomID,$centerID,$roomName){
-          $result= insert("INSERT INTO consultingroom(roomID,centerID,roomName,dateRegistered) VALUES('$consultRoomID','$centerID','$roomName',CURDATE() ) ");
+      public function createConsultRoom($consultRoomID,$centerID,$roomName,$status){
+          $result= insert("INSERT INTO consultingroom(roomID,centerID,roomName,dateRegistered,status) VALUES('$consultRoomID','$centerID','$roomName',CURDATE(),'$status' ) ");
           return $result;
     }
 

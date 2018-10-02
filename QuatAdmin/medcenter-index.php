@@ -25,6 +25,7 @@ $aboutCenter = $_POST['aboutCenter'];
 $numOfBranches = $_POST['numOfBranches'];
 $userName = $_POST['userName'];
 $password = $_POST['password'];
+$email = $_POST['email'];
 $accessLevel = CENTER_ADMIN;
 
 
@@ -33,11 +34,21 @@ if(count(User::find_by_centerID($centerID)) >= 1){
     $centerID = substr($_POST['centerName'], 0, 5)."-".sprintf('%06s',$centerIDs);//regenerate centerID
 
 //create center admin
-$registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel);
+$registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
 
 if($registerCenterAdmin){
 
 echo make_dir($centerID);
+
+
+            $send_to = $email;
+            $body = "Dear ".$centerName.", <br> Kindly find below your access to QUATMedic. <br><br> Username: ".$userName."<br>Password: ".$password."<br><br> Thank you.";
+            $subj = "QUATMEDIC LOGIN ACCESS";
+            $copy = "";
+
+            //send mail
+            echo send_mail($send_to,$copy,$body,$subj);
+
 
     $success =  "FACILITY ADMIN CREATED SUUCESSFULLY";
 }else{
@@ -48,10 +59,20 @@ echo make_dir($centerID);
 }else{
 
 //create center admin
-$registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel);
+$registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
 
 if($registerCenterAdmin){
     echo make_dir($centerID);
+
+            $send_to = $email;
+            $body = "Dear ".$centerName.", <br> Kindly find below your access to QUATMedic. <br><br> Username: ".$userName."<br>Password: ".$password."<br><br> Thank you.";
+            $subj = "QUATMEDIC LOGIN ACCESS";
+            $copy = "";
+
+            //send mail
+            echo send_mail($send_to,$copy,$body,$subj);
+
+
     $success =  "FACILITY ADMIN CREATED SUUCESSFULLY";
 }else{
     $error =  "ERROR: FACILITY ADMIN COULD NOT CREATE";
@@ -245,6 +266,12 @@ if($registerCenterAdmin){
                                 <label class="control-label">Number OF Staff</label>
                                 <div class="controls">
                                   <input type="number" min="5"  class="span11" name="numOfStaff" placeholder="Number OF Staff" required />
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">Email</label>
+                                <div class="controls">
+                                  <input type="email"  class="span11" name="email" placeholder="Email" required />
                                 </div>
                               </div>
                               <div class="control-group">

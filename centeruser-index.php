@@ -41,20 +41,30 @@
         $specialty = filter_input(INPUT_POST, "specialty", FILTER_SANITIZE_STRING);
         $staffCategory = filter_input(INPUT_POST, "staffCategory", FILTER_SANITIZE_STRING);
         $staffDepartment = filter_input(INPUT_POST, "staffDepartment", FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_STRING);
 
         $username = filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING);
         $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
         $userID = $staffID;
 
-        $centerUser = User::saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment);
+        $centerID = $_SESSION['centerID'];
+
+        $centerUser = User::saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$centerID);
 
         if($centerUser){
 
             $accessLevel = $staffDepartment;
-            $centerID = $_SESSION['centerID'];
+
 
 //            $userCredential = User::centerUserLogin($staffID,$username,$password,$accessLevel,$centerID);
             $userCredential = User::saveUserCredential($staffID,$username,$password,$accessLevel,$centerID,$userID);
+
+            $send_to = $email;
+            $body = "Dear ".$firstName.", <br> Kindly find below your access to QUATMedic. <br><br> Username: ".$username."<br>Password: ".$password."<br><br> Thank you.";
+            $subj = "QUATMEDIC LOGIN ACCESS";
+
+            //send mail
+            echo send_mail($send_to,$body,$subj);
 
             $success = "USER DATA CREATED SUCCESSFULLY";
         }else{
@@ -157,6 +167,12 @@
                                 <label class="control-label">Date Of Birth</label>
                                 <div class="controls">
                                   <input type="date" class="span11" name="dob" required />
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label"> Email</label>
+                                <div class="controls">
+                                  <input type="email" class="span11" name="email" placeholder="Email" />
                                 </div>
                               </div>
                               <div class="control-group">
