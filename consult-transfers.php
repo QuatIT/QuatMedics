@@ -64,6 +64,48 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
         $transfer_query = insert("INSERT INTO transfer(transferID,from_centerID,to_centerID,from_staffID,to_staffID,reason,patientID,dateRegistered) VALUES('$transferID','$from_center','$to_center','$from_user','$to_user','$reason','$patientID',CURDATE() ) ");
 
         if($transfer_query){
+
+            //from doctor
+            $cent_fuser = select("SELECT * FROM staff WHERE staffID='$from_user' ");
+            foreach($cent_fuser as $cenftrow){
+                $des_fuser = $centfrow['email'];
+                $des_fuserName = $centfrow['firstName']." ".$centfrow['otherName']." ".$centfrow['lastName'];
+            }
+
+            //from center
+            $cent_femail = select("SELECT * FROM medicalcenter WHERE centerID='$from_center' ");
+            foreach($cent_femail as $centfmail){
+                $des_fName = $centmail['centerName'];
+            }
+
+            //send to mail
+            $cent_user = select("SELECT * FROM staff WHERE staffID='$to_user' ");
+            foreach($cent_user as $centrow){
+                $des_user = $centrow['email'];
+            }
+
+            //center mail
+            $cent_email = select("SELECT * FROM medicalcenter WHERE centerID='$to_center' ");
+            foreach($cent_email as $centmail){
+                $des_cent = $centmail['centerEmail'];
+            }
+
+            //patient
+            $pati = select("SELECT * FORM patient WHERE patientID='$patientID' ");
+            foreach($pati as $patty){
+                $pat_ID = $patty['patientID'];
+                $pat_Name = $patty['firstName']." ".$patty['otherName']." ".$patty['lastName'];
+            }
+
+            $send_to = $des_user;
+            $body = "Hello, <br> ".$pat_Name." (".$pat_ID.") has been transfer to your facility.<br> Kindly find below reason of transfer. <br><br> ".$reason."<br><br> Thank you. <br>FROM: ".$des_fuserName."<br>FACILITY: ".$des_fName;
+            $subj = "QUATMEDIC PATIENT TRANSFER";
+            $copy = $des_cent;
+
+            //send mail
+            echo send_mail($send_to,$copy,$body,$subj);
+
+
             $success="<script>document.wrtie('PATIENT TRANSFERED SUCCESSFULLY')
                                 window.location.href='consult-transfers'; </script>";
         }else{
