@@ -287,4 +287,37 @@
 
   }
 
+
+
+  class blood{
+
+    public function Blood_IDAssign($bloodID,$donorID,$centerID,$donorName,$bloodGender,$bloodGroup,$phoneNumber,$dob,$lastDonate){
+        $result= insert("INSERT INTO bloodbank(bloodID,donorID,centerID,donorName,gender,bloodgroup,phoneNumber,dob,lastDonate) VALUES('$bloodID','$donorID','$centerID','$donorID','$gender','$bloodgroup','$homeAddress','$phoneNumber','$dob','$lastDonate') ");
+        return $result;
+  }
+
+  public function get_bld_amt(){
+    $result=query("SELECT * FROM bloodgroup_tb ");
+    $num = count($result);
+
+    return $num;
+  }
+}
+
+class Donor{
+  public function donor_id($bloodID,$donorID,$centerID,$donorName,$bloodGender,$bloodGroup,$phoneNumber,$dob,$lastDonate){
+    $result = insert("INSERT INTO bloodbank(bloodID,donorID,centerID,donorName,gender,bloodgroup,phoneNumber,dob,lastDonate) VALUES('$bloodID','$donorID','$centerID','$donorID','$gender','$bloodgroup','$homeAddress','$phoneNumber','$dob','$lastDonate') ");
+    return $result;
+}
+
+public function get_donor_id(){
+  $result=query("SELECT * FROM bloodbank");
+  $num = count($result);
+
+  return $num;
+
+  }
+}
+
+
   ?>
