@@ -140,9 +140,9 @@ if($registerCenterAdmin){
 <div id="sidebar">
     <ul>
     <li><a href="quatadmin-index"><i class="icon icon-home"></i> <span>Dashboard</span></a></li>
-    <li class="active"><a href="medcenter-index"><i class="icon icon-plus-sign"></i> <span>Medical Centers</span></a></li>
+    <li><a href="medcenter-index"><i class="icon icon-plus-sign"></i> <span>Medical Centers</span></a></li>
     <li><a href="#"><i class="icon icon-calendar"></i> <span>Subscriptions</span></a> </li>
-    <li><a href="sms_request.php"><i class="icon icon-envelope"></i> <span>SMS Request</span></a> </li>
+    <li class="active"><a href="sms_request.php"><i class="icon icon-envelope"></i> <span>SMS Request</span></a> </li>
     </ul>
 </div>
 
@@ -156,7 +156,7 @@ if($registerCenterAdmin){
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">MEDCENTERS MANAGEMENT</h3>
+      <h3 class="quick-actions">SMS REQUEST</h3>
 <?php
       if($success){
       ?>
@@ -174,8 +174,8 @@ if($registerCenterAdmin){
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">MedCenter List</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New MedCenter</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">SMS Request</a></li>
+<!--                    <li><a data-toggle="tab" href="#tab2">Add New MedCenter</a></li>-->
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -183,7 +183,7 @@ if($registerCenterAdmin){
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Medical Centers</h5>
+                        <h5>SMS REQUESTS</h5>
                       </div>
                     <div class="widget-content nopadding">
 
@@ -191,18 +191,61 @@ if($registerCenterAdmin){
                           <thead>
                             <tr>
                               <th>Center ID</th>
-                              <th>Center Name</th>
-                              <th>Center Location</th>
-                              <th>Number of Branches</th>
+                              <th>Sendr's Name</th>
+                              <th>Amount</th>
+                              <th>SMS Credit</th>
+                              <th>Transactional ID</th>
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody id="load_med_center"></tbody>
+                          <tbody id="sms_center">
+                              <?php
+                                    $smsR = select("SELECT * FROM sms_tb WHERE status='".SMS_PENDING."' ");
+                                    foreach($smsR as $req_sms){ ?>
+                                <tr>
+                                    <td><?php echo $req_sms['centerID']; ?></td>
+                                    <td><?php echo $req_sms['senderName']; ?></td>
+                                    <td><?php echo "GHC ".$req_sms['amount']; ?></td>
+                                    <td><?php echo $req_sms['credit']; ?></td>
+                                    <td><?php echo $req_sms['transactionID']; ?></td>
+                                    <td>
+<!--                                        <a class="btn-link" data-toggle="modal" data-target="#myModal<?php #echo $req_sms['id'];?>">Recharge SMS</a>-->
+                                        <a class="btn-link" href="credit_sms?id=<?php echo $req_sms['requestID'].'&centerID='.$req_sms['centerID'].'&amount='.$req_sms['amount'].'&cred='.$req_sms['credit'] ; ?>">Recharge SMS</a>
+                                    </td>
+                              </tr>
+
+
+
+<!-- Modal -->
+<div id="myModal<?php echo $req_sms['id'];?>" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header<?php echo $req_sms['id'];?></h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+                              <?php } ?>
+                            </tbody>
                         </table>
 
                          </div>
                     </div>
                 </div>
+<!--
                 <div id="tab2" class="tab-pane">
                     <form action="" method="post" class="form-horizontal">
                     <div class="span6">
@@ -210,10 +253,10 @@ if($registerCenterAdmin){
                               <div class="control-group">
                                 <label class="control-label">Center ID :</label>
                                <div class="controls">
-                              
-                                
+
+
                                   <input type="text" class="span11" name="centerID" value="<?php echo $centerIDs; ?>" required readonly/>
-                              
+
                                 </div>
                               </div>
                                <div class="control-group">
@@ -238,7 +281,7 @@ if($registerCenterAdmin){
                                 <div class="controls">
                                   <input type="number" min="0" class="span11" name="numOfBranches" placeholder="Number OF Branches" required />
                                 </div>
-<!--                                  <div class="controls"></div>-->
+
                               </div>
                               <div class="control-group">
                                 <label class="control-label"> Password</label>
@@ -290,12 +333,13 @@ if($registerCenterAdmin){
                       </div>
                     </form>
                 </div>
+-->
             </div>
         </div>
       </div>
   </div>
 </div>
-<div class="row-fluid">
+<div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="../js/excanvas.min.js"></script>

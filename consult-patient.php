@@ -143,7 +143,7 @@ if(isset($_POST['adWard'])){
         $status = SENT_TO_PHARMACY;
         $prescribeStatus = trim("Prescibed");
         $datePrescribe = trim(date("Y-m-d"));
-        $prescriptionCode = randomString('8');
+        $prescriptionCode = randomString('4');
 
         $medNum = count($_POST['medicine']);
         $dosageNum = count($_POST['dosage']);
@@ -166,10 +166,43 @@ if(isset($_POST['adWard'])){
               if($insertpresciption && $insertMeds){
                     $success =  "PRESCRIPTION SENT SUCCESSFULLY";
                     $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
+
+
+            //sms
+            $medcen = select("SELECT * FROM medicalcenter WHERE centerID='".$_SESSION['centerID']."' ");
+            foreach($medcen as $medi_sms){}
+
+            if($medi_sms['creditArr'] >=1){
+
+                $patnum = select("SELECT * FROM patient WHERE patientID='$patientID' ");
+            foreach($patnum as $ptn){}
+
+//                $phone_number= $ptn['phoneNumber'];
+                $tel= $ptn['phoneNumber'];
+                $body = "Hello, Kindly use this code ".$prescriptionCode." to collect your medicine from the pharmacist. Thank you.";
+            $frm = "QUATMEDIC";
+
+//            $sms= sendsms($bdy,$phone_number);
+               $sms_send= sendsmsme($tel,$body,$frm);
+
+                if($sms_send){
+                    $newCreditArr = $medi_sms['creditArr'] - 1;
+                    $updatesms = update("UPDATE medicalcenter SET creditArr='$newCreditArr' WHERE centerID='".$_SESSION['centerID']."' ");
+                }
+
+
+            }else{
+                $error= 'couldnt send code to patient';
+            }
+
+
+
                     echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
                 }else{
                     $error =  "ERROR: PRESCRIPTION NOT SENT";
                 }
+
+
         }else{
             $error =  "ERROR: NO PRESCRIPTION RECORED";
         }

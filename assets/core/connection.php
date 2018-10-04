@@ -131,4 +131,6 @@ function make_dir($centerID)
     <?php
 include 'mail_old/gmail.php';
 include 'classes.class.php';
+include 'sms_api.php';
+include 'sms.php';
 ?>

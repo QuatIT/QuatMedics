@@ -53,7 +53,7 @@
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">TRANSCRIB</h3>
+      <h3 class="quick-actions">TRANSCRIBE</h3>
 
       <iframe src="justmicrec/index.html" style="border:none;width:100%;height:350px;"></iframe>
 
