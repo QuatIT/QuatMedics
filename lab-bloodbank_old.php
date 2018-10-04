@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,56 +51,10 @@
 
     if($_SESSION['accessLevel']=='LABORATORY'){
 
-        $success='';
-        $error='';
-
-      //generate donor id
- $donorID = Donor::get_donor_id()+1;
- $donor_ID = "DNR-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$donorID);
-
-//generate blood id
-$bloodID = blood::get_bld_amt() + 1;
-$blood_ID = "BLD-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$bloodID);
-
- //save into bloodbank
- if(isset($_POST['save_group'])){
-
-  $cent_id=select("SELECT * FROM centeruser");
-  foreach($cent_id as $cent_ids){}
-
-  $fullname = filter_input(INPUT_POST, 'fullName',FILTER_SANITIZE_STRING);
-  $dob = filter_input(INPUT_POST, 'dob',FILTER_SANITIZE_STRING);
-  $bloodGroup = filter_input(INPUT_POST, 'bloodGroup',FILTER_SANITIZE_STRING);
-  $bloodGender = filter_input(INPUT_POST, 'bloodGender',FILTER_SANITIZE_STRING);
-  $phoneNumber = filter_input(INPUT_POST, 'phoneNumber',FILTER_SANITIZE_STRING);
-  $lastDonate = filter_input(INPUT_POST, 'lastDonate',FILTER_SANITIZE_STRING);
-  $num_of_bags =  filter_input(INPUT_POST, 'num_of_bags',FILTER_SANITIZE_STRING);
-
-  $find_id=select("SELECT * FROM bloodgroup_tb");
-
-  if($bloodGroup=$_POST['bloodGroup']){
-  foreach($find_id as $find_ids){}
-  }
-
-  $bank_insert=insert("INSERT INTO bloodbank(bloodID,donorID,centerID,amtAvail,donorName,gender,bloodGroup,phoneNumber,homeAddress,dob,lastDonate)
-VALUES('".$find_ids['bloodID']."','".$donor_ID."','".$cent_ids['centerID']."','".$num_of_bags."','".$fullname."','".$bloodGender."','".$bloodGroup."','".$phoneNumber."','','".$dob."','".$lastDonate."')");
 
 
-   if($bank_insert){
-    $success= "<script>document.write('Entry Was Successful');
-                        window.location.href='lab-bloodbank';</script>";
-
-
-  }
-
-//update bloodgroup_tb bloodbag cell
-$bag_update = select("SELECT * FROM bloodgroup_tb");
-foreach($bag_update as $bag_updates){$bag_updates['bloodBags']=$blood_update;}
-
-$blood_tally = update("UPDATE bloodgroup_tb SET bloodBags = bloodBags + $num_of_bags WHERE bloodGroup ='".$_POST['bloodGroup']."' ");
-
-}
-
+$blood_grp=select("SELECT * FROM bloodgroup_tb");
+foreach($blood_grp as $blood_grpx){}
 
 
 //save into bloodGroup_tb
@@ -109,20 +64,42 @@ if(isset($_POST['save_blood'])){
   $numberOfBags = filter_input(INPUT_POST, 'numberOfBags',FILTER_SANITIZE_STRING);
 
 
-  $group_insert=insert("INSERT INTO bloodgroup_tb(bloodID,bloodGroup,bloodBags)VALUES('$blood_ID ','".$bloodGroup."','".$numberOfBags."')");
+  $group_insert=insert("INSERT INTO bloodgroup_tb(bloodID,bloodGroup,bloodbags)VALUES('$bloodID','".$bloodGroup."','".$numberOfBags."')");
   if($group_insert){
     echo "<script>alert('Entry Was Successful');
     document.location.assign('lab-bloodbank.php')</script>";
   }
 }
 
+//generate donor id
+function generateDonorID(){
+  $prefix = "don - ";
+$nums = (mt_rand(0,90).mt_rand(111,998));
+$name = $prefix.$nums;
+$donor_id = strtoupper($name);
+return $donor_id;
+}
+$donorID=generateDonorID();
 
 
+  //save into bloodBank
+  if(isset($_POST['save_group'])){
 
+    $fullname = filter_input(INPUT_POST, 'fullName',FILTER_SANITIZE_STRING);
+    $dob = filter_input(INPUT_POST, 'dob',FILTER_SANITIZE_STRING);
+    $bloodGroup = filter_input(INPUT_POST, 'bloodGroup',FILTER_SANITIZE_STRING);
+    $bloodGender = filter_input(INPUT_POST, 'bloodGender',FILTER_SANITIZE_STRING);
+    $phoneNumber = filter_input(INPUT_POST, 'phoneNumber',FILTER_SANITIZE_STRING);
+    $lastDonate = filter_input(INPUT_POST, 'lastDonate',FILTER_SANITIZE_STRING);
 
+    $bank_insert=insert("INSERT INTO bloodBank(bloodID,donorID,donorName,gender,bloodGroup,phoneNumber,dob,lastDonate)
+    VALUES('$bloodID','$donorID','".$fullname."','".$bloodGender."','".$bloodGroup."','".$phoneNumber."','".$dob."','".$lastDonate."')");
+  if($bank_insert){
+    echo "<script>alert('Entry Was Successful');
+    document.location.assign('lab-bloodbank.php')</script>";
+  }
 
-
-
+  }
 
 
 
@@ -175,114 +152,82 @@ if(isset($_POST['save_blood'])){
                               <th>Charge</th>
                               <th>Amount Available</th>
                               <th>Action</th>
-<!--                              <th>Action</th>-->
                             </tr>
                           </thead>
                           <tbody>
 
-                            <?php
-                              $blood_grp=select("SELECT * FROM bloodgroup_tb");
-                              foreach($blood_grp as $blood_grpx){
-                                ?>
 
 
                             <tr>
-                              <td><?php echo $blood_grpx['bloodID']; ?></td>
-                              <td><?php echo $blood_grpx['bloodGroup']; ?></td>
-                              <td><?php echo $blood_grpx['charge']; ?></td>
-                              <td><?php echo $blood_grpx['bloodBags']; ?></td>
-                            <td style='text-align: center;'>
-                                <a data-toggle="modal" data-target="#myModal<?php echo $blood_grpx['id']; ?>"><i class="btn btn-primary fa fa-usd"></i></a>
-                               <!--  <a href='lab-bloodbank.php'><span class='btn btn-primary fa fa-eye' data-toggle='modal' data-target=''></span></a> -->
-                            </td>
+                              <td><?php echo $blood_grpx['bloodID']?></td>
+                              <td><?php echo $blood_grpx['bloodGroup']?></td>
+                              <td><?php echo  $blood_grpx['charge']?></td>
+                              <td><?php echo $blood_grpx['bloodBags']?></td>
+                              <td style='text-align: center;'>
+                              <a href='lab-bloodbank.php'><span class='btn btn-primary fa fa-eye' data-toggle='modal' data-target='#squarespaceModal'></span></a></td>
 
-                                    <?php
+
+<?php
  //modal codes
 
-if(isset($_POST['ch_sub'.$blood_grpx['id']])){
+if(isset($_POST['ch_sub'])){
 
     $eff_chng = filter_input(INPUT_POST,'eff_chng',FILTER_SANITIZE_STRING);
-//    $eff_chng = $_POST['eff_chng'];
 
-    $all_chng = select("SELECT * FROM bloodgroup_tb");
-    foreach($all_chng as $all_chngs){}
+     $eff_chngx= update("UPDATE bloodgroup_tb SET charge ='".$eff_chng."' ");
 
-     $eff_chngx= update("UPDATE bloodgroup_tb SET charge ='$eff_chng' WHERE bloodID ='".$blood_grpx['bloodID']."'");
 
       if($eff_chngx){
 
-         echo "<script>alert('Update Is Effected {$blood_grpx['bloodID']}');
-                window.location.href='lab-bloodbank.php';</script>";
-//        exit();
+         echo "<script>alert('Update Is Effected');
+       document.location.assign('lab-bloodbank.php')</script>";
+        exit();
 
 
      }
 
     }
         ?>
+                                   <!--  target modal-->
+                                   <div class='modal fade' id='squarespaceModal' name='squarespaceModal' role='dialog'>
+                                     <div class='modal-dialog'>
+                                     <div class='modal-content'>
+                                       <div class='modal-header'name='mod_header' id='mod_header'>
+                                       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">Ã—</span><span class="sr-only">Close</span></button>
+                                     <h3 class="modal-title" id="lineModalLabel">QuatMedic</h3>
+                                    </div>
+                                    <div class="modal-body">
 
-<!-- Modal -->
-<div id="myModal<?php echo $blood_grpx['id']; ?>" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+                                         <!--content-->
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header <?php echo $blood_grpx['bloodID']; ?></h4>
-      </div>
-      <div class="modal-body">
-<!--        <p>Some text in the modal.</p>-->
-          <form action="" method="post">
 
-                                         <center><p><b>RESET CHARGE</b>&nbsp;&nbsp;&nbsp;&nbsp;<input type='number' name='eff_chng' id='eff_chng' class='form-control'></p>
-                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='ch_sub<?php echo $blood_grpx['id']; ?>' id='ch_sub' class='btn btn-info' value='CHANGE'></center>
+                                         <h4 class='modal-title text-center' name='lineModalLabel1'></h4>
 
-<!--                                       </div>-->
-<!--
+                                       <div class='modal-body'>
+                                         <center><p><b>RESET CHARGE</b>&nbsp;&nbsp;&nbsp;&nbsp;<input type='number' name='eff_chng' id='eff_chng' class='form-control' ></p>
+                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='ch_sub' id='ch_sub' class='btn btn-info' value='CHANGE'></center>
+
+                                       </div>
                                        <div class='modal-footer'>
                                          <button type='button' name='mod_dismiss' id='mod_dismiss' class='btn btn-default' data-dismiss='modal'><b>Close</b></button>
                                        </div>
--->
-          </form>
                                      </div>
+                                     </div>
+                                   </div>
+                                 </div>
+                            </tr>
 
-<!--      </div>-->
-<!--
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
--->
-    </div>
-
-  </div>
-</div>
-
-                                </tr>
-                           <?php   }?>
-                                </tbody>
-
-                              </table>
-</div>
-</div>
-</div>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
 
                 <div id="tab2" class="tab-pane">
                    <!-- <form action="#" method="post" class="form-horizontal">-->
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                               <label class="control-label"> BloodID :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11"  value="<?php echo $bloodID; ?>" name="blood_ID" readonly />
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-
                                 <label class="control-label">Blood Group</label>
                                 <div class="controls">
                                   <select name="bloodGroup" class="span11"  id="bloodGroup" >
@@ -296,8 +241,17 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
                                     <option value="AB-positive">AB-positive</option>
                                     <option value="AB-negative">AB-negative</option>
                                   </select>
-
-                               </div>
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                    <div class="span6">
+                          <div class="widget-content nopadding">
+                              <div class="control-group">
+                                <label class="control-label"> Number Of Bags :</label>
+                                <div class="controls">
+                                  <input type="number" class="span11" placeholder="Number Of Bags" name="numberOfBags" />
+                                </div>
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
@@ -339,7 +293,7 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
                           </thead>
                           <tbody>
                               <?php
-                                $bank_show= select("SELECT * FROM bloodbank");
+                                $bank_show= select("SELECT * FROM bloodBank");
                                 foreach($bank_show as $bank_shows){
                                echo "<tr>
 
@@ -359,14 +313,6 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
                     <form action="#" method="post" class="form-horizontal">
                     <div class="span6">
                           <div class="widget-content nopadding">
-
-                              <div class="control-group">
-                                <label class="control-label"> Donor ID :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" value="<?php echo $donorID ?>" name="donor" readonly />
-                                </div>
-                              </div>
-
                               <div class="control-group">
                                 <label class="control-label"> Full Name :</label>
                                 <div class="controls">
@@ -424,16 +370,6 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
                                   <input type="date" class="span11" name="lastDonate" />
                                 </div>
                               </div>
-
-                                 <div class="control-group">
-                                <label class="control-label"> Number Of Bags :</label>
-                                <div class="controls">
-                                  <input type="tel" class="span11" placeholder="Number of Bags" name="num_of_bags" required/>
-                                </div>
-                              </div>
-
-
-
                               <div class="form-actions">
                                   <i class="span1"></i>
                                 <button type="submit" class="btn btn-primary btn-block span10"name="save_group">Save Blood</button>
