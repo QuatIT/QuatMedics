@@ -143,7 +143,7 @@ if(isset($_POST['adWard'])){
         $status = SENT_TO_PHARMACY;
         $prescribeStatus = trim("Prescibed");
         $datePrescribe = trim(date("Y-m-d"));
-        $prescriptionCode = randomString('8');
+        $prescriptionCode = randomString('4');
 
         $medNum = count($_POST['medicine']);
         $dosageNum = count($_POST['dosage']);
