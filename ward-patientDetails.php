@@ -64,7 +64,8 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab1">Patient Admittion Details</a></li>
                     <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li>
-                    <li><a data-toggle="tab" href="#tab3">Treatment History</a></li>
+                    <li><a data-toggle="tab" href="#tab3"> Doctor's Review</a></li>
+                    <li><a data-toggle="tab" href="#tab4">Treatment History</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -83,23 +84,12 @@
                                     <input type="text" value="<?php echo $patDetails['firstName'].' '.$patDetails['otherName'].' '.$patDetails['lastName']; ?>" name="patientName" class="span11" readonly>
                                 </div>
                               </div>
-                               <div class="control-group">
-                                <label class="control-label">Bed Number : </label>
-                                <div class="controls">
-                                  <input type="text" name="bedNumber" class="span11" readonly>
-                                </div>
-                              </div>
                               <div class="control-group">
                                 <label class="control-label">Admission Date :</label>
                                 <div class="controls">
                                     <input name="admitDate" value="<?php echo $pat['admitDate']; ?>" class="span11" type="text" readonly/>
                                 </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Description :</label>
-                                <div class="controls">
-                                    <textarea class="span11" name="description" readonly><?php echo $pat['admitDetails']; ?></textarea>
-                                </div>
+                                  <div class="controls"></div>
                               </div>
                           </div>
                       </div>
@@ -107,18 +97,6 @@
                           <div class="widget-title">
                           </div>
                           <div class="widget-content nopadding">
-                               <div class="control-group">
-                                <label class="control-label">Patient Status: </label>
-                                <div class="controls">
-                                  <input type="text" name="patientstatus" class="span11" readonly>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Bed Type :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" name="bedType" readonly />
-                                </div>
-                              </div>
                               <div class="control-group">
                                 <label class="control-label">Discharge Date :</label>
                                 <div class="controls">
@@ -133,6 +111,12 @@
                                     <br/>
                                 </div>
                               </div>
+                              <div class="control-group">
+                                <label class="control-label">Description :</label>
+                                <div class="controls">
+                                    <textarea class="span11" name="description" readonly><?php echo $pat['admitDetails']; ?></textarea>
+                                </div>
+                              </div>
                           </div>
                       </div>
                     </form>
@@ -144,22 +128,90 @@
                     <form action="#" method="post" id="add_name" class="form-horizontal">
                           <div class="widget-content nopadding">
                               <table class="table table-bordered" id="dynamic_field">
+                                  <tr>
+                                      <td colspan="2"><textarea style="width:100%;" placeholder="Comments" name="comment"></textarea></td>
+                                  </tr>
                                 <tr>
                                     <td><input type="text" name="treatment[]" placeholder="Treatment / Medicine" class="span11" required /></td>
                                     <td><input type="text" name="dosage[]" placeholder="Dosage / Details" class="span11" required /></td>
                                     <td><button type="button" name="add" id="add" class="btn btn-primary">Add Treatement</button></td>
                                 </tr>
                             </table>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" name="saveTreatment" class="btn btn-primary pull-right"> Save Treatement</button>
+                              <div class="form-actions" style="padding-left:0px;padding-right:0px;">
+                                  <i class="span9"></i>
+                                <button type="submit" name="saveTreatment" class="btn btn-primary"> Save Treatement</button>
                               </div>
                           </div>
                     </form>
                 </div>
 
                 <div id="tab3" class="tab-pane">
-
+                                  <form action="#" method="post" class="form-horizontal">
+                    <div class="span12">
+                          <div class="widget-title">
+                              <span class="icon"> <i class="icon-align-justify"></i> </span>
+                            <h5> Doctor's Review</h5>
+                          </div>
+                          <div class="widget-content nopadding">
+                               <div class="control-group">
+                                <label class="control-label">Review : </label>
+                                <div class="controls">
+                                    <textarea class="span12" rows="3"></textarea>
+                                </div>
+                              </div>
+                             <div class="form-actions">
+                                  <i class="span8"></i>
+                                <button type="submit" name="saveReview" class="btn btn-primary btn-block span4">Save Review</button>
+                              </div>
+                          </div>
+                      </div>
+                    </form>
+                </div>
+                <div id="tab4" class="tab-pane">
+                    <div class="widget-box">
+                      <div class="widget-title">
+                      </div>
+                      <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th> Date & Time</th>
+                              <th> Treatment</th>
+                              <th> Details / Dosage</th>
+                              <th> Commnets</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              <tr>
+                                <td> Date </td>
+                                <td> Para</td>
+                                <td> 2 tablets </td>
+                                <td> Comments </td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="widget-box">
+                      <div class="widget-title">
+                      </div>
+                      <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th> Date & Time</th>
+                              <th> Doctors review</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              <tr>
+                                <td> Datetime</td>
+                                <td> review bla bla bla </td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
