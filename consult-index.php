@@ -52,6 +52,9 @@
 
     $roomID = $_GET['roomID'];
 
+        $rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
+        foreach($rm as $r){}
+
         $roomByID = Consultation::find_by_room_id($roomID);
         foreach($roomByID as $room_id){}
 
@@ -100,7 +103,7 @@
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTING ROOM <?php echo $roomID;?></h3>
+      <h3 class="quick-actions">CONSULTING ROOM <?php echo $r['roomName'];?></h3>
       <div class="row-fluid">
           <div class="span8">
                 <div class="widget-box">

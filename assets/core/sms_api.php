@@ -1,13 +1,15 @@
 <?php
 
 //SMS to members
-function sendsms($bdy,$subject,$phone_number){
+function sendsms($bdy,$phone_number){
 $username = 'kingicon';
-$password = 'x6G0U6K7';
-$body = $subject.PHP_EOL.$bdy;
-$message= $body;
+$password = 'godwin1.';
+//$password = 'x6G0U6K7';
+$message = $bdy;
+//$body = $bdy;
+//$message= $body;
 
-$from = "CHURCH";//your senderid example "kwamena"max is 11 chars;
+$from = "QUATMEDIC";//your senderid example "kwamena"max is 11 chars;
 $baseurl = "http://isms.wigalsolutions.com/ismsweb/sendmsg/";
 
 //All numbers must have a country code. delimit them with comma(,)
@@ -27,11 +29,9 @@ curl_close($ch);
 
 $send = explode(" :: ",$return);
 if(stristr($send[0],"SUCCESS") != FALSE){
-echo "<script>alert('message sent');
-window.location.href('arena.php')</script>";
+echo "<script>alert('message sent');</script>";
 }else{
-echo "<script>alert('message could not be sent');
-window.location.href('arena.php')</script>";
+echo "<script>alert('message could not be sent');</script>";
 }
 }
 ?>

@@ -20,6 +20,9 @@ define("DEAD" , "dead");
 define("OCCUPIED","occupied");
 define("FREE","free");
 
+define("SMS_PENDING","sms_pending");
+define("SMS_APPROVED","sms_approved");
+
 define("PARENT_DIR" , "uploads/");
 define("LICENCE_DIR" , "../uploads/".PARENT_DIR."licence/");
 define("LAB_RESULT_DIR" , "../uploads/labresults/");

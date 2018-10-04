@@ -45,6 +45,7 @@
           <li> <a href="centerward-index"> <i class="icon-graph"></i> Ward </a> </li>
           <li> <a href="#"> <i class="icon-home"></i> Pharmacy</a> </li>
           <li> <a href="centerlab-index"> <i class="icon-search"></i> Laboratory </a> </li>
+          <li> <a href="smsrequest-index"> <i class="icon-envelope"></i> SMS Request </a> </li>
         </ul>
    </div>
 
