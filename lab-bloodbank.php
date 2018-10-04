@@ -111,8 +111,8 @@ if(isset($_POST['save_blood'])){
 
   $group_insert=insert("INSERT INTO bloodgroup_tb(bloodID,bloodGroup,bloodBags)VALUES('$blood_ID ','".$bloodGroup."','".$numberOfBags."')");
   if($group_insert){
-    echo "<script>alert('Entry Was Successful');
-    document.location.assign('lab-bloodbank.php')</script>";
+    $success= "<script>document.write('Entry Was Successful');
+                    window.location.href='lab-bloodbank.php'</script>";
   }
 }
 
@@ -152,7 +152,19 @@ if(isset($_POST['save_blood'])){
   </div>
   <div class="container">
       <h3 class="quick-actions">LAB BLOOD BANK INFORMATION</h3>
-
+ <?php
+                      if($success){
+                      ?>
+                      <div class="alert alert-success">
+                  <strong>Success!</strong> <?php echo $success; ?>
+                </div>
+                      <?php } if($error){
+                          ?>
+                      <div class="alert alert-danger">
+                  <strong>Error!</strong> <?php echo $error; ?>
+                </div>
+                      <?php
+                      } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
