@@ -209,6 +209,7 @@
                               <td style="text-align: center;"> <?php echo $patient['dob']; ?></td>
                               <td style="text-align: center;">
                                    <a href="#" data-toggle="modal" data-target="#squarespaceModal<?php echo $patient['patientID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
+                                   <a href="id-card?pid=<?php echo $patient['patientID'];?>" title="Patient Card"> <span class="btn btn-success fa fa-image"></span></a>
                               </td>
                             </tr>
 
