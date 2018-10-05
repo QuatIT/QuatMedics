@@ -51,8 +51,8 @@
 
   class Consultation{
 
-      public function consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status){
-          $result= insert("INSERT INTO consultation(consultID,staffID,bodyTemperature,pulseRate,respirationRate,bloodPressure,weight,otherHealth,roomID,patientID,mode,insuranceType,insuranceNumber,company,status) VALUES('$consultID','$staffID','$bodyTemperature','$pulseRate','$respirationRate','$bloodPressure','$weight','$otherHealth','$roomID','$patientID','$mode','$insuranceType','$insuranceNumber','$company','$status') ");
+      public function consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID){
+          $result= insert("INSERT INTO consultation(consultID,staffID,bodyTemperature,pulseRate,respirationRate,bloodPressure,weight,otherHealth,roomID,patientID,mode,insuranceType,insuranceNumber,company,status,centerID) VALUES('$consultID','$staffID','$bodyTemperature','$pulseRate','$respirationRate','$bloodPressure','$weight','$otherHealth','$roomID','$patientID','$mode','$insuranceType','$insuranceNumber','$company','$status','$centerID') ");
           return $result;
     }
 
@@ -317,6 +317,88 @@ public function get_donor_id(){
   return $num;
 
   }
+}
+
+class Dashboard{
+//  public function donor_id($bloodID,$donorID,$centerID,$donorName,$bloodGender,$bloodGroup,$phoneNumber,$dob,$lastDonate){
+//    $result = insert("INSERT INTO bloodbank(bloodID,donorID,centerID,donorName,gender,bloodgroup,phoneNumber,dob,lastDonate) VALUES('$bloodID','$donorID','$centerID','$donorID','$gender','$bloodgroup','$homeAddress','$phoneNumber','$dob','$lastDonate') ");
+//    return $result;
+//}
+
+public function totalPatient($centerID){
+  $result=query("SELECT * FROM patient WHERE centerID='$centerID' ");
+  $num = count($result);
+
+  return $num;
+
+  }
+
+public function privatePatient($centerID){
+    $sql = "SELECT * FROM consultation WHERE mode='private' && DATE(doe) = CURDATE() && centerID='$centerID'  ";
+  $result=query($sql);
+  $num = count($result);
+
+  return $num;
+
+  }
+
+public function insurancePatient($centerID){
+  $result=query("SELECT * FROM consultation WHERE centerID='$centerID' && mode='insurance' && DATE(doe) = CURDATE() ");
+  $num = count($result);
+
+  return $num;
+
+  }
+
+public function companyPatient($centerID){
+  $result=query("SELECT * FROM consultation WHERE centerID='$centerID' && mode='company' && DATE(doe) = CURDATE() ");
+  $num = count($result);
+
+  return $num;
+
+  }
+
+public function availableConsultingRoom($centerID){
+  $result=query("SELECT * FROM consultingroom WHERE centerID='$centerID' && status='free' ");
+  $num = count($result);
+
+  return $num;
+
+  }
+
+public function occupiedConsultingRoom($centerID){
+  $result=query("SELECT * FROM consultingroom WHERE centerID='$centerID' && status='occupied' ");
+  $num = count($result);
+
+  return $num;
+
+  }
+
+public function awaitingPatient($centerID,$roomID){
+  $result=query("SELECT * FROM consultation WHERE centerID='$centerID' && roomID='$roomID' && status='sent_to_consulting' ");
+  $num = count($result);
+
+  return $num;
+
+  }
+
+public function numLabResults($centerID,$roomID){
+  $result=query("SELECT * FROM labresults WHERE centerID='$centerID' && consultingRoom='$roomID' ");
+  $num = count($result);
+
+  return $num;
+
+  }
+
+public function numWardPatient($centerID,$roomID){
+  $result=query("SELECT * FROM wardassigns WHERE centerID='$centerID' && consultingroom='$roomID' ");
+  $num = count($result);
+
+  return $num;
+
+  }
+
+
 }
 
 

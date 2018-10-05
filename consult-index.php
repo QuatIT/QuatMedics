@@ -98,12 +98,12 @@
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a href="medics-index?roomID=<?php echo $roomID; ?>" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
         <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTING ROOM <?php echo $r['roomName'];?></h3>
+      <h3 class="quick-actions">CONSULTING ROOM <?php echo @$r['roomName'];?></h3>
       <div class="row-fluid">
           <div class="span8">
                 <div class="widget-box">

@@ -236,7 +236,7 @@ if(isset($_POST['adWard'])){
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTATION ROOM <?php echo $r['roomName'];?></h3>
+      <h3 class="quick-actions">CONSULTATION ROOM <?php echo @$r['roomName'];?></h3>
 <div class="row-fluid">
     <div class="span12">
         <?php

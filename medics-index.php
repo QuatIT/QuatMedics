@@ -13,7 +13,153 @@
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php include 'layout/head.php';
+    $centerID=$_SESSION['centerID'];
+    @$roomID = $_GET['roomID'];
+
+ ?>
+
+
+
+    <?php
+    if($_SESSION['accessLevel']=='CONSULTATION'){
+     //totalAwaiting
+        $totalAwaiting = Dashboard::awaitingPatient($centerID,$roomID);
+    //private patient
+        $LabResults = Dashboard::numLabResults($centerID,$roomID);
+    //insurance patient
+        $wardPatient = Dashboard::numWardPatient($centerID,$roomID);
+
+$dataPoints = array(
+	array("label"=>"No. of Awaiting Patients", "y"=>$totalAwaiting),
+	array("label"=>"No. of Lab Results", "y"=>$LabResults),
+	array("label"=>"No. of Patients in Ward", "y"=>$wardPatient)
+//	array("label"=>"No. of Compay Patient", "y"=>$companyPatient),
+//	array("label"=>"No. of Free Consulting Room", "y"=>$availableConsultingRoom),
+//	array("label"=>"No. of Free Consulting Room", "y"=>$occupiedConsultingRoom)
+)
+ ?>
+
+   <?php }
+
+?>
+
+
+<!--    CONSULTATION DASHBOARD-->
+  <?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
+<script>
+window.onload = function() {
+
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "DASHBOARD SUMMARY"
+	},
+    legend: {
+		cursor: "pointer",
+		itemclick: toggleDataSeries
+	},
+	subtitles: [{
+		text: "As At <?php echo date('D, d M Y'); ?>"
+	}],
+	data: [{
+		type: "column",
+//		yValueFormatString: "#,##0.00\"%\"",
+		indexLabel: "{label} ({y})",
+		dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+	}]
+});
+chart.render();
+
+function toggleDataSeries(e) {
+	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else {
+		e.dataSeries.visible = true;
+	}
+	e.chart.render();
+}
+
+}
+</script>
+<?php } ?>
+
+
+
+<!--    OPD DASHBOARD-->
+    <?php
+    if($_SESSION['accessLevel']=='OPD'){
+     //totalPatient
+        $totalPatient = Dashboard::totalPatient($centerID);
+    //private patient
+        $privatePatient = Dashboard::privatePatient($centerID);
+    //insurance patient
+        $insurancePatient = Dashboard::insurancePatient($centerID);
+    //company patient
+        $companyPatient = Dashboard::companyPatient($centerID);
+    //free consultingRoom
+        $availableConsultingRoom = Dashboard::availableConsultingRoom($centerID);
+    //occupied consultingRoom
+        $occupiedConsultingRoom = Dashboard::occupiedConsultingRoom($centerID);
+
+$dataPoints = array(
+	array("label"=>"No. of Patient", "y"=>$totalPatient),
+	array("label"=>"No. of Private Patient", "y"=>$privatePatient),
+	array("label"=>"No. of Insurance Patient", "y"=>$insurancePatient),
+	array("label"=>"No. of Compay Patient", "y"=>$companyPatient),
+	array("label"=>"No. of Free Consulting Room", "y"=>$availableConsultingRoom),
+	array("label"=>"No. of Free Consulting Room", "y"=>$occupiedConsultingRoom)
+)
+ ?>
+
+   <?php }
+
+?>
+
+
+
+  <?php if($_SESSION['accessLevel']=='OPD'){ ?>
+<script>
+window.onload = function() {
+
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+    exportEnabled: true,
+	title: {
+		text: "DASHBOARD SUMMARY"
+	},
+    legend: {
+		cursor: "pointer",
+		itemclick: toggleDataSeries
+	},
+	subtitles: [{
+		text: "As At <?php echo date('D, d M Y'); ?>"
+	}],
+	data: [{
+		type: "column",
+//		yValueFormatString: "#,##0.00\"%\"",
+		indexLabel: "{label} ({y})",
+		dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+	}]
+});
+chart.render();
+
+function toggleDataSeries(e) {
+	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else {
+		e.dataSeries.visible = true;
+	}
+	e.chart.render();
+}
+
+}
+</script>
+<?php } ?>
+
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -37,7 +183,7 @@
     </div>
   </div>
   <div class="container">
-
+<?php if($_SESSION['accessLevel']=='center_admin'){ ?>
    	<div class="quick-actions_homepage">
     <ul class="quick-actions">
           <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> Consultation</a></li>
@@ -48,8 +194,9 @@
           <li> <a href="smsrequest-index"> <i class="icon-envelope"></i> SMS Request </a> </li>
         </ul>
    </div>
-
+<?php } ?>
         <div class="row-fluid">
+<!--
       <div class="span6">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-signal"></i> </span>
@@ -60,13 +207,19 @@
           </div>
         </div>
       </div>
-      <div class="span6">
+-->
+      <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-signal"></i> </span>
-            <h5>Pie chart</h5>
+<!--            <h5>Pie chart</h5>-->
           </div>
           <div class="widget-content">
-            <div class="pie"></div>
+              <?php if($_SESSION['accessLevel']=='OPD'){ ?>
+            <div class="pie1"  id="chartContainer" style="height: 330px; width: 100%;"></div>
+              <?php } ?>
+              <?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
+            <div class="pie1"  id="chartContainer" style="height: 330px; width: 100%;"></div>
+              <?php } ?>
           </div>
         </div>
       </div>
@@ -89,6 +242,7 @@
 <script src="js/maruti.charts.js"></script>
 <script src="js/maruti.dashboard.js"></script>
 <script src="js/jquery.peity.min.js"></script>
+<script src="js/canvasjs.min.js"></script>
 
 
 <script type="text/javascript">
