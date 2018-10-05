@@ -73,7 +73,13 @@
                         </td>
                         </tr>
                         <tr>
-                            <td style="width:20%;" rowspan="5"> <img src="<?php echo $patientrow['patient_image'];?>" style="width:320px; height:200px;" /></td>
+                            <td style="width:20%; text-align:center;" rowspan="5">
+								<?php if(empty($patientrow['patient_image'])){?>
+								<span class="text-center"> No Photo</span>
+								<?php }else{?>
+								<img src="<?php echo $patientrow['patient_image'];?>" style="width:320px; height:200px;" />
+								<?php }?>
+							</td>
                             <td> ID Number : </td>
                             <td><?php echo $patientrow['patientID'];?></td>
                         </tr>
