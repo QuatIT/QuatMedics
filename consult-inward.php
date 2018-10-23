@@ -81,19 +81,6 @@
                               <th>Action</th>
                             </tr>
                           </thead>
-<<<<<<< HEAD
-                          <tbody>
-                            <tr>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
-                              <td style="text-align: center;">
-                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
-                              </td>
-                            </tr>
-=======
                          <tbody>
                             <?php
                               $consult_det=select("SELECT * FROM consultation");
@@ -118,7 +105,6 @@
 <!--                              </tr>-->
                             </td>
                              <?php }}}?>
->>>>>>> QuatMedics/master
                           </tbody>
                         </table>
                       </div>

@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 <?php session_start(); ?>
->>>>>>> QuatMedics/master
 <!DOCTYPE html>
 <html lang="en">
 <head>
