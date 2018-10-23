@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,18 +23,109 @@
 </head>
 <body>
 <?php
-    include 'layout/head.php';
-    if($_SESSION['accessLevel']=='WARD'){
+//    include 'layout/head.php';
+//    if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION'){
+//    $patientID = $_GET['patid'];
+//    $wardID = $_REQUEST['wrdno'];
+//    $patient = Ward::find_by_wardPatient_id($patientID);
+//    foreach($patient as $pat){}
+////    echo "<script>alert('{$pat['patientID']}')</script>";
+//    $pat_fxn = Patient::find_by_patient_id($patientID);
+//    foreach($pat_fxn as $patDetails){}
+//
+//
+////patient treatment
+//
+//    if(isset($_POST['saveTreatment'])){
+//    $comments= filter_input(INPUT_POST,"comment",FILTER_SANITIZE_STRING);
+//
+//    // filter_input method is not helpful when it comes to textbox arrays
+//    $dosage1="";
+//    $dosage=($_POST['dosage']);
+//    $treatment1 ="";
+//    $treatment=($_POST['treatment']);
+//
+//    foreach($dosage as $dosages){
+//      $dosage1.="$dosages.<br>";
+//    }
+//
+//    foreach( $treatment as  $treatments){
+//      $treatment1.="$treatments.<br>";
+//    }
+//        $p_treatment= insert("INSERT INTO review_tb(patientID,wardID,comments,treatment,dosage)VALUES('$patientID','$wardID','".$comments."','".$treatment1."','".$dosage1."')");
+//
+//
+//
+//    }
+//
+//
+//    if(isset($_POST['saveReview'])){
+//      $review = filter_input(INPUT_POST,"review",FILTER_SANITIZE_STRING);
+//        $staff_ID = select("SELECT * FROM centeruser");
+//        if($staff_ID){
+//            foreach($staff_ID as $staff_IDs){}
+//            $rev_iew = insert("INSERT INTO docreview_tb(WardID,PatientID,staffID,DocReview)VALUES('".$wardID."','".$patientID."','".$staff_IDs['staffID']."','".$review."')");
+////            header('location:ward-index.php');
+////            echo "<script>window.location.href='ward-patientDetails.php'</script>";
+//}
+//
+//
+//    }
+
+
+     include 'layout/head.php';
+
+    if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION'){
     $patientID = $_GET['patid'];
     $wardID = $_REQUEST['wrdno'];
-
     $patient = Ward::find_by_wardPatient_id($patientID);
     foreach($patient as $pat){}
 //    echo "<script>alert('{$pat['patientID']}')</script>";
     $pat_fxn = Patient::find_by_patient_id($patientID);
     foreach($pat_fxn as $patDetails){}
 
-    ?>
+//patient treatment
+
+    if(isset($_POST['saveTreatment'])){
+    $comments= filter_input(INPUT_POST,"comment",FILTER_SANITIZE_STRING);
+
+    // filter_input method is not helpful when it comes to textbox arrays
+    $dosage1="";
+    $dosage=($_POST['dosage']);
+    $treatment1 ="";
+    $treatment=($_POST['treatment']);
+
+    foreach($dosage as $dosages){
+      $dosage1.="$dosages.<br>";
+    }
+
+    foreach( $treatment as  $treatments){
+      $treatment1.="$treatments.<br>";
+    }
+        $p_treatment= insert("INSERT INTO review_tb(patientID,wardID,comments,treatment,dosage)VALUES('$patientID','$wardID','".$comments."','".$treatment1."','".$dosage1."')");
+
+    }
+
+    if(isset($_POST['saveReview'])){
+
+      $review = filter_input(INPUT_POST,"review",FILTER_SANITIZE_STRING);
+$staff_ID = select("SELECT * FROM centeruser");
+if($staff_ID){
+    foreach($staff_ID as $staff_IDs){}
+
+      $rev_iew= insert("INSERT INTO docreview_tb(WardID,PatientID,staffID,DocReview)VALUES('".$wardID."','".$patientID."','".$staff_IDs['staffID']."','".$review."')");
+          header('location:ward-index.php');
+  }
+
+}
+
+//$_GET['patient'];
+//$_GET['bedNumber'];
+//$_GET['Admitted'];
+
+?>
+
+
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -63,12 +155,13 @@
             <div class="widget-title">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab1">Patient Admittion Details</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li>
+                 <?php if($_SESSION['accessLevel']=='WARD'){ ?>   <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li> <?php } ?>
                     <li><a data-toggle="tab" href="#tab3"> Doctor's Review</a></li>
                     <li><a data-toggle="tab" href="#tab4">Treatment History</a></li>
                 </ul>
             </div>
-            <div class="widget-content tab-content">
+
+             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
                     <form action="#" method="post" class="form-horizontal">
                     <div class="span6">
@@ -124,6 +217,7 @@
 <!--            </div>-->
 <!--            <hr/>-->
 <!--            <div class="widget-content tab-content">-->
+  <?php     if($_SESSION['accessLevel']=='WARD'){ ?>
                 <div id="tab2" class="tab-pane">
                     <form action="#" method="post" id="add_name" class="form-horizontal">
                           <div class="widget-content nopadding">
@@ -145,6 +239,8 @@
                     </form>
                 </div>
 
+<?php } ?>
+
                 <div id="tab3" class="tab-pane">
                                   <form action="#" method="post" class="form-horizontal">
                     <div class="span12">
@@ -156,7 +252,7 @@
                                <div class="control-group">
                                 <label class="control-label">Review : </label>
                                 <div class="controls">
-                                    <textarea class="span12" rows="3"></textarea>
+                                    <textarea class="span12" rows="3" name="review" id="review"required></textarea>
                                 </div>
                               </div>
                              <div class="form-actions">
@@ -178,41 +274,35 @@
                               <th> Date & Time</th>
                               <th> Treatment</th>
                               <th> Details / Dosage</th>
-                              <th> Commnets</th>
+                              <th> Comments</th>
+                              <th> Doctor's Review</th>
+
                             </tr>
                           </thead>
                           <tbody>
-                              <tr>
-                                <td> Date </td>
-                                <td> Para</td>
-                                <td> 2 tablets </td>
-                                <td> Comments </td>
-                              </tr>
-                          </tbody>
+                            <?php
+                            $report = select("SELECT * FROM review_tb");
+                                foreach($report as $reports){
+                                  $rev_iew = select("SELECT * FROM docreview_tb");
+                                foreach($rev_iew as $rev_iews){}
+                            echo "<tr>
+                                <td>".$reports['doe']."</td>
+                                <td>".$reports['treatment']."</td>
+                                <td>".$reports['dosage']."</td>
+                                <td>".$reports['comments']."</td>
+                                <td>".$rev_iews['DocReview']."</td>
+                              </tr>";
+                              }?>
+
+                      </div> </tbody>
                         </table>
-                      </div>
                     </div>
-                    <div class="widget-box">
-                      <div class="widget-title">
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th> Date & Time</th>
-                              <th> Doctors review</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                              <tr>
-                                <td> Datetime</td>
-                                <td> review bla bla bla </td>
-                              </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                </div>
+
+
+
+
+
+
             </div>
         </div>
       </div>
@@ -249,10 +339,8 @@
   // This function is called from the pop-up menus to transfer to
   // a different page. Ignore if the value returned is a null string:
   function goPage (newURL) {
-
       // if url is empty, skip the menu dividers and reset the menu selection to default
       if (newURL != "") {
-
           // if url is "-", it is this page -- reset the menu:
           if (newURL == "-" ) {
               resetMenu();
@@ -263,7 +351,6 @@
           }
       }
   }
-
 // resets the menu selection upon entry to this page:
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
@@ -277,12 +364,10 @@ function resetMenu() {
             i++;
             $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="treatment[]" placeholder="Treatment / Medicine"  class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage / Details" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
-
         $(document).on('click', '.btn_remove', function(){
             var button_id = $(this).attr("id");
             $('#row'+button_id+'').remove();
         });
-
 //        $('#submit').click(function(){
 //            $.ajax({
 //                url:"name.php",

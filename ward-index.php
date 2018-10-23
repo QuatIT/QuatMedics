@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,40 +42,62 @@
     z-index: 999999 !important;
 }
     </style>
+
 </head>
 <body>
 <?php
-
     include 'layout/head.php';
+
     if($_SESSION['accessLevel']=='WARD'){
     $success = '';
     $error = '';
+     $wardID = $_GET['wrdno'];
 
-    $wardID = $_GET['wrdno'];
+
+
 
 //    if(!empty($wardID)){
         $wardByID = Ward::find_by_ward_id($wardID);
         foreach($wardByID as $ward_id){}
 //    }else{
         $ward = Ward::find_ward();
+      $centerID= $centerName['centerID'];
+
+
 //    }
 
-    if(isset($_POST['btnSave'])){
-        $bedNumber = filter_input(INPUT_POST, "bedNumber", FILTER_SANITIZE_STRING);
+      //bed id
+      $bed_ID = ward::get_bed_id() + 1;
+$bedID ="BED-".substr($centerID,0,12)."-".substr($wardID,0,8)."-".sprintf('%01s',$bed_ID);
+$bedNumber = Ward::get_bed_id()+1;
+
+
+//add new bed
+      if(isset($_POST['btnSave'])){
+
+        //$bedNumber = filter_input(INPUT_POST, "bedNumber", FILTER_SANITIZE_STRING);
         $bedDescription = filter_input(INPUT_POST, "bedDescription", FILTER_SANITIZE_STRING);
         $bedCharge = filter_input(INPUT_POST, "bedCharge", FILTER_SANITIZE_STRING);
         $bedStatus = "occupied";
 
-        $bed = Ward::saveBeds($bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
-
-
+       $bed = Ward::saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
         if($bed){
-            $success = "BED CREATED SUCCESSFULLY;";
-        }else{
-            $error = "BED NOT CREATED";
-        }
+            //$success = "BED CREATED SUCCESSFULLY;";
 
+             $success= 'BED CREATED SUCCESSFULLY!';
+
+
+             //echo $success;
+        }else{
+            //$error = "";
+            $error= 'BED NOT CREATED';
+            //echo $error;
+        }
     }
+
+
+
+
 
     ?>
 
@@ -116,7 +139,19 @@
   </div>
   <div class="container">
       <h3 class="quick-actions">WARD MANAGEMENT</h3>
-
+ <?php
+      if($success){
+      ?>
+      <div class="alert alert-success">
+  <strong>Success!</strong> <?php echo $success; ?>
+</div>
+      <?php } if($error){
+          ?>
+      <div class="alert alert-danger">
+  <strong>Error!</strong> <?php echo $error; ?>
+</div>
+      <?php
+      } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -157,14 +192,14 @@
                              <div class="control-group">
                                 <label class="control-label">Bed Number :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Bed Number" name="bedNumber" />
+                                  <input type="text" class="span11" placeholder="Bed Number" value="<?php echo $bedNumber; ?>" name="bedNumber" readonly />
                                 </div>
                               </div>
 
                               <div class="control-group">
                                 <label class="control-label">Bed Description :</label>
                                 <div class="controls">
-                                    <textarea class="span11" name="bedDescription"></textarea>
+                                    <textarea class="span11" name="bedDescription" required></textarea>
                                 </div>
                               </div>
                           </div>
@@ -238,7 +273,6 @@ window.onload = function () {
         document.getElementById("load_bed").innerHTML=xmlhttp.responseText;
     }
         load_bed();
-
         setInterval(function(){
             load_bed();
         },1000);
@@ -250,10 +284,8 @@ window.onload = function () {
   // This function is called from the pop-up menus to transfer to
   // a different page. Ignore if the value returned is a null string:
   function goPage (newURL) {
-
       // if url is empty, skip the menu dividers and reset the menu selection to default
       if (newURL != "") {
-
           // if url is "-", it is this page -- reset the menu:
           if (newURL == "-" ) {
               resetMenu();
@@ -264,7 +296,6 @@ window.onload = function () {
           }
       }
   }
-
 // resets the menu selection upon entry to this page:
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;

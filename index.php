@@ -6,7 +6,6 @@ $success = '';
 $error = '';
 
 if(isset($_POST['btnSave'])){
-
     $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
     $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 
@@ -22,22 +21,21 @@ if(isset($_POST['btnSave'])){
             }
 
             if($accessLevelRow = 'center_admin'){
-
                 $_SESSION['username'] = $usernameRow;
                 $_SESSION['password'] = $passwordRow;
                 $_SESSION['accessLevel'] = $accessLevelRow;
                 $_SESSION['centerID'] = $centerIDRow;
 
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
-                                    window.location.href='medics-index' </script>";
+                                    window.location.href='medics-index';</script>";
 
             }else{
                 $error = "<script>document.write('WRONG USERNAME AND PASSWORD');
-                                    window.location.href='index' </script>";
+                                    window.location.href='index';</script>";
             }
         }else{
                 $error = "<script>document.write('YOUR ACCOUNT CANNOT BE FOUND');
-                                    window.location.href='index' </script>";
+                                    window.location.href='index';</script>";
             }
     }else{
 
@@ -60,7 +58,7 @@ if(isset($_POST['btnSave'])){
                 $_SESSION['centerID'] = $centerIDRow1;
 
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
-                                    window.location.href='opd-index' </script>";
+                                    window.location.href='medics-index' </script>";
 
             }elseif($accessLevelRow1 == 'CONSULTATION'){
 
@@ -70,7 +68,7 @@ if(isset($_POST['btnSave'])){
                 $_SESSION['centerID'] = $centerIDRow1;
 
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
-                                    window.location.href='consult-index' </script>";
+                                    window.location.href='medics-index' </script>";
 
             }elseif($accessLevelRow1 == 'WARD'){
 
@@ -100,7 +98,7 @@ if(isset($_POST['btnSave'])){
                 $_SESSION['centerID'] = $centerIDRow1;
 
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
-                                    window.location.href='lab-index' </script>";
+                                    window.location.href='medics-index' </script>";
 
             }else{
                 $error = "<script>document.write('WRONG USERNAME AND PASSWORD');
@@ -127,6 +125,9 @@ if(isset($_POST['btnSave'])){
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
         <link rel="stylesheet" href="css/maruti-login.css" />
+	<style>
+	       body{background: #eee url(light_honeycomb.png);}
+	</style>
     </head>
     <body>
         <div id="loginbox">

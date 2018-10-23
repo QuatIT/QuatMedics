@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,17 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
-<link rel="stylesheet" href="css/fullcalendar.css" />
-<link rel="stylesheet" href="css/colorpicker.css" />
-<link rel="stylesheet" href="css/datepicker.css" />
-<link rel="stylesheet" href="css/uniform.css" />
-<link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body style="background-color:#fff;">
-
 <?php
 require_once 'assets/core/connection.php';
 session_start();
@@ -35,25 +29,15 @@ foreach($centerName_sql as $centerName){}
         foreach($sql as $patientrow){}
     }
 ?>
-<div id="sidebar" style="background-color:#fff;">
-
-</div>
-
-
 <div id="content" style="background-color:#fff;">
-  <div id="content-header" style="background-color:#fff;">
-  </div>
   <div class="container" style="background-color:#fff;">
-
-      <div class="row-fluid" style="background-color:#fff; height:500px;">
-        <div class="widget-box" style="width:660px; height:auto; margin:auto;">
-
+      <div class="row-fluid" style="background-color:#fff; height:400px;">
+        <div class="widget-box" style="width:600px; height:auto; margin:auto;">
             <div class="widget-content tab-content">
-
-                <table class="table" width="100%" border="2" cellpadding="0" style="border-style:dotted;">
+                <table class="table" width="100%" height="60%" border="2" cellpadding="0" style="border-style:dotted;">
                     <tbody>
                         <tr class="text-center">
-                        <td colspan="3">
+                        <td colspan="3" style="border:0px;">
                             <h4 class="text-center">
                                 <span style="color:#1860c3;">QUAT</span>MEDIC | <span style="color:#49cced;"><?php echo $centerName['centerName']; ?></span>
                             </h4>
@@ -89,30 +73,13 @@ foreach($centerName_sql as $centerName){}
       </div>
     </div>
 </div>
-<script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.flot.min.js"></script>
-<script src="js/jquery.flot.resize.min.js"></script>
-<script src="js/jquery.peity.min.js"></script>
-<script src="js/fullcalendar.min.js"></script>
 <script src="js/jquery.dataTables.min.js"></script>
-<script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.uniform.js"></script>
-<script src="js/select2.min.js"></script>
 <script src="js/maruti.js"></script>
-<script src="js/maruti.tables.js"></script>
-<script src="js/maruti.dashboard.js"></script>
-<script src="js/maruti.chat.js"></script>
-<script src="js/maruti.form_common.js"></script>
-<!--<script src="js/maruti.js"></script> -->
-
 <script type="text/javascript">
-//window.print();
+window.print();
 </script>
 </body>
 </html>

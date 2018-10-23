@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,7 +73,6 @@
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Bed Category</th>
                               <th>Bed Number</th>
                               <th>Patient</th>
                               <th>Nurse</th>
@@ -81,55 +81,44 @@
                               <th>Action</th>
                             </tr>
                           </thead>
+<<<<<<< HEAD
                           <tbody>
                             <tr>
-                              <td>Bed category Name</td>
                               <td>WRD1BED01</td>
                               <td> Richard Kanfrah :)</td>
                               <td> Errrm Nurse Name :)</td>
                               <td> 15/2/1998</td>
                               <td> 25/2/1998</td>
                               <td style="text-align: center;">
-<!--                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>-->
                                    <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
                               </td>
                             </tr>
-                            <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
+=======
+                         <tbody>
+                            <?php
+                              $consult_det=select("SELECT * FROM consultation");
+        $bed_det=select("SELECT * FROM bedlist ");
+        if(is_array($bed_det)){
+          foreach($bed_det as $bed_dets){
+            $ward_det =select("SELECT * FROM wardassigns");
+            if(is_array($ward_det)){
+              foreach($ward_det as $ward_dets){}?>
+
+              <tr>
+                              <td><?php echo $bed_dets['wardID'];?></td>
+                              <td><?php echo $bed_dets['bedNumber'];?></td>
+                              <td><?php echo $ward_dets['patientID'];?></td>
+                              <td><?php echo $ward_dets['staffID'];?></td>
+                              <td><?php echo $ward_dets['admitDate'];?></td>
+                              <td><?php echo $ward_dets['dischargeDate'];?></td>
                               <td style="text-align: center;">
-<!--                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>-->
-                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
-                              <td style="text-align: center;">
-<!--                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>-->
-                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Bed category Name</td>
-                              <td>WRD1BED01</td>
-                              <td> Richard Kanfrah :)</td>
-                              <td> Errrm Nurse Name :)</td>
-                              <td> 15/2/1998</td>
-                              <td> 25/2/1998</td>
-                              <td style="text-align: center;">
-<!--                                   <a href="ward-patientDetails"> <span class="btn btn-primary fa fa-eye"></span></a>-->
-                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
-                              </td>
-                            </tr>
+
+                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>&nbsp;
+                                    <a href="ward-patientDetails?patid=<?php echo urlencode($ward_dets['patientID'])?>&Admitted=<?php echo urlencode($ward_dets['admitDate'])?>&bedNumber=<?php echo urlencode($bed_dets['bedNumber'])?>&wrdno=<?php echo urlencode($bed_dets['wardID'])?>"> <span class="btn btn-info fa fa-link"></span></a>
+<!--                              </tr>-->
+                            </td>
+                             <?php }}}?>
+>>>>>>> QuatMedics/master
                           </tbody>
                         </table>
                       </div>

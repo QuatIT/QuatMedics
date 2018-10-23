@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +45,7 @@
       $gender = filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING);
       $bloodGroup = filter_input(INPUT_POST, "bloodGroup", FILTER_SANITIZE_STRING);
       $homeAddress = filter_input(INPUT_POST, "homeAddress", FILTER_SANITIZE_STRING);
+      $hometown = filter_input(INPUT_POST, "hometown", FILTER_SANITIZE_STRING);
       $phoneNumber = filter_input(INPUT_POST, "mobileNumber", FILTER_SANITIZE_STRING);
 
       $guardianName = filter_input(INPUT_POST, "guardianName", FILTER_SANITIZE_STRING);
@@ -61,7 +63,7 @@
 //                  move_uploaded_file($fileName, "uploads/company/{$new_image}");
                   move_uploaded_file($fileName, $filedestination);
 
-        $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination);
+        $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination,$hometown);
 
         if($createPatient){
              $success = "<script>document.write('PATIENT DETAIL ADDED SUCCESSFULLY');
