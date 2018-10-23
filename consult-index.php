@@ -104,7 +104,7 @@
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTING ROOM <?php echo $r['roomName'];?></h3>
+      <h3 class="quick-actions">CONSULTING ROOM - <?php echo $r['roomName'];?></h3>
       <div class="row-fluid">
           <div class="span8">
                 <div class="widget-box">

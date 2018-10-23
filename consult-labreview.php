@@ -269,7 +269,7 @@ if(isset($_POST['adWard'])){
   <iframe src="<?php echo $labrow['labResult'];?>" style="width:100%;height:500px;"></iframe>
 		  </div>
 		  <?php }?>
-          <div class="span6" style="margin-left:0px;">
+          <div class="span6" style="margin-left:10px;">
                 <div class="widget-box">
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
@@ -290,9 +290,15 @@ if(isset($_POST['adWard'])){
                                           <input type="text" class="span12" name="patientID" value="<?php echo $patientID;?>" readonly/>
                                         </div>
                                       </div>
+                                        <div class="control-group">
+                                        <label class="control-label">Patient Name :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
+                                        </div>
+                                      </div>
 										<?php if(!empty($consultrow['mode'])){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">Mode :</label>
+                                        <label class="control-label">Payment Mode :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['mode'];?>" readonly/>
                                         </div>
@@ -325,12 +331,7 @@ if(isset($_POST['adWard'])){
                                         </div>
                                       </div>
 
-                                      <div class="control-group">
-                                        <label class="control-label">Patient Name :</label>
-                                        <div class="controls">
-                                          <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
-                                        </div>
-                                      </div>
+
 
                                         <?php if(!empty($consultrow['insuranceType'])){ ?>
                                       <div class="control-group">
@@ -485,7 +486,7 @@ if(isset($_POST['adWard'])){
                                             <td> Pharmacy</td>
                                             <td colspan="2">
                                               <select name="pharmacyID" class="span12" required>
-                                                    <option value=""></option>
+
                                                   <?php
                                                     $pharmsql = select("SELECT * from pharmacy WHERE centerID='".$_SESSION['centerID']."'");
                                                     if(count($pharmsql)>=1){

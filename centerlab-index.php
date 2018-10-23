@@ -112,13 +112,20 @@
                             </tr>
                           </thead>
                           <tbody>
+                              <?php
+                              $lablist = select("SELECT * FROM lablist WHERE centerID='".$_SESSION['centerID']."'");
+                              if($lablist){
+                                  foreach($lablist as $labrow){
+
+                              ?>
                             <tr>
-                              <td>MDCDEP001</td>
-                              <td>Lab Name</td>
+                              <td><?php echo $labrow['labID']; ?></td>
+                              <td><?php echo $labrow['labName'];?></td>
                               <td style="text-align: center;">
                                    <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
                               </td>
                             </tr>
+                              <?php }} ?>
                           </tbody>
                         </table>
                       </div>

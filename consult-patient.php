@@ -212,8 +212,6 @@ if(isset($_POST['adWard'])){
                 $error= 'couldnt send code to patient';
             }
 
-
-
                     echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
                 }else{
                     $error =  "ERROR: PRESCRIPTION NOT SENT";
@@ -468,7 +466,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                                       <div class="control-group">
                                         <label class="control-label"> Discharge Date</label>
                                           <div class="controls">
-                                            <input type="date" class="span11" name="dischargeDate" required/>
+                                            <input type="date" class="span11" name="dischargeDate"/>
                                           </div>
                                       </div>
                                   </div>
@@ -501,7 +499,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                                             <td> Pharmacy</td>
                                             <td colspan="2">
                                               <select name="pharmacyID" class="span12" required>
-                                                    <option value=""></option>
+
                                                   <?php
                                                     $pharmsql = select("SELECT * from pharmacy WHERE centerID='".$_SESSION['centerID']."'");
                                                     if(count($pharmsql)>=1){

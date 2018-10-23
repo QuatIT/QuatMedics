@@ -20,7 +20,6 @@
 
 <?php
 require_once 'assets/core/connection.php';
-session_start();
 if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
     echo "<script>window.location.href='index'</script>";
 }else{
@@ -113,7 +112,7 @@ foreach($centerName_sql as $centerName){}
 <!--<script src="js/maruti.js"></script> -->
 
 <script type="text/javascript">
-//window.print();
+window.print();
 </script>
 </body>
 </html>

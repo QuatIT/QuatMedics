@@ -153,7 +153,7 @@
 
                     if(isset($_POST['btnRequest'.$cred['id']])){
                         $centerID = $_SESSION['centerID'];
-                        $center_staffID = $staffID;
+//                        $center_staffID = $staffID;
                         $amount = $cred['sms_amount'];
                         $credit = $cred['sms_credit'];
                         $transactionID = filter_input(INPUT_POST, "transactionID", FILTER_SANITIZE_STRING);
@@ -161,7 +161,7 @@
                         $requestID = "REQ-SMS-".$centerID."-".sprintf('%06s',$reqID);
                         $status = SMS_PENDING;
 
-                        $req_sql = insert("INSERT INTO sms_tb(centerID,staffID,amount,credit,transactionID,senderName,requestID,status,dateRegistered) VALUES('$centerID','$center_staffID','$amount','$credit','$transactionID','$senderName','$requestID','$status',CURDATE()) ");
+                        $req_sql = insert("INSERT INTO sms_tb(centerID,staffID,amount,credit,transactionID,senderName,requestID,status,dateRegistered) VALUES('$centerID','$centerID','$amount','$credit','$transactionID','$senderName','$requestID','$status',CURDATE()) ");
 
                         if($req_sql){
                             $success = "<script>document.write('SMS REQUESTED. YOUR SMS WILL BE CREDITED SOON.')

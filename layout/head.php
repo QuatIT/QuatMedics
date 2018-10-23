@@ -4,9 +4,7 @@ require_once 'assets/core/connection.php';
 
 if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
     echo "<script>window.location.href='index'</script>";
-}
-
-else{
+}else{
     $staff = select("SELECT * from centeruser WHERE username='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
     foreach($staff as $staffrow){
         $staffID = $staffrow['staffID'];

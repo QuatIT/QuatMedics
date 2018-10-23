@@ -8,7 +8,7 @@ $from="kingicon05@gmail.com";
 $from_name="QUATMEDIC";
 $msg= $body; // HTML message
 $subject= $subj;
-$copy = $cc;
+$cc = $copy;
 /*End Config*/
 
 include("phpmailer/class.phpmailer.php");
