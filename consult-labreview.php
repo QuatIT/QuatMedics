@@ -33,11 +33,14 @@ include 'layout/head.php';
 
     $success = "";
     $error = "";
-    $conid = $_GET['conid'];
+   $conid = $_GET['conid'];
     $roomID = $_GET['roomID'];
+	$patientID = $_GET['patientID'];
+//	$centerID = $_GET['centerID'];
+//	$rsult = $_GET['labresult'];
 
-        $rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
-        foreach($rm as $r){}
+	$rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
+	foreach($rm as $r){}
 
     $consultdet = select("SELECT * from consultation WHERE consultID='$conid'");
 
@@ -113,8 +116,6 @@ if(isset($_POST['adWard'])){
     $admitDate = filter_input(INPUT_POST, "admitDate", FILTER_SANITIZE_STRING);
     $dischargeDate = filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING);
     $status = SENT_TO_WARD;
-	$medsNum = count($_POST['medicine']);
-	$dosagesNum = count($_POST['dosage']);
     //generate wardassign IDs
     $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
     if(count($wardasignsql) >=1){
@@ -128,19 +129,7 @@ if(isset($_POST['adWard'])){
         $assignID = "ASSIGN-1";
     }
 
-		for($m=0, $d=0; $m<$medsNum, $d<$dosagesNum; $m++,$d++){
-			if(trim($_POST["medicine"][$m] != '') && trim($_POST['dosage'][$d] != '')) {
-				$medicine = trim($_POST["medicine"][$m]);
-				$dosage = trim($_POST["dosage"][$d]);
-
-		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage')");
-				}
-
-		}
-
     $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails')");
-
-
 
     if($insertassign){
         $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
@@ -150,8 +139,6 @@ if(isset($_POST['adWard'])){
         $error =  "ERROR: PATIENT ADMITTION NOT SAVED";
     }
 }
-
-
 
     if(isset($_POST['presMeds'])){
         $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
@@ -226,11 +213,7 @@ if(isset($_POST['adWard'])){
 
     }
 
-//echo $patientID;
-$record = select("SELECT * FROM consultation,labresults,prescriptions,wardassigns,doctorappointment WHERE consultation.patientID='$patientID' AND labresults.patientID='$patientID' AND prescriptions.patientID='$patientID' AND wardassigns.patientID='$patientID' AND doctorappointment.patientID='$patientID' GROUP BY DATE(consultation.doe)");
 ?>
-
-
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -255,6 +238,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a>
         <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
         <a title="Consultation" class="tip-bottom"><i class="icon-user"></i> CONSULTATION ROOM</a>
+        <a title="Lab Result Review" class="tip-bottom"><i class="icon-user"></i> LAB RESULT REVIEW</a>
     </div>
   </div>
   <div class="container">
@@ -277,7 +261,15 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
     </div>
 </div>
       <div class="row-fluid">
-          <div class="span12">
+		  <?php
+		  $labres = select("SELECt * From labresults WHERE consultID='$conid' AND patientID='$patientID'");
+			foreach($labres as $labrow){
+		  ?>
+		  <div class="span6" style="margin-left:0px;">
+  <iframe src="<?php echo $labrow['labResult'];?>" style="width:100%;height:500px;"></iframe>
+		  </div>
+		  <?php }?>
+          <div class="span6" style="margin-left:0px;">
                 <div class="widget-box">
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
@@ -290,7 +282,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                     <div class="widget-content tab-content">
                         <div id="tab1" class="tab-pane active">
                             <form action="#" method="post" class="form-horizontal">
-								<div class="span6">
+								<div class="span12">
 									<div class="widget-content">
 										<div class="control-group">
                                         <label class="control-label">Patient ID :</label>
@@ -331,15 +323,8 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                                         <div class="controls">
                                           <input type="text" class="span12" name="weight" value="<?php echo $consultrow['weight'];?>" readonly/>
                                         </div>
-											<div class="controls"></div>
                                       </div>
 
-									</div>
-								</div>
-
-
-								<div class="span6">
-                                  <div class="widget-content">
                                       <div class="control-group">
                                         <label class="control-label">Patient Name :</label>
                                         <div class="controls">
@@ -391,7 +376,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                         </div>
                         <div id="tab2" class="tab-pane">
                              <form action="#" method="post" class="form-horizontal">
-								 <div class="span6">
+								 <div class="span12">
 									 <div class="widget-content nopadding">
 									 	<div class="control-group">
                                         <label class="control-label"> Consulting Room</label>
@@ -412,17 +397,16 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                                           </select>
                                         </div>
                                       </div>
-									 </div>
-								 </div>
-								 <div class="span6">
-									 <div class="widget-content nopadding">
-									 	<div class="control-group">
+										 <div class="control-group">
                                         <label class="control-label"> Staff ID</label>
                                           <div class="controls">
                                             <input type="text" name="consultroom" class="span11" value="<?php echo $staffID;?>" readonly>
                                           </div>
                                       </div>
 									 </div>
+								 </div>
+								 <div class="span12">
+
 									 <div class="form-actions">
                                           <i class="span1"></i>
                                         <button type="submit" name="reqLab" class="btn btn-primary btn-block span10"> Request Lab</button>
@@ -432,7 +416,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                         </div>
                         <div id="tab3" class="tab-pane">
                              <form action="#" method="post" class="form-horizontal">
-								 <div class="span6">
+								 <div class="span12">
 								 	                                  <div class="widget-content nopadding">
                                        <div class="control-group">
                                         <label class="control-label">Admit To ward</label>
@@ -472,8 +456,8 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                                           </div>
                                       </div>
                                   </div>
-								 </div>
-								 <div class="span6">
+<!--								 </div>-->
+<!--								 <div class="span12">-->
                                       <table class="table table-bordered" id="dynamic_field2">
                                         <tr>
                                             <td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" required /></td>
@@ -490,7 +474,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                         </div>
                         <div id="tab4" class="tab-pane">
                              <form action="#" method="post" id="add_name" class="form-horizontal">
-								 <div class="span6">
+								 <div class="span12">
 								 	<table class="table table-bordered">
                                           <tr>
                                               <td> Presciption Code</td>
@@ -522,7 +506,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                                           </tr>
                                     </table>
 								 </div>
-								 <div class="span6">
+								 <div class="span12">
                                       <table class="table table-bordered" id="dynamic_field">
                                         <tr>
                                             <td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" required /></td>
@@ -540,111 +524,67 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                     </div>
                 </div>
           </div>
-
-		  <div class="span12" style="margin-left:0px;">
-		  		<div class="widget-box">
-			  			<div class="widget-content">
-						<div class="accordion" id="collapse-group">
 <!--
-                            <div class="accordion-group widget-box">
-                                <div class="accordion-heading">
-                                    <div class="widget-title">
-                                        <a data-parent="#collapse-group" href="#collapseGOne" data-toggle="collapse">
-                                            <span class="icon"><i class="icon-eye-open"></i></span><h5>Accordion option1</h5>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="collapse in accordion-body" id="collapseGOne">
-                                    <div class="widget-content">
-                                        This is opened by default
-                                    </div>
-                                </div>
-                            </div>
--->
-
-<!--
-                            <div class="accordion-group widget-box">
-                                <div class="accordion-heading">
-                                    <div class="widget-title">
-                                        <a data-parent="#collapse-group" href="#collapseGTwo" data-toggle="collapse">
-                                            <span class="icon"><i class="icon-circle-arrow-right"></i></span><h5>Accordion closed</h5>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="collapse accordion-body" id="collapseGTwo">
-                                    <div class="widget-content">
-                                        Another is open
-                                    </div>
-                                </div>
-                            </div>
--->
-
-                            <div class="accordion-group widget-box">
-                                <div class="accordion-heading">
-                                    <div class="widget-title">
-                                        <a data-parent="#collapse-group" href="#collapseGThree" data-toggle="collapse">
-                                            <span class="icon"><i class="icon-eye-open"></i></span><h5>PATIENT MEDICAL RECORDS</h5>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="collapse accordion-body" id="collapseGThree">
-                                    <div class="widget-content">
-
-                                        <table class="table table-stripped">
-											<thead>
-												<th> Date</th>
-												<th> OPD</th>
-												<th> CONSULTATION</th>
-												<th> LABORATORY</th>
-												<th> PHARMACY</th>
-												<th> WARD</th>
-											</thead>
-										<?php
-											foreach($record as $recordRow){
-										?>
-											<tbody>
-												<tr>
-													<td> <?php echo date('D Y-m-d',strtotime($recordRow['doe']));?></td>
-													<td>
-														<?php
-												echo "Pulse Rate - ".$recordRow['pulseRate']."<br>";
-												echo "Respiration Rate - ".$recordRow['respirationRate']."<br>";
-												echo "Blood Pressure - ".$recordRow['bloodPressure']."<br>";
-												echo "Weight - ".$recordRow['weight']."<br>";
-												echo "Other Details - ".$recordRow['otherHealth']."<br>";
-
-														?></td>
-													<td> <?php echo $recordRow['diagnose'];?></td>
-													<td> <a href="<?php echo $recordRow['labResult']?>" target="popup"> <?php echo $recordRow['labResult'];?></a></td>
-													<td>
-														<?php
-														$prescode = $recordRow['prescribeCode'];
-														$meds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='$prescode'");
-														foreach($meds as $medRow){
-															echo "Medication : ".$medRow['medicine']."<br> Dosage : ".$medRow['dosage']."<br>";
-														}
-														?>
-													</td>
-													<td>
-														<?php
-									$ward = select("select wardName from wardlist where wardID='".$recordRow['wardID']."'");
-												foreach($ward as $wardrow){
-												echo " Admitted to ".$wardrow['wardName']."<br> On ".$recordRow['admitDate']." to ".$recordRow['dischargeDate']." For ".$recordRow['admitDetails'];
-												}
-														?>
-													</td>
-												</tr>
-											</tbody>
-
-										<?php }?>
-										</table>
-                                    </div>
-                                </div>
-                            </div>
+          <div class="span6">
+              <div class="widget-box widget-chat" style="height: auto;">
+                    <div class="widget-title">
+                        <span class="icon">
+                            <i class="icon-comment"></i>
+                        </span>
+                        <h5>Patient Medical Records</h5>
+                    </div>
+                    <div class="widget-content nopadding" style="height: auto;">
+                        <div class="chat-users panel-right2">
+                          <div class="panel-title">
+                            <h5>BY DATE</h5>
+                          </div>
+                          <div class="panel-content nopadding">
+                            <ul class="contact-list">
+                                <li id="" class="online newbtn btn-primary">
+                                  <a href=""><i class="fa fa-calendar"></i><span> Medical Records</span></a>
+                                </li>
+                              <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 15-05-2018</span></a></li>
+                              <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 18-05-2018</span></a></li>
+                              <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 23-06-2018</span></a></li>
+                              <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 12-07-2018</span></a></li>
+                            </ul>
+                          </div>
                         </div>
-						</div>
-			  	</div>
-		  </div>
+                        <div class="chat-content panel-left2" style="height: auto;">
+                          <div class="chat-messages" id="chat-messages" style="height: auto;">
+                            <div id="chat-messages-inner">
+                                <p id="'+id+'" class="user-'+idname+'">
+                                    <span class="msg-block"><i class="fa fa-user"></i>
+                                        <strong>OPD</strong> <span class="time">9:15 am</span>
+                                        <span class="msg"> Vitals Checked, BP, TP, RR, PR</span>
+                                    </span>
+                                </p>
+                                <p id="'+id+'" class="user-'+idname+'">
+                                    <span class="msg-block"><i class="fa fa-user"></i>
+                                        <strong>CONSULTATION</strong> <span class="time">9:15 am</span>
+                                        <span class="msg"> What ever Happened in the consulting room</span>
+                                    </span>
+                                </p>
+                                <p id="'+id+'" class="user-'+idname+'">
+                                    <span class="msg-block"><i class="icon icon-plus-sign"></i>
+                                        <strong>PHARMACY</strong> <span class="time">9:15 am</span>
+                                        <span class="msg"> What ever Happened at the pharmacy</span>
+                                    </span>
+                                </p>
+                                <p id="'+id+'" class="user-'+idname+'">
+                                    <span class="msg-block"><i class="icon icon-plus-sign"></i>
+                                        <strong>PHARMACY</strong> <span class="time">9:15 am</span>
+                                        <span class="msg"> What ever Happened at the pharmacy</span>
+                                    </span>
+                                </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+				</div>
+          </div>
+-->
+
       </div>
   </div>
 </div>

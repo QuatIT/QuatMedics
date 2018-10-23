@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,7 +68,7 @@
       //bed id
       $bed_ID = ward::get_bed_id() + 1;
 $bedID ="BED-".substr($centerID,0,12)."-".substr($wardID,0,8)."-".sprintf('%01s',$bed_ID);
-$bedNumber = Ward::get_bed_id()+1;
+$bedNumber = ward::get_bed_id()+1;
 
 
 //add new bed
@@ -84,13 +83,13 @@ $bedNumber = Ward::get_bed_id()+1;
         if($bed){
             //$success = "BED CREATED SUCCESSFULLY;";
 
-             $success= 'BED CREATED SUCCESSFULLY!';
+             $success= '<div class="alert alert-success text-center"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button><h4><i class="icon fa fa-check"></i> BED CREATED SUCCESSFULLY!</h4></div>';
 
 
              //echo $success;
         }else{
             //$error = "";
-            $error= 'BED NOT CREATED';
+            $error= '<div class="alert alert-danger text-center">BED NOT CREATED<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button><h4><i class="icon fa fa-exclamaition-triangle"></i></div>';
             //echo $error;
         }
     }
@@ -113,6 +112,17 @@ $bedNumber = Ward::get_bed_id()+1;
 </div>
 
 <?php } ?>
+<div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2n text-center">
+            <?php if($success){
+              echo $success;
+
+              }else{
+                echo $error;
+
+              } ?>
+        </div>
+    </div>
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -139,19 +149,7 @@ $bedNumber = Ward::get_bed_id()+1;
   </div>
   <div class="container">
       <h3 class="quick-actions">WARD MANAGEMENT</h3>
- <?php
-      if($success){
-      ?>
-      <div class="alert alert-success">
-  <strong>Success!</strong> <?php echo $success; ?>
-</div>
-      <?php } if($error){
-          ?>
-      <div class="alert alert-danger">
-  <strong>Error!</strong> <?php echo $error; ?>
-</div>
-      <?php
-      } ?>
+
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,8 +29,10 @@
     $success='';
     $error='';
 
+    $patient = new Patient;
+
 //     $birthIDs = Birth::find_num_Birth() + 1;
-    $PatientIDs = Patient::find_num_Patient() + 1;
+    $PatientIDs = $patient->find_num_Patient() + 1;
 
     if(isset($_POST['addApptmnt'])){
 
@@ -46,7 +49,9 @@
         $country = filter_input(INPUT_POST, "country", FILTER_SANITIZE_STRING);
         $status = LIVING;
 
-        $baby = Birth::RegisterBaby($babyID,$babyFirstName,$babyOtherName,$babylastName,$babyName,$dob,$motherName,$fatherName,$birthTime,$country,$status);
+        $birth = new Birth;
+
+        $baby = $birth->RegisterBaby($babyID,$babyFirstName,$babyOtherName,$babylastName,$babyName,$dob,$motherName,$fatherName,$birthTime,$country,$status);
 
         if($baby){
            $centerID=$_SESSION['centerID'];

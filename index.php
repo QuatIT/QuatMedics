@@ -60,7 +60,7 @@ if(isset($_POST['btnSave'])){
                 $_SESSION['centerID'] = $centerIDRow1;
 
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
-                                    window.location.href='opd-index' </script>";
+                                    window.location.href='medics-index' </script>";
 
             }elseif($accessLevelRow1 == 'CONSULTATION'){
 
@@ -70,7 +70,7 @@ if(isset($_POST['btnSave'])){
                 $_SESSION['centerID'] = $centerIDRow1;
 
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
-                                    window.location.href='consult-index' </script>";
+                                    window.location.href='medics-index' </script>";
 
             }elseif($accessLevelRow1 == 'WARD'){
 
@@ -100,7 +100,7 @@ if(isset($_POST['btnSave'])){
                 $_SESSION['centerID'] = $centerIDRow1;
 
                 $success = "<script>document.write('LOGIN SUCCESSFUL');
-                                    window.location.href='lab-index' </script>";
+                                    window.location.href='medics-index' </script>";
 
             }else{
                 $error = "<script>document.write('WRONG USERNAME AND PASSWORD');

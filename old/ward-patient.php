@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,10 +24,19 @@
 <?php
     include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='CONSULTATION'){
+if($_SESSION['accessLevel']=='WARD'){
 
-        $roomID = $_GET['roomID'];
-?>
+    $wardID = $_GET['wrdno'];
+
+    $wardByID = Ward::find_by_ward_id($wardID);
+    foreach($wardByID as $ward_id){}
+
+    $ward = Ward::find_ward();
+
+
+
+
+    ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -37,24 +45,23 @@
 
 <div id="sidebar">
     <ul>
-<!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
-    <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
-    <li class="active"> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
-    <li> <a href="consult-transfers?roomID=<?php echo $roomID;?>"><i class="icon-resize-horizontal"></i> <span>Trasnfers</span></a> </li>
+    <li> <a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
+    <li class="active"> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
 </div>
+
+
 
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
-        <a title="Inward Patients" class="tip-bottom"><i class="icon-home"></i> INWARD</a>
+        <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a href="ward-index?wrdno=<?php echo $wardID;?>" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
+        <a href="ward-patient?wrdno=<?php echo $wardID;?>" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">INWARD FROM CONSULTING ROOM <?php echo $roomID;?></h3>
+      <h3 class="quick-actions">WARD PATIENT MANAGEMENT</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
@@ -73,39 +80,30 @@
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Bed Category</th>
-                              <th>Bed Number</th>
-                              <th>Patient</th>
+                              <th>Patient ID</th>
+                              <th>Admin Details</th>
                               <th>Nurse</th>
                               <th>Admitted</th>
                               <th>Discharged</th>
                               <th>Action</th>
                             </tr>
                           </thead>
-                         <tbody>
-                            <?php
-                              $consult_det=select("SELECT * FROM consultation");
-        $bed_det=select("SELECT * FROM bedlist ");
-        if(is_array($bed_det)){
-          foreach($bed_det as $bed_dets){
-            $ward_det =select("SELECT * FROM wardassigns");
-            if(is_array($ward_det)){
-              foreach($ward_det as $ward_dets){}?>
-
-              <tr>
-                              <td><?php echo $bed_dets['wardID'];?></td>
-                              <td><?php echo $bed_dets['bedNumber'];?></td>
-                              <td><?php echo $ward_dets['patientID'];?></td>
-                              <td><?php echo $ward_dets['staffID'];?></td>
-                              <td><?php echo $ward_dets['admitDate'];?></td>
-                              <td><?php echo $ward_dets['dischargeDate'];?></td>
+                          <tbody>
+                              <?php
+                                $wrd=Ward::find_by_wardAssign_id($wardID);
+                                foreach($wrd as $wrd_assign){ ?>
+                            <tr>
+                              <td><?php echo $wrd_assign['patientID']; ?></td>
+                              <td><?php echo $wrd_assign['admitDetails']; ?></td>
+                              <td><?php echo $wrd_assign['staffID']; ?></td>
+                              <td><?php echo $wrd_assign['admitDate']; ?></td>
+                              <td> <?php echo $wrd_assign['dischargeDate']; ?></td>
                               <td style="text-align: center;">
-
-                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>&nbsp;
-                                    <a href="ward-patientDetails?patid=<?php echo urlencode($ward_dets['patientID'])?>&Admitted=<?php echo urlencode($ward_dets['admitDate'])?>&bedNumber=<?php echo urlencode($bed_dets['bedNumber'])?>&wrdno=<?php echo urlencode($bed_dets['wardID'])?>"> <span class="btn btn-info fa fa-link"></span></a>
-<!--                              </tr>-->
-                            </td>
-                             <?php }}}?>
+                                   <a href="ward-patientDetails?patid=<?php echo $wrd_assign['patientID'].'&wrdno='.$wardID.'&assign='.$wrd_assign['assignID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
+<!--                                   <a href="ward-patientAssign?patid=<?php #echo $wrd_assign['patientID'].'&wrdno='.$wardID; ?>"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>-->
+                              </td>
+                            </tr>
+                              <?php } ?>
                           </tbody>
                         </table>
                       </div>

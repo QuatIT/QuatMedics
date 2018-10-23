@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -351,7 +352,7 @@
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label">Mode:</label>
+                                <label class="control-label">Mode of Payment:</label>
                                 <div class="controls">
                                   <select class="span11" name="mode" onchange="modey(this.value);">
                                         <option value=""></option>

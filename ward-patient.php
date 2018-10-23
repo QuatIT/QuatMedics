@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,19 +24,11 @@
 <body>
 <?php
     include 'layout/head.php';
-
 if($_SESSION['accessLevel']=='WARD'){
-
     $wardID = $_GET['wrdno'];
-
     $wardByID = Ward::find_by_ward_id($wardID);
     foreach($wardByID as $ward_id){}
-
     $ward = Ward::find_ward();
-
-
-
-
     ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -238,10 +231,8 @@ if($_SESSION['accessLevel']=='WARD'){
   // This function is called from the pop-up menus to transfer to
   // a different page. Ignore if the value returned is a null string:
   function goPage (newURL) {
-
       // if url is empty, skip the menu dividers and reset the menu selection to default
       if (newURL != "") {
-
           // if url is "-", it is this page -- reset the menu:
           if (newURL == "-" ) {
               resetMenu();
@@ -252,7 +243,6 @@ if($_SESSION['accessLevel']=='WARD'){
           }
       }
   }
-
 // resets the menu selection upon entry to this page:
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;

@@ -146,19 +146,24 @@
     }
 
 
-      public function saveBeds($bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus){
-        $result = insert("INSERT INTO bedlist(bedNumber,bedDescription,bedCharge,wardID,bedStatus) VALUES('$bedNumber','$bedDescription','$bedCharge','$wardID',$bedStatus) ");
+   public function saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus){
+        $result = insert("INSERT INTO bedlist(centerID,bedID,bedNumber,bedDescription,BedCharge,wardID,status) VALUES('".$centerID."','".$bedID."','".$bedNumber."','".$bedDescription."','".$bedCharge."','".$wardID."','".$bedStatus."') ");
            return $result;
     }
+      public function get_bed_id(){
+  $result=query("SELECT * FROM bedlist WHERE wardID='".$_GET['wrdno']."'");
+  $num = count($result);
+
+  return $num;
 
   }
 
-
+  }
 
   class Patient{
 
-    public function createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination) {
-      $result= insert("INSERT INTO patient(centerID,patientId,firstName,lastName,otherName,dob,gender,bloodGroup,homeAddress,phoneNumber,guardianName,guardianGender,guardianPhone,guardianRelation,guardianAddress,dateRegistered,patient_image) VALUES('$centerID','$patientId','$firstName','$lastName','$otherName','$dob','$gender','$bloodGroup','$homeAddress','$phoneNumber','$guardianName','$guardianGender','$guardianPhone','$guardianRelation','$guardianAddress',CURDATE(),'$filedestination' ) ");
+    public function createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination,$hometown) {
+      $result= insert("INSERT INTO patient(centerID,patientId,firstName,lastName,otherName,dob,gender,bloodGroup,homeAddress,phoneNumber,guardianName,guardianGender,guardianPhone,guardianRelation,guardianAddress,dateRegistered,patient_image,hometown) VALUES('$centerID','$patientId','$firstName','$lastName','$otherName','$dob','$gender','$bloodGroup','$homeAddress','$phoneNumber','$guardianName','$guardianGender','$guardianPhone','$guardianRelation','$guardianAddress',CURDATE(),'$filedestination','$hometown' ) ");
       return $result;
     }
 
@@ -397,6 +402,24 @@ public function numWardPatient($centerID,$roomID){
   return $num;
 
   }
+
+public function numLabRequests($centerID){
+  $result=query("SELECT * FROM labresults WHERE centerID='$centerID' && status='sent_to_lab' ");
+  $num = count($result);
+
+  return $num;
+
+  }
+
+public function numBloodDonor($centerID){
+  $result=query("SELECT * FROM bloodbank WHERE centerID='$centerID' ");
+  $num = count($result);
+
+  return $num;
+
+  }
+
+
 
 
 }

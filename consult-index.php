@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,12 +99,12 @@
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a href="medics-index?roomID=<?php echo $roomID; ?>" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
         <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTING ROOM <?php echo @$r['roomName'];?></h3>
+      <h3 class="quick-actions">CONSULTING ROOM <?php echo $r['roomName'];?></h3>
       <div class="row-fluid">
           <div class="span8">
                 <div class="widget-box">
@@ -140,9 +141,15 @@
                     <div class="new-update clearfix">
                         <i class="icon-warning-sign"></i>
                         <div class="update-done">
-                            <a href="<?php echo $labupdate['labResult']?>" onclick="return popitup('<?php echo $labupdate['labResult'];?>')">
+ <a href="consult-labreview?patientID=<?php echo $labupdate['patientID'];?>&roomID=<?php echo $roomID;?>&conid=<?php echo $labupdate['consultID'];?>" target="popup"  >
                                 <strong>Lab Result For <?php echo $labupdate['patientID']; ?> Available</strong>
                             </a>
+
+<!--
+onclick="window.open('consult-labreview?patientID=<?php //echo $labupdate['patientID'];?>&roomID=<?php /// echo $roomID;?>&centerID=<?php // echo $_SESSION['centerID'];?>&labrslt=<?php // echo $labupdate['patientID']; ?>');"
+
+-->
+
 <!--                          <a href="#" title=""><strong>Lab Result For Patient PTN001 Available</strong></a>-->
                         </div>
                       <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
