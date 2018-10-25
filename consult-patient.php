@@ -112,6 +112,8 @@ if(isset($_POST['adWard'])){
     $admitDetails = filter_input(INPUT_POST, "admitDetails", FILTER_SANITIZE_STRING);
     $admitDate = filter_input(INPUT_POST, "admitDate", FILTER_SANITIZE_STRING);
     $dischargeDate = filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING);
+    $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
+    $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
     $status = SENT_TO_WARD;
 	$medsNum = count($_POST['medicine']);
 	$dosagesNum = count($_POST['dosage']);
@@ -133,12 +135,12 @@ if(isset($_POST['adWard'])){
 				$medicine = trim($_POST["medicine"][$m]);
 				$dosage = trim($_POST["dosage"][$d]);
 
-		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage')");
+		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$symptoms','$diagnoses')");
 				}
 
 		}
 
-    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails')");
+    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails,symptoms,diagnoses) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails')");
 
 
 
@@ -433,7 +435,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                         <div id="tab3" class="tab-pane">
                              <form action="#" method="post" class="form-horizontal">
 								 <div class="span6">
-								 	                                  <div class="widget-content nopadding">
+								 	<div class="widget-content nopadding">
                                        <div class="control-group">
                                         <label class="control-label">Admit To ward</label>
                                         <div class="controls">
@@ -475,6 +477,12 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
 								 </div>
 								 <div class="span6">
                                       <table class="table table-bordered" id="dynamic_field2">
+										  <tr>
+										  	<td colspan="3"><textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea></td>
+										  </tr>
+										  <tr>
+										  	<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea></td>
+										  </tr>
                                         <tr>
                                             <td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" required /></td>
                                             <td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" required /></td>
@@ -589,55 +597,117 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                                 </div>
                                 <div class="collapse accordion-body" id="collapseGThree">
                                     <div class="widget-content">
-
-                                        <table class="table table-stripped">
-											<thead>
-												<th> Date</th>
-												<th> OPD</th>
-												<th> CONSULTATION</th>
-												<th> LABORATORY</th>
-												<th> PHARMACY</th>
-												<th> WARD</th>
-											</thead>
 										<?php
-											foreach($record as $recordRow){
-										?>
-											<tbody>
-												<tr>
-													<td> <?php echo date('D Y-m-d',strtotime($recordRow['doe']));?></td>
-													<td>
-														<?php
-												echo "Pulse Rate - ".$recordRow['pulseRate']."<br>";
-												echo "Respiration Rate - ".$recordRow['respirationRate']."<br>";
-												echo "Blood Pressure - ".$recordRow['bloodPressure']."<br>";
-												echo "Weight - ".$recordRow['weight']."<br>";
-												echo "Other Details - ".$recordRow['otherHealth']."<br>";
+											//set variables to be useed..
+										$username ='';
+										$password = '';
+											//get session username and password..
+										$oldPass = $_SESSION['password'];
+										$oldUNamee = $_SESSION['username'];
 
-														?></td>
-													<td> <?php echo $recordRow['diagnose'];?></td>
-													<td> <a href="<?php echo $recordRow['labResult']?>" target="popup"> <?php echo $recordRow['labResult'];?></a></td>
-													<td>
-														<?php
-														$prescode = $recordRow['prescribeCode'];
-														$meds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='$prescode'");
-														foreach($meds as $medRow){
-															echo "Medication : ".$medRow['medicine']."<br> Dosage : ".$medRow['dosage']."<br>";
-														}
-														?>
-													</td>
-													<td>
-														<?php
-									$ward = select("select wardName from wardlist where wardID='".$recordRow['wardID']."'");
-												foreach($ward as $wardrow){
-												echo " Admitted to ".$wardrow['wardName']."<br> On ".$recordRow['admitDate']." to ".$recordRow['dischargeDate']." For ".$recordRow['admitDetails'];
+										if(isset($_POST['viewHistory'])){
+										$username = trim(htmlspecialchars($_POST['username']));
+										$password = trim(htmlspecialchars($_POST['password']));
+
+											if($oldPass ===$password && $oldUNamee===$username ){
+												$username = $oldUNamee;
+												$password = $oldPass;
+											}else{
+												$username ='';
+												$password = '';
+											}
+
+										}
+										if(empty($username) && empty($password)){
+										?>
+										<form id="loginform" class="form-vertical" action="" method="post" style="">
+										 <div class="control-group normal_text">
+											 <h3 style="text-align:center;">SIGN IN TO PATIENT HISTORY</h3>
+										</div>
+										<?php
+											  if($success){
+											  ?>
+											  <div class="alert alert-success">
+										  <strong>Success!</strong> <?php echo $success; ?>
+										</div>
+											  <?php } if($error){
+												  ?>
+											  <div class="alert alert-danger">
+										  <strong>Error!</strong> <?php echo $error; ?>
+										</div>
+											  <?php
+											  } ?>
+										<div class="control-group" style="text-align:center;">
+											<div class="controls">
+												<div class="main_input_box">
+													<input type="text" name="username" placeholder="User Name"/>
+												</div>
+											</div>
+										</div>
+
+										<div class="control-group" style="text-align:center;">
+											<div class="controls">
+												<div class="main_input_box">
+													<input type="password" name="password" placeholder="Password" required/>
+												</div>
+											</div>
+										</div>
+										<div class="form-actions" style="text-align:center;">
+											<input type="submit" name="viewHistory" class="btn btn-primary" value="View Records" />
+										</div>
+									</form>
+										<?php }else{?>
+								<table class="table table-stripped">
+									<thead>
+										<th> Date</th>
+										<th> OPD</th>
+										<th> CONSULTATION</th>
+										<th> LABORATORY</th>
+										<th> PHARMACY</th>
+										<th> WARD</th>
+									</thead>
+								<?php
+									foreach($record as $recordRow){
+								?>
+									<tbody>
+										<tr>
+											<td> <?php echo date('D Y-m-d',strtotime($recordRow['doe']));?></td>
+											<td>
+												<?php
+										echo "Pulse Rate - ".$recordRow['pulseRate']."<br>";
+										echo "Respiration Rate - ".$recordRow['respirationRate']."<br>";
+										echo "Blood Pressure - ".$recordRow['bloodPressure']."<br>";
+										echo "Weight - ".$recordRow['weight']."<br>";
+										echo "Other Details - ".$recordRow['otherHealth']."<br>";
+
+												?></td>
+											<td> <?php echo $recordRow['diagnose'];?></td>
+											<td> <a href="<?php echo $recordRow['labResult']?>" target="popup"> <?php echo $recordRow['labResult'];?></a></td>
+											<td>
+												<?php
+												$prescode = $recordRow['prescribeCode'];
+												$meds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='$prescode'");
+												foreach($meds as $medRow){
+													echo "Medication : ".$medRow['medicine']."<br> Dosage : ".$medRow['dosage']."<br>";
 												}
-														?>
-													</td>
-												</tr>
-											</tbody>
+												?>
+											</td>
+											<td>
+												<?php
+							$ward = select("select wardName from wardlist where wardID='".$recordRow['wardID']."'");
+										foreach($ward as $wardrow){
+										echo " Admitted to ".$wardrow['wardName']."<br> On ".$recordRow['admitDate']." to ".$recordRow['dischargeDate']." For ".$recordRow['admitDetails'];
+										}
+												?>
+											</td>
+										</tr>
+									</tbody>
+
+								<?php }?>
+							</table>
 
 										<?php }?>
-										</table>
+
                                     </div>
                                 </div>
                             </div>
