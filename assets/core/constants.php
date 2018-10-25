@@ -1,5 +1,8 @@
 <?php
-//error_reporting(0);
+error_reporting(0);
+
+
+
 define("DB_SERVER" , "localhost");
 define("DB_USER" , "root");
 //define("DB_PASSWORD" , "#edicon,123456789.");

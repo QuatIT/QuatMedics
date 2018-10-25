@@ -29,7 +29,8 @@
 
 
     //generate $PatientID
-    $wardIDs = Ward::find_num_ward() + 1;
+    $ward = new Ward;
+    $wardIDs = $ward->find_num_ward() + 1;
 
     $success = '';
     $error = '';
@@ -41,7 +42,7 @@
       $wardName = filter_input(INPUT_POST, "WardName", FILTER_SANITIZE_STRING);
       $numOfBeds = filter_input(INPUT_POST, "numOfBeds", FILTER_SANITIZE_STRING);
 
-        $wardRoom = Ward::createWard($WardID,$centerID,$wardName,$numOfBeds);
+        $wardRoom = $ward->createWard($WardID,$centerID,$wardName,$numOfBeds);
 
         if($wardRoom){
             $success = "WARD CREATED";

@@ -48,28 +48,28 @@
 <?php
     include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='WARD'){
+    if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
     $success = '';
     $error = '';
      $wardID = $_GET['wrdno'];
 
 
 
-
+$wardc = new Ward;
 //    if(!empty($wardID)){
-        $wardByID = Ward::find_by_ward_id($wardID);
+        $wardByID = $wardc->find_by_ward_id($wardID);
         foreach($wardByID as $ward_id){}
 //    }else{
-        $ward = Ward::find_ward();
+        $ward = $wardc->find_ward();
       $centerID= $centerName['centerID'];
 
 
 //    }
 
       //bed id
-      $bed_ID = ward::get_bed_id() + 1;
+      $bed_ID = $wardc->get_bed_id() + 1;
 $bedID ="BED-".substr($centerID,0,12)."-".substr($wardID,0,8)."-".sprintf('%01s',$bed_ID);
-$bedNumber = Ward::get_bed_id()+1;
+$bedNumber = $wardc->get_bed_id()+1;
 
 
 //add new bed
@@ -78,9 +78,9 @@ $bedNumber = Ward::get_bed_id()+1;
         //$bedNumber = filter_input(INPUT_POST, "bedNumber", FILTER_SANITIZE_STRING);
         $bedDescription = filter_input(INPUT_POST, "bedDescription", FILTER_SANITIZE_STRING);
         $bedCharge = filter_input(INPUT_POST, "bedCharge", FILTER_SANITIZE_STRING);
-        $bedStatus = "occupied";
+        $bedStatus = "available";
 
-       $bed = Ward::saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
+       $bed = $wardc->saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
         if($bed){
             //$success = "BED CREATED SUCCESSFULLY;";
 

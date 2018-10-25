@@ -75,13 +75,15 @@
 
      include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION'){
+    if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
     $patientID = $_GET['patid'];
     $wardID = $_REQUEST['wrdno'];
-    $patient = Ward::find_by_wardPatient_id($patientID);
+        $wardc = new Ward;
+        $patien = new Patient;
+    $patient = $wardc->find_by_wardPatient_id($patientID);
     foreach($patient as $pat){}
 //    echo "<script>alert('{$pat['patientID']}')</script>";
-    $pat_fxn = Patient::find_by_patient_id($patientID);
+    $pat_fxn = $patien->find_by_patient_id($patientID);
     foreach($pat_fxn as $patDetails){}
 
 //patient treatment
@@ -155,7 +157,7 @@ if($staff_ID){
             <div class="widget-title">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab1">Patient Admittion Details</a></li>
-                 <?php if($_SESSION['accessLevel']=='WARD'){ ?>   <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li> <?php } ?>
+                 <?php if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){ ?>   <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li> <?php } ?>
                     <li><a data-toggle="tab" href="#tab3"> Doctor's Review</a></li>
                     <li><a data-toggle="tab" href="#tab4">Treatment History</a></li>
                 </ul>
@@ -217,7 +219,7 @@ if($staff_ID){
 <!--            </div>-->
 <!--            <hr/>-->
 <!--            <div class="widget-content tab-content">-->
-  <?php     if($_SESSION['accessLevel']=='WARD'){ ?>
+  <?php     if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){ ?>
                 <div id="tab2" class="tab-pane">
                     <form action="#" method="post" id="add_name" class="form-horizontal">
                           <div class="widget-content nopadding">

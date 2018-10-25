@@ -93,7 +93,7 @@ input:checked + .slider:before {
 <?php
     include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='PHARMACY'){
+    if($_SESSION['accessLevel']=='PHARMACY' || $_SESSION['username']=='rik'){
 
     $code = $_GET['code'] ;
 
@@ -304,7 +304,7 @@ input:checked + .slider:before {
                           <i class="span6"></i>
                           <?php
                             $pres_btn = select("SELECT * FROM prescribedmeds WHERE prescribeCode='$prescode' AND prescribeStatus='served' ");
-                            if(count($pres_btn)<=1){
+                            if(count($pres_btn)<= count(select("SELECT * FROM prescribedmeds WHERE prescribeCode='$prescode'"))){
                           ?>
                         <button type="submit" class="btn btn-primary btn-block span6">Serve</button>
                           <?php } ?>

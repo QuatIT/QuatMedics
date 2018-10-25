@@ -50,7 +50,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
     $tran=select("SELECT * FROM transfer WHERE from_centerID='".$_SESSION['centerID']."' ");
 
     //transferID
-    $transID = Consultation::find_num_transfer() + 1;
+    $transID = $consultation->find_num_transfer() + 1;
 
     if(isset($_POST['addApptmnt'])){
       $centerID = $_SESSION['centerID'];

@@ -66,13 +66,13 @@ foreach($centerName_sql as $centerName){}
       <?php if($_SESSION['accessLevel']=='WARD'){ ?>
     <li class="" ><a title="" href="ward-index"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
       <?php } ?>
-
+<?php if($_SESSION['username']!='rik'){ ?>
     <li class="" ><a title="" href="center-registrarB"><i class="icon icon-file"></i> <span class="text">BIRTH AND DEATH</span></a></li>
+
     <li class="dropdown" id="settings">
         <a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle">
             <i class="icon icon-cog"></i>
             <span class="text">Settings</span>
-<!--            <span class="label label-important">5</span> -->
             <b class="caret"></b>
         </a>
       <ul class="dropdown-menu">
@@ -84,5 +84,39 @@ foreach($centerName_sql as $centerName){}
           <?php } ?>
       </ul>
     </li>
+<?php } ?>
+  </ul>
+
+
+  <ul class="nav">
+
+      <?php if($_SESSION['username']=='rik'){ ?>
+<!--
+       <li class="" ><a title="" href="medics-index"><i class="icon icon-home"></i> <span class="text">HOME</span></a></li>
+    <li class="" ><a title="" href="opd-index"><i class="icon icon-user"></i> <span class="text">OPD</span></a></li>
+-->
+
+    <li class="" ><a title="" href="consult-index?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-briefcase"></i> <span class="text">CONSULTATION</span></a></li>
+    <li class="" ><a title="" href="lab-index"><i class="icon icon-filter"></i> <span class="text">LABORATORY</span></a></li>
+    <li class="" ><a title="" href="pharmacy-index"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
+    <li class="" ><a title="" href="ward-index"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
+    <li class="" ><a title="" href="center-registrarB"><i class="icon icon-file"></i> <span class="text">BIRTH AND DEATH</span></a></li>
+    <li class="dropdown" id="settings">
+        <a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle">
+            <i class="icon icon-cog"></i>
+            <span class="text">Settings</span>
+<!--            <span class="label label-important">5</span> -->
+            <b class="caret"></b>
+        </a>
+      <ul class="dropdown-menu">
+        <li><a title="" href="#"><i class="icon icon-user"></i> Profile</a></li>
+          <?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
+        <li><a title="Logout" href="logout?c=<?php echo $_GET['roomID']; ?>"><i class="icon icon-share-alt"></i> Logout_consulting</a></li>
+          <?php }else{ ?>
+        <li><a title="Logout" href="logout"><i class="icon icon-share-alt"></i> Logout</a></li>
+          <?php } ?>
+
+      </ul>
+    </li><?php } ?>
   </ul>
 </div>

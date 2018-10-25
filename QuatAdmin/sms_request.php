@@ -6,11 +6,25 @@ $error = '';
 
 
 //generate centerID
-$centerIDs = User::find_num_centerID() + 1;
+$user = new User;
+$centerIDs = $user->find_num_centerID() + 1;
 //$centerIDs = User::find_num_centerID() ;
 //mkdir(date('YmdHis'));
 
 //echo mkdir(date('YmdHis').$centerIDs);
+
+if(isset($_POST['btnSMSRequest'])){
+    $smsamount = trim($_POST['smsamount']);
+    $smscredit = trim($_POST['smscredit']);
+
+    $reqsql = insert("INSERT INTO smscredits(sms_amount,sms_credit) VALUES('$smsamount','$smscredit')");
+
+    if($reqsql){
+        $success =  "CREDIT CREATED SUCCESSFULLY";
+    }else{
+         $error =  "CREDIT CREATION FAILED";
+    }
+}
 
 
 if(isset($_POST['btnSave'])){
@@ -29,12 +43,12 @@ $email = $_POST['email'];
 $accessLevel = CENTER_ADMIN;
 
 
-if(count(User::find_by_centerID($centerID)) >= 1){
+if(count($user->find_by_centerID($centerID)) >= 1){
 //    $centerID = randomString('10'); //regenerate centerID
     $centerID = substr($_POST['centerName'], 0, 5)."-".sprintf('%06s',$centerIDs);//regenerate centerID
 
 //create center admin
-$registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
+$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
 
 if($registerCenterAdmin){
 
@@ -59,7 +73,7 @@ echo make_dir($centerID);
 }else{
 
 //create center admin
-$registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
+$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
 
 if($registerCenterAdmin){
     echo make_dir($centerID);
@@ -175,7 +189,7 @@ if($registerCenterAdmin){
             <div class="widget-title">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab1">SMS Request</a></li>
-<!--                    <li><a data-toggle="tab" href="#tab2">Add New MedCenter</a></li>-->
+                    <li><a data-toggle="tab" href="#tab2">SMS CREDIT</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -245,95 +259,34 @@ if($registerCenterAdmin){
                          </div>
                     </div>
                 </div>
-<!--
                 <div id="tab2" class="tab-pane">
                     <form action="" method="post" class="form-horizontal">
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Center ID :</label>
+                                <label class="control-label">SMS Amount:</label>
                                <div class="controls">
 
 
-                                  <input type="text" class="span11" name="centerID" value="<?php echo $centerIDs; ?>" required readonly/>
+                                  <input type="number" min="0" class="span11" name="smsamount" value="" required />
 
                                 </div>
                               </div>
-                               <div class="control-group">
-                                <label class="control-label"> Center Category</label>
+<!--                              <div class="control-group">-->
+                                <label class="control-label">SMS CREDIT</label>
                                 <div class="controls">
-                                  <select name="centerCategory" >
-                                    <option value=""> -- Select Category --</option>
-                                    <option > Hospital</option>
-                                    <option > Healthcare Center</option>
-                                    <option > Medical Nursing Home</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label"> About Center :</label>
-                                <div class="controls">
-                                    <textarea class="span11" name="aboutCenter" placeholder="Brief History About Center"></textarea>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Number OF Branches</label>
-                                <div class="controls">
-                                  <input type="number" min="0" class="span11" name="numOfBranches" placeholder="Number OF Branches" required />
+                                  <input type="number" min="0" class="span11" name="smscredit" placeholder="" required />
                                 </div>
 
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label"> Password</label>
-                                <div class="controls">
-                                  <input type="password"  class="span11" name="password" placeholder="Password" required />
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Center Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Center name" name="centerName" />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Center Location :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Location" name="centerLocation" />
-                                </div>
-                              </div>
-
-                              <div class="control-group">
-                                <label class="control-label">Number OF Staff</label>
-                                <div class="controls">
-                                  <input type="number" min="5"  class="span11" name="numOfStaff" placeholder="Number OF Staff" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Email</label>
-                                <div class="controls">
-                                  <input type="email"  class="span11" name="email" placeholder="Email" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">User Name</label>
-                                <div class="controls">
-                                  <input type="text"  class="span11" name="userName" placeholder="User Name" required />
-                                </div>
-                              </div>
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Medical Center</button>
+                                <button type="submit" name="btnSMSRequest" class="btn btn-primary btn-block span10">Save SMS CREDIT</button>
                               </div>
-                          </div>
+                      </div>
                       </div>
                     </form>
                 </div>
--->
             </div>
         </div>
       </div>

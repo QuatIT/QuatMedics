@@ -43,8 +43,8 @@ include 'layout/head.php';
 //    if(empty($tab)){
 //        $active1='active';
 //    }
-
-    $deathIDs = Death::find_num_Death() + 1;
+    $death = new Death;
+    $deathIDs = $death->find_num_Death() + 1;
 
 
 // function createNewDirectory1()
@@ -169,7 +169,8 @@ include 'layout/head.php';
                                     <select name="patientID" >
                                         <option value="default"> -- Select ID --</option>
                                         <?php
-                                            $patient=Patient::find_patient();
+                                            $patien = new Patient;
+                                            $patient=$patien->find_patient();
                                             foreach($patient as $patID){ ?>
                                             <option value="<?php echo $patID['patientID']; ?>"><?php echo $patID['firstName'].' '.$patID['otherName'].' '.$patID['lastName'];?> (<?php echo $patID['patientID']; ?>)</option>
                                         <?php } ?>

@@ -56,7 +56,7 @@
 <?php
     include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='OPD'){
+    if($_SESSION['accessLevel']=='OPD' || $_SESSION['username']=='rik'){
 
     $active2='';
     $active='';
@@ -79,7 +79,8 @@
 //    exit;
 
     //generate consultID
-    $consultIDs = Consultation::find_num_consults() + 1;
+        $consultation = new Consultation;
+    $consultIDs = $consultation->find_num_consults() + 1;
 
     //get StaffID
     $staffIDss = select("SELECT * FROM centeruser WHERE userName='".$_SESSION['username']."' AND  password='".$_SESSION['password']."'  AND  centerID='".$_SESSION['centerID']."' ");
@@ -107,7 +108,7 @@
         $patient_busy = PATIENT_BUSY;
 
 //        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
-        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID);
+        $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID);
 
         if($consultAssignPatient1){
             $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."' WHERE patientID='$patientID' ");
@@ -138,7 +139,8 @@
     <ul>
     <li> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
     <li class="active"> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
-    <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+<!--    <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>-->
+    <li><a href="consult-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
     </ul>
 </div>
 

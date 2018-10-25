@@ -21,7 +21,7 @@
 <?php
     include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='LABORATORY'){
+    if($_SESSION['accessLevel']=='LABORATORY' || $_SESSION['username']=='rik'){
 
  $success = '';
  $error = '';

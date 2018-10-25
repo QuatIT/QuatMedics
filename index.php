@@ -1,16 +1,23 @@
 <?php
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', FALSE);
+header('Pragma: no-cache');
+
 include 'assets/core/connection.php';
 session_start();
 
 $success = '';
 $error = '';
-
+clearstatcache();
 if(isset($_POST['btnSave'])){
 
     $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
     $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 
-    $centerAdmin = User::centerAdminLogin($username,$password);
+    $user = new User;
+
+    $centerAdmin = $user->centerAdminLogin($username,$password);
 
     if($centerAdmin){
         if(count($centerAdmin) >=1 ){
@@ -42,7 +49,7 @@ if(isset($_POST['btnSave'])){
     }else{
 
         //centerUser login
-        $centerUser = User::centerUserLogin($username,$password);
+        $centerUser = $user->centerUserLogin($username,$password);
 
         if(count($centerUser) >= 1 ){
             foreach($centerUser as $centerUserRow){
@@ -111,7 +118,7 @@ if(isset($_POST['btnSave'])){
                                     window.location.href='index' </script>";
             }
     }
-
+clearstatcache();
 }
 
 ?>
@@ -123,6 +130,8 @@ if(isset($_POST['btnSave'])){
 <head>
         <title>QUAT MEDICS</title>
         <meta charset="UTF-8" />
+        <meta http-equiv="expires" content="Mon, 26 Jul 1997 05:00:00 GMT"/>
+        <meta http-equiv="pragma" content="no-cache" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />

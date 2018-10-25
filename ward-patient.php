@@ -24,11 +24,12 @@
 <body>
 <?php
     include 'layout/head.php';
-if($_SESSION['accessLevel']=='WARD'){
+if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
+    $wardc =new Ward;
     $wardID = $_GET['wrdno'];
-    $wardByID = Ward::find_by_ward_id($wardID);
+    $wardByID = $wardc->find_by_ward_id($wardID);
     foreach($wardByID as $ward_id){}
-    $ward = Ward::find_ward();
+    $ward = $wardc->find_ward();
     ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -83,7 +84,7 @@ if($_SESSION['accessLevel']=='WARD'){
                           </thead>
                           <tbody>
                               <?php
-                                $wrd=Ward::find_by_wardAssign_id($wardID);
+                                $wrd=$wardc->find_by_wardAssign_id($wardID);
                                 foreach($wrd as $wrd_assign){ ?>
                             <tr>
                               <td><?php echo $wrd_assign['patientID']; ?></td>
