@@ -12,9 +12,6 @@ $load_bed = select("SELECT * FROM bedlist WHERE wardID='".$wardID."' ORDER BY be
 <?php
 foreach($load_bed as $bed){
 ?>
-
-
-
 <tr>
   <td><?php echo $bed['bedNumber']; ?></td>
   <td> <?php echo $bed['bedDescription']; ?></td>

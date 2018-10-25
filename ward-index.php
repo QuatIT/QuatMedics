@@ -53,9 +53,6 @@
     $error = '';
      $wardID = $_GET['wrdno'];
 
-
-
-
 //    if(!empty($wardID)){
         $wardByID = Ward::find_by_ward_id($wardID);
         foreach($wardByID as $ward_id){}
@@ -78,15 +75,13 @@ $bedNumber = Ward::get_bed_id()+1;
         //$bedNumber = filter_input(INPUT_POST, "bedNumber", FILTER_SANITIZE_STRING);
         $bedDescription = filter_input(INPUT_POST, "bedDescription", FILTER_SANITIZE_STRING);
         $bedCharge = filter_input(INPUT_POST, "bedCharge", FILTER_SANITIZE_STRING);
-        $bedStatus = "occupied";
+        $bedStatus = "Free";
 
        $bed = Ward::saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
         if($bed){
             //$success = "BED CREATED SUCCESSFULLY;";
 
              $success= 'BED CREATED SUCCESSFULLY!';
-
-
              //echo $success;
         }else{
             //$error = "";
@@ -123,7 +118,7 @@ $bedNumber = Ward::get_bed_id()+1;
 <div id="sidebar">
     <ul>
 <!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li class="active"> <a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>
+    <li class="active"><a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a></li>
     <li> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
 </div>
@@ -229,8 +224,10 @@ $bedNumber = Ward::get_bed_id()+1;
       </div>
   </div>
 </div>
-<div class="row-fluid navbar-fixed-bottom">
-  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+<div class="row-fluid">
+ 	<div id="footer" class="span12">
+	  2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
+	</div>
 </div>
 <script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>
@@ -275,7 +272,7 @@ window.onload = function () {
         load_bed();
         setInterval(function(){
             load_bed();
-        },1000);
+        },10000);
     </script>
 
 

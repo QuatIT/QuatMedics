@@ -114,6 +114,7 @@ if(isset($_POST['adWard'])){
     $dischargeDate = filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING);
     $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
     $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
+    $bedID = filter_input(INPUT_POST, "bedID", FILTER_SANITIZE_STRING);
     $status = SENT_TO_WARD;
 	$medsNum = count($_POST['medicine']);
 	$dosagesNum = count($_POST['dosage']);
@@ -135,16 +136,18 @@ if(isset($_POST['adWard'])){
 				$medicine = trim($_POST["medicine"][$m]);
 				$dosage = trim($_POST["dosage"][$d]);
 
-		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$symptoms','$diagnoses')");
+		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,symptoms,diagnoses) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$symptoms','$diagnoses')");
 				}
 
 		}
 
-    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails,symptoms,diagnoses) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails')");
+    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails,bedID) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$bedID')");
+
+	//update bed status to occupied..
+	$updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$bedID'");
 
 
-
-    if($insertassign){
+    if($insertassign &&$updateBedStatus){
         $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
         $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
         echo "<script>window.location='consult-index?roomID={$roomID}'';</script>";
@@ -155,7 +158,7 @@ if(isset($_POST['adWard'])){
 
 
 
-    if(isset($_POST['presMeds'])){
+if(isset($_POST['presMeds'])){
         $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
         $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
         $pharmacyID = filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING);
@@ -435,9 +438,9 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
 								 <div class="span6">
 								 	<div class="widget-content nopadding">
                                        <div class="control-group">
-                                        <label class="control-label">Admit To ward</label>
+                                        <label class="control-label">Ward</label>
                                         <div class="controls">
-                                          <select name="wardID">
+                                          <select name="wardID" onchange="ward_id(this.value);">
                                             <option value=""></option>
                                               <?php
                                                 $wardsql = select("SELECT * From wardlist");
@@ -448,6 +451,9 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
                                           </select>
                                         </div>
                                       </div>
+                                       <div class="control-group" id="bedlist">
+
+										</div>
                                        <div class="control-group">
                                         <label class="control-label">Admission Details</label>
                                         <div class="controls">
@@ -797,21 +803,15 @@ function resetMenu() {
         });
 //    });
 </script>
-<!--
 <script>
-function dis(){
-    xmlhttp=new XMLHttpRequest();
-    xmlhttp.open("GET","loads/prescribeCode.php",false);
-    xmlhttp.send(null);
-    document.getElementById("prescribeCode").innerHTML=xmlhttp.responseText;
+function ward_id(val){
+	// load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#bedlist').load('ward-id.php?wid='+val, function(){
+		$('#loader').html("");
+       });
 }
-    dis();
-
-    setInterval(function(){
-        dis();
-    },1000);
 </script>
--->
 </body>
 </html>
 
