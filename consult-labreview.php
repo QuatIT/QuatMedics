@@ -29,7 +29,7 @@
 <?php
 include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='CONSULTATION'){
+    if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
 
     $success = "";
     $error = "";

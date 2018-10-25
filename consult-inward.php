@@ -25,7 +25,7 @@
 <?php
     include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='CONSULTATION'){
+    if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
 
         $roomID = $_GET['roomID'];
 ?>
@@ -54,7 +54,7 @@
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">INWARD FROM CONSULTING ROOM <?php echo $roomID;?></h3>
+      <h3 class="quick-actions">INWARD FROM CONSULTING ROOM - <?php echo $roomID;?></h3>
 
       <div class="row-fluid">
         <div class="widget-box">

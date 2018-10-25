@@ -26,9 +26,9 @@
 <?php
     include 'layout/head.php';
 
-    $consultation = new Consultation;
+//    $pharmacy = new Pharmacy;
     //generate $PatientID
-    $consultRoomIDs = $consultation->loadConsultRoom() + 1;
+    $pharmacyIDs =count(select("SELECT * FROM pharmacy")) + 1;
 
     $success = '';
     $error = '';
@@ -36,16 +36,16 @@
     if(isset($_POST['btnSave'])){
 
       $centerID = $_SESSION['centerID'];
-      $consultRoomID = "CR-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultRoomIDs);
-      $roomName = filter_input(INPUT_POST, "departmentName", FILTER_SANITIZE_STRING);
-        $status = FREE;
+      $pharmacyID = "PH-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$pharmacyIDs);
+      $pharmacyName = filter_input(INPUT_POST, "pharmacyName", FILTER_SANITIZE_STRING);
+//        $status = FREE;
 
-        $consultRoom = $consultation->createConsultRoom($consultRoomID,$centerID,$roomName,$status);
+        $pharm = insert("INSERT INTO pharmacy(pharmacyID,pharmacyName,centerID,dateregistered) VALUES('$pharmacyID','$pharmacyName','$centerID',CURDATE())");
 
-        if($consultRoom){
-            $success = "CONSULTING ROOM CREATED";
+        if($pharm){
+            $success = "PHARMACY CREATED";
         }else{
-            $error = "CONSULTING ROOM FAILED";
+            $error = "PHARMACY CREATION FAILED";
         }
 
     }
@@ -62,18 +62,18 @@
 <div id="sidebar">
     <ul>
     <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"><a href="centerconsultation-index.php"><i class="icon icon-tasks"></i> <span>Consultation Management</span></a> </li>
+    <li class="active"><a href="centerconsultation-index.php"><i class="icon icon-tasks"></i> <span>Pharmacy Management</span></a> </li>
     </ul>
 </div>
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Department Management" class="tip-bottom"><i class="icon-tasks"></i> CONSULTATION</a>
+        <a title="Department Management" class="tip-bottom"><i class="icon-tasks"></i> PHARMACY</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CONSULTATION MANAGEMENT</h3>
+      <h3 class="quick-actions">PHARMACY MANAGEMENT</h3>
                     <?php
                       if($success){
                       ?>
@@ -91,8 +91,8 @@
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Consultation Rooms</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Consulting Room</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Pharmacies</a></li>
+                    <li><a data-toggle="tab" href="#tab2">Add New Pharmacy</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -100,18 +100,18 @@
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Consulting Rooms</h5>
+                        <h5>List Of Pharmacies</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Consulting Room ID</th>
-                              <th>Consulting Room Name</th>
+                              <th>Pharmacy ID</th>
+                              <th>Pharmacy Name</th>
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody id="consultroom"></tbody>
+                          <tbody id="pharmacy"></tbody>
                         </table>
                       </div>
                     </div>
@@ -121,9 +121,9 @@
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Consulting Room ID :</label>
+                                <label class="control-label">Pharmacy ID :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="consultRoomID" value="<?php echo $consultRoomIDs; ?>" required readonly/>
+                                  <input type="text" class="span11" name="pharmacyID" value="<?php echo $pharmacyIDs; ?>" required readonly/>
                                 </div>
                               </div>
                           </div>
@@ -131,14 +131,14 @@
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Consultation Room Name :</label>
+                                <label class="control-label">Pharmacy Name :</label>
                                <div class="controls">
-                                  <input type="text" class="span11" name="departmentName" placeholder="Consultation Room Name" required/>
+                                  <input type="text" class="span11" name="pharmacyName" placeholder="Consultation Room Name" required/>
                                 </div>
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Consulting Room</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Pharmacy</button>
                               </div>
                           </div>
                       </div>
@@ -177,9 +177,9 @@
     <script>
   function consult_Room(){
         xmlhttp=new XMLHttpRequest();
-        xmlhttp.open("GET","loads/consultroom-load.php",false);
+        xmlhttp.open("GET","loads/centerpharm-load.php",false);
         xmlhttp.send(null);
-        document.getElementById("consultroom").innerHTML=xmlhttp.responseText;
+        document.getElementById("pharmacy").innerHTML=xmlhttp.responseText;
     }
         consult_Room();
 

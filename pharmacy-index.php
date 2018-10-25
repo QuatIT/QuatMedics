@@ -39,7 +39,7 @@
 <?php
     include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='PHARMACY'){
+    if($_SESSION['accessLevel']=='PHARMACY' || $_SESSION['username']=='rik'){
 
         $get_pharm= select("SELECT * FROM patient");
 

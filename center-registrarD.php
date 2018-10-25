@@ -43,8 +43,8 @@ include 'layout/head.php';
 //    if(empty($tab)){
 //        $active1='active';
 //    }
-
-    $deathIDs = Death::find_num_Death() + 1;
+    $death = new Death;
+    $deathIDs = $death->find_num_Death() + 1;
 
 
 // function createNewDirectory1()
@@ -112,7 +112,7 @@ include 'layout/head.php';
         <a title="Registrar" class="tip-bottom"><i class="icon-file"></i> REGISTRAR</a>
         <a title="Death Records" class="tip-bottom"><i class="icon-file"></i> DEATH RECORDS</a>
     </div>
-  </div>
+  </div><?php if($_SESSION['username']!="rik"){ ?>
   <div class="container">
       <h3 class="quick-actions">DEATH RECORDS</h3>
 
@@ -169,7 +169,8 @@ include 'layout/head.php';
                                     <select name="patientID" >
                                         <option value="default"> -- Select ID --</option>
                                         <?php
-                                            $patient=Patient::find_patient();
+                                            $patien = new Patient;
+                                            $patient=$patien->find_patient();
                                             foreach($patient as $patID){ ?>
                                             <option value="<?php echo $patID['patientID']; ?>"><?php echo $patID['firstName'].' '.$patID['otherName'].' '.$patID['lastName'];?> (<?php echo $patID['patientID']; ?>)</option>
                                         <?php } ?>
@@ -219,7 +220,9 @@ include 'layout/head.php';
             </div>
         </div>
       </div>
-  </div>
+  </div><?php }else{ ?>
+    <h3>Development is ongoing</h3>
+    <?php } ?>
 </div>
 <div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>

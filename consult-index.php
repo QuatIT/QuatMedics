@@ -49,14 +49,15 @@
 
     include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='CONSULTATION'){
+    if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
 
     $roomID = $_GET['roomID'];
 
         $rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
         foreach($rm as $r){}
 
-        $roomByID = Consultation::find_by_room_id($roomID);
+        $consultation = new Consultation;
+        $roomByID = $consultation->find_by_room_id($roomID);
         foreach($roomByID as $room_id){}
 
         if(!empty($roomID)){

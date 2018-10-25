@@ -28,8 +28,9 @@
     $success = '';
     $error = '';
 
+    $user = new User;
     //generate centerID
-    $staffIDs = User::find_num_staffID() + 1;
+    $staffIDs = $user->find_num_staffID() + 1;
 
     if(isset($_POST['btnSave'])){
 
@@ -50,7 +51,7 @@
 
         $centerID = $_SESSION['centerID'];
 
-        $centerUser = User::saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$centerID);
+        $centerUser = $user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$centerID);
 
         if($centerUser){
 

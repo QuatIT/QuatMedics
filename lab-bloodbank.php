@@ -49,17 +49,19 @@
 <?php
     include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='LABORATORY'){
+    if($_SESSION['accessLevel']=='LABORATORY' || $_SESSION['username']=='rik'){
 
         $success='';
         $error='';
 
       //generate donor id
- $donorID = Donor::get_donor_id()+1;
+        $donor = new Donor;
+ $donorID = $donor->get_donor_id()+1;
  $donor_ID = "DNR-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$donorID);
 
 //generate blood id
-$bloodID = blood::get_bld_amt() + 1;
+        $blood = new blood;
+$bloodID = $blood->get_bld_amt() + 1;
 $blood_ID = "BLD-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$bloodID);
 
  //save into bloodbank

@@ -274,7 +274,8 @@ function toggleDataSeries(e) {
         <?php if($_SESSION['accessLevel'] == 'OPD'){ ?>
          <li class="active"> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
         <li> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
-        <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+<!--        <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>-->
+        <li><a href="consult-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
         <?php } ?>
 
         <?php if($_SESSION['accessLevel'] == 'CONSULTATION'){ ?>
@@ -309,7 +310,7 @@ function toggleDataSeries(e) {
           <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> Consultation</a></li>
           <li> <a href="centeruser-index"> <i class="icon-people"></i> Staff </a> </li>
           <li> <a href="centerward-index"> <i class="icon-graph"></i> Ward </a> </li>
-          <li> <a href="#"> <i class="icon-home"></i> Pharmacy</a> </li>
+          <li> <a href="centerpharmacy-index"> <i class="icon-home"></i> Pharmacy</a> </li>
           <li> <a href="centerlab-index"> <i class="icon-search"></i> Laboratory </a> </li>
           <li> <a href="smsrequest-index"> <i class="icon-envelope"></i> SMS Request </a> </li>
         </ul>

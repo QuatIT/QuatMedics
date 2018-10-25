@@ -28,7 +28,8 @@
 
 
     //generate centerLabID
-    $centerLabIDs = Lab::find_num_Lab() + 1;
+    $lab = new Lab;
+    $centerLabIDs = $lab->find_num_Lab() + 1;
 
     $success = '';
     $error = '';

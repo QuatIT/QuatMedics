@@ -46,7 +46,7 @@
 <body>
 <?php
     include 'layout/head.php';
-    if($_SESSION['accessLevel']=="CONSULTATION" || $_SESSION['accessLevel']=='WARD'){
+    if($_SESSION['accessLevel']=="CONSULTATION" || $_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
         $patientID = $_GET['patid'];
         $wardID = $_GET['wrdno'];
         $get_patient = select("SELECT * FROM patient WHERE patientID='$patientID' ");
