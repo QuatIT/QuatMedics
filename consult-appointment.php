@@ -27,7 +27,7 @@
 include 'layout/head.php';
 $roomID = $_GET['roomID'];
 $consultation = new Consultation();
-
+$_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 //fetch all patients
 $patient = select("SELECT * FROM patient ORDER BY patientID ASC");
 
@@ -55,7 +55,8 @@ if(isset($_POST['addApptmnt'])){
         $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
         $appointDate = filter_input(INPUT_POST, "appointDate", FILTER_SANITIZE_STRING);
         $appointTime = filter_input(INPUT_POST, "appointTime", FILTER_SANITIZE_STRING);
-    $addapointment = $consultation->createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime);
+		$status = trim("PENDIND");
+    $addapointment = $consultation->createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime,$status);
     if($addapointment){
         $success =  "APPOINTMENT SAVED SUCCESSFULLY";
     }else{
@@ -118,6 +119,7 @@ if(isset($_POST['addApptmnt'])){
                               <th>Patient Name</th>
                               <th>Date</th>
                               <th>Time</th>
+                              <th>Status</th>
                               <th>Action</th>
                             </tr>
                           </thead>

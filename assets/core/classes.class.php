@@ -61,8 +61,14 @@
           return $result;
     }
 
-      public function createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime){
-          $result= insert("INSERT INTO doctorappointment(appointNumber,staffID,patientID,appointmentDate,appointmentTime) VALUES('$appointNumber','$staffID','$patientID','$appointDate','$appointTime') ");
+      public function createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime,$status){
+          $result= insert("INSERT INTO doctorappointment(appointNumber,staffID,patientID,appointmentDate,appointmentTime,status) VALUES('$appointNumber','$staffID','$patientID','$appointDate','$appointTime','$status') ");
+          return $result;
+    }
+
+
+      public function updateAppointment($appointNumber,$staffID,$patientID,$status){
+          $result= update("UPDATE doctorappointment SET status='$status' WHERE appointNumber='$appointNumber' AND staffID='$staffID' AND patientID='$patientID' ");
           return $result;
     }
 

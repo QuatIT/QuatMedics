@@ -12,6 +12,7 @@ foreach($load_appoint as $appointrow){
     $patientID = $appointrow['patientID'];
     $appointmentDate = $appointrow['appointmentDate'];
     $appointmentTime = $appointrow['appointmentTime'];
+    $status = $appointrow['status'];
 
     $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID'");
     $fetchstaff = select("SELECT firstName,lastName,otherName from staff WHERE staffID='$staffID'");
@@ -31,8 +32,18 @@ foreach($load_appoint as $appointrow){
   <td><?php echo $name;?></td>
   <td><?php echo $appointmentDate;?></td>
   <td><?php echo $appointmentTime;?></td>
+  <td>
+	  <?php if($status == 'PENDIND'){?>
+	  	<span class="label label-warning text-center"><?php  echo $status;?></span>
+	  <?php }?>
+	  <?php if($status == 'DONE'){?>
+	  	<span class="label label-success text-center"><?php  echo $status;?></span>
+	  <?php }?>
+  </td>
   <td style="text-align: center;">
-       <a href=""><span class="btn btn-primary fa fa-eye"></span></a>
+	  <?php if($status == 'PENDIND'){?>
+       			<a onclick="return confirm('Set As Done');" href="update-appointment?pid=<?php echo $patientID;?>&sid=<?php echo $staffID;?>&aid=<?php echo $appointNumber;?>"><span class="btn btn-success btn-md fa fa-check"></span></a>
+	  <?php }?>
   </td>
 </tr>
 

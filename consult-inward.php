@@ -73,7 +73,6 @@
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Bed Category</th>
                               <th>Bed Number</th>
                               <th>Patient</th>
                               <th>Nurse</th>

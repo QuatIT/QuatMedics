@@ -33,7 +33,7 @@ include 'layout/head.php';
 
     $success = "";
     $error = "";
-   $conid = $_GET['conid'];
+   	$conid = $_GET['conid'];
     $roomID = $_GET['roomID'];
 	$patientID = $_GET['patientID'];
 //	$centerID = $_GET['centerID'];
@@ -264,6 +264,9 @@ if(isset($_POST['adWard'])){
 		  <?php
 		  $labres = select("SELECt * From labresults WHERE consultID='$conid' AND patientID='$patientID'");
 			foreach($labres as $labrow){
+			$status = trim('Reviewed');
+			$updateResult = update("UPDATE labresults SET status='$status' WHERE labRequestID='".$labrow['labRequestID']."'");
+
 		  ?>
 		  <div class="span6" style="margin-left:0px;">
   <iframe src="<?php echo $labrow['labResult'];?>" style="width:100%;height:500px;"></iframe>
