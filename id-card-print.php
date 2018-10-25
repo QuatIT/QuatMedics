@@ -13,7 +13,6 @@
 <body style="background-color:#fff;">
 <?php
 require_once 'assets/core/connection.php';
-session_start();
 if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
     echo "<script>window.location.href='index'</script>";
 }else{

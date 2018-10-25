@@ -6,7 +6,8 @@ $error = '';
 
 
 //generate centerID
-$centerIDs = User::find_num_centerID() + 1;
+$user = new User();
+$centerIDs = $user->find_num_centerID() + 1;
 //$centerIDs = User::find_num_centerID() ;
 //mkdir(date('YmdHis'));
 
@@ -34,7 +35,7 @@ if(count(User::find_by_centerID($centerID)) >= 1){
     $centerID = substr($_POST['centerName'], 0, 5)."-".sprintf('%06s',$centerIDs);//regenerate centerID
 
 //create center admin
-$registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
+$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
 
 if($registerCenterAdmin){
 
@@ -59,7 +60,7 @@ echo make_dir($centerID);
 }else{
 
 //create center admin
-$registerCenterAdmin = User::createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
+$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
 
 if($registerCenterAdmin){
     echo make_dir($centerID);

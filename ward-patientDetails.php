@@ -114,7 +114,7 @@ if($staff_ID){
     foreach($staff_ID as $staff_IDs){}
 
       $rev_iew= insert("INSERT INTO docreview_tb(WardID,PatientID,staffID,DocReview)VALUES('".$wardID."','".$patientID."','".$staff_IDs['staffID']."','".$review."')");
-          header('location:ward-index.php');
+//          header('location:ward-index.php');
   }
 
 }
