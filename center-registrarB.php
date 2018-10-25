@@ -94,7 +94,7 @@
         <a title="Registrar" class="tip-bottom"><i class="icon-file"></i> REGISTRAR</a>
         <a title="Birth Records" class="tip-bottom"><i class="icon-file"></i> BIRTH RECORDS</a>
     </div>
-  </div>
+  </div><?php if($_SESSION['username']!="rik"){ ?>
   <div class="container">
       <h3 class="quick-actions">BIRTH RECORDS</h3>
               <?php
@@ -110,6 +110,9 @@
                 </div>
                       <?php
                       } ?>
+
+
+
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -313,7 +316,12 @@
             </div>
         </div>
       </div>
-  </div>
+
+
+
+  </div><?php }else{ ?>
+      <h3>Development is ongoing</h3>
+    <?php } ?>
 </div>
 <div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
