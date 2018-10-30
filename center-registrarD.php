@@ -98,8 +98,8 @@ include 'layout/head.php';
 <div id="sidebar">
     <ul>
     <li><a href=""><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li> <a href="center-registrarB"><i class="icon icon-file"></i><span>Birth Records</span></a> </li>
-    <li class="active"> <a href="center-registrarD"><i class="icon icon-file"></i><span>Death Records</span></a> </li>
+    <li> <a href="center-registrarB?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-file"></i><span>Birth Records</span></a> </li>
+    <li class="active"> <a href="center-registrarD?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-file"></i><span>Death Records</span></a> </li>
     </ul>
 </div>
 
@@ -112,117 +112,9 @@ include 'layout/head.php';
         <a title="Registrar" class="tip-bottom"><i class="icon-file"></i> REGISTRAR</a>
         <a title="Death Records" class="tip-bottom"><i class="icon-file"></i> DEATH RECORDS</a>
     </div>
-  </div><?php if($_SESSION['username']!="rik"){ ?>
-  <div class="container">
-      <h3 class="quick-actions">DEATH RECORDS</h3>
 
-      <div class="row-fluid">
-        <div class="widget-box">
-            <div class="widget-title">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Death List</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Death</a></li>
-                </ul>
-            </div>
-            <div class="widget-content tab-content">
-                <div id="tab1" class="tab-pane active">
-                    <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Death</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th> Death ID</th>
-                              <th> Name</th>
-                              <th> Date Of Death</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                              <?php
-                                $dsql = select("SELECT * FROM death WHERE centerID='$centerID' ");
-                                foreach($dsql as $drow){
-                              ?>
-                              <tr>
-                                <td> <?php echo $drow['deathID']; ?></td>
-                                <td> <?php echo $drow['patientID']; ?></td>
-                                <td> <?php echo $drow['deathDate']; ?></td>
-                                <td> <a href="#" class="btn btn-primary" title="View"><i class="fa fa-eye"></i></a></td>
-                              </tr>
-                              <?php } ?>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                </div>
-                <div id="tab2" class="tab-pane">
-                    <form action="" method="post" class="form-horizontal">
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Patient ID :</label>
-                                <div class="controls">
-<!--                                  <input type="text" class="span11" name="centerID" value="<?php #echo $bid; ?>" readonly required/>-->
-                                    <select name="patientID" >
-                                        <option value="default"> -- Select ID --</option>
-                                        <?php
-                                            $patien = new Patient;
-                                            $patient=$patien->find_patient();
-                                            foreach($patient as $patID){ ?>
-                                            <option value="<?php echo $patID['patientID']; ?>"><?php echo $patID['firstName'].' '.$patID['otherName'].' '.$patID['lastName'];?> (<?php echo $patID['patientID']; ?>)</option>
-                                        <?php } ?>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="control-group">
-                                <label class="control-label">Reason Of Death :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" name="reason" required/>
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-<!--
-                              <div class="control-group">
-                                <label class="control-label">Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" name="name" required/>
-                                  <input type="text" class="span11" name="name" value="<?php #echo $b_row['fullname']; ?>" required readonly />
-                                </div>
-                              </div>
--->
-                              <div class="control-group">
-                                <label class="control-label">Date Of Death :</label>
-                                <div class="controls">
-                                  <input type="date" class="span11" name="dod" required/>
-                                </div>
-                              </div>
-                             <div class="control-group">
-                                <label class="control-label">Time Of Death :</label>
-                                <div class="controls">
-                                  <input type="time" class="span11" name="deathTime" required/>
-                                </div>
-                              </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" name="addApptmnt" class="btn btn-primary btn-block span10">Save Record</button>
-                              </div>
-                          </div>
-                      </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-      </div>
-  </div><?php }else{ ?>
     <h3>Development is ongoing</h3>
-    <?php } ?>
+
 </div>
 <div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>

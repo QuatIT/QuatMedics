@@ -130,7 +130,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
     <li> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
     <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
     <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
-    <li class="active"> <a href="consult-transfers?roomID=<?php echo $roomID;?>"><i class="icon-resize-horizontal"></i> <span>Trasnfers</span></a> </li>
+    <li class="active"> <a href="consult-transfers?roomID=<?php echo $roomID;?>"><i class="icon-resize-horizontal"></i> <span>Transfers</span></a> </li>
     </ul>
 </div>
 
@@ -163,7 +163,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Tranfer List</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Transfer List</a></li>
                     <li><a data-toggle="tab" href="#tab2">New Transfer</a></li>
                 </ul>
             </div>
@@ -172,7 +172,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List OF Tranfers</h5>
+                        <h5>List OF Transfers</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
@@ -181,7 +181,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
                               <th>Patient ID</th>
                               <th>Patient Name</th>
                               <th>New Center Name</th>
-                              <th>Date Tranfered</th>
+                              <th>Date Tranferred</th>
 <!--                              <th>Action</th>-->
                             </tr>
                           </thead>

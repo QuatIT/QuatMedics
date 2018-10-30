@@ -79,7 +79,7 @@ if(isset($_POST['addApptmnt'])){
     <li> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
     <li class="active"> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
     <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
-    <li> <a href="consult-transfers?roomID=<?php echo $roomID;?>"><i class="icon-resize-horizontal"></i> <span>Trasnfers</span></a> </li>
+    <li> <a href="consult-transfers?roomID=<?php echo $roomID;?>"><i class="icon-resize-horizontal"></i> <span>Transfers</span></a> </li>
     </ul>
 </div>
 
@@ -109,7 +109,7 @@ if(isset($_POST['addApptmnt'])){
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Doctors Appointment</h5>
+                        <h5>List Of Doctor's Appointment</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">

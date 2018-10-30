@@ -146,7 +146,7 @@ if($staff_ID){
         <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
         <a href="ward-index" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
         <a href="ward-patient" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
-        <a href="#" title="" class="tip-bottom"><i class="icon-user"></i>PATIENTS ADMITTION</a>
+        <a href="#" title="" class="tip-bottom"><i class="icon-user"></i>PATIENTS ADMISSION</a>
     </div>
   </div>
   <div class="container">
@@ -156,9 +156,9 @@ if($staff_ID){
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Patient Admittion Details</a></li>
-                 <?php if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){ ?>   <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li> <?php } ?>
-                    <li><a data-toggle="tab" href="#tab3"> Doctor's Review</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Patient Admission Details</a></li>
+                 <?php if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){ ?>   <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li> <?php } ?>
+                    <li><a data-toggle="tab" href="#tab3"> Remarks</a></li>
                     <li><a data-toggle="tab" href="#tab4">Treatment History</a></li>
                 </ul>
             </div>
@@ -248,18 +248,18 @@ if($staff_ID){
                     <div class="span12">
                           <div class="widget-title">
                               <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5> Doctor's Review</h5>
+                            <h5> Remarks</h5>
                           </div>
                           <div class="widget-content nopadding">
                                <div class="control-group">
-                                <label class="control-label">Review : </label>
+                                <label class="control-label">Remarks : </label>
                                 <div class="controls">
                                     <textarea class="span12" rows="3" name="review" id="review"required></textarea>
                                 </div>
                               </div>
                              <div class="form-actions">
                                   <i class="span8"></i>
-                                <button type="submit" name="saveReview" class="btn btn-primary btn-block span4">Save Review</button>
+                                <button type="submit" name="saveReview" class="btn btn-primary btn-block span4">Save Remarks</button>
                               </div>
                           </div>
                       </div>
@@ -276,7 +276,7 @@ if($staff_ID){
                               <th> Date & Time</th>
                               <th> Treatment</th>
                               <th> Details / Dosage</th>
-                              <th> Comments</th>
+                              <th> Recommendatiosn</th>
                               <th> Doctor's Review</th>
 
                             </tr>

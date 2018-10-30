@@ -37,7 +37,7 @@
 <!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
     <li> <a href="consult-index.php"><i class="icon icon-briefcase"></i> <span>Consultation</span></a> </li>
     <li class=""> <a href="consult-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a> </li>
-    <li class="active"> <a href="consult-transcribe.php"><i class="icon icon-calendar"></i> <span>Transcrib</span></a> </li>
+    <li class="active"> <a href="consult-transcribe.php"><i class="icon icon-calendar"></i> <span>Transcribe</span></a> </li>
     </ul>
 </div>
 
