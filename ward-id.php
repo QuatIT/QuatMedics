@@ -10,6 +10,7 @@ if(count($sql) > 0){
 	<label class="control-label">Bed Number</label>
 		<div class="controls">
 		  <select name="bedID" class="span11">
+              <option></option>
 			 <?php
 				foreach($sql as $query){
 			?>

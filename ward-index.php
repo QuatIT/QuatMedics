@@ -64,7 +64,8 @@
 //    }
 
       //bed id
-      $bed_ID = ward::get_bed_id() + 1;
+//      $bed_ID = ward::get_bed_id() + 1;
+      $bed_ID = count(select("SELECT * FROM bedlist ")) + 1;
 $bedID ="BED-".substr($centerID,0,12)."-".substr($wardID,0,8)."-".sprintf('%01s',$bed_ID);
 $bedNumber = Ward::get_bed_id()+1;
 
@@ -85,8 +86,18 @@ $bedNumber = Ward::get_bed_id()+1;
              //echo $success;
         }else{
             //$error = "";
-            $error= 'BED NOT CREATED';
+//            $error= 'BED NOT CREATED';
             //echo $error;
+//            $bedNumber = Ward::get_bed_id()+1;
+//             $bed = Ward::saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
+//             if($bed){
+//            //$success = "BED CREATED SUCCESSFULLY;";
+//
+//             $success= 'BED CREATED SUCCESSFULLY!';
+//             //echo $success;
+//        }else{
+                  $error= 'BED NOT CREATED';
+//             }
         }
     }
 

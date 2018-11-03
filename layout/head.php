@@ -67,7 +67,7 @@ foreach($centerName_sql as $centerName){}
     <li class="" ><a title="" href="ward-index"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
       <?php } ?>
 <?php if($_SESSION['username']!='rik'){ ?>
-    <li class="" ><a title="" href="center-registrarB"><i class="icon icon-file"></i> <span class="text">BIRTH AND DEATH</span></a></li>
+    <li class="" ><a title="" href="center-registrarB?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-file"></i> <span class="text">BIRTH AND DEATH</span></a></li>
 
     <li class="dropdown" id="settings">
         <a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle">
