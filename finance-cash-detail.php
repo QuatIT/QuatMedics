@@ -125,7 +125,7 @@ include 'layout/head.php';
 							  	<td> Patient ID</td>
 							  	<td> Malaria Test</td>
 							  	<td> </td>
-							  	<td> <a href="#"><i class="btn btn-success btn-md fa fa-eye-open">View</i></a></td>
+							  	<td> <a href="#"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
 							  </tr>
                           </tbody>
                         </table>

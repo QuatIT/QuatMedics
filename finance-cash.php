@@ -85,7 +85,7 @@ include 'layout/head.php';
 							  	<td> 152</td>
 							  	<td> 180</td>
 							  	<td> 352</td>
-							  	<td> <a href="finance-cash-detail"><i class="btn btn-success btn-md fa fa-eye-open"></i></a></td>
+							  	<td> <a href="finance-cash-detail"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
 							  </tr>
                           </tbody>
                         </table>
@@ -119,7 +119,7 @@ include 'layout/head.php';
 							  	<td> Patient ID</td>
 							  	<td> Malaria Test</td>
 							  	<td> </td>
-							  	<td> <a href="finance-cash-detail"><i class="btn btn-success btn-md fa fa-eye-open"></i></a></td>
+							  	<td> <a href="finance-cash-detail"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
 							  </tr>
                           </tbody>
                         </table>
