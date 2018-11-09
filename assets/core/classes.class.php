@@ -51,8 +51,8 @@
 
   class Consultation{
 
-      public function consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID){
-          $result= insert("INSERT INTO consultation(consultID,staffID,bodyTemperature,pulseRate,respirationRate,bloodPressure,weight,otherHealth,roomID,patientID,mode,insuranceType,insuranceNumber,company,status,centerID) VALUES('$consultID','$staffID','$bodyTemperature','$pulseRate','$respirationRate','$bloodPressure','$weight','$otherHealth','$roomID','$patientID','$mode','$insuranceType','$insuranceNumber','$company','$status','$centerID') ");
+      public function consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID,$dateToday){
+          $result= insert("INSERT INTO consultation(consultID,staffID,bodyTemperature,pulseRate,respirationRate,bloodPressure,weight,otherHealth,roomID,patientID,mode,insuranceType,insuranceNumber,company,status,centerID,dateInsert) VALUES('$consultID','$staffID','$bodyTemperature','$pulseRate','$respirationRate','$bloodPressure','$weight','$otherHealth','$roomID','$patientID','$mode','$insuranceType','$insuranceNumber','$company','$status','$centerID','$dateToday') ");
           return $result;
     }
 

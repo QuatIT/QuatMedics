@@ -1,6 +1,7 @@
 <?php
 require_once 'assets/core/connection.php';
 @session_start();
+$dateToday = trim(date('Y-m-d'));
 
 if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
     echo "<script>window.location.href='index'</script>";

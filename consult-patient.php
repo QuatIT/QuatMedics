@@ -230,7 +230,7 @@ if(isset($_POST['presMeds'])){
     }
 
 //echo $patientID;
-$record = select("SELECT * FROM consultation,labresults,prescriptions,wardassigns,doctorappointment WHERE consultation.patientID='$patientID' AND labresults.patientID='$patientID' AND prescriptions.patientID='$patientID' AND wardassigns.patientID='$patientID' AND doctorappointment.patientID='$patientID' GROUP BY DATE(consultation.doe)");
+$record = select("SELECT * FROM consultation,labresults,prescriptions,wardassigns,doctorappointment WHERE consultation.patientID='$patientID' AND labresults.patientID='$patientID' AND prescriptions.patientID='$patientID' AND wardassigns.patientID='$patientID' AND doctorappointment.patientID='$patientID' GROUP BY dateInsert");
 ?>
 
 

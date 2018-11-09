@@ -87,8 +87,6 @@
    foreach($staffIDss as $staffIDy){}
 
     if(isset($_POST['btnSave'])){
-
-
       $consultID = "CON-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultIDs);
       $staffID = $staffIDy['userID'];
       $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
@@ -108,7 +106,7 @@
         $patient_busy = PATIENT_BUSY;
 
 //        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
-        $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID);
+        $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID,$dateToday);
 
         if($consultAssignPatient1){
             $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."' WHERE patientID='$patientID' ");
