@@ -28,60 +28,60 @@
 
 <?php
 include 'layout/head.php';
+//check access or redirect to 404...
+if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
 
-    if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
+	//get variables..
+$success = "";
+$error = "";
+$conid = $_GET['conid'];
+$roomID = $_GET['roomID'];
+//consulting room details....
+$rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
+foreach($rm as $r){}
+//consultation  details...
+$consultdet = select("SELECT * from consultation WHERE consultID='$conid'");
+//get consulting staff details...
+$staff = select("SELECT staffID from centeruser where userName='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
+foreach($staff as $staffrow){
+	$staffID = $staffrow['staffID'];
+}
+//get patient details for consultation...
+foreach($consultdet as $consultrow){
+	   $patientID = $consultrow['patientID'];
+$fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID' && lock_center='".$_SESSION['centerID']."'");
+	foreach($fetchpatient as $ptndetails){
+		$name = $ptndetails['firstName']." ".$ptndetails['otherName']." ".$ptndetails['lastName'];
+	}
+}
 
-    $success = "";
-    $error = "";
-    $conid = $_GET['conid'];
-    $roomID = $_GET['roomID'];
+ //generate presciptionCode
+$codesql = select("SELECT * From prescriptions order by prescribeCode DESC limit 1");
+if(count($codesql) >=1){
+	foreach($codesql as $coderow){
+		$code = $coderow['prescribeCode'];
+		$oldcode = explode("-",$code);
+		$newID = $oldcode[1]+1;
+		$prescribeCode = $oldcode[0]."-".$newID;
+	}
+}else{
+	$prescribeCode = "PRSCB-1";
+}
 
-        $rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
-        foreach($rm as $r){}
+ //generate labRequestID
+$codesql = select("SELECT * From labresults order by labrequestID DESC limit 1");
+if(count($codesql) >=1){
+	foreach($codesql as $coderow){
+		$code = $coderow['labRequestID'];
+		$oldcode = explode("-",$code);
+		$newID = $oldcode[1]+1;
+		$labReqID = $oldcode[0]."-".$newID;
+	}
+}else{
+	$labReqID = "LABREQ-1";
+}
 
-    $consultdet = select("SELECT * from consultation WHERE consultID='$conid'");
-
-    $staff = select("SELECT staffID from centeruser where userName='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
-    foreach($staff as $staffrow){
-        $staffID = $staffrow['staffID'];
-    }
-
-    foreach($consultdet as $consultrow){
-           $patientID = $consultrow['patientID'];
-        $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID' && lock_center='".$_SESSION['centerID']."' ");
-        foreach($fetchpatient as $ptndetails){
-            $name = $ptndetails['firstName']." ".$ptndetails['otherName']." ".$ptndetails['lastName'];
-        }
-    }
-
-         //generate presciptionCode
-        $codesql = select("SELECT * From prescriptions order by prescribeCode DESC limit 1");
-        if(count($codesql) >=1){
-            foreach($codesql as $coderow){
-                $code = $coderow['prescribeCode'];
-                $oldcode = explode("-",$code);
-                $newID = $oldcode[1]+1;
-                $prescribeCode = $oldcode[0]."-".$newID;
-            }
-        }else{
-            $prescribeCode = "PRSCB-1";
-        }
-
-
-         //generate labRequestID
-        $codesql = select("SELECT * From labresults order by labrequestID DESC limit 1");
-        if(count($codesql) >=1){
-            foreach($codesql as $coderow){
-                $code = $coderow['labRequestID'];
-                $oldcode = explode("-",$code);
-                $newID = $oldcode[1]+1;
-                $labReqID = $oldcode[0]."-".$newID;
-            }
-        }else{
-            $labReqID = "LABREQ-1";
-        }
-
-
+//Request Laboratory.....
 if(isset($_POST['reqLab'])){
     $labNumber = count($_POST['labName']);
 
@@ -90,7 +90,7 @@ if(isset($_POST['reqLab'])){
                 if(trim($_POST["labName"][$i] != '')) {
                     $labID = trim($_POST["labName"][$i]);
                     $status = SENT_TO_LAB;
-$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status')");
+$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$dateToday')");
 
                         if($insertLabReq){
                              $success =  "LAB REQUEST SENT SUCCESSFULLY";
@@ -106,7 +106,7 @@ $insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,cent
     }
 }
 
-
+//Admit patient to ward..
 if(isset($_POST['adWard'])){
     $wardID = filter_input(INPUT_POST, "wardID", FILTER_SANITIZE_STRING);
     $admitDetails = filter_input(INPUT_POST, "admitDetails", FILTER_SANITIZE_STRING);
@@ -136,12 +136,12 @@ if(isset($_POST['adWard'])){
 				$medicine = trim($_POST["medicine"][$m]);
 				$dosage = trim($_POST["dosage"][$d]);
 
-		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,symptoms,diagnoses) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$symptoms','$diagnoses')");
+		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,symptoms,diagnoses,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$symptoms','$diagnoses','$dateToday')");
 				}
 
 		}
 
-    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails,bedID) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$bedID')");
+    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails,bedID,dateInsert) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$bedID','$dateToday')");
 
 	//update bed status to occupied..
 	$updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$bedID'");
@@ -157,7 +157,7 @@ if(isset($_POST['adWard'])){
 }
 
 
-
+//prescribe medication to patient...
 if(isset($_POST['presMeds'])){
         $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
         $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
@@ -171,18 +171,17 @@ if(isset($_POST['presMeds'])){
         $dosageNum = count($_POST['dosage']);
 
         if($medNum > 0 && $dosageNum > 0) {
+			//saving prescription..
+        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
 
-        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode')");
-
-
+			//saving the prescribed medications....
             for($m=0, $d=0; $m<$medNum, $d<$dosageNum; $m++,$d++){
                     if(trim($_POST["medicine"][$m] != '') && trim($_POST['dosage'][$d] != '')) {
                         $medicine = trim($_POST["medicine"][$m]);
                         $dosage = trim($_POST["dosage"][$d]);
 
-                $insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus')");
+                $insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$dateToday')");
                         }
-
             }
 
               if($insertpresciption && $insertMeds){
@@ -230,7 +229,7 @@ if(isset($_POST['presMeds'])){
     }
 
 //echo $patientID;
-$record = select("SELECT * FROM consultation,labresults,prescriptions,wardassigns,doctorappointment WHERE consultation.patientID='$patientID' AND labresults.patientID='$patientID' AND prescriptions.patientID='$patientID' AND wardassigns.patientID='$patientID' AND doctorappointment.patientID='$patientID' GROUP BY dateInsert");
+
 ?>
 
 
@@ -242,7 +241,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
 
 <div id="sidebar">
     <ul>
-<!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
+    <li><a href="medics-index?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="active" style="background-color: #209fbf;"> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i> <span>Consultation</span></a> </li>
     <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i> <span>Appointments</span></a> </li>
     <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
@@ -661,6 +660,7 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
 										</div>
 									</form>
 										<?php }else{?>
+
 								<table class="table table-stripped">
 									<thead>
 										<th> Date</th>
@@ -671,6 +671,11 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
 										<th> WARD</th>
 									</thead>
 								<?php
+$record = select("SELECT * FROM consultation,labresults,prescriptions,wardassigns,doctorappointment WHERE consultation.patientID='$patientID'
+AND labresults.patientID='$patientID' AND prescriptions.patientID='$patientID' AND wardassigns.patientID='$patientID' AND
+doctorappointment.patientID='$patientID'");
+
+											if($record){
 									foreach($record as $recordRow){
 								?>
 									<tbody>
@@ -686,7 +691,8 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
 
 												?></td>
 											<td> <?php echo $recordRow['diagnose'];?></td>
-											<td> <a href="<?php echo $recordRow['labResult']?>" target="popup"> <?php echo $recordRow['labResult'];?></a></td>
+											<td> <a href="<?php echo $recordRow['labResult']?>" target="popup"> <?php echo
+													$recordRow['labResult'];?></a></td>
 											<td>
 												<?php
 												$prescode = $recordRow['prescribeCode'];
@@ -707,7 +713,11 @@ $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassign
 										</tr>
 									</tbody>
 
-								<?php }?>
+								<?php }}else{?>
+									<tbody>
+										<tr><td colspan="6"> No Patient Record Yet..</td></tr>
+									</tbody>
+									<?php }?>
 							</table>
 
 										<?php }?>

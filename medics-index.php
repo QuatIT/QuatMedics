@@ -47,7 +47,7 @@
 <?php include 'layout/head.php';
     $centerID=$_SESSION['centerID'];
     @$roomID = $_GET['roomID'];
-
+$update_consulting = update("UPDATE consultingroom SET status='free' WHERE roomID='$roommID'");
     $dashboard = new Dashboard;
 
  ?>
@@ -272,22 +272,21 @@ function toggleDataSeries(e) {
     <li class="active"><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
 
         <?php if($_SESSION['accessLevel'] == 'OPD'){ ?>
-         <li class="active"> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
+        <li> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
         <li> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
 <!--        <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>-->
-        <li><a href="consult-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+        <li> <a href="consult-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
         <?php } ?>
 
         <?php if($_SESSION['accessLevel'] == 'CONSULTATION'){ ?>
-
-         <li > <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
+        <li> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
         <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
         <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
         <li> <a href="consult-transfers?roomID=<?php echo $roomID;?>"><i class="icon-resize-horizontal"></i> <span>Transfers</span></a> </li>
         <?php } ?>
 
         <?php if($_SESSION['accessLevel'] == 'LABORATORY'){ ?>
-        <li class="active"><a href="lab-index.php"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
+        <li><a href="lab-index.php"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
         <li> <a href="lab-bloodbank.php"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
         <?php } ?>
 
@@ -303,16 +302,17 @@ function toggleDataSeries(e) {
         <a title="" class="tip-bottom"><i class="icon-piechart"></i> STATISTICS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
 <?php if($_SESSION['accessLevel']=='center_admin'){ ?>
    	<div class="quick-actions_homepage">
     <ul class="quick-actions">
-          <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> Consultation</a></li>
-          <li> <a href="centeruser-index"> <i class="icon-people"></i> Staff </a> </li>
-          <li> <a href="centerward-index"> <i class="icon-graph"></i> Ward </a> </li>
-          <li> <a href="centerpharmacy-index"> <i class="icon-home"></i> Pharmacy</a> </li>
-          <li> <a href="centerlab-index"> <i class="icon-search"></i> Laboratory </a> </li>
-          <li> <a href="smsrequest-index"> <i class="icon-envelope"></i> SMS Request </a> </li>
+          <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> CONSULTATION</a></li>
+          <li> <a href="centeruser-index"> <i class="icon-people"></i> STAFF </a> </li>
+          <li> <a href="centerward-index"> <i class="fa fa-folder-open fa-3x"></i> <br/> WARD </a> </li>
+          <li> <a href="centerpharmacy-index"> <i class="fa fa-plus-square fa-3x"></i> <br/> PHARMACY</a> </li>
+          <li> <a href="centerlab-index"> <i class="icon-search"></i> LABORATORY </a> </li>
+          <li> <a href="smsrequest-index"> <i class="fa fa-envelope fa-3x"></i><br> SMS REQUEST </a> </li>
+          <li> <a href="centerprices-index"> <i class="icon-survey"></i>CHARGES </a> </li>
         </ul>
    </div>
 <?php }
@@ -375,7 +375,7 @@ function toggleDataSeries(e) {
 <!--</div>-->
 <!--</div>-->
 </div>
-<div class="row-fluid navbar-fixed-bottom" >
+<div class="row-fluid">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>

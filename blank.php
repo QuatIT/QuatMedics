@@ -47,7 +47,7 @@
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">PATIENT INFORMATION</h3>
+      <h3 class="quick-actions">SERVICES PRICING</h3>
 
       <div class="row-fluid">
 <!--        <div class="widget-box">-->
@@ -58,199 +58,33 @@
                 </ul>
             </div>
 -->
-<!--            <div class="widget-content tab-content">-->
+            <div class="widget-content tab-content">
 
 <!--                <div id="tab1" class="tab-pane active">-->
                     <form action="#" method="post" class="form-horizontal">
-                    <div class="span6">
-<!--                        <div class="widget-box">-->
-                          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Personal-info</h5>
-                          </div>
-                          <div class="widget-content nopadding">
-<!--                            <form action="#" method="post" class="form-horizontal">-->
-                              <div class="control-group">
-                                <label class="control-label">Patient ID :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" value="HSP01-PT002" name="patientId" required readonly />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Last Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Last Name" name="lastName" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Gender:</label>
-                                <div class="controls">
-                                  <label>
-                                    <input type="radio" name="gender" value="Male" /> Male
-                                    </label>
-                                  <label>
-                                    <input type="radio" name="gender" value="Female" /> Female
-                                    </label>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Blood Group</label>
-                                <div class="controls">
-                                  <select name="bloodGroup" >
-                                    <option value="default"> -- Blood Group --</option>
-                                    <option value="O-positive">O-positive</option>
-                                    <option value="O-negative">O-negative</option>
-                                    <option value="A-positive">A-positive</option>
-                                    <option value="A-negative">A-negative</option>
-                                    <option value="B-positive">B-positive</option>
-                                    <option value="B-negative">B-negative</option>
-                                    <option value="AB-positive">AB-positive</option>
-                                    <option value="AB-negative">AB-negative</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Home Address :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Home Address" name="homeAddress" />
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-title">
-<!--
-                              <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Personal-info</h5>
--->
-                          </div>
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">First Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="First name" name="firstName" />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Other Name(s) :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Other names" name="otherName" />
-                                </div>
-                              </div>
-
-                              <div class="control-group">
-                                <label class="control-label">Date Of Birth</label>
-                                <div class="controls">
-                                  <input type="date"  class="span11" name="dob" required />
-                                </div>
-                                <div class="controls">
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Home Town Address:</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Home Town Address" name="hometown" />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Mobile Number:</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Mobile Number" name="mobileNumber" />
-                                </div>
-                              </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10"> UPDATE</button>
-                              </div>
-                          </div>
-                      </div>
-                    </form>
-
-<!--                </div>-->
-<!--                <div id="tab3" class="tab-pane">-->
-                     <form action="#" method="post" class="form-horizontal">
-                    <div class="span6">
-<!--                        <div class="widget-box">-->
-                          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Guardian-info</h5>
-                          </div>
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Guardian ID :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Guardian Name" name="guardianID" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Last Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Last Name" name="glastName" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Gender:</label>
-                                <div class="controls">
-                                  <label>
-                                    <input type="radio" name="ggender" value="Male" /> Male
-                                    </label>
-                                  <label>
-                                    <input type="radio" name="ggender" value="Female" /> Female
-                                    </label>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Mobile Number :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Active Mobile Number" name="gMobilelPhone" />
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-<!--                        <div class="widget-box">-->
-                          <div class="widget-title">
-<!--
-                              <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Guardian-info</h5>
--->
-                          </div>
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">First Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="First name" name="gfirstName" />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Other Name(s) :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Other names" name="gotherName" />
-                                </div>
-                              </div>
-
-                              <div class="control-group">
-                                <label class="control-label">Relationship</label>
-                                <div class="controls">
-                                  <input type="text"  class="span11" name="relationship" placeholder="Relationship with Guardian" required />
-                                </div>
-                                <div class="controls">
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Home Address :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Home Address" name="homeAddress" />
-                                </div>
-                              </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10"> UPDATE </button>
-                              </div>
-                          </div>
-                      </div>
-                    </form>
-
-  </div>
-    </div></div>
+					 <div class="span8">
+						  <table class="table table-bordered" id="dynamic_field2">
+							<tr>
+								<td>
+									<select class="span" name="serviceType">
+										<option value="Service"> Service</option>
+										<option value="Lab"> Lab Test</option>
+									</select>
+								</td>
+								<td><input type="text" name="ServiceName[]" placeholder="eg. Consultation" class="span11" required /></td>
+								<td><input type="text" name="servicePrice[]" placeholder="Price" class="span11" required /></td>
+								<td><button type="button" name="add" id="add2" class="btn btn-primary">Add Service</button></td>
+							</tr>
+						</table>
+						  <div class="form-actions">
+							  <i class="span5"></i>
+							  <button type="submit" name="saveprices" class="btn btn-primary btn-block span6"> Save Prices</button>
+						  </div>
+					 </div>
+              </form>
+		  </div></div>
+    </div>
+</div>
 <div class="row-fluid">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
@@ -301,6 +135,21 @@
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
+</script>
+
+<script>
+//    $(document).ready(function(){
+        var i=1;
+        $('#add2').click(function(){
+            i++;
+            $('#dynamic_field2').append('<tr id="row'+i+'"><td><select class="span" name="serviceType"><option value="Service">Service</option><option value="Lab"> Lab Test</option></select></td><td><input type="text" name="ServiceName[]" placeholder="Service or Lab Name" class="span11" required /></td><td><input type="text" name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+//    });
 </script>
 </body>
 </html>

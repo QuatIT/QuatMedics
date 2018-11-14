@@ -62,14 +62,14 @@
 <div id="sidebar">
     <ul>
     <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"><a href="centerconsultation-index.php"><i class="icon icon-tasks"></i> <span>Pharmacy Management</span></a> </li>
+    <li class="active"><a href="centerconsultation-index.php"><i class="icon-plus-sign"></i> <span>Pharmacy Management</span></a> </li>
     </ul>
 </div>
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Department Management" class="tip-bottom"><i class="icon-tasks"></i> PHARMACY</a>
+        <a title="Department Management" class="tip-bottom"><i class="icon-plus-sign"></i> PHARMACY</a>
     </div>
   </div>
   <div class="container">

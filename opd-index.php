@@ -83,7 +83,7 @@
 
 <div id="sidebar">
     <ul>
-<!--    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
+    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="active"> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
     <li> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
     <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
@@ -339,7 +339,7 @@
       </div>
   </div>
 </div>
-<div class="row-fluid navbar-fixed-bottom">
+<div class="row-fluid">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>

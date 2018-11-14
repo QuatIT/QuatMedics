@@ -62,15 +62,15 @@
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index.php"><i class="icon-dashboard"></i> <span>Dashboard</span></a> </li>
-    <li class="active"><a href="centerward-index.php"><i class="icon icon-home"></i> <span>Ward Management</span></a> </li>
+    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li class="active"><a href="centerward-index.php"><i class="icon icon-folder-open"></i> <span>Ward Management</span></a> </li>
     </ul>
 </div>
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Ward Management" class="tip-bottom"><i class="icon-home"></i> Ward</a>
+        <a title="Ward Management" class="tip-bottom"><i class="icon-folder-open"></i> Ward</a>
     </div>
   </div>
   <div class="container">
