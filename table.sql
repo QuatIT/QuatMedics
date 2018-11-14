@@ -22,9 +22,11 @@ create table `Prices`(
 create table `PaymentFixed`(
 	`id` int(255) not null primary key auto_increment,
 	`patientID` varchar(255) not null,
+	`centerID` varchar(50) not null,
 	`paymode` varchar(255) not null,
-	`Name` varchar(255) not null, /* OPD, consultation,  */
-	`price` varchar(255) not null,
+	`serviceName` varchar(255) not null, /* OPD, consultation,  */
+	`servicePrice` varchar(255) not null,
+	`serviceType` varchar(255) not null,
 	`status` varchar(255) not null, /* paid , Not paid */
 	`dateinsert` date not null,
 	`doe` timestamp

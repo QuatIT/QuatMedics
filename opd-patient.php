@@ -108,13 +108,30 @@
 //        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
         $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID,$dateToday);
 
+
         if($consultAssignPatient1){
             $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."' WHERE patientID='$patientID' ");
 
-            if($update_patient_status){
-                $success = "<script>document.write('PATIENT ASSIGNED TO CONSULTING ROOM')
-                                window.location.href='opd-patient?tab=opd-patient' </script>";
-            }
+		//select opd price..
+		$opdPrice = select("SELECT * FROM prices WHERE serviceName='OPD' AND centerID='".$_SESSION['centerID']."'");
+		foreach($opdPrice as $priceRow){}
+		//select consultaion price..
+		$conPrice = select("SELECT * FROM prices WHERE serviceName='CONSULTATION' AND centerID='".$_SESSION['centerID']."'");
+		foreach($conPrice as $conRow){}
+
+			//insert opd price....
+$insertOPD = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','".$priceRow['serviceName']."','".$priceRow['servicePrice']."','".$priceRow['serviceType']."','Not Paid','$dateToday')");
+
+			//insert consultation.. price....
+$insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','".$conRow['serviceName']."','".$conRow['servicePrice']."','".$conRow['serviceType']."','Not Paid','$dateToday')");
+			 if($insertOPD && $insertCON){
+
+				if($update_patient_status){
+					$success = "<script>document.write('PATIENT ASSIGNED TO CONSULTING ROOM')
+									window.location.href='opd-patient?tab=opd-patient' </script>";
+				}
+			}
+
         }else{
             $error = "PATIENT NOT ASSIGNED";
         }

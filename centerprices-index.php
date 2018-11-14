@@ -27,27 +27,81 @@
     include 'layout/head.php';
 
     $consultation = new Consultation;
-    //generate $PatientID
-    $consultRoomIDs = $consultation->loadConsultRoom() + 1;
-
+ 	$centerID = $_SESSION['centerID'];
     $success = '';
     $error = '';
 
-    if(isset($_POST['btnSave'])){
 
-      $centerID = $_SESSION['centerID'];
-      $consultRoomID = "CR-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultRoomIDs);
-      $roomName = filter_input(INPUT_POST, "departmentName", FILTER_SANITIZE_STRING);
-        $status = FREE;
+	//saving services..
+    if(isset($_POST['saveServiceprices'])){
+		//count number of service entered..
+		$serviceNum = count($_POST['serviceName']);
+        $servicePriceNum = count($_POST['servicePrice']);
+		//check number of services..
+		if($serviceNum > 0 && $servicePriceNum >0){
+			//saving services into database...
+            for($n=0, $p=0; $n<$serviceNum, $p<$servicePriceNum; $n++,$p++){
+                    if(trim($_POST['serviceName'][$n] != '') && trim($_POST['servicePrice'][$p] != '')) {
+                        $serviceName = trim($_POST["serviceName"][$n]);
+                        $servicePrice = trim($_POST["servicePrice"][$p]);
+						$serviceType = trim("Service");
+						//generate service ID
+						$serviceIDs = $consultation->loadServicePrices($centerID) + 1;
+						$serviceID = "SV-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs);
 
-        $consultRoom = $consultation->createConsultRoom($consultRoomID,$centerID,$roomName,$status);
+						//check service name if already entered else save service..
+						$serviceExist = select("SELECT * FROM prices WHERE serviceName='$serviceName'");
+						if($serviceExist){
+							$error = "<script>document.write('Service Already Saved..');</script>";
+						}else{
+							$saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,servicePrice,serviceType,dateInsert) VALUES('$serviceID','$centerID','$serviceName','$servicePrice','$serviceType','$dateToday')");
+							if($saveService){
+								$success = "<script>document.write('Services Saved.');window.location='centerprices-index';</script>";
+							}else{
+								$error = "<script>document.write('Services Not Saved, Try Again.');</script>";
+							}
+						}
+               		}
+            }
+		}else{
+			$error = "<script>document.write('Empty Fields, Try Again.');</script>";
+		}
+    }
 
-        if($consultRoom){
-            $success = "CONSULTING ROOM CREATED";
-        }else{
-            $error = "CONSULTING ROOM FAILED";
-        }
+	//saving laboratory services..
+    if(isset($_POST['saveLabPrices'])){
+		//count number of service entered..
+		$serviceNum = count($_POST['serviceName']);
+        $servicePriceNum = count($_POST['servicePrice']);
+		//check number of services..
+		if($serviceNum > 0 && $servicePriceNum >0){
+			//saving services into database...
+            for($n=0, $p=0; $n<$serviceNum, $p<$servicePriceNum; $n++,$p++){
+                    if(trim($_POST['serviceName'][$n] != '') && trim($_POST['servicePrice'][$p] != '')) {
+                        $serviceName = trim($_POST["serviceName"][$n]);
+                        $servicePrice = trim($_POST["servicePrice"][$p]);
+						$serviceType = trim("Lab");
+						//generate service ID
+						$serviceIDs = $consultation->loadServicePrices($centerID) + 1;
+						$serviceID = "SV-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs);
 
+						//check service name if already entered else save service..
+						$serviceExist = select("SELECT * FROM prices WHERE serviceName='$serviceName'");
+						if($serviceExist){
+							$error = "<script>document.write('Service Already Saved..');</script>";
+						}else{
+							$saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,servicePrice,serviceType,dateInsert) VALUES('$serviceID','$centerID','$serviceName','$servicePrice','$serviceType','$dateToday')");
+							if($saveService){
+								$success = "<script>document.write('Services Saved.');window.location='centerprices-index';</script>";
+							}else{
+								$error = "<script>document.write('Services Not Saved, Try Again.');</script>";
+							}
+						}
+               		}
+            }
+		}else{
+			$error = "<script>document.write('Empty Fields, Try Again.');</script>";
+		}
     }
 
     ?>
@@ -74,22 +128,33 @@
   </div>
   <div class="container">
       <h3 class="quick-actions">SERVICES CHARGES</h3>
-
-      <div class="row-fluid">
-        <div class="widget-box">
 <!--
-            <div class="widget-title">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Patient List</a></li>
-                </ul>
-            </div>
+	<div class="row-fluid">
+
+	</div>
 -->
-
-
+      <div class="row-fluid">
+		  <?php if($success || $error){?>
+		 <div class="span12">
+			<?php
+		  if($success){
+		  ?>
+			<div class="alert alert-success">
+			  <strong>Success!</strong> <?php echo $success; ?>
+			</div>
+			<?php } if($error){
+					  ?>
+			<div class="alert alert-danger">
+			  <strong>Error!</strong> <?php echo $error; ?>
+			</div>
+		  <?php
+		  } ?>
+		</div>
+		  <?php }?>
+        <div class="widget-box">
             <div class="widget-content tab-content">
 				<div class="span6">
                     <form action="#" method="post" class="form-horizontal">
-
 						  <table class="table table-bordered" id="dynamic_field2">
 							  <tr>
 							  	<td colspan="3" style="height:10px;">
@@ -98,12 +163,13 @@
 							  </tr>
 							<tr>
 								<td>
-									<select class="span" name="ServiceName[]">
-										<option value="CONSULATION">CONSULTATION</option>
+									<select class="span" name="serviceName[]">
+										<option>-- Select Service --</option>
+										<option value="CONSULTATION">CONSULTATION</option>
 										<option value="OPD">OUT PATIENT(OPD)</option>
 									</select>
 								</td>
-								<td><input type="number" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td>
+								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td>
 								<td><button type="button" name="add" id="add2" class="btn btn-primary">Add Service</button></td>
 							</tr>
 						</table>
@@ -111,10 +177,40 @@
 							  <i class="span5"></i>
 							  <button type="submit" name="saveServiceprices" class="btn btn-primary btn-block span6"> Save Prices</button>
 						  </div>
+              		</form>
+				</div>
 
-              </form>
+				<div class="span6">
+					<table class="table table-bordered table-stripped">
+						<thead>
+							<th> SERVICE NAME</th>
+							<th> SERVICE PRICE</th>
+							<th> ACTION</th>
+						</thead>
+						<tbody>
+							<?php
+							$allService = select("SELECT * FROM prices WHERE centerID='$centerID' && serviceType='Service'");
+							if($allService){
+								foreach($allService as $serviceRow){
+							?>
+							<tr>
+								<td><?php echo $serviceRow['serviceName'];?></td>
+								<td><?php echo $serviceRow['servicePrice'];?></td>
+								<td><a href="#?sid=<?php echo $serviceRow['serviceID'];?>" class="btn btn-primary"> <i class="fa fa-eye"></i></a></td>
+							</tr>
+							<?php }}else{?>
+							<tr><td colspan="3"> <h6 class="text-center">NO SERVICE CHARGE SAVED.</h6></td></tr>
+							<?php }?>
+						</tbody>
+					</table>
+				</div>
 			</div>
+		  </div>
 
+		  <hr/>
+
+        <div class="widget-box">
+            <div class="widget-content tab-content">
 				<div class="span6">
                     <form action="#" method="post" class="form-horizontal">
 						  <table class="table table-bordered" id="dynamic_field">
@@ -125,26 +221,52 @@
 							  </tr>
 							<tr>
 								<td>
-									<select class="span" name="ServiceName[]">
+									<select class="span" name="serviceName[]">
+										<option>-- Select Service --</option>
 										<?php
 											$lablist = select("SELECT * FROM lablist");
 										if($lablist){
 											foreach($lablist as $labRow){
 										?>
-										<option value="<?php echo $labRow['labID']?>"><?php echo $labRow['labName'];?></option>
+										<option value="<?php echo $labRow['labName']?>"><?php echo $labRow['labName'];?></option>
 										<?php }}?>
 									</select>
 								</td>
-								<td><input type="number" min="1" name="servicePrice[]" placeholder="Price" class="span11" required/></td>
-								<td><button type="button" name="add" id="add" class="btn btn-primary">Add Service</button></td>
+								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required/></td>
+								<td><button type="button" name="add" id="add" class="btn btn-primary">Add LAB</button></td>
 							</tr>
 						</table>
 						  <div class="form-actions">
 							  <i class="span5"></i>
 							  <button type="submit" name="saveLabPrices" class="btn btn-primary btn-block span6"> Save Prices</button>
 						  </div>
+              		</form>
+				</div>
 
-              	</form>
+
+				<div class="span6">
+					<table class="table table-bordered table-stripped">
+						<thead>
+							<th> LAB NAME</th>
+							<th> LAB PRICE</th>
+							<th> ACCTION</th>
+						</thead>
+						<tbody>
+							<?php
+							$allService = select("SELECT * FROM prices WHERE centerID='$centerID' && serviceType='Lab'");
+							if($allService){
+								foreach($allService as $serviceRow){
+							?>
+							<tr>
+								<td><?php echo $serviceRow['serviceName'];?></td>
+								<td><?php echo $serviceRow['servicePrice'];?></td>
+								<td><a href="#?sid=<?php echo $serviceRow['serviceID'];?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a></td>
+							</tr>
+							<?php }}else{?>
+							<tr><td colspan="3"> <h6 class="text-center">NO SERVICE CHARGE SAVED.</h6></td></tr>
+							<?php }?>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		  </div>
@@ -208,7 +330,7 @@ function resetMenu() {
         var i=1;
         $('#add2').click(function(){
             i++;
-            $('#dynamic_field2').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option value="CONSULTAION">CONSULTAION</option><option value="OPD">OUT PATIENT(OPD)</option></select></td><td><input type="number" min="1"  name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field2').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Service --</option><option value="CONSULTATION">CONSULTATION</option><option value="OPD">OUT PATIENT(OPD)</option></select></td><td><input type="number" step="any" min="1"  name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){
@@ -223,7 +345,7 @@ function resetMenu() {
         var i=1;
         $('#add').click(function(){
             i++;
-            $('#dynamic_field').append('<tr id="row'+i+'"><td><select class="span" name="ServiceName[]"><?php $lablist = select("SELECT * FROM lablist");if($lablist){foreach($lablist as $labRow){?><option value="<?php echo $labRow['labID']?>"><?php echo $labRow['labName'];?></option><?php }}?></select></td><td><input type="number" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Service --</option><?php $lablist = select("SELECT * FROM lablist");if($lablist){foreach($lablist as $labRow){?><option value="<?php echo $labRow['labName']?>"><?php echo $labRow['labName'];?></option><?php }}?></select></td><td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){

@@ -73,20 +73,26 @@ include 'layout/head.php';
                           <thead>
                             <tr>
                               <th>PID</th>
-                              <th>OPD PIRCE</th>
-                              <th>CONSULTATION</th>
-                              <th>PHARMACY</th>
-                              <th>Action</th>
+                              <th> NAME</th>
+                              <th> OPD</th>
+                              <th> Action</th>
                             </tr>
                           </thead>
                           <tbody>
+							  <?php
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND status='Not Paid' AND serviceType='Service'  GROUP BY patientID");
+							  if($fetchAll){
+								  foreach($fetchAll as $PrivateRow){
+									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
+									  foreach($pdet as $prow){
+							  ?>
 							  <tr>
-							  	<td> Patient ID</td>
-							  	<td> 152</td>
-							  	<td> 180</td>
-							  	<td> 352</td>
-							  	<td> <a href="finance-cash-detail"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
+							  	<td> <?php echo $PrivateRow['patientID'];?></td>
+							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
+							  	<td> <?php echo $PrivateRow['servicePrice'];?></td>
+							  	<td> <a href="finance-cash-detail?id=<?php echo $PrivateRow['id'];?>&pid=<?php echo $PrivateRow['patientID'];?>"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
 							  </tr>
+							  <?php }}}?>
                           </tbody>
                         </table>
                       </div>
@@ -109,18 +115,24 @@ include 'layout/head.php';
                           <thead>
                             <tr>
                               <th>PID</th>
-                              <th>LAB DETAILS</th>
-                              <th>WARD DETAILS</th>
+                              <th>NAME</th>
                               <th>ACTION</th>
                             </tr>
                           </thead>
                           <tbody>
+							   <?php
+		$fetchlab = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND status='Not Paid' AND serviceType='Lab'  GROUP BY patientID");
+							  if($fetchlab){
+								  foreach($fetchlab as $PrivateRow){
+									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
+									  foreach($pdet as $prow){
+							  ?>
 							  <tr>
-							  	<td> Patient ID</td>
-							  	<td> Malaria Test</td>
-							  	<td> </td>
-							  	<td> <a href="finance-cash-detail"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
+							  	<td> <?php echo $PrivateRow['patientID'];?></td>
+							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
+							  	<td> <a href="#"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
 							  </tr>
+							  <?php }}}?>
                           </tbody>
                         </table>
                       </div>

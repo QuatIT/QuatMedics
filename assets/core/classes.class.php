@@ -91,7 +91,12 @@
     public function loadConsultRoom(){
       $result=query("SELECT * FROM consultingroom ") ;
       $num = count($result);
+      return $num;
+    }
 
+    public function loadServicePrices($centerID){
+      $result=query("SELECT * FROM prices WHERE centerID='$centerID'") ;
+      $num = count($result);
       return $num;
     }
 
@@ -107,7 +112,6 @@
     public function find_num_transfer(){
       $result=query("SELECT * FROM transfer ");
       $num = count($result);
-
       return $num;
     }
 
