@@ -80,7 +80,7 @@ include 'layout/head.php';
                           </thead>
                           <tbody>
 							  <?php
-		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND status='Not Paid' AND serviceType='Service'  GROUP BY patientID");
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND status='Not Paid' AND serviceName='CONSULTATION'  GROUP BY patientID");
 							  if($fetchAll){
 								  foreach($fetchAll as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -116,23 +116,30 @@ include 'layout/head.php';
                             <tr>
                               <th>PID</th>
                               <th>NAME</th>
+                              <th>LAB NAME</th>
+                              <th>PRICE</th>
                               <th>ACTION</th>
                             </tr>
                           </thead>
                           <tbody>
 							   <?php
-		$fetchlab = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND status='Not Paid' AND serviceType='Lab'  GROUP BY patientID");
+	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND paystatus='Not Paid'");
 							  if($fetchlab){
 								  foreach($fetchlab as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
-									  foreach($pdet as $prow){
+									  foreach($pdet as $prow){}
+
+									  $labN = select("SELECT * FROM lablist WHERE labID='".$PrivateRow['labID']."'");
+									  foreach($labN as $labRow){}
 							  ?>
 							  <tr>
 							  	<td> <?php echo $PrivateRow['patientID'];?></td>
 							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
-							  	<td> <a href="#"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
+							  	<td> <?php echo $labRow['labName'];?></td>
+							  	<td> <?php echo $PrivateRow['labprice'];?></td>
+							  	<td> <a href="#"><i class="btn btn-success btn-md fa fa-check"></i></a></td>
 							  </tr>
-							  <?php }}}?>
+							  <?php }}?>
                           </tbody>
                         </table>
                       </div>

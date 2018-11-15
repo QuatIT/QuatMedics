@@ -84,13 +84,22 @@ if(count($codesql) >=1){
 //Request Laboratory.....
 if(isset($_POST['reqLab'])){
     $labNumber = count($_POST['labName']);
+	    $paymode = filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
 
     if($labNumber > 0) {
         for($i=0; $i<$labNumber; $i++){
-                if(trim($_POST["labName"][$i] != '')) {
+                if(trim($_POST["labName"][$i] != '')){
                     $labID = trim($_POST["labName"][$i]);
                     $status = SENT_TO_LAB;
-$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$dateToday')");
+					$paystatus = trim("Not Paid");
+					//get labName from lablist table...
+					$getLabName = select("SELECT labName FROM lablist where labID='$labID'");
+					foreach($getLabName as $labName){}
+					//get lab price from prices table using the name...
+					$getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
+					foreach($getLp as $labPrice){}
+
+$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$paystatus','".$labPrice['servicePrice']."','$dateToday')");
 
                         if($insertLabReq){
                              $success =  "LAB REQUEST SENT SUCCESSFULLY";
@@ -261,23 +270,25 @@ if(isset($_POST['presMeds'])){
   </div>
   <div class="container">
       <h3 class="quick-actions">CONSULTATION ROOM <?php echo $r['roomName'];?></h3>
-<div class="row-fluid">
-    <div class="span12">
-        <?php
-      if($success){
-      ?>
-      <div class="alert alert-success">
-  <strong>Success!</strong> <?php echo $success; ?>
-</div>
-      <?php } if($error){
-          ?>
-      <div class="alert alert-danger">
-  <strong>Error!</strong> <?php echo $error; ?>
-</div>
-      <?php
-      } ?>
-    </div>
-</div>
+	  <?php if($success || $error){?>
+			<div class="row-fluid">
+				<div class="span12">
+					<?php
+				  if($success){
+				  ?>
+				  <div class="alert alert-success">
+					  <strong>Success!</strong> <?php echo $success; ?>
+					</div>
+				  <?php } if($error){
+					  ?>
+				  <div class="alert alert-danger">
+					  <strong>Error!</strong> <?php echo $error; ?>
+					</div>
+				  <?php
+				  } ?>
+				</div>
+			</div>
+	  <?php }?>
       <div class="row-fluid">
           <div class="span12">
                 <div class="widget-box">
@@ -401,6 +412,25 @@ if(isset($_POST['presMeds'])){
                                             <input type="text" name="consultroom" class="span11" value="<?php echo $roomID?>" readonly>
                                           </div>
                                       	</div>
+										 	<?php if(!empty($consultrow['mode'])){ ?>
+                                      <div class="control-group">
+                                        <label class="control-label">Pay Mode :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
+                                        </div>
+                                      </div>
+                                      <?php } ?>
+									 </div>
+								 </div>
+								 <div class="span6">
+									 <div class="widget-content nopadding">
+									 	<div class="control-group">
+                                        <label class="control-label"> Staff ID</label>
+                                          <div class="controls">
+                                            <input type="text" name="consultroom" class="span11" value="<?php echo $staffID;?>" readonly>
+                                          </div>
+                                      </div>
+									 </div>
 										 <div class="control-group">
                                         <label class="control-label">Request lab</label>
                                         <div class="controls">
@@ -414,17 +444,6 @@ if(isset($_POST['presMeds'])){
                                           </select>
                                         </div>
                                       </div>
-									 </div>
-								 </div>
-								 <div class="span6">
-									 <div class="widget-content nopadding">
-									 	<div class="control-group">
-                                        <label class="control-label"> Staff ID</label>
-                                          <div class="controls">
-                                            <input type="text" name="consultroom" class="span11" value="<?php echo $staffID;?>" readonly>
-                                          </div>
-                                      </div>
-									 </div>
 									 <div class="form-actions">
                                           <i class="span1"></i>
                                         <button type="submit" name="reqLab" class="btn btn-primary btn-block span10"> Request Lab</button>

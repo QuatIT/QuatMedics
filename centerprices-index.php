@@ -165,8 +165,8 @@
 								<td>
 									<select class="span" name="serviceName[]">
 										<option>-- Select Service --</option>
-										<option value="CONSULTATION">CONSULTATION</option>
-										<option value="OPD">OUT PATIENT(OPD)</option>
+										<option value="CONSULTATION"> CONSULTATION </option>
+										<option value="ID CARD"> HOSPITAL CARD</option>
 									</select>
 								</td>
 								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td>
@@ -330,7 +330,7 @@ function resetMenu() {
         var i=1;
         $('#add2').click(function(){
             i++;
-            $('#dynamic_field2').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Service --</option><option value="CONSULTATION">CONSULTATION</option><option value="OPD">OUT PATIENT(OPD)</option></select></td><td><input type="number" step="any" min="1"  name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field2').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Service --</option><option value="CONSULTATION">CONSULTATION</option><option value="ID CARD"> HOSPITAL CARD</option></select></td><td><input type="number" step="any" min="1"  name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){
