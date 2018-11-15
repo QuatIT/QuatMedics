@@ -53,8 +53,8 @@
 <div id="sidebar">
     <ul>
     <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
-    <li class=""> <a href="pharmacy-index2.php"><i class="icon icon-briefcase"></i> <span>Pharmacy2</span></a> </li>
+    <li class=""> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
+    <li class="active"> <a href="pharmacy-index2"><i class="icon icon-briefcase"></i> <span>Pharmacy2</span></a> </li>
 <!--    <li> <a href="consult-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a> </li>-->
     </ul>
 </div>
@@ -72,15 +72,32 @@
       <h3 class="quick-actions">SEARCH PATIENT PRESCRIPTION</h3>
 
           <div class="row-fluid">
-             <div class="widget-box">
-                  <div class="widget-title">
-                  </div>
-                  <div class="widget-content">
-                    <form action="" method="post">
-                        <input type="text" name="txtSearch" onkeyup="pharmSearch(this.value);" placeholder="ENTER PERSCRIPTION CODE" class="span12 form-control" style="height:50px;padding:2px;text-align:center;font-weight:bolder:font-size:22px;"><i type="submit" class="fa fa-search fa-3x" style="margin-left:-70px;margin-top:-40px;color:#ccc;"></i><p id="search" style="text-align:center;"></p><p id="loader" style="text-align:center;"></p>
-                      </form>
-                  </div>
+
+                <div id="tab1" class="tab-pane active">
+                    <div class="widget-box">
+                      <div class="widget-title">
+                         <span class="icon"><i class="icon-th"></i></span>
+                        <h5>PHARMACY</h5>
+                      </div>
+                      <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th>Patient ID</th>
+                              <th>Patient Name</th>
+                              <th>Status</th>
+                              <th>Action</th>
+<!--                              <th>Action</th>-->
+                            </tr>
+                          </thead>
+                          <tbody id="phpatient">
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                 </div>
+
           </div>
   </div>
 </div>
@@ -109,6 +126,21 @@
 <script src="js/maruti.form_common.js"></script>
 
 <!--<script src="js/maruti.js"></script> -->
+
+	<script>
+  function newpatient(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/phpatient-load.php",false);
+        xmlhttp.send(null);
+        document.getElementById("phpatient").innerHTML=xmlhttp.responseText;
+    }
+        newpatient();
+
+        setInterval(function(){
+            newpatient();
+        },10000);
+    </script>
+
 
 <script>
 
