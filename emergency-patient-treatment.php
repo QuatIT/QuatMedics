@@ -30,6 +30,12 @@
     $success = '';
     $error = '';
 
+	$get_PID = $_GET['pid'];
+	 $patient = select("SELECT * FROM emergency_patient WHERE patientID='".$_GET['pid']."' ORDER BY patientID ASC");
+        foreach($patient as $pID){}
+
+	$vit_sq = select("SELECT * FROM eme_vitals WHERE patientID='$get_PID' && emeID='".$_GET['emeid']."' ORDER BY id DESC LIMIT 1");
+	foreach($vit_sq as $vitrow){}
 
 //codes for the gallary creation..
 if (isset($_POST['sub_mit'])){
@@ -130,44 +136,117 @@ if (isset($_POST['sub_mit'])){
             </div>
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
-                    <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List of Patients in Emergency Ward</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-<!--                              <th>Photo</th>-->
-<!--                              <th>Patient Number</th>-->
-                              <th>Patient Name</th>
-                              <th>Guardian Name</th>
-                              <th>Guardian Mobile</th>
-                              <th>Date Admitted</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody id="emepatienttreat">
+                    <form action="" method="post" id="vitals" class="form-horizontal">
+                    <div class="span6" id="vitals">
+                          <div class="widget-content nopadding">
+                              <div class="control-group">
+                                <label class="control-label">Patient :</label>
+                               <div class="controls">
+                                  <select name="patientID" id="patientId" class="selectpicker" onchange="pname(this.value);" readonly>
+                                        <?php
+                                        if(!empty($_GET['pid'])){
+                                        ?>
+                                        <option value="<?php echo $get_PID; ?>"><?php echo $get_PID; ?></option>
+                                        <?php } ?>
+                                   </select>
+                                </div>
+                              </div>
 
-                            <tr>
-                              <td class="span2">
-                                <a class="thumbnail lightbox_trigger" href="images/gallery/imgbox2.jpg">
-                                    <img src="images/gallery/imgbox2.jpg" alt="" >
-                                </a>
-                              </td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;">
-                                   <a href="opd-patientinfo.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
+<!--
+                              <div class="control-group">
+                                <label class="control-label">Mode of Payment:</label>
+                                <div class="controls">
+                                  <select class="span11" name="mode" onchange="modey(this.value);">
+                                        <option value=""></option>
+                                        <option value="Private">Private</option>
+                                        <option value="Insurance">Health Insurance</option>
+                                        <option value="Company">Company</option>
+                                    </select>
+                                </div>
+                              </div>
+                             <span id="modeload"></span>
+-->
+                              <div class="control-group">
+                                <label class="control-label">Body Temperature:</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" placeholder="Body Temperature" value="<?php echo $vitrow['bodyTemp']; ?>" name="bodytemp" readonly />
+                                </div>
+                              </div>
+							   <div class="control-group">
+                                <label class="control-label">Pulse Rate :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" placeholder="Pulse Rate" value="<?php echo $vitrow['pulseRate']; ?>"  name="pulseRate" readonly/>
+                                </div>
+                              </div>
 
-                          </tbody>
-                        </table>
+
+                              <div class="control-group">
+                                <label class="control-label">Weight</label>
+                                <div class="controls">
+                                  <input type="text"  class="span11" name="weight" placeholder="Weight" value="<?php echo $vitrow['weight']; ?>"  readonly />
+                                </div>
+                              </div>
+
+<!--
+                              <div class="control-group">
+                                <label class="control-label">Other Health Details :</label>
+                                <div class="controls">
+                                    <textarea class="span11" name="otherHealth"></textarea>
+                                </div>
+                              </div>
+-->
+                          </div>
                       </div>
-                    </div>
+                    <div class="span6">
+                          <div class="widget-content nopadding">
+
+                              <?php if(!empty($_GET['pid'])){ ?>
+                               <div class="control-group">
+                                <label class="control-label">Full Name :</label>
+                                <div class="controls">
+                                  <input type="text" required readonly value="<?php echo $pID['patientName']; ?>" id="FullName" class="span11" placeholder="Full name" name="FullName" />
+                                </div>
+                              </div>
+                          <?php }else{echo '<span id="fname"></span>';} ?>
+
+                              <div class="control-group">
+                                <label class="control-label">Respiration Rate :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" value="<?php echo $vitrow['respirationRate']; ?>" readonly/>
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">Blood Pressure</label>
+                                <div class="controls">
+                                  <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" value="<?php echo $vitrow['bloodPressure']; ?>" readonly />
+                                </div>
+                              </div>
+
+<!--
+                               <div class="control-group">
+                                <label class="control-label">Assign Consulting Room</label>
+                                <div class="controls">
+                                  <select name="consultRoom">
+                                    <option value="default"> -- Select Consulting Room --</option>
+                                      <?php
+//                                        $consultingroom = Consultation::find_consultingroom();
+//                                        foreach($consultingroom as $roomRow){
+                                      ?>
+                                    <option value="<?php #echo $roomRow['roomID'];?>"> <?php #echo $roomRow['roomName'];?></option>
+                                      <?php #}?>
+                                  </select>
+                                </div>
+                                  <div class="controls"></div>
+                              </div>
+-->
+
+                              <div class="form-actions">
+                                  <i class="span1"></i>
+                                <a href="emergency-vitals?emeid=<?php echo $_GET['emeid']; ?>&pid=<?php echo $_GET['pid']; ?>&tab=vitals" class="btn btn-primary btn-block span10">Save Out Patient</a>
+                              </div>
+                          </div>
+                      </div>
+                    </form>
                 </div>
 
 
@@ -258,6 +337,7 @@ if (isset($_POST['sub_mit'])){
                               <th>Dosage</th>
                               <th>Prescibed By</th>
                               <th>Status</th>
+                              <th>Doctor's Comment</th>
                             </tr>
                           </thead>
                           <tbody id="emepatienttreathistory"></tbody>

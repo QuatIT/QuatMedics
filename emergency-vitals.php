@@ -56,7 +56,7 @@
 <?php
     include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='OPD' || $_SESSION['username']=='rik'){
+    #if($_SESSION['accessLevel']=='OPD' || $_SESSION['username']=='rik'){
 
     $active2='';
     $active='';
@@ -576,4 +576,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
-<?php }else{echo "<script>window.location='404'</script>";}?>
+<?php #}else{echo "<script>window.location='404'</script>";}?>
