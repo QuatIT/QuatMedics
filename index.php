@@ -134,6 +134,7 @@ clearstatcache();
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
         <link rel="stylesheet" href="css/maruti-login.css" />
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<style>
 	       body{background: #eee url(light_honeycomb.png);}
 	</style>
@@ -141,8 +142,8 @@ clearstatcache();
     <body>
         <div id="loginbox">
             <form id="loginform" class="form-vertical" action="" method="post">
-				 <div class="control-group normal_text">
-                     <h3>QUAT MEDICS ADMIN</h3>
+				 <div class="control-group normal_text" style="background-color:#0c3f84;">
+                     <h3>Q<i class="fa fa-stethoscope"></i>AT MEDICS</h3>
                 </div>
                 <?php
                       if($success){
@@ -160,7 +161,7 @@ clearstatcache();
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                            <span class="add-on"><i class="icon-user"></i></span><input type="text" name="username" placeholder="Username" />
+                            <span class="add-on"><i class="fa fa-user-md"></i></span><input type="text" name="username" placeholder="Username" />
                         </div>
                     </div>
                 </div>
@@ -177,7 +178,7 @@ clearstatcache();
                 </div>
             </form>
             <form id="recoverform" action="" method="post" class="form-vertical">
-				<p class="normal_text">Enter your e-mail address below and we will send you a recovery guide</p>
+				<p class="normal_text" style="background-color:#0c3f84;">Enter your e-mail address below and we will send you a recovery guide</p>
 
                     <div class="controls">
                         <div class="main_input_box">

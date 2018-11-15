@@ -126,7 +126,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
 
 <div id="sidebar">
     <ul>
-<!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
+    <li> <a href="medics-index?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i><span>Consultation</span></a> </li>
     <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i><span>Appointments</span></a> </li>
     <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
@@ -279,7 +279,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
       </div>
   </div>
 </div>
-<div class="row-fluid navbar-fixed-bottom">
+<div class="row-fluid">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>

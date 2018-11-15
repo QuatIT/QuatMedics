@@ -87,8 +87,6 @@
    foreach($staffIDss as $staffIDy){}
 
     if(isset($_POST['btnSave'])){
-
-
       $consultID = "CON-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultIDs);
       $staffID = $staffIDy['userID'];
       $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
@@ -108,15 +106,32 @@
         $patient_busy = PATIENT_BUSY;
 
 //        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
-        $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID);
+        $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID,$dateToday);
+
 
         if($consultAssignPatient1){
             $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."' WHERE patientID='$patientID' ");
 
-            if($update_patient_status){
-                $success = "<script>document.write('PATIENT ASSIGNED TO CONSULTING ROOM')
-                                window.location.href='opd-patient?tab=opd-patient' </script>";
-            }
+		//select opd price..
+		$opdPrice = select("SELECT * FROM prices WHERE serviceName='OPD' AND centerID='".$_SESSION['centerID']."'");
+		foreach($opdPrice as $priceRow){}
+		//select consultaion price..
+		$conPrice = select("SELECT * FROM prices WHERE serviceName='CONSULTATION' AND centerID='".$_SESSION['centerID']."'");
+		foreach($conPrice as $conRow){}
+
+			//insert opd price....
+$insertOPD = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','".$priceRow['serviceName']."','".$priceRow['servicePrice']."','".$priceRow['serviceType']."','Not Paid','$dateToday')");
+
+			//insert consultation.. price....
+$insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','".$conRow['serviceName']."','".$conRow['servicePrice']."','".$conRow['serviceType']."','Not Paid','$dateToday')");
+			 if($insertOPD && $insertCON){
+
+				if($update_patient_status){
+					$success = "<script>document.write('PATIENT ASSIGNED TO CONSULTING ROOM')
+									window.location.href='opd-patient?tab=opd-patient' </script>";
+				}
+			}
+
         }else{
             $error = "PATIENT NOT ASSIGNED";
         }
@@ -137,6 +152,7 @@
 
 <div id="sidebar">
     <ul>
+    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
     <li class="active"> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
 <!--    <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>-->
@@ -212,7 +228,7 @@
                               <td style="text-align: center;"> <?php echo $patient['dob']; ?></td>
                               <td style="text-align: center;">
                                    <a href="#" data-toggle="modal" data-target="#squarespaceModal<?php echo $patient['patientID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
-                                   <a href="id-card?pid=<?php echo $patient['patientID'];?>" title="Patient Card"> <span class="btn btn-success fa fa-image"></span></a>
+                                   <a href="id-card?pid=<?php echo $patient['patientID'];?>" title="Patient Card"> <span class="btn btn-success fa fa-vcard"></span></a>
                               </td>
                             </tr>
 
@@ -445,7 +461,7 @@
       </div>
   </div>
 </div>
-<div class="row-fluid navbar-fixed-bottom">
+<div class="row-fluid">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>

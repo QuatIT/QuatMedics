@@ -1,6 +1,7 @@
 <?php
 require_once 'assets/core/connection.php';
 @session_start();
+$dateToday = trim(date('Y-m-d'));
 
 if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
     echo "<script>window.location.href='index'</script>";
@@ -25,7 +26,7 @@ foreach($centerName_sql as $centerName){}
 
 <!--Header-part-->
 <div id="header">
-  <h1><a> <span style="color:#1860c3;">QUAT</span>MEDIC | <small><?php echo $centerName['centerName']; ?></small></a> </h1>
+  <h1><a> <span style="color:#1860c3;">Q<i class="fa fa-stethoscope"></i>AT</span>MEDIC | <small><?php echo $centerName['centerName']; ?></small></a> </h1>
 </div>
 <!--close-Header-part-->
 

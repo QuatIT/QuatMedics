@@ -62,7 +62,7 @@
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index.php"><i class="icon-dashboard"></i> <span>Dashboard</span></a> </li>
+    <li><a href="medics-index.php"><i class="icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="active"><a href="centerlab-index.php"><i class="icon icon-search"></i> <span>Lab Management</span></a> </li>
     </ul>
 </div>
@@ -70,7 +70,7 @@
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Lab Management" class="tip-bottom"><i class="icon-home"></i> LABORATORY</a>
+        <a title="Lab Management" class="tip-bottom"><i class="icon-search"></i> LABORATORY</a>
     </div>
   </div>
   <div class="container">
