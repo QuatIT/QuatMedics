@@ -137,7 +137,8 @@ input:checked + .slider:before {
 <div id="sidebar">
     <ul>
 <!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li class="active"> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
+    <li class=""> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
+    <li class="active"> <a href="pharmacy-index2"><i class="icon icon-briefcase"></i> <span>Pharmacy2</span></a> </li>
     </ul>
 </div>
 
@@ -237,11 +238,14 @@ input:checked + .slider:before {
                                         if($med['prescribeStatus']!="paid"){
                                       ?>
 
-     <input type="number" min="0" <?php if($med['priceMed']){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php echo $med['comment']; ?>" placeholder="ENTER PRICE OF MEDICINE">
+     <input type="number" min="0" <?php if($med['priceMed']){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php echo $med['comment']; ?>" placeholder="ENTER PRICE OF MEDICINE" class="input" onchange='updateTotal();' style="width:200px;">
 
-                                      <?php }else{ ?>
+                                      <?php }?>
+														<?php # else{ ?>
+<!--
                                                 <span class="label label-success">Served</span>
-                                             <td><input min="0" type="text" <?php if(!empty($med['comment'])){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php echo $med['priceMed']; ?>" placeholder="ENTER PRICE OF MEDICINE"></td>
+                                             <td><input min="0" type="text" <?php #if(!empty($med['comment'])){echo "readonly"; } ?> name="comment<?php #echo $med['prescribeid']; ?>" value="<?php #echo $med['priceMed']; ?>" placeholder="ENTER PRICE OF MEDICINE22"></td>
+-->
 
 <!--
                                  <script>
@@ -259,30 +263,30 @@ input:checked + .slider:before {
 -->
 
 
-                                     <?php   }
+                                     <?php   #}
 
 
-                                            if(isset($_POST['prescribe'.$med['prescribeid']])){
-                                                $chkbox = $_POST['prescribe'.$med['prescribeid']];
-
-                                                if($chkbox=='served'){
-                                                    $checked = 'checked';
-
-                                                    $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='$chkbox' WHERE prescribeid='".$med['prescribeid']."' ");
-                                                    echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
-                                                }else{
-                                                    $checked = '';
-                                                     $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='Prescibed' WHERE prescribeid='".$med['prescribeid']."' ");
-                                                    echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
-                                                }
-                                            }
+//                                            if(isset($_POST['prescribe'.$med['prescribeid']])){
+//                                                $chkbox = $_POST['prescribe'.$med['prescribeid']];
+//
+//                                                if($chkbox=='served'){
+//                                                    $checked = 'checked';
+//
+//                                                    $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='$chkbox' WHERE prescribeid='".$med['prescribeid']."' ");
+//                                                    echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
+//                                                }else{
+//                                                    $checked = '';
+//                                                     $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='Prescibed' WHERE prescribeid='".$med['prescribeid']."' ");
+//                                                    echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
+//                                                }
+//                                            }
 
 
                                                   if(isset($_POST['comment'.$med['prescribeid']])){
                                                       $comment = $_POST['comment'.$med['prescribeid']];
 
-                                                        $comment_sql = update("UPDATE prescribedmeds SET comment='$comment' WHERE prescribeid='".$med['prescribeid']."' ");
-                                                      echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
+                                                        $comment_sql = update("UPDATE prescribedmeds SET medprice='$comment' WHERE prescribeid='".$med['prescribeid']."' ");
+                                                      echo "<script>window.location.href='pharmacy-index2'</script>";
                                                   }
 
 
@@ -304,7 +308,7 @@ input:checked + .slider:before {
                   <tfoot style="font-weight:bolder;">
                     <tr>
                         <td colspan="4">TOTAL PRICE</td>
-                        <td>GHC 1.00</td>
+                        <td><span id="total"></span></td>
                       </tr>
                   </tfoot>
                     </table>
@@ -358,7 +362,20 @@ input:checked + .slider:before {
 
 <!--<script src="js/maruti.js"></script> -->
 
-
+<script>
+function updateTotal() {
+    var total = 0;//
+    var list = document.getElementsByClassName("input");
+    var values = [];
+    for(var i = 0; i < list.length; ++i) {
+        values.push(parseFloat(list[i].value));
+    }
+    total = values.reduce(function(previousValue, currentValue, index, array){
+        return previousValue + currentValue;
+    });
+    document.getElementById("total").value = total;
+}
+</script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

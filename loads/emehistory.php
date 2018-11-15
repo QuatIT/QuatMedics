@@ -46,16 +46,29 @@ foreach($load_newpatient as $newpatient){
   <td> <?php echo $newpatient['prescribed_by']; ?></td>
   <td> <?php echo $newpatient['med_status']; ?></td>
   <td> <?php if(empty($newpatient['doc_comment']) || $newpatient['doc_comment'] == 'NULL'){
-		  echo "<a href='' class='btn btn-primary' data-toggle='modal' data-target='#myModal'>Doctor's Comment</a>";
-	  }else{ echo $newpatient['doc_comment']; } ?></td>
+		  echo "<form action='' method='post'><input type='text' name='comment".$newpatient['eme_medID']."' ><input type='submit' name='btncomment".$newpatient['eme_medID']."' class='btn btn-primary'></form> "; ?>
+
+	  <?php
+
+		  if(isset($_POST['btncomment'.$newpatient['eme_medID']])){
+			  $cm = $_POST['comment'.$newpatient['eme_medID']];
+
+			  $sqq = update("UPDATE eme_ward SET doc_comment='$cm' WHERE eme_medID='".$newpatient['eme_medID']."' ");
+
+		  }
+
+	  ?>
+
+
+	  <?php }else{ echo $newpatient['doc_comment']; } ?></td>
 </tr>
 
 
-<!-- Modal -->
+<!--
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
-    <!-- Modal content-->
+     Modal content
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -71,6 +84,7 @@ foreach($load_newpatient as $newpatient){
 
   </div>
 </div>
+-->
 
 
 <?php  } ?>

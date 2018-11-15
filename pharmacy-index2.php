@@ -53,7 +53,8 @@
 <div id="sidebar">
     <ul>
     <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
+    <li class=""> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
+    <li class="active"> <a href="pharmacy-index2"><i class="icon icon-briefcase"></i> <span>Pharmacy2</span></a> </li>
 <!--    <li> <a href="consult-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a> </li>-->
     </ul>
 </div>
@@ -137,7 +138,7 @@
 
         setInterval(function(){
             newpatient();
-        },3000);
+        },10000);
     </script>
 
 

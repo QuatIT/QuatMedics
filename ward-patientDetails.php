@@ -219,7 +219,7 @@ if($staff_ID){
 <!--            </div>-->
 <!--            <hr/>-->
 <!--            <div class="widget-content tab-content">-->
-  <?php     if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){ ?>
+  <?php     if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){ ?>
                 <div id="tab2" class="tab-pane">
                     <form action="#" method="post" id="add_name" class="form-horizontal">
                           <div class="widget-content nopadding">

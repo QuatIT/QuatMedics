@@ -12,6 +12,8 @@ $load_newpatient = select("SELECT * FROM prescriptions ORDER BY patientID ASC");
 foreach($load_newpatient as $newpatient){
 $sqlll = select("SELECT * FROM patient WHERE patientID='".$newpatient['patientID']."' ");
 										 foreach($sqlll as $srowss){}
+	$selz = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$newpatient['prescribeCode']."' ");
+	foreach($selz as $slz){}
 ?>
 
 
@@ -20,7 +22,12 @@ $sqlll = select("SELECT * FROM patient WHERE patientID='".$newpatient['patientID
   <td><?php echo $newpatient['patientID']; ?></td>
   <td> <?php echo $srowss['firstName']." ".$srowss['otherName']." ".$srowss['lastName']; ?></td>
   <td> <?php echo $newpatient['prescribeStatus']; ?></td>
-  <td> <a href="pharmacy-main2?patid=<?php echo $newpatient['patientID']; ?>&code=<?php echo $newpatient['perscriptionCode']; ?>" class="btn btn-primary">Process Payment</a>&nbsp;<a href="" class="btn btn-primary">Serve Medicine</a> </td>
+  <td>
+	  <?php
+
+		  if($slz['paystatus']=="Not Paid" ){
+	  ?>
+	  <a href="pharmacy-main2?patid=<?php echo $newpatient['patientID']; ?>&code=<?php echo $newpatient['perscriptionCode']; ?>" class="btn btn-primary">Process Payment</a><?php }else{ ?><a href="pharmacy-patient?code=<?php echo $newpatient['perscriptionCode']; ?>" class="btn btn-warning">Serve Medicine</a><?php } ?> </td>
 
 </tr>
 

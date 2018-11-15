@@ -169,13 +169,13 @@ if (isset($_POST['sub_mit'])){
                               <div class="control-group">
                                 <label class="control-label">Body Temperature:</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Body Temperature" value="<?php echo $vitrow['bodyTemp']; ?>" name="bodytemp" readonly />
+                                  <input type="text" class="span11" placeholder="Body Temperature" value="<?php echo @$vitrow['bodyTemp']; ?>" name="bodytemp" readonly />
                                 </div>
                               </div>
 							   <div class="control-group">
                                 <label class="control-label">Pulse Rate :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Pulse Rate" value="<?php echo $vitrow['pulseRate']; ?>"  name="pulseRate" readonly/>
+                                  <input type="text" class="span11" placeholder="Pulse Rate" value="<?php echo @$vitrow['pulseRate']; ?>"  name="pulseRate" readonly/>
                                 </div>
                               </div>
 
@@ -183,7 +183,7 @@ if (isset($_POST['sub_mit'])){
                               <div class="control-group">
                                 <label class="control-label">Weight</label>
                                 <div class="controls">
-                                  <input type="text"  class="span11" name="weight" placeholder="Weight" value="<?php echo $vitrow['weight']; ?>"  readonly />
+                                  <input type="text"  class="span11" name="weight" placeholder="Weight" value="<?php echo @$vitrow['weight']; ?>"  readonly />
                                 </div>
                               </div>
 
@@ -212,13 +212,19 @@ if (isset($_POST['sub_mit'])){
                               <div class="control-group">
                                 <label class="control-label">Respiration Rate :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" value="<?php echo $vitrow['respirationRate']; ?>" readonly/>
+                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" value="<?php echo @$vitrow['respirationRate']; ?>" readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Blood Pressure</label>
                                 <div class="controls">
-                                  <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" value="<?php echo $vitrow['bloodPressure']; ?>" readonly />
+                                  <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" value="<?php echo @$vitrow['bloodPressure']; ?>" readonly />
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">As AT</label>
+                                <div class="controls">
+                                  <input type="text"  class="span11" name="" placeholder="AS AT TODAY" value="<?php echo @$vitrow['doe']; ?>" readonly />
                                 </div>
                               </div>
 
@@ -242,7 +248,7 @@ if (isset($_POST['sub_mit'])){
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <a href="emergency-vitals?emeid=<?php echo $_GET['emeid']; ?>&pid=<?php echo $_GET['pid']; ?>&tab=vitals" class="btn btn-primary btn-block span10">Save Out Patient</a>
+                                <a href="emergency-vitals?emeid=<?php echo $_GET['emeid']; ?>&pid=<?php echo $_GET['pid']; ?>&tab=vitals" class="btn btn-primary btn-block span10">Register New Vitals</a>
                               </div>
                           </div>
                       </div>
@@ -340,7 +346,70 @@ if (isset($_POST['sub_mit'])){
                               <th>Doctor's Comment</th>
                             </tr>
                           </thead>
-                          <tbody id="emepatienttreathistory"></tbody>
+                          <tbody id="emepatienttreathistory">
+
+<?php
+$load_newpatient = select("SELECT * FROM eme_ward WHERE centerID='".$_SESSION['centerID']."' && patientID='".$_GET['pid']."'  GROUP BY dateRegistered ORDER BY dateRegistered ASC");
+
+foreach($load_newpatient as $newpatient){
+
+?>
+
+
+<tr>
+  <td> <?php echo $newpatient['dateRegistered']; ?></td>
+  <td>
+	  <?php
+		  $sql = select("SELECT * FROM eme_ward WHERE eme_medID='".$newpatient['eme_medID']."' ORDER BY dateRegistered ASC");
+
+	  ?>
+	  <ol>
+		  <?php  foreach($sql as $srow){ ?>
+		  <li><?php echo $srow['prescrib_med']; ?></li>
+		  <?php } ?>
+	  </ol>
+
+
+	</td>
+  <td>
+
+	  <?php
+		  $sqls = select("SELECT * FROM eme_ward WHERE eme_medID='".$newpatient['eme_medID']."' ORDER BY dateRegistered ASC");
+
+	  ?>
+	  <ol>
+		  <?php  foreach($sqls as $srows){ ?>
+		  <li><?php echo $srows['dosage']; ?></li>
+		  <?php } ?>
+	  </ol>
+
+
+
+	</td>
+  <td> <?php echo $newpatient['prescribed_by']; ?></td>
+  <td> <?php echo $newpatient['med_status']; ?></td>
+  <td> <?php if(empty($newpatient['doc_comment']) || $newpatient['doc_comment'] == 'NULL'){
+		  echo "<form action='' method='post'><input type='text' name='comment".$newpatient['eme_medID']."' ><input type='submit' name='btncomment".$newpatient['eme_medID']."' class='btn btn-primary'></form> "; ?>
+
+	  <?php
+
+		  if(isset($_POST['btncomment'.$newpatient['eme_medID']])){
+			  $cm = $_POST['comment'.$newpatient['eme_medID']];
+
+			  $sqq = update("UPDATE eme_ward SET doc_comment='$cm' WHERE eme_medID='".$newpatient['eme_medID']."' ");
+			  echo "<script>window.location.href='{$_SERVER['REQUEST_URI']}'</script>";
+		  }
+
+	  ?>
+
+
+	  <?php }else{ echo $newpatient['doc_comment']; } ?></td>
+</tr>
+
+<?php } ?>
+
+
+							</tbody>
                         </table>
                       </div>
                     </div>
@@ -393,6 +462,7 @@ if (isset($_POST['sub_mit'])){
         },3000);
     </script>
 
+<!--
 <script>
   function emehistory(){
         xmlhttp=new XMLHttpRequest();
@@ -404,8 +474,9 @@ if (isset($_POST['sub_mit'])){
 
         setInterval(function(){
             emehistory();
-        },3000);
+        },300000000000);
     </script>
+-->
 
     <script>
     function emPat(val){
