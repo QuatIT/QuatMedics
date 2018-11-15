@@ -37,7 +37,40 @@ include 'layout/head.php';
 
 	//GET CONSULTATION CHARGE..
 	$concharge = select("SELECT * FROM paymentfixed WHERE patientID='$patid' AND serviceName='CONSULTATION' AND id='$id'");
-	foreach($concharge as $conRow){}
+	foreach($concharge as $conRow){
+		$consultPrice = $conRow['servicePrice'];
+	}
+
+
+	//get lab details...
+	$labTotal = 0;
+	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='Private' AND dateInsert='$dateToday'");
+	foreach($fetchlab as $labRow){
+					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
+						  foreach($getlabName as $labNmRow){}
+		$labTotal += $labRow['labprice'];
+	}
+
+	//get medicine charges...
+	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$dateToday'");
+					  if($getPresciptionID){
+						  foreach($getPresciptionID as $presRow){
+							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
+							  foreach($getMeds as $medrow){
+
+							  }
+						  }
+					  }
+
+	//get medinine total
+	@ $medtotal = 0;
+   @$getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
+		  foreach($getMeds as $medrow){
+			  $medtotal+=$medrow['medprice'];
+		  }
+
+	$overall =($consultPrice+$medtotal);
+	$overallTotal = "GHC ".$overall;
 ?>
 
 <div id="search">
@@ -72,7 +105,6 @@ include 'layout/head.php';
 
       <div class="row-fluid">
 		  <div class="span6">
-<!--            <div class="widget-content tab-content">-->
 				<form action="#" method="post" class="form-horizontal">
 					  <div class="widget-title">
 						  <span class="icon"> <i class="icon-align-justify"></i> </span>
@@ -80,47 +112,131 @@ include 'layout/head.php';
 					  </div>
 					  <div class="widget-content nopadding">
 						  <div class="control-group">
-							<label class="control-label">PATIENT ID :</label>
+							<label class="control-label"> <b>PATIENT ID :</b></label>
 							<div class="controls">
 							  <input type="text" class="span11" name="patientID" value="<?php echo $prow['patientID'];?>" readonly/>
 							</div>
 						  </div>
 						  <div class="control-group">
-							<label class="control-label">PATIENT NAME :</label>
+							<label class="control-label"><b>PATIENT NAME :</b></label>
 							<div class="controls">
 							  <input type="text" class="span11" name="patientName" value="<?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?>" readonly/>
 							</div>
 						  </div>
-<!--
 						 <div class="control-group">
-							<label class="control-label">OPD Charge :</label>
+							<label class="control-label"> <b style="color:red;">OVER ALL TOTAL :</b></label>
 							<div class="controls">
-							  <input type="text" class="span11" name="opdCharge" value="" readonly/>
+			<input type="text" style="font-weight:bolder;" class="span11" name="overall" value="<?php echo $overallTotal;?>" readonly/>
 							</div>
 						  </div>
--->
-						 <div class="control-group">
-							<label class="control-label"> <?php echo $conRow['serviceName'];?> :</label>
-							<div class="controls">
-							  <input type="number" step="any" class="span11" name="opdCharge" value="<?php echo $conRow['servicePrice'];?>" readonly/>
-							</div>
+						  <div class="form-actions">
+							  <i class="span1"></i>
+							<button type="submit" name="makeAllPaymeny" class="btn btn-primary btn-block span10"> Make Payment</button>
 						  </div>
-<!--
-						 <div class="control-group">
-							<label class="control-label">Lab Test Charge :</label>
-							<div class="controls">
-							  <input type="text" class="span11" name="opdCharge" value="" readonly/>
-							</div>
-						  </div>
--->
 					  </div>
 				</form>
-<!--            </div>-->
 		</div>
 		  <div class="span6">
-<!--        <div class="widget-box">-->
-<!--            <div class="widget-content tab-content">-->
-<!--                <div id="tab1" class="tab-pane active">-->
+			  <table>
+
+			  </table>
+			   <div class="widget-title">
+				<span class="icon"> <i class="icon-align-justify"></i> </span>
+				<h5>OVERALL CHARGES</h5>
+			  </div>
+
+			  <table class="table table-bordered">
+				  <tbody>
+				  		<tr>
+						<td> CONSULTATION CHARGE</td>
+						<td colspan="2"><?php echo $conRow['servicePrice'];?></td>
+						<td>
+							<?php// echo $conRow['status'];?>
+							<?php if($conRow['status'] == 'Not Paid'){?>
+							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $conRow['status'];?></span>
+						   <?php }?>
+
+							<?php if($conRow['status'] == 'Paid'){?>
+							<span class="label label-success text-center"><?php  echo $conRow['status'];?></span>
+						   <?php }?>
+						</td>
+					  </tr>
+				  </tbody>
+
+				  <tr>
+				  		<th> LAB TEST </th>
+				  		<th colspan="2"> PRICE</th>
+				  		<th> STATUS</th>
+				  </tr>
+				  <tbody>
+					  <?php
+					  foreach($fetchlab as $labRow){
+					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
+						  foreach($getlabName as $labNmRow){}
+
+					  ?>
+				  		<tr>
+						<td> <?php echo $labNmRow['labName'];?></td>
+						<td colspan="2"><?php echo $labRow['labprice'];?></td>
+						<td>
+							<?php if($labRow['paystatus'] == 'Not Paid'){?>
+							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $labRow['paystatus'];?></span>
+						   <?php }?>
+
+							<?php if($labRow['paystatus'] == 'Paid'){?>
+							<span class="label label-success text-center"><?php  echo $labRow['paystatus'];?></span>
+						   <?php }?>
+						</td>
+					  </tr>
+					  <?php }?>
+				  </tbody>
+				  <tr>
+				  		<th> MEDICATION </th>
+				  		<th> DOSAGE</th>
+				  		<th> PRICE</th>
+				  		<th> Status</th>
+				  </tr>
+				  <tbody>
+
+					  <?php
+					  	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$dateToday'");
+					  if($getPresciptionID){
+						  foreach($getPresciptionID as $presRow){
+							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
+							  foreach($getMeds as $medrow){
+
+					  ?>
+					  <tr>
+					  	<td><?php echo $medrow['medicine']; ?></td>
+					  	<td><?php echo $medrow['dosage']; ?></td>
+					  	<td><?php echo $medrow['medprice']; ?></td>
+					  	<td>
+							<?php if($medrow['paystatus'] == 'Not Paid'){?>
+							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $medrow['paystatus'];?></span>
+						   <?php }?>
+
+							<?php if($medrow['paystatus'] == 'Paid'){?>
+							<span class="label label-success text-center"><?php  echo $medrow['paystatus'];?></span>
+						   <?php }?>
+							<?php //echo $medrow['paystatus']?>
+						</td>
+					  </tr>
+					  <?php }}}
+					  $total = 0;
+					   @$getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
+							  foreach($getMeds as $medrow){
+								  $total+=$medrow['medprice'];
+							  }
+					  ?>
+					  <tr>
+					  	<td colspan="2" style="text-align:right"> <b>Total</b></td>
+					  	<td colspan="2"> <b><?php echo "Ghc ".$total;?></b></td>
+
+					  </tr>
+
+				  </tbody>
+			  </table>
+<!--
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
@@ -137,7 +253,6 @@ include 'layout/head.php';
                             </tr>
                           </thead>
                           <tbody>
-							  <??>
 							  <tr>
 							  	<td> Patient ID</td>
 							  	<td> Malaria Test</td>
@@ -148,13 +263,10 @@ include 'layout/head.php';
                         </table>
                       </div>
                     </div>
+-->
                 </div>
-<!--            </div>-->
-<!--        </div>		  -->
 		  </div>
-
       </div>
-<!--  </div>-->
 </div>
 <div class="row-fluid navbar-fixed-bottom">
  	<div id="footer" class="span12">

@@ -25,7 +25,7 @@
 
 <?php
 include 'layout/head.php';
-
+$_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 ?>
 
 <div id="search">
@@ -123,7 +123,7 @@ include 'layout/head.php';
                           </thead>
                           <tbody>
 							   <?php
-	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND paystatus='Not Paid'");
+	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private'");
 							  if($fetchlab){
 								  foreach($fetchlab as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -137,7 +137,18 @@ include 'layout/head.php';
 							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
 							  	<td> <?php echo $labRow['labName'];?></td>
 							  	<td> <?php echo $PrivateRow['labprice'];?></td>
-							  	<td> <a href="#"><i class="btn btn-success btn-md fa fa-check"></i></a></td>
+
+							  	<td>
+									<?php if($PrivateRow['paystatus'] == 'Not Paid'){?>
+									<a href="finance-cash-labpay?id=<?php echo $PrivateRow['id'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+								   <?php }?>
+
+									<?php if($PrivateRow['paystatus'] == 'Paid'){?>
+									<span class="label label-success text-center"><?php  echo $PrivateRow['paystatus'];?></span>
+								   <?php }?>
+
+								</td>
+
 							  </tr>
 							  <?php }}?>
                           </tbody>

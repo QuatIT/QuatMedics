@@ -171,6 +171,8 @@ if(isset($_POST['presMeds'])){
         $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
         $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
         $pharmacyID = filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING);
+        $paymode = filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
+		$paystatus = trim("Not Paid");
         $status = SENT_TO_PHARMACY;
         $prescribeStatus = trim("Prescibed");
         $datePrescribe = trim(date("Y-m-d"));
@@ -189,7 +191,7 @@ if(isset($_POST['presMeds'])){
                         $medicine = trim($_POST["medicine"][$m]);
                         $dosage = trim($_POST["dosage"][$d]);
 
-                $insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$dateToday')");
+      $insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$paymode','$dateToday')");
                         }
             }
 
@@ -554,6 +556,15 @@ if(isset($_POST['presMeds'])){
 								 </div>
 								 <div class="span6">
                                       <table class="table table-bordered" id="dynamic_field">
+										  	<?php if(!empty($consultrow['mode'])){ ?>
+                                      <div class="control-group" style="display:none;">
+                                        <label class="control-label">Pay Mode :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
+                                        </div>
+                                      </div>
+                                      <?php } ?>
+
                                         <tr>
                                             <td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" required /></td>
                                             <td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" required /></td>

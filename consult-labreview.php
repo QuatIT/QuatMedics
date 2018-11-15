@@ -144,6 +144,8 @@ if(isset($_POST['adWard'])){
         $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
         $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
         $pharmacyID = filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING);
+        $paymode = filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
+		$paystatus = trim("Not Paid");
         $status = SENT_TO_PHARMACY;
         $prescribeStatus = trim("Prescibed");
         $datePrescribe = trim(date("Y-m-d"));
@@ -153,18 +155,17 @@ if(isset($_POST['adWard'])){
         $dosageNum = count($_POST['dosage']);
 
         if($medNum > 0 && $dosageNum > 0) {
+		//saving prescription..
+        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
 
-        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode')");
-
-
+			//saving the prescribed medications....
             for($m=0, $d=0; $m<$medNum, $d<$dosageNum; $m++,$d++){
                     if(trim($_POST["medicine"][$m] != '') && trim($_POST['dosage'][$d] != '')) {
                         $medicine = trim($_POST["medicine"][$m]);
                         $dosage = trim($_POST["dosage"][$d]);
 
-                $insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus')");
+      $insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$paymode','$dateToday')");
                         }
-
             }
 
               if($insertpresciption && $insertMeds){
@@ -201,7 +202,7 @@ if(isset($_POST['adWard'])){
 
 
 
-                    echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
+                    echo "<script>window.top.close();</script>";
                 }else{
                     $error =  "ERROR: PRESCRIPTION NOT SENT";
                 }
@@ -512,6 +513,14 @@ if(isset($_POST['adWard'])){
 								 </div>
 								 <div class="span12">
                                       <table class="table table-bordered" id="dynamic_field">
+										   	<?php if(!empty($consultrow['mode'])){ ?>
+                                      <div class="control-group" style="display:none;">
+                                        <label class="control-label">Pay Mode :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
+                                        </div>
+                                      </div>
+                                      <?php } ?>
                                         <tr>
                                             <td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" required /></td>
                                             <td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" required /></td>

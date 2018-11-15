@@ -28,7 +28,7 @@
 
     if($_SESSION['accessLevel']=='LABORATORY' || $_SESSION['username']=='rik'){
 
-    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."' GROUP BY labRequestID ");
+    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."' ");
 
     ?>
 <div id="search">
@@ -69,6 +69,7 @@
                           <th>PATIENT NAME</th>
                           <th>DOCTOR</th>
                           <th>LAB TYPE</th>
+                          <th>STATUS</th>
                           <th>ACTION</th>
                         </tr>
                       </thead>
@@ -98,6 +99,15 @@
 
                                     } ?>
                                     </td>
+							<td style="text-align:center;">
+								<?php if($fet_pats['paystatus'] == 'Not Paid'){?>
+									<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $fet_pats['paystatus'];?></span>
+								<?php }?>
+
+								<?php if($fet_pats['paystatus'] == 'Paid'){?>
+									<span class="label label-success text-center"><?php  echo $fet_pats['paystatus'];?></span>
+								<?php }?>
+							</td>
                           <td style='text-align: center;'>
                           <a href='lab-patient.php?patientID=<?php echo $fet_pats['patientID']."&rID=".$fet_pats['labRequestID']; ?>'><span class='btn btn-primary fa fa-eye'></span></a>
                            

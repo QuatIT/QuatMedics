@@ -163,8 +163,7 @@ if(isset($_FILES['file'])){
                                                 $ltest = select("SELECT * FROM labresults WHERE labRequestID='".$labRequestID."' ");
                                                 foreach($ltest as $labtxt){
 //                                                    echo $labtxt['labt'];
-
-                                                    $labnam = select("SELECT GROUP_CONCAT(labName) as labt FROM lablist WHERE labID='".$labtxt['labID']."' ");
+                               $labnam = select("SELECT GROUP_CONCAT(labName) as labt FROM lablist WHERE labID='".$labtxt['labID']."' ");
                                                     foreach($labnam as $labname){
                                                         echo $labname['labt'];
                                                     }

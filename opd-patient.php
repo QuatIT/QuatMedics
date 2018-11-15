@@ -387,6 +387,12 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                                   <input type="text" class="span11" placeholder="Body Temperature" name="bodytemp" required />
                                 </div>
                               </div>
+							  <div class="control-group">
+                                <label class="control-label">Weight</label>
+                                <div class="controls">
+                                  <input type="text"  class="span11" name="weight" placeholder="Weight" required />
+                                </div>
+                              </div>
                               <div class="control-group">
                                 <label class="control-label">Other Health Details :</label>
                                 <div class="controls">
@@ -426,12 +432,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                                 </div>
                               </div>
 
-                              <div class="control-group">
-                                <label class="control-label">Weight</label>
-                                <div class="controls">
-                                  <input type="text"  class="span11" name="weight" placeholder="Weight" required />
-                                </div>
-                              </div>
+
                                <div class="control-group">
                                 <label class="control-label">Assign Consulting Room</label>
                                 <div class="controls">
