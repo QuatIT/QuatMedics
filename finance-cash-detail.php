@@ -26,6 +26,18 @@
 <?php
 include 'layout/head.php';
 
+	if(isset($_GET['id']) && isset($_GET['pid'])){
+		$patid = $_GET['pid'];
+		$id = $_GET['id'];
+	}
+
+	//get patient details..
+	$pdet = select("SELECT * FROM patient where patientID='$patid'");
+	foreach($pdet as $prow){}
+
+	//GET CONSULTATION CHARGE..
+	$concharge = select("SELECT * FROM paymentfixed WHERE patientID='$patid' AND serviceName='CONSULTATION' AND id='$id'");
+	foreach($concharge as $conRow){}
 ?>
 
 <div id="search">
@@ -64,39 +76,43 @@ include 'layout/head.php';
 				<form action="#" method="post" class="form-horizontal">
 					  <div class="widget-title">
 						  <span class="icon"> <i class="icon-align-justify"></i> </span>
-							<h5>Payment Details</h5>
+							<h5>PAYMENT DETAILS</h5>
 					  </div>
 					  <div class="widget-content nopadding">
 						  <div class="control-group">
-							<label class="control-label">Patient ID :</label>
+							<label class="control-label">PATIENT ID :</label>
 							<div class="controls">
-							  <input type="text" class="span11" name="patientID" readonly/>
+							  <input type="text" class="span11" name="patientID" value="<?php echo $prow['patientID'];?>" readonly/>
 							</div>
 						  </div>
 						  <div class="control-group">
-							<label class="control-label">Patient Name :</label>
+							<label class="control-label">PATIENT NAME :</label>
 							<div class="controls">
-							  <input type="text" class="span11" name="patientName" readonly/>
+							  <input type="text" class="span11" name="patientName" value="<?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?>" readonly/>
 							</div>
 						  </div>
+<!--
 						 <div class="control-group">
 							<label class="control-label">OPD Charge :</label>
 							<div class="controls">
 							  <input type="text" class="span11" name="opdCharge" value="" readonly/>
 							</div>
 						  </div>
+-->
 						 <div class="control-group">
-							<label class="control-label">Consultation Charge :</label>
+							<label class="control-label"> <?php echo $conRow['serviceName'];?> :</label>
 							<div class="controls">
-							  <input type="text" class="span11" name="opdCharge" value="" readonly/>
+							  <input type="number" step="any" class="span11" name="opdCharge" value="<?php echo $conRow['servicePrice'];?>" readonly/>
 							</div>
 						  </div>
+<!--
 						 <div class="control-group">
 							<label class="control-label">Lab Test Charge :</label>
 							<div class="controls">
 							  <input type="text" class="span11" name="opdCharge" value="" readonly/>
 							</div>
 						  </div>
+-->
 					  </div>
 				</form>
 <!--            </div>-->
@@ -121,6 +137,7 @@ include 'layout/head.php';
                             </tr>
                           </thead>
                           <tbody>
+							  <??>
 							  <tr>
 							  	<td> Patient ID</td>
 							  	<td> Malaria Test</td>
