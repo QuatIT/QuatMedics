@@ -63,6 +63,10 @@ foreach($centerName_sql as $centerName){}
     <li class="" ><a title="" href="pharmacy-index"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
       <?php } ?>
 
+      <?php #if($_SESSION['accessLevel']=='PHARMACY'){ ?>
+    <li class="" ><a title="" href="emergency-index"><i class="icon icon-exclamation-sign"></i> <span class="text">EMERGENCY</span></a></li>
+      <?php #} ?>
+
       <?php if($_SESSION['accessLevel']=='WARD'){ ?>
     <li class="" ><a title="" href="ward-index"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
       <?php } ?>
@@ -72,7 +76,7 @@ foreach($centerName_sql as $centerName){}
     <li class="dropdown" id="settings">
         <a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle">
             <i class="icon icon-cog"></i>
-            <span class="text">Settings</span>
+            <span class="text">Settings (<?php echo $_SESSION['username']; ?>)</span>
             <b class="caret"></b>
         </a>
       <ul class="dropdown-menu">
