@@ -61,7 +61,7 @@ create table `accounts`(
 	`centerID` varchar(255) not null,
 	`accountName` varchar(255) not null, /* OPD, CONSULTATION ETC..*/
 	`accountType` varchar(255) not null, /* CREDIT DEBIT ACCOUNT..*/
-	`dateInsert date not null,
+	`dateInsert` date not null,
 	`doe` timestamp
 )engine = InnoDB;
 
