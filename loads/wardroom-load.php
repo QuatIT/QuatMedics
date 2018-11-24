@@ -6,6 +6,8 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
     echo "<script>window.location.href='index'</script>";
 }
 
+
+
 $load_wardroom = select("SELECT * FROM wardlist WHERE centerID='".$_SESSION['centerID']."' ORDER BY centerID ASC");
 
 foreach($load_wardroom as $ward){

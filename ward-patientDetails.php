@@ -6,6 +6,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/font-awesome.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -74,6 +75,7 @@
 
 
      include 'layout/head.php';
+     //include 'status_administered.php';
 
     if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
     $patientID = $_GET['patid'];
@@ -104,7 +106,7 @@
     foreach( $treatment as  $treatments){
       $treatment1.="$treatments.<br>";
     }
-        $p_treatment= insert("INSERT INTO review_tb(patientID,wardID,comments,treatment,dosage)VALUES('$patientID','$wardID','".$comments."','".$treatment1."','".$dosage1."')");
+        $p_treatment= insert("INSERT INTO review_tb(patientID,wardID,comments,treatment,dosage,dateInsert,status)VALUES('$patientID','$wardID','".$comments."','".$treatment1."','".$dosage1."',CURDATE(),'$status')");
 
     }
 
@@ -121,9 +123,20 @@ if($staff_ID){
 
 }
 
+
 //$_GET['patient'];
 //$_GET['bedNumber'];
 //$_GET['Admitted'];
+
+
+
+// fetch vitals
+
+$get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER BY id DESC LIMIT 1");
+
+//NURSE CHECKLIST
+$checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
+
 
 ?>
 
@@ -157,17 +170,21 @@ if($staff_ID){
             <div class="widget-title">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab1">Patient Admission Details</a></li>
-                 <?php if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){ ?>   <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li> <?php } ?>
-                    <li><a data-toggle="tab" href="#tab3"> Remarks</a></li>
-                    <li><a data-toggle="tab" href="#tab4">Treatment History</a></li>
+                 <?php if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){ ?>
+
+                  <li><a data-toggle="tab" href="#tab6">Vitals</a></li>
+                  <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li>
+                 <li><a data-toggle="tab" href="#tab5"> Nurse's Checklist</a></li>
+                    <li><a data-toggle="tab" href="#tab3">Doctor's Remarks</a></li>
+                    <li><a data-toggle="tab" href="#tab4">Treatment History</a></li><?php #} ?>
                 </ul>
             </div>
+                 <?php } ?>
+<div class="widget-content tab-content">
+                 <div id="tab1" class="tab-pane active">
 
-             <div class="widget-content tab-content">
-                <div id="tab1" class="tab-pane active">
                     <form action="#" method="post" class="form-horizontal">
                     <div class="span6">
-<!--                        <div class="widget-box">-->
                           <div class="widget-title">
                               <span class="icon"> <i class="icon-align-justify"></i> </span>
                             <h5>Admission Details</h5>
@@ -211,15 +228,97 @@ if($staff_ID){
                                 <div class="controls">
                                     <textarea class="span11" name="description" readonly><?php echo $pat['admitDetails']; ?></textarea>
                                 </div>
-                              </div>
-                          </div>
-                      </div>
+                                </div>
+                                </div>
                     </form>
                 </div>
-<!--            </div>-->
-<!--            <hr/>-->
-<!--            <div class="widget-content tab-content">-->
-  <?php     if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){ ?>
+             </div>
+
+
+
+
+                <div id="tab6" class="tab-pane">
+                    <form action="" method="post" id="vitals" class="form-horizontal">
+                    <div class="span6" id="vitals">
+                          <div class="widget-content nopadding">
+                              <div class="control-group">
+                                <label class="control-label">Patient :</label>
+                               <div class="controls">
+                                  <input type="text" name="patientID" id="patientId" class="span11" value="<?php echo $patDetails['patientID'];?>"  readonly>
+
+                                </div>
+                              </div>
+                              <?php
+                              if(is_array($get_vit)){
+                              foreach($get_vit as $get_vits){}}?>
+
+                               <div class="control-group">
+                                <label class="control-label">Body Temperature:</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" placeholder="Body Temperature" value="<?php echo $get_vits['bodyTemp']; ?>" name="bodytemp" readonly />
+                                </div>
+                              </div>
+                 <div class="control-group">
+                                <label class="control-label">Pulse Rate :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" placeholder="Pulse Rate" value="<?php echo $get_vits['pulseRate']; ?>"  name="pulseRate" readonly/>
+                                </div>
+                              </div>
+
+
+                              <div class="control-group">
+                                <label class="control-label">Weight</label>
+                                <div class="controls">
+                                  <input type="text"  class="span11" name="weight" placeholder="Weight" value="<?php echo $get_vits['weight']; ?>"  readonly />
+                                </div>
+                              </div>
+
+                              </div>
+                          </div>
+
+   <div class="span6">
+                          <div class="widget-content nopadding">
+
+                              <?php #if(!empty($_GET['pid'])){ ?>
+                               <div class="control-group">
+                                <label class="control-label">Full Name :</label>
+                                <div class="controls">
+                                  <input type="text" required readonly value="<?php echo $patDetails['firstName'].' '.$patDetails['otherName'].' '.$patDetails['lastName']; ?>" id="FullName" class="span11" placeholder="Full name" name="FullName"  />
+                                </div>
+                              </div>
+                          <?php #}else{echo '<span id="fname"></span>';} ?>
+
+                              <div class="control-group">
+                                <label class="control-label">Respiration Rate :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" value="<?php echo $get_vits['respirationRate']; ?>" readonly/>
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">Blood Pressure</label>
+                                <div class="controls">
+                                  <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" value="<?php echo $get_vits['bloodPressure']; ?>" readonly />
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">As AT</label>
+                                <div class="controls">
+                                  <input type="text"  class="span11" name="" placeholder="AS AT TODAY" value="<?php echo $get_vits['dateRegistered']; ?>" readonly />
+                                </div>
+                              </div>
+
+
+                              <div class="form-actions">
+                                  <i class="span1"></i>
+                                <a href="ward-vitals?patientID=<?php echo $patientID; ?>&tab=vitals" class="btn btn-primary btn-block span10">Register New Vitals</a>
+                              </div>
+  </div>
+</div>
+
+                            </form>
+                </div>
+
+
                 <div id="tab2" class="tab-pane">
                     <form action="#" method="post" id="add_name" class="form-horizontal">
                           <div class="widget-content nopadding">
@@ -230,29 +329,63 @@ if($staff_ID){
                                 <tr>
                                     <td><input type="text" name="treatment[]" placeholder="Treatment / Medicine" class="span11" required /></td>
                                     <td><input type="text" name="dosage[]" placeholder="Dosage / Details" class="span11" required /></td>
-                                    <td><button type="button" name="add" id="add" class="btn btn-primary">Add Treatement</button></td>
+                                    <td><button type="button" name="add" id="add" class="btn btn-primary">Add Treatment</button></td>
                                 </tr>
                             </table>
                               <div class="form-actions" style="padding-left:0px;padding-right:0px;">
                                   <i class="span9"></i>
-                                <button type="submit" name="saveTreatment" class="btn btn-primary"> Save Treatement</button>
+                                <button type="submit" name="saveTreatment" class="btn btn-primary"> Save Treatment</button>
                               </div>
                           </div>
                     </form>
                 </div>
 
-<?php } ?>
+ <div id="tab5" class="tab-pane">
+                     <div class="widget-box">
+                      <div class="widget-title">
+                         <span class="icon"><i class="icon-th"></i></span>
+                        <h5>Patient's Name</h5>
+                      </div>
+                      <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th>Date</th>
+                              <th>Prescription</th>
+                              <th>Dosage</th>
+                              <th>Prescibed By</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody >
+                          <?php if(is_array($checklist)){ foreach($checklist as $checklists){?>
+                            <tr>
+                              <td><?php echo $checklists['dateInsert']; ?></td><td><?php echo $checklists['treatment']; ?><td><?php echo $checklists['dosage'];?></td><td></td>
+                              <td><?php echo $checklists['status'];?></td>
+                              <td><a href="status_administered?rid=<?php echo $checklists['reviewID'];?>&patid=<?php echo $patientID;?>&wardID=<?php echo $_REQUEST['wrdno'];?>" > Administered</a></td>
+                              <!-- hide administered link after click-->
+                            </tr>
+                          <?php }} ?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                      </div>
+
+
 
                 <div id="tab3" class="tab-pane">
                                   <form action="#" method="post" class="form-horizontal">
                     <div class="span12">
                           <div class="widget-title">
                               <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5> Remarks</h5>
+                            <h5> Doctor's Remarks</h5>
                           </div>
                           <div class="widget-content nopadding">
                                <div class="control-group">
-                                <label class="control-label">Remarks : </label>
+                                <label class="control-label">Doctor's Remarks : </label>
                                 <div class="controls">
                                     <textarea class="span12" rows="3" name="review" id="review"required></textarea>
                                 </div>
