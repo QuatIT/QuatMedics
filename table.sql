@@ -55,3 +55,24 @@ create table `labPayment`(
 	`dateInsert` date null,
 	`doe` timestamp
 )engine = InnoDB;
+
+create table `accounts`(
+	`accountID` int(255) not null primary key auto_increment,
+	`centerID` varchar(255) not null,
+	`accountName` varchar(255) not null, /* OPD, CONSULTATION ETC..*/
+	`accountType` varchar(255) not null, /* CREDIT DEBIT ACCOUNT..*/
+	`dateInsert date not null,
+	`doe` timestamp
+)engine = InnoDB;
+
+create table `transactionAccount`(
+	`id` int(255) not null primary key auto_increment,
+	`creditAcc` varchar(255) not null,
+	`debitAcc` varchar(255) not null,
+	`Amount` decimal(10,2) not null,
+	`patientID` varchar(255) not null,
+	`staffID` varchar(255) not null,
+	`activity` varchar(255) not null,
+	`dateInsert` date not null,
+	`doe` timestamp
+)engine = InnoDB;

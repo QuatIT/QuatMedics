@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+session_start();
+error_reporting(0);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -312,7 +315,7 @@ function toggleDataSeries(e) {
           <li> <a href="centerpharmacy-index"> <i class="fa fa-plus-square fa-3x"></i> <br/> PHARMACY</a> </li>
           <li> <a href="centerlab-index"> <i class="icon-search"></i> LABORATORY </a> </li>
           <li> <a href="smsrequest-index"> <i class="fa fa-envelope fa-3x"></i><br> SMS REQUEST </a> </li>
-          <li> <a href="centerprices-index"> <i class="icon-survey"></i>CHARGES </a> </li>
+          <li> <a href="center-account"> <i class="icon-survey"></i>ACCOUNTS </a> </li>
         </ul>
    </div>
 <?php }
