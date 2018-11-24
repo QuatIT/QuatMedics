@@ -6,6 +6,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/font-awesome.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -300,6 +301,7 @@ if(isset($_POST['presMeds'])){
                             <li><a data-toggle="tab" href="#tab2"> Request Lab</a></li>
                             <li><a data-toggle="tab" href="#tab3"> Admit To Ward</a></li>
                             <li><a data-toggle="tab" href="#tab4"> Prescribe Medication</a></li>
+                            <li><a data-toggle="tab" href="#tab5"> ICD-10</a></li>
                         </ul>
                     </div>
                     <div class="widget-content tab-content">
@@ -578,6 +580,18 @@ if(isset($_POST['presMeds'])){
 								 </div>
                             </form>
                         </div>
+
+						<div id="tab5" class="tab-pane">
+                              <form action="" method="post">
+		  <input type="text" placeholder="ICD-10 SEARCH" class="class-form span12 text-center" style="height:30px;" name="search_icd" onkeyup="icd(this.value);">
+	  </form>
+
+							 <div class="widget-box" style="height:300px; overflow-y: scroll;">
+
+						<span id="icd_load"></span>
+
+                    </div>
+                        </div>
                     </div>
                 </div>
           </div>
@@ -790,6 +804,16 @@ doctorappointment.patientID='$patientID'");
 
 <!--<script src="js/maruti.js"></script> -->
 
+
+<script>
+function icd(val){
+	// load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#icd_load').load('loads/icd-load.php?id='+val, function(){
+		$('#loader').html("");
+       });
+}
+</script>
 
 
 <script type="text/javascript">

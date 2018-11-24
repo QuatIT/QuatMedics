@@ -10,10 +10,12 @@ $load_newpatient = select("SELECT * FROM prescriptions ORDER BY patientID ASC");
 //$load_newpatient = select("SELECT * FROM prescriptions WHERE DATE(datePrescribe)=CURRENT_DATE ORDER BY patientID ASC");
 
 foreach($load_newpatient as $newpatient){
+
 $sqlll = select("SELECT * FROM patient WHERE patientID='".$newpatient['patientID']."' ");
-										 foreach($sqlll as $srowss){}
+ foreach($sqlll as $srowss){}
+
 	$selz = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$newpatient['prescribeCode']."' ");
-	foreach($selz as $slz){}
+		foreach($selz as $slz){}
 ?>
 
 

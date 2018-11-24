@@ -94,6 +94,7 @@ if($registerCenterAdmin){
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="../css/bootstrap.min.css" />
 <link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="../css/font-awesome.min.css" />
 <link rel="stylesheet" href="../css/fullcalendar.css" />
 <link rel="stylesheet" href="../css/colorpicker.css" />
 <link rel="stylesheet" href="../css/datepicker.css" />
