@@ -21,7 +21,8 @@ foreach($load_newpatient as $newpatient){
   <td> <?php echo $newpatient['prescribed_by']; ?></td>
   <td> <?php echo $newpatient['med_status']; ?></td>
   <td style="text-align: center;">
-       <a href="nursecheck?emeid=<?php echo $_GET['emeid'];?>&pid=<?php echo $_GET['pid']; ?>&id=<?php echo $newpatient['id']; ?>"> Administered</a>
+	  <?php if($newpatient['med_status']=="administered"){echo '';}else{ ?>
+       <a href="nursecheck?emeid=<?php echo $_GET['emeid'];?>&pid=<?php echo $_GET['pid']; ?>&id=<?php echo $newpatient['id']; ?>"> Administered</a><?php } ?>
   </td>
 </tr>
 

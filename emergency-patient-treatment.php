@@ -42,7 +42,7 @@
 if (isset($_POST['sub_mit'])){
     $medicine = count($_POST["medicine"]);
     $dosage = count($_POST["dosage"]);
-	$medical_status = 'not_attended_to';
+	$medical_status = 'not attended to';
 	$today_status = '0';
 
 	$eme_medIDs = count(select("SELECT * FROM eme_ward GROUP BY eme_medID ")) + 1;
@@ -380,15 +380,15 @@ foreach($load_newpatient as $newpatient){
 	  ?>
 	  <ol>
 		  <?php  foreach($sqls as $srows){ ?>
-		  <li><?php echo $srows['dosage']; ?></li>
+		  <li><?php echo $srows['dosage']; ?> (<?php if($srows['med_status']=="administered"){echo " <span class='btn btn-xs btn-success'>administered</span> ";}else{echo " <span class='btn btn-xs btn-danger'>not administered</span> "}?>)</li>
 		  <?php } ?>
 	  </ol>
 
 
 
 	</td>
+<!--  <td> <?php #echo $newpatient['med_status']; ?></td>-->
   <td> <?php echo $newpatient['prescribed_by']; ?></td>
-  <td> <?php echo $newpatient['med_status']; ?></td>
   <td> <?php if(empty($newpatient['doc_comment']) || $newpatient['doc_comment'] == 'NULL'){
 		  echo "<form action='' method='post'><input type='text' name='comment".$newpatient['eme_medID']."' ><input type='submit' name='btncomment".$newpatient['eme_medID']."' class='btn btn-primary'></form> "; ?>
 

@@ -52,6 +52,9 @@
 
         $centerID = $_SESSION['centerID'];
 
+		$sql_user = select("SELECT * FROM centeruser WHERE email='$email' ");
+		if(count($sql_user) < 1){
+
         $centerUser = $user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$centerID);
 
         if($centerUser){
@@ -74,7 +77,18 @@
         }else{
             $error = "FAILED TO CREATE USER DATA";
         }
+		}else{
+			$error = "USER DATA ALREADY EXIST";
+		}
     }
+
+	// fetch vitals
+
+$get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER BY id DESC LIMIT 1");
+
+//NURSE CHECKLIST
+$checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
+
 
 ?>
 

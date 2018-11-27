@@ -74,6 +74,7 @@
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
+                              <th>WardID</th>
                               <th>Bed Number</th>
                               <th>Patient</th>
                               <th>Nurse</th>
@@ -90,18 +91,23 @@
           foreach($bed_det as $bed_dets){
             $ward_det =select("SELECT * FROM wardassigns");
             if(is_array($ward_det)){
-              foreach($ward_det as $ward_dets){}?>
+              foreach($ward_det as $ward_dets){}
 
+							 $pat_sql = select("SELECT * FROM patient WHERE patientID='".$ward_dets['patientID']."' ");
+							 foreach($pat_sql as $pt){}
+
+
+?>
               <tr>
                               <td><?php echo $bed_dets['wardID'];?></td>
                               <td><?php echo $bed_dets['bedNumber'];?></td>
-                              <td><?php echo $ward_dets['patientID'];?></td>
+                              <td><?php echo $pt['firstName']." ".$pt['otherName']." ".$pt['lastName'];?></td>
                               <td><?php echo $ward_dets['staffID'];?></td>
                               <td><?php echo $ward_dets['admitDate'];?></td>
                               <td><?php echo $ward_dets['dischargeDate'];?></td>
                               <td style="text-align: center;">
 
-                                   <a href="ward-patientAssign"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>&nbsp;
+                                   <a href="ward-patientAssign?wrdno=<?php echo $bed_dets['wardID'];?>&patid=<?php echo $ward_dets['patientID']; ?>&assign=<?php echo $ward_dets['assignID'];?>"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>&nbsp;
                                     <a href="ward-patientDetails?patid=<?php echo urlencode($ward_dets['patientID'])?>&Admitted=<?php echo urlencode($ward_dets['admitDate'])?>&bedNumber=<?php echo urlencode($bed_dets['bedNumber'])?>&wrdno=<?php echo urlencode($bed_dets['wardID'])?>"> <span class="btn btn-info fa fa-link"></span></a>
 <!--                              </tr>-->
                             </td>

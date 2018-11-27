@@ -30,6 +30,7 @@ $mail->addAddress($to);
 $mail->addCC($cc);
 if(!$mail->send()){
 // echo "Mailer Error: " . $mail->ErrorInfo;
+	echo "";
 }else{
 // echo "E-Mail has been sent";
  echo "";

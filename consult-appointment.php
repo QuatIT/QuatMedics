@@ -56,8 +56,11 @@ if(isset($_POST['addApptmnt'])){
         $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
         $appointDate = filter_input(INPUT_POST, "appointDate", FILTER_SANITIZE_STRING);
         $appointTime = filter_input(INPUT_POST, "appointTime", FILTER_SANITIZE_STRING);
+        $reason = filter_input(INPUT_POST, "reason", FILTER_SANITIZE_STRING);
+        $sms = filter_input(INPUT_POST, "sms", FILTER_SANITIZE_STRING);
 		$status = trim("PENDIND");
-    $addapointment = $consultation->createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime,$status);
+	$centerID = $_SESSION['centerID'];
+    $addapointment = $consultation->createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime,$status,$reason,$sms,$centerID);
     if($addapointment){
         $success =  "APPOINTMENT SAVED SUCCESSFULLY";
     }else{
@@ -183,7 +186,15 @@ if(isset($_POST['addApptmnt'])){
                                 <label class="control-label">Send SMS :</label>
                                 <div class="controls">
                                   <label>
-                                    <input type="checkbox" name="radios" />
+									  <textarea name="reason" class="span11"></textarea>
+                                </label>
+                                </div>
+                              </div>
+							  <div class="control-group">
+                                <label class="control-label">Send SMS :</label>
+                                <div class="controls">
+                                  <label>
+                                    <input type="checkbox" name="sms" value="YES"/>
                                 </label>
                                 </div>
                               </div>

@@ -1,10 +1,15 @@
 
 <?php
 include '../assets/core/connection.php';
+session_start();
+
+if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
+    echo "<script>window.location.href='index'</script>";
+}
 
 //$roomID = $_GET['roomID'];
 $staffID = $_GET['staffID'];
-$load_appoint = select("SELECT * FROM doctorappointment WHERE staffID='$staffID' ORDER BY doe ASC");
+$load_appoint = select("SELECT * FROM doctorappointment WHERE staffID='$staffID' && centerID='".$_SESSION['centerID']."' ORDER BY doe ASC");
 
 foreach($load_appoint as $appointrow){
     $appointNumber = $appointrow['appointNumber'];

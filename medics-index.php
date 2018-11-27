@@ -49,6 +49,11 @@ error_reporting(0);
 <body>
 
 <?php include 'layout/head.php';
+
+	if($_SESSION['username'] ==''){
+		echo "<script>window.location.href='logout'</script>";
+	}
+
     $centerID=$_SESSION['centerID'];
     @$roomID = $_GET['roomID'];
 $update_consulting = update("UPDATE consultingroom SET status='free' WHERE roomID='$roommID'");
