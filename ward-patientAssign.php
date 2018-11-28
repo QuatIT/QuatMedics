@@ -50,8 +50,18 @@
     if($_SESSION['accessLevel']=="CONSULTATION" || $_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
         $patientID = $_GET['patid'];
         $wardID = $_GET['wrdno'];
+        $assignID = $_GET['assign'];
         $get_patient = select("SELECT * FROM patient WHERE patientID='$patientID' ");
         foreach($get_patient as $pat){}
+
+		if(isset($_POST['btnSave'])){
+
+			if($_POST['assignTo1']=="Staff"){
+				$assign_update = update("UPDATE wardassigns SET staffID='".$_POST['assignTo']."' WHERE assignID='$assignID' && patientID='$patientID' && wardID='$wardID' ");
+			}elseif($_POST['assignTo1']=="Consultation"){
+				$assign_update = update("UPDATE wardassigns SET consultingroom='".$_POST['assignTo']."' WHERE assignID='$assignID' && patientID='$patientID' && wardID='$wardID' ");
+			}
+		}
 
 ?>
 
@@ -130,7 +140,7 @@
                               <div class="control-group">
                                 <label class="control-label">Assign To :</label>
                                 <div class="controls">
-                                    <select name="assignTo" onchange="staff_diff(this.value);">
+                                    <select name="assignTo1" onchange="staff_diff(this.value);">
                                         <option value=""> </option>
                                         <option value="Staff"> Staff </option>
                                         <option value="Consulting"> Consulting Room </option>

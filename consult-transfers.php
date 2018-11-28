@@ -69,7 +69,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
 
             //from doctor
             $cent_fuser = select("SELECT * FROM staff WHERE staffID='$from_user' ");
-            foreach($cent_fuser as $cenftrow){
+            foreach($cent_fuser as $centfrow){
                 $des_fuser = $centfrow['email'];
                 $des_fuserName = $centfrow['firstName']." ".$centfrow['otherName']." ".$centfrow['lastName'];
             }
@@ -77,7 +77,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
             //from center
             $cent_femail = select("SELECT * FROM medicalcenter WHERE centerID='$from_center' ");
             foreach($cent_femail as $centfmail){
-                $des_fName = $centmail['centerName'];
+                $des_fName = $centfmail['centerName'];
             }
 
             //send to mail
@@ -93,7 +93,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
             }
 
             //patient
-            $pati = select("SELECT * FORM patient WHERE patientID='$patientID' ");
+            $pati = select("SELECT * FROM patient WHERE patientID='$patientID' ");
             foreach($pati as $patty){
                 $pat_ID = $patty['patientID'];
                 $pat_Name = $patty['firstName']." ".$patty['otherName']." ".$patty['lastName'];

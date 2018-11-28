@@ -22,7 +22,7 @@ if(isset($_POST['btnSave'])){
                 $centerIDRow = $centerAdminRow['centerID'];
             }
 
-            if($accessLevelRow = 'center_admin'){
+            if($accessLevelRow == 'center_admin'){
                 $_SESSION['username'] = $usernameRow;
                 $_SESSION['password'] = $passwordRow;
                 $_SESSION['accessLevel'] = $accessLevelRow;

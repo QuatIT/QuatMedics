@@ -41,6 +41,9 @@
       $roomName = filter_input(INPUT_POST, "departmentName", FILTER_SANITIZE_STRING);
         $status = FREE;
 
+		$sql = select("SELECT * FROM consultingroom WHERE roomName='".$roomName."' && centerID='".$centerID."' ");
+		if(count($sql)<1){
+
         $consultRoom = $consultation->createConsultRoom($consultRoomID,$centerID,$roomName,$status);
 
         if($consultRoom){
@@ -48,6 +51,9 @@
         }else{
             $error = "CONSULTING ROOM FAILED";
         }
+		}else{
+			 $error = "CONSULTING ROOM ALREADY EXIST";
+		}
 
     }
 

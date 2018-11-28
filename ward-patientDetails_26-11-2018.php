@@ -6,6 +6,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/font-awesome.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -247,28 +248,20 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
 
                                 </div>
                               </div>
-
-                          <?php
-
-	// fetch vitals
-
-$get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER BY id DESC LIMIT 1");
-
-//NURSE CHECKLIST
-$checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
+                              <?php
                               if(is_array($get_vit)){
                               foreach($get_vit as $get_vits){}}?>
 
                                <div class="control-group">
                                 <label class="control-label">Body Temperature:</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Body Temperature" value="<?php echo @$get_vits['bodyTemp']; ?>" name="bodytemp" readonly />
+                                  <input type="text" class="span11" placeholder="Body Temperature" value="<?php echo $get_vits['bodyTemp']; ?>" name="bodytemp" readonly />
                                 </div>
                               </div>
                  <div class="control-group">
                                 <label class="control-label">Pulse Rate :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Pulse Rate" value="<?php echo @$get_vits['pulseRate']; ?>"  name="pulseRate" readonly/>
+                                  <input type="text" class="span11" placeholder="Pulse Rate" value="<?php echo $get_vits['pulseRate']; ?>"  name="pulseRate" readonly/>
                                 </div>
                               </div>
 
@@ -276,13 +269,12 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                               <div class="control-group">
                                 <label class="control-label">Weight</label>
                                 <div class="controls">
-                                  <input type="text"  class="span11" name="weight" placeholder="Weight" value="<?php echo @$get_vits['weight']; ?>"  readonly />
+                                  <input type="text"  class="span11" name="weight" placeholder="Weight" value="<?php echo $get_vits['weight']; ?>"  readonly />
                                 </div>
                               </div>
 
                               </div>
                           </div>
-
 
    <div class="span6">
                           <div class="widget-content nopadding">
@@ -299,19 +291,19 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                               <div class="control-group">
                                 <label class="control-label">Respiration Rate :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" value="<?php echo @$get_vits['respirationRate']; ?>" readonly/>
+                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" value="<?php echo $get_vits['respirationRate']; ?>" readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Blood Pressure</label>
                                 <div class="controls">
-                                  <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" value="<?php echo @$get_vits['bloodPressure']; ?>" readonly />
+                                  <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" value="<?php echo $get_vits['bloodPressure']; ?>" readonly />
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">As AT</label>
                                 <div class="controls">
-                                  <input type="text"  class="span11" name="" placeholder="AS AT TODAY" value="<?php echo @$get_vits['dateRegistered']; ?>" readonly />
+                                  <input type="text"  class="span11" name="" placeholder="AS AT TODAY" value="<?php echo $get_vits['dateRegistered']; ?>" readonly />
                                 </div>
                               </div>
 
@@ -369,8 +361,7 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                           <tbody >
                           <?php if(is_array($checklist)){ foreach($checklist as $checklists){?>
                             <tr>
-                              <td><?php echo $checklists['dateInsert']; ?></td><td><?php echo $checklists['treatment']; ?><td><?php echo $checklists['dosage'];?></td>
-                              <td><?php echo $pat['staffID'];?></td>
+                              <td><?php echo $checklists['dateInsert']; ?></td><td><?php echo $checklists['treatment']; ?><td><?php echo $checklists['dosage'];?></td><td></td>
                               <td><?php echo $checklists['status'];?></td>
                               <td><?php if($checklists['status']!='Administered'){ ?><a href="status_administered?rid=<?php echo $checklists['reviewID'];?>&patid=<?php echo $patientID;?>&wardID=<?php echo $_REQUEST['wrdno'];?>" > Administered</a><?php } ?></td>
                               <!-- hide administered link after click-->
@@ -396,13 +387,13 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                                <div class="control-group">
                                 <label class="control-label">Doctor's Remarks : </label>
                                 <div class="controls">
-                                    <input type='text' class="form-control span5"  name="review" id="review"required/>&nbsp;<button type="submit" name="saveReview" class="btn btn-primary ">Save Remarks</button>
+                                    <textarea class="span12" rows="3" name="review" id="review"required></textarea>
                                 </div>
                               </div>
-                             <!-- <div class="form-actions">
+                             <div class="form-actions">
                                   <i class="span8"></i>
                                 <button type="submit" name="saveReview" class="btn btn-primary btn-block span4">Save Remarks</button>
-                              </div> -->
+                              </div>
                           </div>
                       </div>
                     </form>
@@ -416,11 +407,10 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                           <thead>
                             <tr>
                               <th> Date & Time</th>
-                              <th> Precription</th>
+                              <th> Treatment</th>
                               <th> Details / Dosage</th>
-                              <th> Prescribed By</th>
-                              <th> Status</th>
-                              <th> Doctor's Comment</th>
+                              <th> Recommendatiosn</th>
+                              <th> Doctor's Review</th>
 
                             </tr>
                           </thead>
@@ -434,14 +424,14 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                                 <td>".$reports['doe']."</td>
                                 <td>".$reports['treatment']."</td>
                                 <td>".$reports['dosage']."</td>
-                                <td>".$pat['staffID']. "</td>
-                                <td>".$checklists['status']."</td>
+                                <td>".$reports['comments']."</td>
                                 <td>".$rev_iews['DocReview']."</td>
                               </tr>";
                               }?>
 
-                      </div> </tbody>
+                      </tbody>
                         </table>
+                    </div>
                     </div>
 
 
@@ -454,7 +444,7 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
       </div>
   </div>
 </div>
-<div class="row-fluid ">
+<div class="row-fluid navbar-fixed-bottom">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>

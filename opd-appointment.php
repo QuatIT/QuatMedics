@@ -24,7 +24,32 @@
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+	include 'layout/head.php';
+	$success='';
+	$error='';
+	if(isset($_POST['btnApt'])){
+		$appointmentDate = $_POST['appointmentDate'];
+		$appointmentTime = $_POST['appointmentTime'];
+		$appointment_reason = $_POST['appointment_reason'];
+		$patient = $_POST['patient'];
+		$doctor = $_POST['doctor'];
+		$sms = $_POST['radios'];
+		$centerID = $_SESSION['centerID'];
+
+		$appointNumber = "APTMNT-".count(select("select * from doctorappointment WHERE centerID='".$_SESSION['centerID']."' ")) + 1;
+
+		$apt_sql = insert("INSERT INTO doctorappointment(appointNumber,staffID,patientID,appointmentDate,appointmentTime,sms,reason,centerID,status,dateInsert) VALUES('$appointNumber','$doctor','$patient','$appointmentDate','$appointmentTime','$sms','$appointment_reason','$centerID','pending',CURDATE()) ");
+
+		if($apt_sql){
+			$success = "APPOINTMENT SCHEDULED SUCCESSFULLY";
+		}else{
+			$error = "FAILED SCHEDULING APPOINTMENT";
+		}
+
+	}
+
+	?>
 <div id="search">
   <input type="text" placeholder="Search here..." disabled/>
   <button type="submit" class="tip-left" title="Search" disabled><i class="icon-search icon-white"></i></button>
@@ -51,7 +76,19 @@
   </div>
   <div class="container">
       <h3 class="quick-actions">DOCTOR'S APPOINTMENTS</h3>
-
+ <?php
+                      if($success){
+                      ?>
+                      <div class="alert alert-success">
+                  <strong>Success!</strong> <?php echo $success; ?>
+                </div>
+                      <?php } if($error){
+                          ?>
+                      <div class="alert alert-danger">
+                  <strong>Error!</strong> <?php echo $error; ?>
+                </div>
+                      <?php
+                      } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -74,42 +111,40 @@
                               <th>Photo</th>
                               <th>Patient Number</th>
                               <th>Patient Name</th>
-                              <th>Mobile Number</th>
+                              <th>Doctor Name</th>
+                              <th>Reason</th>
                               <th>Status</th>
-                              <th>Action</th>
+                              <th>Appointment Date</th>
+                              <th>Appointment Time</th>
                             </tr>
                           </thead>
                           <tbody>
+							  <?php
+								  $apquery = select("select * from doctorappointment WHERE centerID='".$_SESSION['centerID']."' ");
+							  foreach($apquery as $aprow){
+								  $patquery = select("select * from patient where patientID='".$aprow['patientID']."' ");
+								  foreach($patquery as $patrow){}
+
+								  $staffquery = select("select * from staff where staffID='".$aprow['staffID']."'");
+								  foreach($staffquery as $stafrow){}
+							  ?>
                             <tr>
-                              <td>Photo</td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;"><span class="btn btn-primary btn-block btn-mini">Status</span></td>
+                              <td><img width="40px" src='<?php echo $PATIENT_UPLOAD.$patrow['patient_image'];?>'></td>
+                              <td><?php echo $aprow['patientID']; ?></td>
+                              <td><?php echo $patrow['firstName']." ".$patrow['otherName']." ".$patrow['lastName']; ?></td>
+                              <td><?php echo $stafrow['firstName']." ".$stafrow['otherName']." ".$stafrow['lastName']; ?></td>
+                              <td><?php echo $aprow['reason']; ?></td>
+                              <td style="text-align: center;"><span class="btn btn-primary btn-block btn-mini"><?php echo $aprow['status']; ?></span></td>
+                              <td><?php echo $aprow['appointmentDate']; ?></td>
+                              <td><?php echo $aprow['appointmentTime']; ?></td>
+
+<!--
                               <td style="text-align: center;">
                                    <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
                               </td>
+-->
                             </tr>
-                            <tr>
-                              <td>Photo</td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;"><span class="btn btn-primary btn-block btn-mini">Status</span></td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Photo</td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;"><span class="btn btn-primary btn-block btn-mini">Status</span></td>
-                              <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
+							  <?php } ?>
                           </tbody>
                         </table>
                       </div>
@@ -126,19 +161,26 @@
                               <div class="control-group">
                                 <label class="control-label">Appointment Date :</label>
                                 <div class="controls">
-                                  <input type="date" class="span11" name="appointmentDate" required/>
+                                  <input type="date" class="span6" name="appointmentDate" required/>
+									 Time : <input type="time" class="span4" name="appointmentTime" required/>
                                 </div>
                               </div>
-                             <div class="control-group">
-                                <label class="control-label">Assign Doctor :</label>
+                          </div>
+<!--
+                          <div class="widget-content nopadding">
+                              <div class="control-group">
+                                <label class="control-label">Appointment Date :</label>
                                 <div class="controls">
-                                  <select name="bloodGroup" class="" >
-                                    <option value="default"> -- Select Doctor --</option>
-                                    <option value="doctorName"> Doctor Name</option>
-                                    <option value="doctorName"> Doctor Name</option>
-                                    <option value="doctorName"> Doctor Name</option>
-                                    <option value="doctorName"> Doctor Name</option>
-                                  </select>
+                                  <input type="date" class="span6" name="appointmentDate" required/>
+                                </div>
+                              </div>
+                          </div>
+-->
+                          <div class="widget-content nopadding">
+                              <div class="control-group">
+                                <label class="control-label">Reason :</label>
+                                <div class="controls">
+									<textarea class="span11" name="appointment_reason" ></textarea>
                                 </div>
                               </div>
                           </div>
@@ -152,26 +194,45 @@
                              <div class="control-group">
                                 <label class="control-label">Patient :</label>
                                 <div class="controls">
-                                  <select name="bloodGroup" class="" >
+                                  <select name="patient" class="" >
                                     <option value="default"> -- Select Patient --</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
+									  <?php
+										  $patient_sql = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' ");
+									  foreach($patient_sql as $patient_row){
+									  ?>
+                                    <option value="<?php echo $patient_row['patientID']; ?>"> <?php echo $patient_row['firstName']." ".$patient_row['otherName']." ".$patient_row['lastName'];?></option>
+									  <?php } ?>
                                   </select>
                                 </div>
                               </div>
+
+
+                             <div class="control-group">
+                                <label class="control-label">Assign Doctor :</label>
+                                <div class="controls">
+                                  <select name="doctor" class="" >
+                                    <option value="default"> -- Select Doctor --</option>
+									  <?php
+										  $doc_sql = select("SELECT * FROM staff WHERE centerID='".$_SESSION['centerID']."' ");
+									  foreach($doc_sql as $doc_row){
+									  ?>
+                                    <option value="<?php echo $doc_row['staffID']; ?>"><?php echo $doc_row['firstName']." ".$doc_row['otherName']." ".$doc_row['lastName']; ?></option>
+									  <?php } ?>
+                                  </select>
+                                </div>
+                              </div>
+
                               <div class="control-group">
                                 <label class="control-label">Send SMS :</label>
                                 <div class="controls">
                                   <label>
-                                    <input type="checkbox" name="radios" />
+                                    <input type="checkbox" name="radios" value="YES" />
                                 </label>
                                 </div>
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Save Appointment</button>
+                                <button type="submit" class="btn btn-primary btn-block span10" name="btnApt">Save Appointment</button>
                               </div>
                           </div>
                       </div>

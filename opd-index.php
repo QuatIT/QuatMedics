@@ -64,12 +64,19 @@
 		//                  move_uploaded_file($fileName, "uploads/company/{$new_image}");
 		move_uploaded_file($fileName, $filedestination);
 
+		$pat_sql = select("SELECT * FROM patient WHERE firstName='$firstName' && otherName='$otherName' && lastName='$lastName' && gender='$gender' && phoneNumber='$phoneNumber' && homeAddress='$homeAddress' && doe='$doe' && centerID='$centerID' ");
+
+		if(count($pat_sql) < 1){
+
         $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination,$hometown);
 
         if($createPatient){
              $success = "<script>document.write('PATIENT DETAIL ADDED SUCCESSFULLY');
                                     window.location.href='opd-patient?tab=vitals&pid={$patientId}' </script>";
         }
+		}else{
+			$error = "PATIENT ALREADY EXIST";
+		}
     }
 
 
@@ -137,7 +144,7 @@
                               <th>Patient Number</th>
                               <th>Patient Name</th>
                               <th>Mobile Number</th>
-<!--                              <th>Action</th>-->
+                              <th>Action</th>
                             </tr>
                           </thead>
                           <tbody id="newpatient">

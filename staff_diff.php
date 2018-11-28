@@ -14,14 +14,14 @@ if($q == 'Staff'){
     $sql = select("SELECT * FROM staff WHERE centerID='".$_SESSION['centerID']."' ");
     foreach($sql as $row){
         ?>
-        <option><?php echo $row['firstName']." ".$row['otherName']." ".$row['lastName']; ?></option>
+        <option value="<?php echo $row['staffID']; ?>"><?php echo $row['firstName']." ".$row['otherName']." ".$row['lastName']; ?></option>
         <?php
     }
 }elseif($q == 'Consulting'){
     $sql = select("SELECT * FROM consultingroom WHERE centerID='".$_SESSION['centerID']."' ");
     foreach($sql as $row){
         ?>
-        <option><?php echo $row['roomName']; ?></option>
+        <option value="<?php echo $row['roomID']; ?>"><?php echo $row['roomName']; ?></option>
         <?php
     }
 }
