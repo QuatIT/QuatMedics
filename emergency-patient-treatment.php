@@ -130,6 +130,7 @@ if (isset($_POST['sub_mit'])){
             <div class="widget-title">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab1">Patient Vitals</a></li>
+                    <li><a data-toggle="tab" href="#tab5">Vitals (Graphical)</a></li>
                     <li><a data-toggle="tab" href="#tab2">Doctor's Prescription</a></li>
                     <li><a data-toggle="tab" href="#tab3">Nurse's Checklist</a></li>
                     <li><a data-toggle="tab" href="#tab4">Patient's Ward History</a></li>
@@ -257,6 +258,22 @@ if (isset($_POST['sub_mit'])){
                 </div>
 
 
+                <div id="tab5" class="tab-pane">
+					<div class="widget-box">
+                      <div class="widget-title">
+                         <span class="icon"><i class="icon-th"></i></span>
+                        <h5>Patient's Vitals (Graphical)</h5>
+                      </div>
+                      <div class="widget-content nopadding">
+
+						 <div class="span6 container" id="temperature"></div>
+						 <div class="span6" id="respiration"></div>
+
+                      </div>
+                      </div>
+                      </div>
+
+
                 <div id="tab2" class="tab-pane">
 					<div class="widget-box">
                       <div class="widget-title">
@@ -340,10 +357,11 @@ if (isset($_POST['sub_mit'])){
                           <thead>
                             <tr>
                               <th>Date</th>
+                              <th>Vitals</th>
                               <th>Prescription</th>
                               <th>Dosage</th>
                               <th>Prescibed By</th>
-                              <th>Status</th>
+<!--                              <th>Status</th>-->
                               <th>Doctor's Comment</th>
                             </tr>
                           </thead>
@@ -359,6 +377,20 @@ foreach($load_newpatient as $newpatient){
 
 <tr>
   <td> <?php echo $newpatient['dateRegistered']; ?></td>
+  <td>
+	<?php
+	  $em_vn = select("select * from eme_vitals where dateRegistered='".$newpatient['dateRegistered']."' ");
+		foreach($em_vn as $emv_row){}
+	  ?>
+	<ol>
+	  <li><b>Body Temperature: </b> <?php echo $emv_row['bodyTemp']; ?></li>
+	  <li><b>Pulse Rate : </b> <?php echo $emv_row['pulseRate']; ?></li>
+	  <li><b>Weight : </b> <?php echo $emv_row['weight']; ?></li>
+	  <li><b>Respiration Rate : </b> <?php echo $emv_row['respirationRate']; ?></li>
+	  <li><b>Blood Pressure : </b> <?php echo $emv_row['bloodPressure']; ?></li>
+	  </ol>
+
+	</td>
   <td>
 	  <?php
 		  $sql = select("SELECT * FROM eme_ward WHERE eme_medID='".$newpatient['eme_medID']."' ORDER BY dateRegistered ASC");
@@ -380,7 +412,11 @@ foreach($load_newpatient as $newpatient){
 	  ?>
 	  <ol>
 		  <?php  foreach($sqls as $srows){ ?>
-		  <li><?php echo $srows['dosage']; ?> (<?php if($srows['med_status']=="administered"){echo " <span class='btn btn-xs btn-success'>administered</span> ";}else{echo " <span class='btn btn-xs btn-danger'>not administered</span> "}?>)</li>
+		  <li>
+			  <?php echo $srows['dosage']; ?> ( <?php if($srows['med_status']=="administered"){ ?> <span class='' style='color:green;'>administered</span> <?php }else{ ?><span class='' style='color:red;'>not administered</span> <?php } ?> )
+
+		  </li>
+
 		  <?php } ?>
 	  </ol>
 
@@ -448,6 +484,7 @@ foreach($load_newpatient as $newpatient){
 <script src="js/maruti.dashboard.js"></script>
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
+<script src="js/highcharts.js"></script>
 <!--<script src="js/maruti.js"></script> -->
 <script>
   function newpatient(){
