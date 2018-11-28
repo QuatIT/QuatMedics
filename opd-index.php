@@ -56,13 +56,13 @@
       $guardianAddress = filter_input(INPUT_POST, "guardianAddress", FILTER_SANITIZE_STRING);
 
 
-                    //image upload
-                  $fileName =trim($_FILES['image']['tmp_name']);
-                    $image = explode(".",trim($_FILES['image']['name']));
-                    $new_image = $patientId."_".round(microtime(true)) . '.' . end($image);
-                    $filedestination = $PATIENT_UPLOAD.$new_image;
-//                  move_uploaded_file($fileName, "uploads/company/{$new_image}");
-                  move_uploaded_file($fileName, $filedestination);
+		//image upload
+		$fileName =trim($_FILES['image']['tmp_name']);
+		$image = explode(".",trim($_FILES['image']['name']));
+		$new_image = $patientId."_".round(microtime(true)) . '.' . end($image);
+		$filedestination = $PATIENT_UPLOAD.$new_image;
+		//                  move_uploaded_file($fileName, "uploads/company/{$new_image}");
+		move_uploaded_file($fileName, $filedestination);
 
 		$pat_sql = select("SELECT * FROM patient WHERE firstName='$firstName' && otherName='$otherName' && lastName='$lastName' && gender='$gender' && phoneNumber='$phoneNumber' && homeAddress='$homeAddress' && doe='$doe' && centerID='$centerID' ");
 
@@ -347,7 +347,7 @@
       </div>
   </div>
 </div>
-<div class="row-fluid navbar-fixed-bottom">
+<div class="row-fluid ">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>

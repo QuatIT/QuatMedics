@@ -100,6 +100,12 @@
       return $num;
     }
 
+    public function loadAccPrices($centerID){
+      $result=query("SELECT * FROM accounts WHERE centerID='$centerID'") ;
+      $num = count($result);
+      return $num;
+    }
+
 
     public function find_num_consults(){
       $result=query("SELECT * FROM consultation ");

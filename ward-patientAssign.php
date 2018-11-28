@@ -171,7 +171,7 @@
       </div>
   </div>
 </div>
-<div class="row-fluid navbar-fixed-bottom">
+<div class="row-fluid ">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>

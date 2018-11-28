@@ -179,22 +179,37 @@ if(isset($_POST['presMeds'])){
         $datePrescribe = trim(date("Y-m-d"));
         $prescriptionCode = randomString('4');
 
-        $medNum = count($_POST['medicine']);
-        $dosageNum = count($_POST['dosage']);
+        $medIDNum = count($_POST['medName']);
+        $piecesNum = count($_POST['pieces']);
+        $adayNum = count($_POST['aday']);
+        $totalDaysNum = count($_POST['totalDays']);
 
-        if($medNum > 0 && $dosageNum > 0) {
+        if($medIDNum > 0 && $piecesNum > 0) {
 			//saving prescription..
         $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
 
-			//saving the prescribed medications....
-            for($m=0, $d=0; $m<$medNum, $d<$dosageNum; $m++,$d++){
-                    if(trim($_POST["medicine"][$m] != '') && trim($_POST['dosage'][$d] != '')) {
-                        $medicine = trim($_POST["medicine"][$m]);
-                        $dosage = trim($_POST["dosage"][$d]);
+		//saving the prescribed medications....
+		for($m=0, $p=0, $a=0, $t=0; $m<$medIDNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
+				if(trim($_POST['medName'][$m] != '') && trim($_POST['pieces'][$p] != '') && trim($_POST['aday'][$a] != '') && trim($_POST['totalDays'][$t] != '')) {
+					$medicineID = trim($_POST['medName'][$m]);
+					$pieces = trim($_POST['pieces'][$p]);
+					$aday = trim($_POST['aday'][$a]);
+					$totalDays = trim($_POST['totalDays'][$t]);
+					//get medicine name for insert qeury...
+					$findmedname = select("SELECT medicine_name,unit_price FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
+					foreach($findmedname as $nameRow){
+						$medicine = $nameRow['medicine_name'];
+						$unitPrice = $nameRow['unit_price'];
+					}
 
-      $insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$paymode','$dateToday')");
-                        }
-            }
+					//set dosage..
+					$dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
+					//medicine price calculation..
+					$medprice = trim($unitPrice*$pieces);
+
+		$insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode','$dateToday')");
+					}
+		}
 
               if($insertpresciption && $insertMeds){
                     $success =  "PRESCRIPTION SENT SUCCESSFULLY";
@@ -524,7 +539,7 @@ if(isset($_POST['presMeds'])){
                         </div>
                         <div id="tab4" class="tab-pane">
                              <form action="#" method="post" id="add_name" class="form-horizontal">
-								 <div class="span6">
+								 <div class="span4">
 								 	<table class="table table-bordered">
                                           <tr>
                                               <td> Presciption Code</td>
@@ -556,9 +571,9 @@ if(isset($_POST['presMeds'])){
                                           </tr>
                                     </table>
 								 </div>
-								 <div class="span6">
+								 <div class="span8">
                                       <table class="table table-bordered" id="dynamic_field">
-										  	<?php if(!empty($consultrow['mode'])){ ?>
+									<?php if(!empty($consultrow['mode'])){ ?>
                                       <div class="control-group" style="display:none;">
                                         <label class="control-label">Pay Mode :</label>
                                         <div class="controls">
@@ -566,16 +581,37 @@ if(isset($_POST['presMeds'])){
                                         </div>
                                       </div>
                                       <?php } ?>
+					<thead>
+						<th> Medicine Name</th>
+						<th> No of intakes / Pieces</th>
+						<th> Intakes Per Day</th>
+						<th> Number Of Days</th>
+						<th></th>
+					</thead>
 
-                                        <tr>
-                                            <td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" required /></td>
-                                            <td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" required /></td>
-                                            <td><button type="button" name="add" id="add" class="btn btn-primary">Add Medicine</button></td>
-                                        </tr>
+					<tr>
+						<td style="width:30%;">
+							<select name="medName[]" class="span11">
+							<?php
+								if($consultrow['mode']== 'Private'){
+								$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID'");
+								if($meds){
+									foreach($meds as $medrow){
+
+							?>
+							<option value="<?php echo $medrow['medicine_id']; ?>"> <?php echo $medrow['medicine_name'];?></option>
+							<?php }}}?>
+							</select>
+						</td>
+						<td><input type="number" min="1" name="pieces[]" placeholder="e.g. 2" class="span11" required /></td>
+						<td><input type="number" min="1" name="aday[]" placeholder="e.g. 3" class="span11" required /></td>
+						<td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" required /></td>
+						<td><button type="button" name="add" id="add" class="btn btn-primary">Add</button></td>
+					</tr>
                                     </table>
                                       <div class="form-actions">
-                                          <i class="span1"></i>
-                                        <button type="submit" name="presMeds" class="btn btn-primary btn-block span10"> Save Prescription</button>
+                                          <i class="span7"></i>
+                                        <button type="submit" name="presMeds" class="btn btn-primary btn-block span5"> Save Prescription</button>
                                       </div>
 								 </div>
                             </form>
@@ -845,7 +881,7 @@ function resetMenu() {
         var i=1;
         $('#add').click(function(){
             i++;
-            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field').append('<tr id="row'+i+'"><td style="width:30%;"><select name="medName[]" class="span11"><?php $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID'"); if($meds){ foreach($meds as $medrow){ ?><option value="<?php echo $medrow['medicine_id']; ?>"> <?php echo $medrow['medicine_name'];?></option><?php }}?></select></td><td><input type="number" min="1" name="pieces[]" placeholder="e.g. 2" class="span11" required /></td><td><input type="number" min="1" name="aday[]" placeholder="e.g. 3" class="span11" required /></td><td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){
