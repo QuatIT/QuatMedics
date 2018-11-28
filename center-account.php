@@ -26,47 +26,47 @@
 <?php
     include 'layout/head.php';
 
-    $consultation = new Consultation;
+    $consultation = new Consultation();
  	$centerID = $_SESSION['centerID'];
     $success = '';
     $error = '';
 
 
-	//saving services..
-    if(isset($_POST['saveServiceprices'])){
-		//count number of service entered..
-		$nameNum = count($_POST['accountName']);
-        $typeNum = count($_POST['accountType']);
-		//check number of services..
-		if($nameNum > 0 && $typeNum >0){
-			//saving services into database...
-            for($n=0, $t=0; $n<$nameNum, $p<$typeNum; $n++,$t++){
-                    if(trim($_POST['accountName'][$n] != '') && trim($_POST['accountType'][$t] != '')) {
-                        $serviceName = trim($_POST["serviceName"][$n]);
-                        $servicePrice = trim($_POST["servicePrice"][$t]);
-						$serviceType = trim("Service");
-						//generate service ID
-						$serviceIDs = $consultation->loadServicePrices($centerID) + 1;
-						$serviceID = "SV-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs);
+//saving Account..
+if(isset($_POST['saveAccount'])){
+	//count number of service entered..
+	$nameNum = count($_POST['accountName']);
+	$typeNum = count($_POST['accountType']);
+	//check number of services..
+	if($nameNum > 0 && $typeNum >0){
+		//saving services into database...
+		for($n=0, $t=0; $n<$nameNum, $t<$typeNum; $n++,$t++){
+				if(trim($_POST['accountName'][$n] != '') && trim($_POST['accountType'][$t] != '')) {
+					$accountName = trim($_POST["accountName"][$n]);
+					$accountType = trim($_POST["accountType"][$t]);
+//						$serviceType = trim("Service");
+					//generate account ID
+					$accIDs = $consultation->loadAccPrices($centerID) + 1;
+					$accountID = "ACC-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$accIDs);
 
-						//check service name if already entered else save service..
-						$serviceExist = select("SELECT * FROM prices WHERE serviceName='$serviceName'");
-						if($serviceExist){
-							$error = "<script>document.write('Service Already Saved..');</script>";
+					//check account name if already entered else save account..
+					$accExist = select("SELECT * FROM accounts WHERE accountName='$accountName' AND centerID='$centerID'");
+					if($accExist){
+						$error = "<script>document.write('Account Already Saved..');</script>";
+					}else{
+						$saveService = insert("INSERT INTO accounts(accountID,centerID,accountName,accountType,dateInsert) VALUES('$accountID','$centerID','$accountName','$accountType','$dateToday')");
+						if($saveService){
+							$success = "<script>document.write('Account Saved.');window.location='center-account';</script>";
 						}else{
-							$saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,servicePrice,serviceType,dateInsert) VALUES('$serviceID','$centerID','$serviceName','$servicePrice','$serviceType','$dateToday')");
-							if($saveService){
-								$success = "<script>document.write('Services Saved.');window.location='centerprices-index';</script>";
-							}else{
-								$error = "<script>document.write('Services Not Saved, Try Again.');</script>";
-							}
+							$error = "<script>document.write('Account Not Saved, Try Again.');</script>";
 						}
-               		}
-            }
-		}else{
-			$error = "<script>document.write('Empty Fields, Try Again.');</script>";
+					}
+				}
 		}
-    }
+	}else{
+		$error = "<script>document.write('Empty Fields, Try Again.');</script>";
+	}
+}
 
 //	//saving laboratory services..
 //    if(isset($_POST['saveLabPrices'])){
@@ -124,7 +124,7 @@
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="PRICING" class="tip-bottom"><i class="icon-file"></i> ACCOUNT MANAGEMENT</a>
+        <a title="ACCOUNT MANAGEMENT" class="tip-bottom"><i class="icon-file"></i> ACCOUNT MANAGEMENT</a>
     </div>
   </div>
   <div class="container">
@@ -164,8 +164,7 @@
 							  </tr>
 							<tr>
 								<td>
-									<select class="span" name="accountName[]">
-										<option>-- Select Account --</option>
+									<select class="span" name="accountName[]" required>
 										<option value="OPD"> OPD </option>
 										<option value="CONSULTATION"> CONSULTATION </option>
 										<option value="LABORATORY"> LABORATORY </option>
@@ -174,8 +173,7 @@
 									</select>
 								</td>
 								<td>
-									<select class="span" name="accountType[]">
-										<option>-- Account Type --</option>
+									<select class="span" name="accountType[]" required>
 										<option value="CREDIT"> CREDIT ACCOUNT </option>
 									</select>
 								</td>
@@ -199,21 +197,21 @@
 						<thead>
 							<th> ACCOUNT NAME</th>
 							<th> ACOUNT TYPE</th>
-							<th> ACTION</th>
+							<th> ACCOUNT BALANCE</th>
 						</thead>
 						<tbody>
 							<?php
-							$allService = select("SELECT * FROM prices WHERE centerID='$centerID' && serviceType='Service'");
-							if($allService){
-								foreach($allService as $serviceRow){
+							$allAcc = select("SELECT * FROM accounts WHERE centerID='$centerID'");
+							if($allAcc){
+								foreach($allAcc as $accRow){
 							?>
 							<tr>
-								<td><?php echo $serviceRow['serviceName'];?></td>
-								<td><?php echo $serviceRow['servicePrice'];?></td>
-								<td><a href="#?sid=<?php echo $serviceRow['serviceID'];?>" class="btn btn-primary"> <i class="fa fa-eye"></i></a></td>
+								<td><?php echo $accRow['accountName'];?></td>
+								<td><?php echo $accRow['accountType'];?></td>
+								<td><?php echo $accRow['accBalance'];?></td>
 							</tr>
 							<?php }}else{?>
-							<tr><td colspan="3"> <h6 class="text-center">NO SERVICE CHARGE SAVED.</h6></td></tr>
+							<tr><td colspan="3"> <h6 class="text-center">NO ACCOUNTS SAVED.</h6></td></tr>
 							<?php }?>
 						</tbody>
 					</table>
@@ -282,7 +280,7 @@ function resetMenu() {
         var i=1;
         $('#add2').click(function(){
             i++;
-            $('#dynamic_field2').append('<tr id="row'+i+'"><td><select class="span" name="accountName[]"><option>-- Select Account --</option><option value="OPD"> OPD </option><option value="CONSULTATION"> CONSULTATION </option><option value="LABORATORY"> LABORATORY </option><option value="WARD"> WARD </option><option value="PHARMACY"> PHARMACY </option></select></td><td><select class="span" name="accountName[]"><option>-- Account Type --</option><option value="CREDIT"> CREDIT ACCOUNT </option></select></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field2').append('<tr id="row'+i+'"><td><select class="span" name="accountName[]" required><option value="OPD"> OPD </option><option value="CONSULTATION"> CONSULTATION </option><option value="LABORATORY"> LABORATORY </option><option value="WARD"> WARD </option><option value="PHARMACY"> PHARMACY </option></select></td><td><select class="span" name="accountType[]" required><option value="CREDIT"> CREDIT ACCOUNT </option></select></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){

@@ -6,7 +6,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
     echo "<script>window.location.href='index'</script>";
 }
 
-$load_consultroom = select("SELECT * FROM consultingroom WHERE centerID='".$_SESSION['centerID']."' ORDER BY centerID ASC");
+$load_consultroom = select("SELECT * FROM consultingroom WHERE centerID='".$_SESSION['centerID']."'");
 
 foreach($load_consultroom as $room){
 

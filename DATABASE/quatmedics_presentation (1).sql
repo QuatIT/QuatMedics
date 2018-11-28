@@ -15,12 +15,37 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-
+Create database `quatMedics`;
+    use `quatMedics`;
 --
 -- Database: `quatmedics_presentation`
 --
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `accounts`
+--
+
+CREATE TABLE `accounts` (
+  `accountID` varchar(255) NOT NULL,
+  `centerID` varchar(255) NOT NULL,
+  `accountName` varchar(255) NOT NULL,
+  `accountType` varchar(255) NOT NULL,
+  `accBalance` decimal(10,2) NOT NULL,
+  `dateInsert` date NOT NULL,
+  `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`accountID`, `centerID`, `accountName`, `accountType`, `accBalance`, `dateInsert`, `doe`) VALUES
+('ACC-AlTim-000001', 'AlTim-000001', 'OPD', 'CREDIT', '0.00', '2018-11-24', '2018-11-24 12:58:23'),
+('ACC-AlTim-000002', 'AlTim-000001', 'CONSULTATION', 'CREDIT', '0.00', '2018-11-24', '2018-11-24 12:58:58'),
+('ACC-AlTim-000003', 'AlTim-000001', 'LABORATORY', 'CREDIT', '0.00', '2018-11-24', '2018-11-24 12:58:58'),
+('ACC-AlTim-000004', 'AlTim-000001', 'WARD', 'CREDIT', '0.00', '2018-11-24', '2018-11-24 12:58:58'),
+('ACC-AlTim-000005', 'AlTim-000001', 'PHARMACY', 'CREDIT', '0.00', '2018-11-24', '2018-11-24 12:58:58');
 
 --
 -- Table structure for table `bedlist`
@@ -15474,7 +15499,25 @@ INSERT INTO `staff` (`staffID`, `staffType`, `centerID`, `departmentID`, `firstN
 ('ty-000006', '', 'AlTim-000001', 'OPD1', 'e', 'ty', 'wr', 'Male', 'Nurse', '2018-10-02', 'pharmacy', '', 'kingicon05@gmail.com', '', '2018-10-24', '2018-10-24 08:20:08');
 
 -- --------------------------------------------------------
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `transactionaccount`
+--
+
+CREATE TABLE `transactionaccount` (
+  `id` int(255) NOT NULL,
+  `creditAcc` varchar(255) NOT NULL,
+  `debitAcc` varchar(255) NOT NULL,
+  `Amount` decimal(10,2) NOT NULL,
+  `patientID` varchar(255) NOT NULL,
+  `staffID` varchar(255) NOT NULL,
+  `activity` varchar(255) NOT NULL,
+  `dateInsert` date NOT NULL,
+  `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `transfer`
 --

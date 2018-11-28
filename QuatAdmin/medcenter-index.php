@@ -1,10 +1,10 @@
 <?php
 require_once '../assets/core/connection.php';
-
+$dateToday = date('Y-m-d');
 $success = '';
 $error = '';
 
-
+$consultation = new Consultation();
 //generate centerID
 $user = new User();
 $centerIDs = $user->find_num_centerID() + 1;
@@ -34,10 +34,20 @@ if(count(User::find_by_centerID($centerID)) >= 1){
 //    $centerID = randomString('10'); //regenerate centerID
     $centerID = substr($_POST['centerName'], 0, 5)."-".sprintf('%06s',$centerIDs);//regenerate centerID
 
+
+
 //create center admin
 $registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
 
-if($registerCenterAdmin){
+//create debit account...
+//creating account for finance of center..
+$accIDs = $consultation->loadAccPrices($centerID) + 1;
+$accountID = "ACC-".substr($centerName, 0, 5)."-".sprintf('%06s',$accIDs);
+$accountName = "Bank Account";
+$accountType = "DEBIT";
+$saveAccount = insert("INSERT INTO accounts(accountID,centerID,accountName,accountType,dateInsert) VALUES('$accountID','$centerID','$accountName','$accountType','$dateToday')");
+
+if($registerCenterAdmin && $saveAccount){
 
 echo make_dir($centerID);
 
@@ -62,7 +72,16 @@ echo make_dir($centerID);
 //create center admin
 $registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
 
-if($registerCenterAdmin){
+//create debit account...
+//creating account for finance of center..
+$accIDs = $consultation->loadAccPrices($centerID) + 1;
+$accountID = "ACC-".substr($centerName, 0, 5)."-".sprintf('%06s',$accIDs);
+$accountName = "BANK ACCOUNT";
+$accountType = "DEBIT";
+$saveAccount = insert("INSERT INTO accounts(accountID,centerID,accountName,accountType,dateInsert) VALUES('$accountID','$centerID','$accountName','$accountType','$dateToday')");
+
+
+if($registerCenterAdmin && $saveAccount){
     echo make_dir($centerID);
 
             $send_to = $email;
