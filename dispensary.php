@@ -86,7 +86,7 @@
     if(isset($_POST['btnSave'])){
 
 
-      $reqID = "REQ-MED-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$reqIDs);
+      $reqID = "REQ.MED.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$reqIDs);
 //      $staffID = $staffID['userID'];
 		$reqm = select("SELECT * FROM pharmacy_inventory");
 		foreach($reqm as $rem){}

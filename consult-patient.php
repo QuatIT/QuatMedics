@@ -66,7 +66,7 @@ if(count($codesql) >=1){
 		$prescribeCode = $oldcode[0]."-".$newID;
 	}
 }else{
-	$prescribeCode = "PRSCB-1";
+	$prescribeCode = "PRSCB.".$centerID."-1";
 }
 
  //generate labRequestID
@@ -79,7 +79,7 @@ if(count($codesql) >=1){
 		$labReqID = $oldcode[0]."-".$newID;
 	}
 }else{
-	$labReqID = "LABREQ-1";
+	$labReqID = "LABREQ.".$centerID."-1";
 }
 
 //Request Laboratory.....
@@ -138,7 +138,7 @@ if(isset($_POST['adWard'])){
             $assignID = $oldid[0]."-".$newID;
         }
     }else{
-        $assignID = "ASSIGN-1";
+        $assignID = "ASSIGN.".$centerID."-1";
     }
 
 		for($m=0, $d=0; $m<$medsNum, $d<$dosagesNum; $m++,$d++){
@@ -196,16 +196,24 @@ if(isset($_POST['presMeds'])){
 					$aday = trim($_POST['aday'][$a]);
 					$totalDays = trim($_POST['totalDays'][$t]);
 					//get medicine name for insert qeury...
-					$findmedname = select("SELECT medicine_name,unit_price FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
+					$findmedname = select("SELECT medicine_name,unit_price,medicine_type FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
 					foreach($findmedname as $nameRow){
 						$medicine = $nameRow['medicine_name'];
 						$unitPrice = $nameRow['unit_price'];
+						$medicinetype = $nameRow['medicine_type'];
 					}
 
-					//set dosage..
-					$dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
-					//medicine price calculation..
-					$medprice = trim($unitPrice*$pieces);
+					if($medicinetype='Capsule' || $medicinetype='Tablet' || $medicinetype='Suppositories' || $medicinetype='Implants'){
+						//set dosage..
+						$dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
+						//medicine price calculation..
+						$medprice = trim($unitPrice*$pieces);
+					}else{
+
+					}
+
+
+
 
 		$insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode','$dateToday')");
 					}

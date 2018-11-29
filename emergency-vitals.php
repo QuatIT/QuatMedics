@@ -91,7 +91,7 @@
     if(isset($_POST['btnSave'])){
 
 
-      $consultID = "CON-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultIDs);
+      $consultID = "CON.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultIDs);
       $staffID = $staffIDy['userID'];
       $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
       $bodyTemperature = filter_input(INPUT_POST, "bodytemp", FILTER_SANITIZE_STRING);

@@ -48,7 +48,8 @@ foreach($codesql as $coderow){
     $appointNumber = $oldcode[0]."-".$newID;
 }
 }else{
-$appointNumber = "APTMNT-1";
+	$appointNumber = "APTMNT.".$centerID."-"."1";
+//	$appointNumber = "APTMNT-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$appointNumber);
 }
 
 

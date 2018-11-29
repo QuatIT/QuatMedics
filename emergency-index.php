@@ -40,7 +40,7 @@
 
       $centerID = $_SESSION['centerID'];
         $patientid = filter_input(INPUT_POST, "patientid", FILTER_SANITIZE_STRING);
-		$emeID = "EME-".sprintf('%06s',count(select("select * from emergency_patient")) + 1);
+		$emeID = "EME.".sprintf('%06s',count(select("select * from emergency_patient")) + 1);
 
         $search_patient = select("SELECT * FROM patient WHERE patientID='".$patientid."' ");
         foreach($search_patient as $search_row){
@@ -102,7 +102,7 @@
         $gMobile = filter_input(INPUT_POST, "gMobile", FILTER_SANITIZE_STRING);
         $gAddress = filter_input(INPUT_POST, "gAddress", FILTER_SANITIZE_STRING);
 		$emeIDs = count(select("select * from emergency_patient")) + 1;
-		$emeID = "EME-".sprintf('%06s',$emeIDs);
+		$emeID = "EME.".sprintf('%06s',$emeIDs);
 
         if($gender == 'Male'){
             $count_emepatient = count(select("SELECT * FROM emergency_patient ")) + 1;

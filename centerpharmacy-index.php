@@ -37,7 +37,7 @@
     if(isset($_POST['btnSave'])){
 
       $centerID = $_SESSION['centerID'];
-      $pharmacyID = "PH-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$pharmacyIDs);
+      $pharmacyID = "PH.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$pharmacyIDs);
       $pharmacyName = filter_input(INPUT_POST, "pharmacyName", FILTER_SANITIZE_STRING);
 //        $status = FREE;
 

@@ -40,7 +40,7 @@
 
 
       $centerID = $_SESSION['centerID'];
-      $centerLabID = "LAB-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$centerLabIDs);
+      $centerLabID = "LAB.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$centerLabIDs);
       $WardName = filter_input(INPUT_POST, "WardName", FILTER_SANITIZE_STRING);
 
         $lab_sql = insert("INSERT INTO lablist(labID,labName,centerID) VALUES('$centerLabID','$WardName','$centerID') ");
