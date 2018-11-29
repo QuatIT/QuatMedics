@@ -11,7 +11,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 
 $transferID = $_GET['id'];
 
-if(empty($transferID)){
+if(empty($transferID) || $transferID='null'){
     echo  "INVALID DATA";
 }else{
 

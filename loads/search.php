@@ -11,7 +11,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 
 $perscriptionCode = $_GET['id'];
 
-if(empty($perscriptionCode)){
+if(empty($perscriptionCode) || $perscriptionCode='null'){
     echo  "INVALID DATA";
 }else{
 

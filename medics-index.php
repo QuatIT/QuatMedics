@@ -327,7 +327,7 @@ function toggleDataSeries(e) {
 <?php }
       if($_SESSION['accessLevel']=='CONSULTATION'){
 //        $room = Consultation::find_consultingroom();
-        $room = select("SELECT * FROM consultingroom WHERE status='".FREE."' || status='' ");
+        $room = select("SELECT * FROM consultingroom WHERE status='".FREE."' || status=''  || status='null' ");
 
       ?>
 
