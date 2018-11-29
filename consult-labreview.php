@@ -301,7 +301,7 @@ if(isset($_POST['adWard'])){
                                           <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
                                         </div>
                                       </div>
-										<?php if(!empty($consultrow['mode'])){ ?>
+										<?php if(!empty($consultrow['mode']) || $consultrow['mode'] !='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">Payment Mode :</label>
                                         <div class="controls">
@@ -309,7 +309,7 @@ if(isset($_POST['adWard'])){
                                         </div>
                                       </div>
                                       <?php } ?>
-										<?php if(!empty($consultrow['insuranceNumber'])){ ?>
+										<?php if(!empty($consultrow['insuranceNumber']) || $consultrow['insuranceNumber']='null' ){ ?>
                                       <div class="control-group">
                                         <label class="control-label">Insurance Number :</label>
                                         <div class="controls">
@@ -338,7 +338,7 @@ if(isset($_POST['adWard'])){
 
 
 
-                                        <?php if(!empty($consultrow['insuranceType'])){ ?>
+                                        <?php if(!empty($consultrow['insuranceType']) || $consultrow['insuranceType']='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">Insurance Type :</label>
                                         <div class="controls">
@@ -347,7 +347,7 @@ if(isset($_POST['adWard'])){
                                       </div>
                                       <?php } ?>
 
-                                      <?php if(!empty($consultrow['company'])){ ?>
+                                      <?php if(!empty($consultrow['company']) || $consultrow['company']='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">Company :</label>
                                         <div class="controls">
@@ -514,7 +514,7 @@ if(isset($_POST['adWard'])){
 								 </div>
 								 <div class="span12">
                                       <table class="table table-bordered" id="dynamic_field">
-										   	<?php if(!empty($consultrow['mode'])){ ?>
+										   	<?php if(!empty($consultrow['mode']) || $consultrow['mode']='null'){ ?>
                                       <div class="control-group" style="display:none;">
                                         <label class="control-label">Pay Mode :</label>
                                         <div class="controls">

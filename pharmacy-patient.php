@@ -248,7 +248,7 @@ input:checked + .slider:before {
 
                                       <?php }else{ ?>
                                                 <span class="label label-success">Served</span>
-                                             <td><input type="text" <?php if(!empty($med['comment'])){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php echo $med['comment']; ?>" placeholder="ENTER COMMENT / NOTE"></td>
+                                             <td><input type="text" <?php if(!empty($med['comment']) || $med['comment']='null'){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php echo $med['comment']; ?>" placeholder="ENTER COMMENT / NOTE"></td>
 
                                      <?php   }
 
