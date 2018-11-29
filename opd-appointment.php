@@ -37,7 +37,7 @@
 		$sms = $_POST['radios'];
 		$centerID = $_SESSION['centerID'];
 
-		$appointNumber = "APTMNT-".count(select("select * from doctorappointment WHERE centerID='".$_SESSION['centerID']."' ")) + 1;
+		$appointNumber = "APTMNT.".$centerID."-".count(select("select * from doctorappointment WHERE centerID='".$_SESSION['centerID']."' ")) + 1;
 
 		$apt_sql = insert("INSERT INTO doctorappointment(appointNumber,staffID,patientID,appointmentDate,appointmentTime,sms,reason,centerID,status,dateInsert) VALUES('$appointNumber','$doctor','$patient','$appointmentDate','$appointmentTime','$sms','$appointment_reason','$centerID','pending',CURDATE()) ");
 

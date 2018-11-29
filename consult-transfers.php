@@ -55,7 +55,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
 
     if(isset($_POST['addApptmnt'])){
       $centerID = $_SESSION['centerID'];
-      $transferID = "TRANS-".sprintf('%06s',$transID);
+      $transferID = "TRANS.".sprintf('%06s',$transID);
       $from_center = filter_input(INPUT_POST, "fc", FILTER_SANITIZE_STRING);
       $from_user = filter_input(INPUT_POST, "fu", FILTER_SANITIZE_STRING);
       $to_center = filter_input(INPUT_POST, "newCenter", FILTER_SANITIZE_STRING);

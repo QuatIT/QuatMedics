@@ -39,7 +39,7 @@
     if(isset($_POST['btnSave'])){
 
       $centerID = $_SESSION['centerID'];
-      $WardID = "WD-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$wardIDs);
+      $WardID = "WD.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$wardIDs);
       $wardName = filter_input(INPUT_POST, "WardName", FILTER_SANITIZE_STRING);
       $numOfBeds = filter_input(INPUT_POST, "numOfBeds", FILTER_SANITIZE_STRING);
 

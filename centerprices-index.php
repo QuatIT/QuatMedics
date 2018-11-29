@@ -48,7 +48,7 @@
 						$serviceType = trim("Service");
 						//generate service ID
 						$serviceIDs = $consultation->loadServicePrices($centerID) + 1;
-						$serviceID = "SV-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs);
+						$serviceID = "SV.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs);
 
 						//check service name if already entered else save service..
 						$serviceExist = select("SELECT * FROM prices WHERE serviceName='$serviceName'");
@@ -84,7 +84,7 @@
 						$serviceType = trim("Lab");
 						//generate service ID
 						$serviceIDs = $consultation->loadServicePrices($centerID) + 1;
-						$serviceID = "SV-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs);
+						$serviceID = "SV.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs);
 
 						//check service name if already entered else save service..
 						$serviceExist = select("SELECT * FROM prices WHERE serviceName='$serviceName'");

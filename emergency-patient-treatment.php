@@ -46,7 +46,7 @@ if (isset($_POST['sub_mit'])){
 	$today_status = '0';
 
 	$eme_medIDs = count(select("SELECT * FROM eme_ward GROUP BY eme_medID ")) + 1;
-	$eme_medID = "EME-PRES-".sprintf('%06s',$eme_medIDs);
+	$eme_medID = "EME.PRES.".sprintf('%06s',$eme_medIDs);
 
 //    $search_sq = select("SELECT * FROM schedule_loan_detail_old WHERE loan_no='".$loan_no."' && branch_code='".$_SESSION['branch_code']."' ");
 //    foreach($search_sq as $s_row){}

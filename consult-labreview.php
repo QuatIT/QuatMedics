@@ -68,7 +68,7 @@ include 'layout/head.php';
                 $prescribeCode = $oldcode[0]."-".$newID;
             }
         }else{
-            $prescribeCode = "PRSCB-1";
+            $prescribeCode = "PRSCB.".$centerID."-"."1";
         }
 
 
@@ -82,7 +82,7 @@ include 'layout/head.php';
                 $labReqID = $oldcode[0]."-".$newID;
             }
         }else{
-            $labReqID = "LABREQ-1";
+            $labReqID = "LABREQ.".$centerID."-"."1";
         }
 
 
@@ -127,7 +127,7 @@ if(isset($_POST['adWard'])){
             $assignID = $oldid[0]."-".$newID;
         }
     }else{
-        $assignID = "ASSIGN-1";
+        $assignID = "ASSIGN.".$centerID."-"."1";
     }
 
     $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails')");
