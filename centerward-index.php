@@ -27,11 +27,11 @@
 
 <?php
     include 'layout/head.php';
-
+	$centerID = $_SESSION['centerID'];
 
     //generate $PatientID
-    $ward = new Ward;
-    $wardIDs = $ward->find_num_ward() + 1;
+    $ward = new Ward();
+    $wardIDs = $ward->find_num_ward($centerID) + 1;
 
     $success = '';
     $error = '';

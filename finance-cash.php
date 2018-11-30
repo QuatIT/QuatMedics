@@ -141,7 +141,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 
 							  	<td>
 									<?php if($PrivateRow['paystatus'] == 'Not Paid'){?>
-									<a href="finance-cash-labpay?id=<?php echo $PrivateRow['id'];?>&cid=<?php echo $centerId;?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+									<a onclick="return confirm('Confirm Payment');" href="finance-cash-labpay?id=<?php echo $PrivateRow['id'];?>&cid=<?php echo $centerId;?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
 								   <?php }?>
 
 									<?php if($PrivateRow['paystatus'] == 'Paid'){?>

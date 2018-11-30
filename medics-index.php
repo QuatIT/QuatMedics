@@ -315,19 +315,20 @@ function toggleDataSeries(e) {
 <?php if($_SESSION['accessLevel']=='center_admin'){ ?>
    	<div class="quick-actions_homepage">
     <ul class="quick-actions">
-          <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> CONSULTATION</a></li>
+          <li> <a href="centerdepartment-index"> <i class="icon-cabinet"></i> DEPARTMENTS</a></li>
           <li> <a href="centeruser-index"> <i class="icon-people"></i> STAFF </a> </li>
+          <li> <a href="center-account"> <i class="icon-survey"></i>ACCOUNTS </a> </li>
+          <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> CONSULTATION</a></li>
           <li> <a href="centerward-index"> <i class="fa fa-folder-open fa-3x"></i> <br/> WARD </a> </li>
           <li> <a href="centerpharmacy-index"> <i class="fa fa-plus-square fa-3x"></i> <br/> PHARMACY</a> </li>
           <li> <a href="centerlab-index"> <i class="icon-search"></i> LABORATORY </a> </li>
           <li> <a href="smsrequest-index"> <i class="fa fa-envelope fa-3x"></i><br> SMS REQUEST </a> </li>
-          <li> <a href="center-account"> <i class="icon-survey"></i>ACCOUNTS </a> </li>
         </ul>
    </div>
 <?php }
       if($_SESSION['accessLevel']=='CONSULTATION'){
 //        $room = Consultation::find_consultingroom();
-        $room = select("SELECT * FROM consultingroom WHERE status='".FREE."' || status=''  || status='null' ");
+        $room = select("SELECT * FROM consultingroom WHERE status='".FREE."' && centerID='".$_SESSION['centerID']."' || status='' && centerID='".$_SESSION['centerID']."'  || status='null' && centerID='".$_SESSION['centerID']."' ");
 
       ?>
 
