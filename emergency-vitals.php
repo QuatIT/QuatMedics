@@ -105,7 +105,7 @@
 //        $status = SENT_TO_CONSULTING;
 //        $patient_busy = PATIENT_BUSY;
 
-		$sql_vitals = insert("INSERT INTO eme_vitals(emeID,patientID,bodyTemp,pulseRate,respirationRate,bloodPressure,weight,dateRegistered) VALUES('$emeID','$get_PID','$bodyTemperature','$pulseRate','$respirationRate','$bloodPressure','$weight',CURDATE()) ");
+		$sql_vitals = insert("INSERT INTO eme_vitals(emeID,patientID,bodyTemp,pulseRate,respirationRate,bloodPressure,weight,centerID,dateRegistered) VALUES('$emeID','$get_PID','$bodyTemperature','$pulseRate','$respirationRate','$bloodPressure','$weight','".$_SESSION['centerID']."',CURDATE()) ");
 
 //        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
 //        $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID);

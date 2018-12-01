@@ -54,6 +54,7 @@
       $guardianPhone = filter_input(INPUT_POST, "guardianPhone", FILTER_SANITIZE_STRING);
       $guardianRelation = filter_input(INPUT_POST, "guardianRelation", FILTER_SANITIZE_STRING);
       $guardianAddress = filter_input(INPUT_POST, "guardianAddress", FILTER_SANITIZE_STRING);
+      $tin = filter_input(INPUT_POST, "TIN", FILTER_SANITIZE_STRING);
 
 
 		//image upload
@@ -64,11 +65,11 @@
 		//                  move_uploaded_file($fileName, "uploads/company/{$new_image}");
 		move_uploaded_file($fileName, $filedestination);
 
-		$pat_sql = select("SELECT * FROM patient WHERE firstName='$firstName' && otherName='$otherName' && lastName='$lastName' && gender='$gender' && phoneNumber='$phoneNumber' && homeAddress='$homeAddress' && doe='$doe' && centerID='$centerID' ");
+		$pat_sql = select("SELECT * FROM patient WHERE firstName='$firstName' && otherName='$otherName' && lastName='$lastName' && gender='$gender' && phoneNumber='$phoneNumber' && homeAddress='$homeAddress' && dob='$dob' && tin='$tin' ");
 
 		if(count($pat_sql) < 1){
 
-        $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination,$hometown);
+        $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination,$hometown,$tin);
 
         if($createPatient){
              $success = "<script>document.write('PATIENT DETAIL ADDED SUCCESSFULLY');
@@ -328,6 +329,13 @@
                                 <label class="control-label">Home Address :</label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Home Address" name="guardianAddress" />
+                                </div>
+                              </div>
+
+                              <div class="control-group">
+                                <label class="control-label">TIN Number :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" placeholder="Home Address" name="tin" />
                                 </div>
                               </div>
 
