@@ -39,8 +39,8 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 <div id="sidebar">
     <ul>
     <li><a href="finance-cash"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
-    <li>
+    <li> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
+    <li class="active">
 		<a href="finance-insurance"><i class="icon icon-calendar"></i><span>INSURANCE</span></a>
 	</li>
     </ul>
@@ -52,11 +52,11 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-briefcase"></i> CASH PAYMENT</a>
+        <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-calendar"></i> INSURANCE PAYMENT</a>
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CASH PAYMENT</h3>
+      <h3 class="quick-actions">INSURANCE PAYMENT</h3>
 
       <div class="row-fluid">
 
@@ -81,7 +81,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							  <?php
-		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND status='Not Paid' AND serviceName='CONSULTATION'  GROUP BY patientID");
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Insurance' AND status='Not Paid' AND serviceName='CONSULTATION'  GROUP BY patientID");
 							  if($fetchAll){
 								  foreach($fetchAll as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -91,7 +91,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 							  	<td> <?php echo $PrivateRow['patientID'];?></td>
 							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
 							  	<td> <?php echo $PrivateRow['servicePrice'];?></td>
-							  	<td> <a href="finance-cash-detail?id=<?php echo $PrivateRow['id'];?>&pid=<?php echo $PrivateRow['patientID'];?>"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
+							  	<td> <a href="finance-insurance-details?id=<?php echo $PrivateRow['id'];?>&pid=<?php echo $PrivateRow['patientID'];?>"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
 							  </tr>
 							  <?php }}}?>
                           </tbody>
@@ -119,12 +119,12 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                               <th>NAME</th>
                               <th>LAB NAME</th>
                               <th>PRICE</th>
-                              <th>ACTION</th>
+<!--                              <th>ACTION</th>-->
                             </tr>
                           </thead>
                           <tbody>
 							   <?php
-	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private'");
+	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Insurance'");
 							  if($fetchlab){
 								  foreach($fetchlab as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -138,17 +138,19 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
 							  	<td> <?php echo $labRow['labName'];?></td>
 							  	<td> <?php echo $PrivateRow['labprice'];?></td>
-
+<!---->
+<!--
 							  	<td>
-									<?php if($PrivateRow['paystatus'] == 'Not Paid'){?>
-									<a onclick="return confirm('Confirm Payment');" href="finance-cash-labpay?id=<?php echo $PrivateRow['id'];?>&cid=<?php echo $centerId;?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
-								   <?php }?>
+									<?php //if($PrivateRow['paystatus'] == 'Not Paid'){?>
+									<a onclick="return confirm('Confirm Payment');" href="finance-cash-labpay?id=<?php // echo $PrivateRow['id'];?>&cid=<?php // echo $centerId;?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+								   <?php // }?>
 
-									<?php if($PrivateRow['paystatus'] == 'Paid'){?>
-									<span class="label label-success text-center"><?php  echo $PrivateRow['paystatus'];?></span>
-								   <?php }?>
+									<?php // if($PrivateRow['paystatus'] == 'Paid'){?>
+									<span class="label label-success text-center"><?php //  echo $PrivateRow['paystatus'];?></span>
+								   <?php // }?>
 
 								</td>
+-->
 
 							  </tr>
 							  <?php }}?>

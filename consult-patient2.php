@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php session_start(); error_reporting(0); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +64,7 @@ if(count($codesql) >=1){
 		$code = $coderow['prescribeCode'];
 		$oldcode = explode("-",$code);
 		$newID = $oldcode[1]+1;
-		$prescribeCode = $oldcode[0].".$centerID"."-".$newID;
+		$prescribeCode = $oldcode[0]."-".$newID;
 	}
 }else{
 	$prescribeCode = "PRSCB.".$centerID."-1";
@@ -197,33 +197,38 @@ if(isset($_POST['presMeds'])){
 					$aday = trim($_POST['aday'][$a]);
 					$totalDays = trim($_POST['totalDays'][$t]);
 					//get medicine name for insert qeury...
-					$findmedname = select("SELECT medicine_name,unit_price,medicine_type FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
+		$findmedname = select("SELECT * FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
 					foreach($findmedname as $nameRow){
 						$medicine = $nameRow['medicine_name'];
-						$unitPrice = $nameRow['unit_price'];
-						$medicinetype = $nameRow['medicine_type'];
+						$medFrom = $nameRow['medFrom'];
+						$medicinetype = $nameRow['Type'];
+
+						if($medFrom == 'NHIS'){
+							$unitPrice = $nameRow['nhis_unit_price'];
+						}
+						if($medFrom == 'LOCAL'){
+							$unitPrice = $nameRow['center_unit_price'];
+						}
 					}
-
-					if($medicinetype='Capsule' || $medicinetype='Tablet' || $medicinetype='Suppositories' || $medicinetype='Implants'){
-						//set dosage..
-						$dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
-						//medicine price calculation..
-						$medprice = trim($unitPrice*$pieces);
-					}else{
-
-					}
-
-
-
+				//set dosage..
+				$dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
+			if($medicinetype=='solid'){
+				//medicine price calculation..
+				$totalPiece = ($pieces*$aday)*$totalDays;
+				$medprice = trim($unitPrice*$totalPiece);
+			}else{
+				//medicine price calculation..
+//				$totalPiece = ($pieces*$aday)*$totalDays
+				$medprice = trim($unitPrice*$pieces);
+			}
 
 		$insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode','$dateToday')");
 					}
 		}
 
-              if($insertpresciption && $insertMeds){
-                    $success =  "PRESCRIPTION SENT SUCCESSFULLY";
-                    $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
-
+  if($insertpresciption && $insertMeds){
+		$success =  "PRESCRIPTION SENT SUCCESSFULLY";
+		$updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
 
             //sms
             $medcen = select("SELECT * FROM medicalcenter WHERE centerID='".$_SESSION['centerID']."' ");
@@ -561,7 +566,7 @@ if(isset($_POST['presMeds'])){
 							</div>
 -->
 
-	 <form action="#" method="post" id="add_name" class="form-horizontal">
+	 <form action="#" method="POST" id="add_name" class="form-horizontal">
 		 <div class="span4">
 			<table class="table table-bordered">
 				  <tr>
@@ -648,15 +653,15 @@ if(isset($_POST['presMeds'])){
 									</select>
 							<?php }?>
 						</td>
-						<td><input type="number" min="1" name="pieces[]" placeholder="e.g. 2" class="span11" required /></td>
-						<td><input type="number" min="1" name="aday[]" placeholder="e.g. 3" class="span11" required /></td>
-						<td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" required /></td>
+						<td><input type="number" min="1" name="pieces[]" placeholder="e.g. 2" class="span11" /></td>
+						<td><input type="number" min="1" name="aday[]" placeholder="e.g. 3" class="span11" /></td>
+						<td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" /></td>
 					</tr>
 						  <?php }}?>
                                     </table>
                                       <div class="form-actions">
                                           <i class="span7"></i>
-                                        <button type="submit" name="presMeds" class="btn btn-primary btn-block span5"> Save Prescription</button>
+                                        <button onclick="return confirm('Confirm Action.');" type="submit" name="presMeds" class="btn btn-primary btn-block span5"> Save Prescription</button>
                                       </div>
 								 </div>
                             </form>
