@@ -15,6 +15,15 @@ error_reporting(0);
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+
 
         <style>
         .active{
@@ -43,6 +52,53 @@ error_reporting(0);
     padding: 20px;
 }
 
+#container, #sliders {
+    min-width: 310px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+#container {
+    height: 400px;
+}
+
+#result {
+    text-align: right;
+    color: gray;
+    min-height: 2em;
+}
+#table-sparkline {
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+th {
+    font-weight: bold;
+    text-align: left;
+}
+td, th {
+    padding: 5px;
+    border-bottom: 1px solid silver;
+    height: 20px;
+}
+
+thead th {
+    border-top: 2px solid gray;
+    border-bottom: 2px solid gray;
+}
+.highcharts-tooltip>span {
+    background: white;
+    border: 1px solid silver;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px #888;
+    padding: 8px;
+}
+
+#containerWARD {
+/*  min-width: 310px;
+  max-width: 800px;*/
+  height: 400px;
+  margin: 0 auto
+}
+
     </style>
 
 </head>
@@ -58,6 +114,10 @@ error_reporting(0);
     @$roomID = $_GET['roomID'];
 $update_consulting = update("UPDATE consultingroom SET status='free' WHERE roomID='$roommID'");
     $dashboard = new Dashboard;
+
+
+
+
 
  ?>
 
@@ -82,47 +142,71 @@ $dataPoints = array(
 
    <?php }
 
+
+?>
+
+<?php
+
+$date = date('Y-m-d');
+
+
+
+
+
+//consultation
+ $get_pat = select("SELECT COUNT(*) as allx FROM consultation WHERE dateInsert = CURDATE()");
+foreach($get_pat as $get_pats){
+  $all_consult=$get_pats['allx'];
+}
+
+  $get_insurance = select("SELECT COUNT(mode) as insurance FROM consultation WHERE mode ='Insurance'&& dateInsert=CURDATE() && insuranceType='NHIS'");
+  foreach($get_insurance as $get_insurances){
+    $nhis = $get_insurances['insurance'];
+  }
+
+    $get_insurance2 = select("SELECT COUNT(mode) as insurances FROM consultation WHERE mode ='Insurance'&& dateInsert=CURDATE() && insuranceType='Acacia'");
+  foreach($get_insurance2 as $get_insurances2){
+    $acaia=$get_insurances2['insurances'];
+  }
+
+     $get_company = select("SELECT COUNT(mode) as comp FROM consultation WHERE mode ='Company' && dateInsert=CURDATE() ");
+  foreach($get_company as $get_companyx){
+    $company = $get_companyx['comp'];
+  }
+
+     $get_private = select("SELECT COUNT(mode) as priva FROM consultation WHERE mode ='Private' && dateInsert=CURDATE()");
+  foreach( $get_private as $get_privates){
+    $private = $get_privates['priva'];
+  }
+
+   //consultation calculation
+   $percentile=100;
+
+// nhis percentage
+  $cal_nhis = ($nhis)/($all_consult)* ($percentile);
+
+
+//nhis Acacia
+$cal_acacia = ($acacia)/($all_consult)* ($percentile);
+
+  //company percentage
+$cal_company = ($company)/($all_consult)*($percentile);
+
+  //private percentage
+$cal_private = ($private)/($all_consult)*($percentile);
+
+//WARD
+$room_ward = select("SELECT * FROM wardlist");
+foreach($room_ward as $room_wards){}
+
+
 ?>
 
 
 <!--    CONSULTATION DASHBOARD-->
   <?php if($_SESSION['accessLevel']=='LABORATORY'){ ?>
 <script>
-window.onload = function() {
 
-
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-    exportEnabled: true,
-	title: {
-		text: "DASHBOARD SUMMARY"
-	},
-    legend: {
-		cursor: "pointer",
-		itemclick: toggleDataSeries
-	},
-	subtitles: [{
-		text: "As At <?php echo date('D, d M Y'); ?>"
-	}],
-	data: [{
-		type: "column",
-//		yValueFormatString: "#,##0.00\"%\"",
-		indexLabel: "{label} ({y})",
-		dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-	}]
-});
-chart.render();
-
-function toggleDataSeries(e) {
-	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-		e.dataSeries.visible = false;
-	} else {
-		e.dataSeries.visible = true;
-	}
-	e.chart.render();
-}
-
-}
 </script>
 <?php } ?>
 
@@ -155,41 +239,10 @@ $dataPoints = array(
 <!--    CONSULTATION DASHBOARD-->
   <?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
 <script>
-window.onload = function() {
 
 
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-    exportEnabled: true,
-	title: {
-		text: "DASHBOARD SUMMARY"
-	},
-    legend: {
-		cursor: "pointer",
-		itemclick: toggleDataSeries
-	},
-	subtitles: [{
-		text: "As At <?php echo date('D, d M Y'); ?>"
-	}],
-	data: [{
-		type: "column",
-//		yValueFormatString: "#,##0.00\"%\"",
-		indexLabel: "{label} ({y})",
-		dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-	}]
-});
-chart.render();
 
-function toggleDataSeries(e) {
-	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-		e.dataSeries.visible = false;
-	} else {
-		e.dataSeries.visible = true;
-	}
-	e.chart.render();
-}
 
-}
 </script>
 <?php } ?>
 
@@ -228,46 +281,7 @@ $dataPoints = array(
 
 
 
-  <?php if($_SESSION['accessLevel']=='OPD'){ ?>
-<script>
-window.onload = function() {
 
-
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-    exportEnabled: true,
-	title: {
-		text: "DASHBOARD SUMMARY"
-	},
-    legend: {
-		cursor: "pointer",
-		itemclick: toggleDataSeries
-	},
-	subtitles: [{
-		text: "As At <?php echo date('D, d M Y'); ?>"
-	}],
-	data: [{
-		type: "column",
-//		yValueFormatString: "#,##0.00\"%\"",
-		indexLabel: "{label} ({y})",
-		dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-	}]
-});
-chart.render();
-
-function toggleDataSeries(e) {
-	if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-		e.dataSeries.visible = false;
-	} else {
-		e.dataSeries.visible = true;
-	}
-	e.chart.render();
-}
-
-}
-</script>
-
-<?php } ?>
 
 
 <div id="search">
@@ -304,6 +318,10 @@ function toggleDataSeries(e) {
 
 
 
+
+
+
+
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
@@ -315,20 +333,19 @@ function toggleDataSeries(e) {
 <?php if($_SESSION['accessLevel']=='center_admin'){ ?>
    	<div class="quick-actions_homepage">
     <ul class="quick-actions">
-          <li> <a href="centerdepartment-index"> <i class="icon-cabinet"></i> DEPARTMENTS</a></li>
-          <li> <a href="centeruser-index"> <i class="icon-people"></i> STAFF </a> </li>
-          <li> <a href="center-account"> <i class="icon-survey"></i>ACCOUNTS </a> </li>
           <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> CONSULTATION</a></li>
+          <li> <a href="centeruser-index"> <i class="icon-people"></i> STAFF </a> </li>
           <li> <a href="centerward-index"> <i class="fa fa-folder-open fa-3x"></i> <br/> WARD </a> </li>
           <li> <a href="centerpharmacy-index"> <i class="fa fa-plus-square fa-3x"></i> <br/> PHARMACY</a> </li>
           <li> <a href="centerlab-index"> <i class="icon-search"></i> LABORATORY </a> </li>
           <li> <a href="smsrequest-index"> <i class="fa fa-envelope fa-3x"></i><br> SMS REQUEST </a> </li>
+          <li> <a href="center-account"> <i class="icon-survey"></i>ACCOUNTS </a> </li>
         </ul>
    </div>
 <?php }
       if($_SESSION['accessLevel']=='CONSULTATION'){
 //        $room = Consultation::find_consultingroom();
-        $room = select("SELECT * FROM consultingroom WHERE status='".FREE."' && centerID='".$_SESSION['centerID']."' || status='' && centerID='".$_SESSION['centerID']."'  || status='null' && centerID='".$_SESSION['centerID']."' ");
+        $room = select("SELECT * FROM consultingroom WHERE status='".FREE."' || status='' ");
 
       ?>
 
@@ -360,23 +377,635 @@ function toggleDataSeries(e) {
           </div>
         </div>
       </div>
+
+
+
 -->
+
       <div class="span12">
         <div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-signal"></i> </span>
 <!--            <h5>Pie chart</h5>-->
           </div>
           <div class="widget-content">
-              <?php if($_SESSION['accessLevel']=='OPD'){ ?>
-            <div class="pie1"  id="chartContainer" style="height: 330px; width: 100%;"></div>
-<!--            <div class="pie1"  id="chartContainer21" style="height: 330px; width: 100%;"></div>-->
+
+
+
+
+<?php if($_SESSION['accessLevel']=='CONSULTATION'){
+
+  $consult_all = select("SELECT COUNT(*) as c_all FROM consultation WHERE dateInsert = CURDATE()");
+  foreach($consult_all as $consult_allx){$consult_total= $consult_allx['c_all'];}
+
+$consult_wait = select("SELECT COUNT(*) as con1 FROM consultation WHERE status !='sent_to_pharmacy' && dateInsert = CURDATE() ");
+foreach($consult_wait as $consult_waitx){$waiting = $consult_waitx['con1'];}
+
+$consult_discharge = select("SELECT COUNT(*) con2 FROM consultation WHERE status = 'sent_to_pharmacy' && dateInsert = CURDATE()");
+foreach($consult_discharge as $consult_discharges){$discharged = $consult_discharges['con2'];}
+
+// consultation calculation
+//waiting patients
+$wait_pat =($waiting)/($consult_total)*100;
+
+//discharged patients
+$disch_pat =($discharged)/($consult_total)*100;
+
+
+
+
+// echo "<script>alert({$disch_pat})</script>";
+
+  ?>
+<?php $Nome = $_SESSION['username']; echo 'Welcome'.' '. strtoupper($Nome); ?>
+<br>
+  <div id="containerCON" style="min-width: 310px; height: 320px; margin: 0 auto;" ></div>
+
+<script>
+
+  // Radialize the colors
+Highcharts.setOptions({
+  colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
+    return {
+      radialGradient: {
+        cx: 0.5,
+        cy: 0.3,
+        r: 0.7
+      },
+      stops: [
+        [0, color],
+        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+      ]
+    };
+  })
+});
+
+// Build the chart
+Highcharts.chart('containerCON', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: true,
+    type: 'pie'
+  },
+  title: {
+    text: 'CONSULTATION DEPARTMENT '
+  },
+  tooltip: {
+    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+        style: {
+          color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+        },
+        connectorColor: 'red'
+      }
+    }
+  },
+  series: [{
+    name: 'Share',
+    data: [
+      { name: 'Waiting Patients', y:<?php echo $wait_pat;?> },
+      { name: 'Discharged Patients', y:<?php echo $disch_pat;?>}
+
+
+
+    ]
+  }]
+});
+
+
+
+</script>
+
+<?php } ?>
+
+
+
+             <?php if($_SESSION['accessLevel']=='OPD'){?>
+
+            <?php $Nome = $_SESSION['username']; echo 'Welcome'.' '. strtoupper($Nome); ?>
+
+<div id="containerOPD" style="min-width: 310px; height: 300px; margin: 0 auto;" ></div>
+<script>
+// Radialize the colors
+Highcharts.setOptions({
+  colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
+    return {
+      radialGradient: {
+        cx: 0.5,
+        cy: 0.3,
+        r: 0.7
+      },
+      stops: [
+        [0, color],
+        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+      ]
+    };
+  })
+});
+
+// Build the chart
+Highcharts.chart('containerOPD', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+  title: {
+    text: 'OUT PATIENT DEPARTMENT INSURANCE'
+  },
+  tooltip: {
+    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+        style: {
+          color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+        },
+        connectorColor: 'silver'
+      }
+    }
+  },
+  series: [{
+    name: 'Share',
+    data: [
+      { name: 'NHIS', y:<?php echo $cal_nhis;?> },
+      { name: 'ACACIA', y: <?php echo $cal_acacia;?> },
+      { name: 'COMPANY', y: <?php echo $cal_company;?> },
+      { name: 'PRIVATE', y: <?php echo $cal_private;?> }
+
+
+    ]
+  }]
+});
+
+
+
+</script>
+
+
+
+
+
+
               <?php } ?>
-              <?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
-            <div class="pie1"  id="chartContainer" style="height: 330px; width: 100%;"></div>
+
+
+              <?php
+              $phar_count = select("SELECT COUNT(*) as phar_all FROM prescribedmeds");
+              foreach($phar_count as $phar_counts){ $phar_all=$phar_counts['phar_all'];}
+
+              $pharma = select("SELECT COUNT(*) as pharma_served FROM prescribedmeds WHERE prescribeStatus='served'");
+              foreach($pharma as $pharmas){
+                $served = $pharmas['pharma_served'];}
+
+                 $pharma_not = select("SELECT COUNT(*) as pharma_non FROM prescribedmeds WHERE prescribeStatus !='served'");
+              foreach($pharma_not as $pharma_notx){
+                $unserved = $pharma_notx['pharma_non'];}
+
+                //PHARMACY CALCULATION
+
+                $cal_served = ($served/$phar_all) * $percentile;
+
+
+                $cal_unserved = ($unserved/$phar_all)*$percentile;
+
+
+ // echo "<script>alert('{$cal_unserved}')</script>";
+              ?>
+
+              <?php if($_SESSION['accessLevel']=='PHARMACY'){?>
+
+<?php $Nome = $_SESSION['username']; echo 'Welcome'.' '. strtoupper($Nome); ?>
+              <div id="containerPHARMA" style="min-width: 300px; height: 350px; margin: 0 auto"></div>
+                <script>
+
+Highcharts.chart('containerPHARMA', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'PHARMACY DEPARTMENT'
+    },
+    subtitle: {
+        text: 'Served and Unserved Drug Prescriptions'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        max: 100,
+        title: {
+            text: 'Quantity'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: 'Drug Amount: <b>{point.y:.100f} %</b>'
+    },
+    series: [{
+        name: 'Population',
+        data: [
+            ['Served Prescriptions', <?php echo $cal_served;?>],
+            ['Unserved Prescriptions', <?php echo $cal_unserved;?>]
+
+        ],
+        dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: 'red',
+            align: 'right',
+            format: '{point.y:.100f}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+
+
+                </script>
+
               <?php } ?>
+
+
+<?php if($_SESSION['accessLevel']=='INVENTORY'){?>
+
+
+    <div id="containerINVENT" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<table id="datatable">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Jane</th>
+            <th>John</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Apples</th>
+            <td>3</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <th>Pears</th>
+            <td>2</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <th>Plums</th>
+            <td>5</td>
+            <td>11</td>
+        </tr>
+        <tr>
+            <th>Bananas</th>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <th>Oranges</th>
+            <td>2</td>
+            <td>4</td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+
+
+Highcharts.chart('containerINVENT', {
+    data: {
+        table: 'datatable'
+    },
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Data extracted from a HTML table in the page'
+    },
+    yAxis: {
+        allowDecimals: false,
+        title: {
+            text: 'Units'
+        }
+    },
+    tooltip: {
+        formatter: function () {
+            return '<b>' + this.series.name + '</b><br/>' +
+                this.point.y + ' ' + this.point.name.toLowerCase();
+        }
+    }
+});
+
+</script>
+
+
+<?php } ?>
+
+<?php if($_SESSION['accessLevel']=='WARD'){?>
+
+  <span style="margin-left:500px;font-size:22px;">WARD DEPARTMENT</span><br>
+
+ <?php $Nome = $_SESSION['username']; echo 'Welcome'.' '. strtoupper($Nome); ?>
+
+  <div id="containerWARD" style="width:1000px;">
+<br>
+    <table class="table table-bordered" style="">
+      <thead>
+        <tr>
+        <th>WARD NAME</th>
+        <th>NUMBER OF BEDS</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <?php
+        $ward_detail = select("SELECT * FROM wardlist");
+        foreach($ward_detail as $ward_details){
+
+          ?>
+
+          <td style="background-color:lightblue;"><?php echo $ward_details['wardName']; ?></td>
+          <td style="background-color:lightyellow;"><?php echo $ward_details['numOfBeds']; ?></td>
+        </tr>
+        <?php } ?>
+      </tbody>
+    </table>
+
+
+  </div>
+
+
+
+<?php } ?>
+
+<?php if($_SESSION['accessLevel']=='FINANCE'){?>
+
+<div id="containerFIN"></div>
+
+  <script>
+
+
+Highcharts.chart('containerFIN', {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45
+        }
+    },
+    title: {
+        text: 'FINANCE DEPARTMENT'
+    },
+    subtitle: {
+        text: '3D donut in Highcharts'
+    },
+    plotOptions: {
+        pie: {
+            innerSize: 100,
+            depth: 45
+        }
+    },
+    series: [{
+        name: 'Delivered amount',
+        data: [
+            ['Bananas', 8],
+            ['Kiwi', 3],
+            ['Mixed nuts', 1]
+        ]
+    }]
+});
+
+  </script>
+
+<?php } ?>
+
+
               <?php if($_SESSION['accessLevel']=='LABORATORY'){ ?>
-            <div class="pie1"  id="chartContainer" style="height: 330px; width: 100%;"></div>
+
+                <?php $Nome = $_SESSION['username']; echo 'Welcome'.' '. strtoupper($Nome); ?>
+                <div id="result"></div>
+<table id="table-sparkline" style="width:1100px;">
+    <thead >
+        <tr style="background-color:skyblue;">
+            <th>LABORATORY TYPE</th>
+            <th>LABORATORY ID</th>
+            <th>FACILITY ID</th>
+
+        </tr>
+    </thead>
+    <tbody id="tbody-sparkline">
+  <tr>
+      <?php
+      $lab_type = select("SELECT * FROM lablist");
+      foreach($lab_type as $lab_types){
+
+
+ //        $lab_count = select("SELECT COUNT(patientID) as lab_num FROM labresult WHERE labID='".$lab_types['labID']."'");
+ // foreach($lab_count as $lab_counts){}
+        ?>
+</tr>
+      <td><?php echo $lab_types['labName'];?></td>
+      <td><?php echo $lab_types['labID'];?></td>
+      <td><?php echo $centerID;?></td>
+
+
+
+</tr>
+    <?php }  ?>
+
+
+    </tbody>
+</table>
+
+
+                <script>
+Highcharts.SparkLine = function (a, b, c) {
+    var hasRenderToArg = typeof a === 'string' || a.nodeName,
+        options = arguments[hasRenderToArg ? 1 : 0],
+        defaultOptions = {
+            chart: {
+                renderTo: (options.chart && options.chart.renderTo) || this,
+                backgroundColor: null,
+                borderWidth: 0,
+                type: 'area',
+                margin: [2, 0, 2, 0],
+                width: 120,
+                height: 20,
+                style: {
+                    overflow: 'visible'
+                },
+
+                // small optimalization, saves 1-2 ms each sparkline
+                skipClone: true
+            },
+            title: {
+                text: ''
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                labels: {
+                    enabled: false
+                },
+                title: {
+                    text: null
+                },
+                startOnTick: false,
+                endOnTick: false,
+                tickPositions: []
+            },
+            yAxis: {
+                endOnTick: false,
+                startOnTick: false,
+                labels: {
+                    enabled: false
+                },
+                title: {
+                    text: null
+                },
+                tickPositions: [0]
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                backgroundColor: null,
+                borderWidth: 0,
+                shadow: false,
+                useHTML: true,
+                hideDelay: 0,
+                shared: true,
+                padding: 0,
+                positioner: function (w, h, point) {
+                    return { x: point.plotX - w / 2, y: point.plotY - h };
+                }
+            },
+            plotOptions: {
+                series: {
+                    animation: false,
+                    lineWidth: 1,
+                    shadow: false,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    marker: {
+                        radius: 1,
+                        states: {
+                            hover: {
+                                radius: 2
+                            }
+                        }
+                    },
+                    fillOpacity: 0.25
+                },
+                column: {
+                    negativeColor: '#910000',
+                    borderColor: 'silver'
+                }
+            }
+        };
+
+    options = Highcharts.merge(defaultOptions, options);
+
+    return hasRenderToArg ?
+        new Highcharts.Chart(a, options, c) :
+        new Highcharts.Chart(options, b);
+};
+
+var start = +new Date(),
+    $tds = $('td[data-sparkline]'),
+    fullLen = $tds.length,
+    n = 0;
+
+// Creating 153 sparkline charts is quite fast in modern browsers, but IE8 and mobile
+// can take some seconds, so we split the input into chunks and apply them in timeouts
+// in order avoid locking up the browser process and allow interaction.
+function doChunk() {
+    var time = +new Date(),
+        i,
+        len = $tds.length,
+        $td,
+        stringdata,
+        arr,
+        data,
+        chart;
+
+    for (i = 0; i < len; i += 1) {
+        $td = $($tds[i]);
+        stringdata = $td.data('sparkline');
+        arr = stringdata.split('; ');
+        data = $.map(arr[0].split(', '), parseFloat);
+        chart = {};
+
+        if (arr[1]) {
+            chart.type = arr[1];
+        }
+        $td.highcharts('SparkLine', {
+            series: [{
+                data: data,
+                pointStart: 1
+            }],
+            tooltip: {
+                headerFormat: '<span style="font-size: 10px">' + $td.parent().find('th').html() + ', Q{point.x}:</span><br/>',
+                pointFormat: '<b>{point.y}.000</b> USD'
+            },
+            chart: chart
+        });
+
+        n += 1;
+
+        // If the process takes too much time, run a timeout to allow interaction with the browser
+        if (new Date() - time > 500) {
+            $tds.splice(0, i + 1);
+            setTimeout(doChunk, 0);
+            break;
+        }
+
+        // Print a feedback on the performance
+        if (n === fullLen) {
+            $('#result').html('Generated ' + fullLen + ' sparklines in ' + (new Date() - start) + ' ms');
+        }
+    }
+}
+doChunk();
+
+
+
+                </script>
+
+
               <?php } ?>
+
+
           </div>
         </div>
       </div>
@@ -399,7 +1028,7 @@ function toggleDataSeries(e) {
 <script src="js/maruti.charts.js"></script>
 <script src="js/maruti.dashboard.js"></script>
 <script src="js/jquery.peity.min.js"></script>
-<script src="js/canvasjs.min.js"></script>
+<!-- <script src="js/canvasjs.min.js"></script> -->
 
     <script>
 window.onload = function () {
@@ -434,5 +1063,11 @@ function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
 </script>
+
+
+<script>
+
+</script>
+
 </body>
 </html>
