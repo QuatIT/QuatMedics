@@ -30,7 +30,7 @@
     if($_SESSION['accessLevel']=='OPD' || $_SESSION['username']=='rik'){
 
     //generate $PatientID
-    $PatientIDs = Patient::find_num_Patient() + 1;
+    $PatientIDs = Patient::find_num_PatientBYID($centerID) + 1;
 
     $success = '';
     $error = '';

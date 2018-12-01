@@ -212,7 +212,12 @@
     public function find_num_Patient(){
       $result=query("SELECT * FROM patient ");
       $num = count($result);
+      return $num;
+    }
 
+    public function find_num_PatientBYID($centerID){
+      $result=query("SELECT * FROM patient WHERE centerID='$centerID'");
+      $num = count($result);
       return $num;
     }
 
