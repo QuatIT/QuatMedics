@@ -174,7 +174,7 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                   <li><a data-toggle="tab" href="#tab6">Vitals</a></li>
                   <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li>
                  <li><a data-toggle="tab" href="#tab5"> Nurse's Checklist</a></li>
-                    <li><a data-toggle="tab" href="#tab3">Doctor's Remarks</a></li>
+                    <!-- <li><a data-toggle="tab" href="#tab3">Doctor's Remarks</a></li> -->
                     <li><a data-toggle="tab" href="#tab4">Treatment History</a></li><?php #} ?>
                 </ul>
             </div>
@@ -429,16 +429,16 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                             $report = select("SELECT * FROM review_tb");
                                 foreach($report as $reports){
                                   $rev_iew = select("SELECT * FROM docreview_tb");
-                                foreach($rev_iew as $rev_iews){}
-                            echo "<tr>
-                                <td>".$reports['doe']."</td>
-                                <td>".$reports['treatment']."</td>
-                                <td>".$reports['dosage']."</td>
-                                <td>".$pat['staffID']. "</td>
-                                <td>".$checklists['status']."</td>
-                                <td>".$rev_iews['DocReview']."</td>
-                              </tr>";
-                              }?>
+                                foreach($rev_iew as $rev_iews){}?>
+                            <tr>
+                                <td><?php echo $reports['doe'];?></td>
+                                <td><?php echo $reports['treatment'];?></td>
+                                <td><?php echo $reports['dosage'];?></td>
+                                <td><?php echo $pat['staffID'];?></td>
+                                <td><?php echo $checklists['status'];?></td>
+                                <td><input type='text' class="form-control span5"  name="review" id="review"required/>&nbsp;<button type="submit" name="saveReview" class="btn btn-primary " style="margin-top:-10px;">Save Remarks</button></td>
+                              </tr>
+                             <?php }?>
 
                       </div> </tbody>
                         </table>
@@ -530,4 +530,5 @@ function resetMenu() {
 </script>
 </body>
 </html>
+
 <?php }else{echo "<script>window.location='404'</script>";}?>

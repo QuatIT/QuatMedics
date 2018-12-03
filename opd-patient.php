@@ -157,7 +157,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
     <li> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
     <li class="active"> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
 <!--    <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>-->
-    <li><a href="consult-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+    <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
     </ul>
 </div>
 
@@ -440,7 +440,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                                   <select name="consultRoom">
                                     <option value="default"> -- Select Consulting Room --</option>
                                       <?php
-                                        $consultingroom = Consultation::find_consultingroom();
+                                        $consultingroom = $consultation->loadConsultRoomByID($centerID);
                                         foreach($consultingroom as $roomRow){
                                       ?>
                                     <option value="<?php echo $roomRow['roomID'];?>"> <?php echo $roomRow['roomName'];?></option>

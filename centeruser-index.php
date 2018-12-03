@@ -25,13 +25,13 @@
 <body>
 <?php
     include 'layout/head.php';
-
+$centerID = $_SESSION['centerID'];
     $success = '';
     $error = '';
 
-    $user = new User;
+    $user = new User();
     //generate centerID
-    $staffIDs = $user->find_num_staffID() + 1;
+    $staffIDs = $user->find_num_staffID($centerID) + 1;
 
     if(isset($_POST['btnSave'])){
 
@@ -84,10 +84,10 @@
 
 	// fetch vitals
 
-$get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER BY id DESC LIMIT 1");
+//$get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER BY id DESC LIMIT 1");
 
 //NURSE CHECKLIST
-$checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
+//$checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
 
 
 ?>

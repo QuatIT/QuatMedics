@@ -66,7 +66,7 @@
         }
 
 //        $room = Consultation::find_consultingroom();
-        $room = select("SELECT * FROM consultingroom WHERE centerID='".$_SESSION['centerID']."' && status='".FREE."' || status='' || status='null' && centerID='".$_SESSION['centerID']."'  ");
+        $room = select("SELECT * FROM consultingroom WHERE centerID='".$_SESSION['centerID']."' && status='".FREE."' || status=''&& centerID='".$_SESSION['centerID']."'  || status='null' && centerID='".$_SESSION['centerID']."'  ");
 
     ?>
 

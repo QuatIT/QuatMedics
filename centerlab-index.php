@@ -27,10 +27,10 @@
 <?php
     include 'layout/head.php';
 
-
+	$centerID = $_SESSION['centerID'];
     //generate centerLabID
     $lab = new Lab;
-    $centerLabIDs = $lab->find_num_Lab() + 1;
+    $centerLabIDs = $lab->find_num_Lab($centerID) + 1;
 
     $success = '';
     $error = '';

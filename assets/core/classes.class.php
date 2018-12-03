@@ -39,10 +39,9 @@
       return $num;
     }
 
-    public function find_num_staffID(){
-      $result=query("SELECT * FROM centerUser ");
+    public function find_num_staffID($centerID){
+      $result=query("SELECT * FROM centerUser WHERE centerID='$centerID'");
       $num = count($result);
-
       return $num;
     }
 
@@ -90,6 +89,20 @@
 
     public function loadConsultRoom(){
       $result=query("SELECT * FROM consultingroom ") ;
+      $num = count($result);
+      return $num;
+    }
+
+
+    public function loadConsultRoomByidd($centerID){
+      $result=query("SELECT * FROM consultingroom WHERE centerID='$centerID'") ;
+      $num = count($result);
+      return $num;
+    }
+
+
+    public function loadDepartment($centerID){
+      $result=query("SELECT * FROM department WHERE centerID='$centerID'") ;
       $num = count($result);
       return $num;
     }
@@ -154,8 +167,8 @@
     }
 
 
-    public function find_num_ward(){
-      $result=query("SELECT * FROM wardlist ");
+    public function find_num_ward($centerID){
+      $result=query("SELECT * FROM wardlist WHERE centerID='$centerID' ");
       $num = count($result);
 
       return $num;
@@ -199,7 +212,12 @@
     public function find_num_Patient(){
       $result=query("SELECT * FROM patient ");
       $num = count($result);
+      return $num;
+    }
 
+    public function find_num_PatientBYID($centerID){
+      $result=query("SELECT * FROM patient WHERE centerID='$centerID'");
+      $num = count($result);
       return $num;
     }
 
@@ -291,8 +309,8 @@
     }
 
 
-    public function find_num_Lab(){
-      $result=query("SELECT * FROM lablist ");
+    public function find_num_Lab($centerID){
+      $result=query("SELECT * FROM lablist WHERE centerID='$centerID'");
       $num = count($result);
 
       return $num;

@@ -26,10 +26,10 @@
 
 <?php
     include 'layout/head.php';
-
+	$centerID = $_SESSION['centerID'];
 //    $pharmacy = new Pharmacy;
     //generate $PatientID
-    $pharmacyIDs =count(select("SELECT * FROM pharmacy")) + 1;
+    $pharmacyIDs =count(select("SELECT * FROM pharmacy WHERE centerID='$centerID'")) + 1;
 
     $success = '';
     $error = '';

@@ -27,16 +27,16 @@
 <?php
     include 'layout/head.php';
 
-    $consultation = new Consultation;
+    $centerID = $_SESSION['centerID'];
+    $consultation = new Consultation();
     //generate $PatientID
-    $consultRoomIDs = $consultation->loadConsultRoom() + 1;
+    $consultRoomIDs = $consultation->loadConsultRoomByidd($centerID)+ 1;
 
     $success = '';
     $error = '';
 
     if(isset($_POST['btnSave'])){
 
-      $centerID = $_SESSION['centerID'];
       $consultRoomID = "CR.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultRoomIDs);
       $roomName = filter_input(INPUT_POST, "departmentName", FILTER_SANITIZE_STRING);
         $status = FREE;
