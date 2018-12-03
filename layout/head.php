@@ -125,3 +125,19 @@ foreach($centerName_sql as $centerName){}
     </li><?php } ?>
   </ul>
 </div>
+
+
+
+<script>
+$('input[type=text]').val (function () {
+    return this.value.toUpperCase();
+});
+
+$('input[type=email]').val (function () {
+    return this.value.toUpperCase();
+});
+
+$('textarea').val (function () {
+    return this.value.toUpperCase();
+});
+</script>

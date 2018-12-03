@@ -198,3 +198,24 @@ include 'classes.class.php';
 include 'sms_api.php';
 include 'sms.php';
 ?>
+<style>
+input[type=text] { text-transform: uppercase; }
+select option { text-transform: uppercase; }
+/*option.upper { text-transform: uppercase; }*/
+textarea { text-transform: uppercase; }
+</style>
+<script>
+$(document).on('blur', "input[type=text]", function () {
+    $(this).val(function (_, val) {
+        return val.toUpperCase();
+    });
+});
+
+$('input[type=email]').val (function () {
+    return this.value.toUpperCase();
+});
+
+$('textarea').val (function () {
+    return this.value.toUpperCase();
+});
+</script>
