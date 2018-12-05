@@ -15,10 +15,8 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
     <style>
         .active{
@@ -119,18 +117,7 @@ if(isset($_POST['save_blood'])){
                     window.location.href='lab-bloodbank.php'</script>";
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-    ?>
+?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -139,9 +126,9 @@ if(isset($_POST['save_blood'])){
 
 <div id="sidebar">
     <ul>
-<!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li> <a href="lab-index.php"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
-    <li class="active"><a href="lab-bloodbank.php"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
+    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li> <a href="lab-index"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
+    <li class="active"><a href="lab-bloodbank"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
     </ul>
 </div>
 

@@ -125,3 +125,9 @@ foreach($centerName_sql as $centerName){}
     </li><?php } ?>
   </ul>
 </div>
+
+<style>
+	label{
+		font-weight: bolder;
+	}
+</style>
