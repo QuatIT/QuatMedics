@@ -7,8 +7,14 @@ define("DB_SERVER" , "localhost");
 define("DB_USER" , "root");
 //define("DB_PASSWORD" , "#edicon,123456789.");
 define("DB_PASSWORD" , "");
-//define("DB_NAME" , "quatmedics_presentation");
-define("DB_NAME" , "quatMedics");
+define("DB_NAME" , "quatmedics_presentation");
+//define("DB_NAME" , "quatMedics");
+
+//backup server
+define("DB_SERVER2" , "quatitsolutions.com");
+define("DB_USER2" , "quatitso_edicon");
+define("DB_PASSWORD2" , "#edicon,123456789.");
+define("DB_NAME2" , "quatitso_quatmedic");
 
 
 define("SENT_TO_CONSULTING" , "sent_to_consulting");
