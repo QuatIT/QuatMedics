@@ -126,15 +126,6 @@ foreach($centerName_sql as $centerName){}
   </ul>
 </div>
 
-<<<<<<< HEAD
-<style>
-	label{
-		font-weight: bolder;
-	}
-</style>
-=======
-
-
 <script>
 $('input[type=text]').val (function () {
     return this.value.toUpperCase();
@@ -148,4 +139,3 @@ $('textarea').val (function () {
     return this.value.toUpperCase();
 });
 </script>
->>>>>>> QuatMedics/master
