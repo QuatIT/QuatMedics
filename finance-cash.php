@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/font-awesome.css" />
     <style>
         .active{
             background-color: #209fbf;
@@ -138,18 +138,15 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
 							  	<td> <?php echo $labRow['labName'];?></td>
 							  	<td> <?php echo $PrivateRow['labprice'];?></td>
-
 							  	<td>
 									<?php if($PrivateRow['paystatus'] == 'Not Paid'){?>
-									<a onclick="return confirm('Confirm Payment');" href="finance-cash-labpay?id=<?php echo $PrivateRow['id'];?>&cid=<?php echo $centerId;?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+									<a onclick="return confirm('Confirm Payment');" href="finance-cash-labpay?id=<?php echo $PrivateRow['id'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
 								   <?php }?>
 
 									<?php if($PrivateRow['paystatus'] == 'Paid'){?>
 									<span class="label label-success text-center"><?php  echo $PrivateRow['paystatus'];?></span>
 								   <?php }?>
-
 								</td>
-
 							  </tr>
 							  <?php }}?>
                           </tbody>

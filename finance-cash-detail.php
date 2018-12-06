@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/font-awesome.css" />
     <style>
         .active{
             background-color: #209fbf;
@@ -86,7 +86,7 @@ include 'layout/head.php';
     <li><a href="finance-cash"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="active"> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
     <li>
-		<a href=""><i class="icon icon-calendar"></i><span>INSURANCE</span></a>
+		<a href="finance-insurance"><i class="icon icon-calendar"></i><span>INSURANCE</span></a>
 	</li>
     </ul>
 </div>

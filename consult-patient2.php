@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/font-awesome.css" />
 <link rel="stylesheet" type="text/css" href="assets/js1/jquery-ui.css" />
 <!--
     <style>
@@ -57,7 +57,7 @@ $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE p
 	}
 }
 
- //generate presciptionCode
+//generate presciptionCode
 $codesql = select("SELECT * From prescriptions order by prescribeCode DESC limit 1");
 if(count($codesql) >=1){
 	foreach($codesql as $coderow){
@@ -70,7 +70,7 @@ if(count($codesql) >=1){
 	$prescribeCode = "PRSCB.".$centerID."-1";
 }
 
- //generate labRequestID
+//generate labRequestID
 $codesql = select("SELECT * From labresults order by labrequestID DESC limit 1");
 if(count($codesql) >=1){
 	foreach($codesql as $coderow){
@@ -282,15 +282,15 @@ if(isset($_POST['presMeds'])){
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active" style="background-color: #209fbf;"> <a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i> <span>Consultation</span></a> </li>
-    <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i> <span>Appointments</span></a> </li>
-    <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a> </li>
-    <li> <a href="consult-transfers?roomID=<?php echo $roomID;?>"><i class="icon-resize-horizontal"></i> <span>Transfers</span></a> </li>
+    <li><a href="medics-index?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Dashboard</span></a></li>
+    <li class="active" style="background-color: #209fbf;">
+		<a href="consult-index?roomID=<?php echo $roomID;?>"><i class="icon icon-briefcase"></i> <span>Consultation</span></a>
+	</li>
+    <li> <a href="consult-appointment?roomID=<?php echo $roomID;?>"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+    <li> <a href="consult-inward?roomID=<?php echo $roomID;?>"><i class="icon icon-home"></i> <span>Inward</span></a></li>
+    <li> <a href="consult-transfers?roomID=<?php echo $roomID;?>"><i class="icon-resize-horizontal"></i> <span>Transfers</span></a></li>
     </ul>
 </div>
-
-
 
 <div id="content">
   <div id="content-header">
@@ -339,14 +339,14 @@ if(isset($_POST['presMeds'])){
 								<div class="span6">
 									<div class="widget-content">
 										<div class="control-group">
-                                        <label class="control-label">Patient ID :</label>
+                                        <label class="control-label">PATIENT ID :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientID" value="<?php echo $patientID;?>" readonly/>
                                         </div>
                                       </div>
 										<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">Mode :</label>
+                                        <label class="control-label">PAYMENT MODE :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['mode'];?>" readonly/>
                                         </div>
@@ -354,26 +354,26 @@ if(isset($_POST['presMeds'])){
                                       <?php } ?>
 										<?php if(!empty($consultrow['insuranceNumber']) || $consultrow['insuranceNumber']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">Insurance Number :</label>
+                                        <label class="control-label">INSURANCE NUMBER :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['insuranceNumber'];?>" readonly/>
                                         </div>
                                       </div>
                                       <?php } ?>
 										<div class="control-group">
-                                        <label class="control-label">Body Temperature :</label>
+                                        <label class="control-label">BODY TEMPERATURE :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="bodyTemp" value="<?php echo $consultrow['bodyTemperature'];?>" readonly/>
                                         </div>
                                       </div>
 										<div class="control-group">
-                                        <label class="control-label">Respiration Rate :</label>
+                                        <label class="control-label">RESPIRATION RATE :</label>
                                         <div class="controls">
                 <input type="text" class="span12" name="respirationRate" value="<?php echo $consultrow['respirationRate'];?>" readonly/>
                                         </div>
                                       </div>
 										<div class="control-group">
-                                        <label class="control-label">Weight :</label>
+                                        <label class="control-label">WEIGHT :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="weight" value="<?php echo $consultrow['weight'];?>" readonly/>
                                         </div>
@@ -387,24 +387,27 @@ if(isset($_POST['presMeds'])){
 								<div class="span6">
                                   <div class="widget-content">
                                       <div class="control-group">
-                                        <label class="control-label">Patient Name :</label>
+                                        <label class="control-label">PATIENT NAME :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
                                         </div>
                                       </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> QuatMedics/master
                                         <?php if(!empty($consultrow['insuranceType']) || $consultrow['insuranceType']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">Insurance Type :</label>
+                                        <label class="control-label">INSURANCE TYPE :</label>
                                         <div class="controls">
-                                          <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['insuranceType'];?>" readonly/>
+                                          <input type="text" class="span12" name="insuranceType" value="<?php echo $consultrow['insuranceType'];?>" readonly/>
                                         </div>
                                       </div>
                                       <?php } ?>
 
                                       <?php if(!empty($consultrow['company']) || $consultrow['company']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">Company :</label>
+                                        <label class="control-label">COMPANY :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['company'];?>" readonly/>
                                         </div>
@@ -412,21 +415,21 @@ if(isset($_POST['presMeds'])){
                                       <?php } ?>
 
                                       <div class="control-group">
-                                        <label class="control-label">Pulse Rate :</label>
+                                        <label class="control-label">PULSE RATE :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="bloodPressure" value="<?php echo $consultrow['pulseRate'];?>" readonly/>
                                         </div>
                                       </div>
 
                                       <div class="control-group">
-                                        <label class="control-label">Blood Pressure :</label>
+                                        <label class="control-label">BLOOD PRESSURE :</label>
                                         <div class="controls">
                 <input type="text" class="span12" name="bloodPressure" value="<?php echo $consultrow['bloodPressure'];?>" readonly/>
                                         </div>
                                       </div>
 
                                       <div class="control-group">
-                                        <label class="control-label">Other Health Vitals :</label>
+                                        <label class="control-label">OTHER HEALTH VITALS :</label>
                                         <div class="controls">
                                             <textarea class="span12" name="healthVitals" readonly><?php echo $consultrow['otherHealth'];?></textarea>
                                         </div>
@@ -440,14 +443,14 @@ if(isset($_POST['presMeds'])){
 								 <div class="span6">
 									 <div class="widget-content nopadding">
 									 	<div class="control-group">
-                                        <label class="control-label"> Consulting Room</label>
+                                        <label class="control-label"> CONSULTING ROOM</label>
                                           <div class="controls">
                                             <input type="text" name="consultroom" class="span11" value="<?php echo $roomID?>" readonly>
                                           </div>
                                       	</div>
 										 	<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">Pay Mode :</label>
+                                        <label class="control-label">PAYMENT MODE :</label>
                                         <div class="controls">
                                           <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
                                         </div>
@@ -458,14 +461,14 @@ if(isset($_POST['presMeds'])){
 								 <div class="span6">
 									 <div class="widget-content nopadding">
 									 	<div class="control-group">
-                                        <label class="control-label"> Staff ID</label>
+                                        <label class="control-label"> STAFF ID</label>
                                           <div class="controls">
-                                            <input type="text" name="consultroom" class="span11" value="<?php echo $staffID;?>" readonly>
+                                            <input type="text" name="staffid" class="span11" value="<?php echo $staffID;?>" readonly>
                                           </div>
                                       </div>
 									 </div>
 										 <div class="control-group">
-                                        <label class="control-label">Request lab</label>
+                                        <label class="control-label">REQUEST LAB TEST</label>
                                         <div class="controls">
                                           <select multiple name="labName[]">
                                                <?php
@@ -489,7 +492,7 @@ if(isset($_POST['presMeds'])){
 								 <div class="span6">
 								 	<div class="widget-content nopadding">
                                        <div class="control-group">
-                                        <label class="control-label">Ward</label>
+                                        <label class="control-label">WARD</label>
                                         <div class="controls">
                                           <select name="wardID" onchange="ward_id(this.value);">
                                             <option value=""></option>
@@ -506,7 +509,7 @@ if(isset($_POST['presMeds'])){
 
 										</div>
                                        <div class="control-group">
-                                        <label class="control-label">Admission Details</label>
+                                        <label class="control-label">ADMISSION DETAILS</label>
                                         <div class="controls">
                                           <select name="admitDetails">
                                             <option value=""> </option>
@@ -517,13 +520,13 @@ if(isset($_POST['presMeds'])){
                                         </div>
                                       </div>
                                       <div class="control-group">
-                                        <label class="control-label"> Date Admitted</label>
+                                        <label class="control-label"> DATE ADMITTED</label>
                                           <div class="controls">
                                             <input type="date" class="span11" name="admitDate" required/>
                                           </div>
                                       </div>
                                       <div class="control-group">
-                                        <label class="control-label"> Discharge Date</label>
+                                        <label class="control-label"> DISCHARGE DATE</label>
                                           <div class="controls">
                                             <input type="date" class="span11" name="dischargeDate"/>
                                           </div>
@@ -627,7 +630,7 @@ if(isset($_POST['presMeds'])){
 							if($consultrow['mode'] == 'Insurance'){
 							?>
 							<select name="medName[]" class="span11">
-								<option></option>
+								<optgroup> NHIS MEDICATION</optgroup>
 							<?php
 
 						  	$centerNHISLevel = $centerName['centerNhisLevel'];
