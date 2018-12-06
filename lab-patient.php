@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/font-awesome.css" />
 </head>
 <body>
 
@@ -105,8 +105,8 @@ if(isset($_FILES['file'])){
 
 <div id="sidebar">
     <ul>
-    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li><a href="lab-index.php"><i class="icon icon-filter"></i> <span>Laboratory</span></a></li>
+    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li class="active"><a href="lab-index.php"><i class="icon icon-filter"></i> <span>Laboratory</span></a></li>
     <li> <a href="lab-bloodbank.php"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
     </ul>
 </div>
@@ -152,45 +152,47 @@ if(isset($_FILES['file'])){
                                 <div class="span6">
                                     <div class="widget-content nopadding">
                                       <div class="control-group">
-                                        <label class="control-label">Patient ID :</label>
+                                        <label class="control-label">PATIENT ID :</label>
                                         <div class="controls">
                                           <input type="text" class="span11" name="patientID" id="patientID" value="<?php echo $patientID;?>" readonly/>
                                         </div>
                                       </div>
-                                    <div class="control-group">
-                                        <label class="control-label"> Lab Type :</label>
+									<div class="control-group">
+                                        <label class="control-label">PATIENT NAME :</label>
                                         <div class="controls">
-                                            <textarea class="span11" rows="5" name="healthVitals" readonly><?php
-                                                $ltest = select("SELECT * FROM labresults WHERE labRequestID='".$labRequestID."' ");
-                                                foreach($ltest as $labtxt){
-//                                                    echo $labtxt['labt'];
-                               $labnam = select("SELECT GROUP_CONCAT(labName) as labt FROM lablist WHERE labID='".$labtxt['labID']."' ");
-                                                    foreach($labnam as $labname){
-                                                        echo $labname['labt'];
-                                                    }
-
-
-                                                } ?>
-                                            </textarea>
+                                          <input type="text" class="span11" name="patientName" value="<?php echo $patname['firstName'].' '.$patname['otherName'].' '.$patname['lastName']; ?>" readonly/>
                                         </div>
                                       </div>
                                   </div>
                                 </div>
                                 <div class="span6">
                                     <div class="widget-content nopadding">
-                                      <div class="control-group">
-                                        <label class="control-label">Patient Name :</label>
-                                        <div class="controls">
-                                          <input type="text" class="span11" name="patientName" value="<?php echo $patname['firstName'].' '.$patname['otherName'].' '.$patname['lastName']; ?>" readonly/>
-                                        </div>
-                                      </div>
-                                      <div class="control-group">
-                                        <label class="control-label">Patient Lab Result :</label>
-                                        <div class="controls">
-                                          <input type="file" class="span11" name="file" accept="application/pdf" required/>
-                                        </div>
-                                          <div class="controls"></div>
-                                      </div>
+
+										<table class="table table-stripped">
+											<thead>
+												<th>LAB NAME</th>
+												<th>LAB RESULT UPLOAD</th>
+											</thead>
+											<tbody>
+												<?php
+												$ltest = select("SELECT * FROM labresults WHERE labRequestID='".$labRequestID."' ");
+									foreach($ltest as $labtxt){
+												?>
+												<tr>
+												<td>
+													<select class="span11" name="labID[]">
+								<?php
+				   $labnam = select("SELECT labName FROM lablist WHERE labID='".$labtxt['labID']."' ");
+										foreach($labnam as $labname){ ?>
+											<option value="<?php echo $labtxt['labID'];?>"> <?php echo $labname['labName'];?></option>
+														<?php }?>
+													</select>
+												</td>
+												<td><input type="file" class="span11" name="file" accept="application/pdf" required/></td>
+												</tr>
+												<?php }?>
+											</tbody>
+										</table>
                                       <div class="form-actions">
                                           <i class="span1"></i>
                                         <button type="submit" class="btn btn-primary btn-block span10" name="lab_result" >Send Lab Results</button>

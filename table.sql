@@ -65,7 +65,7 @@ create table `accounts`(
 	`doe` timestamp
 )engine = InnoDB;
 
-create table `transactionAccount`(
+create table `accountTransaction`(
 	`id` int(255) not null primary key auto_increment,
 	`creditAcc` varchar(255) not null,
 	`debitAcc` varchar(255) not null,

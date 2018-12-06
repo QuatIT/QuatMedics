@@ -126,8 +126,6 @@ foreach($centerName_sql as $centerName){}
   </ul>
 </div>
 
-
-
 <script>
 $('input[type=text]').val (function () {
     return this.value.toUpperCase();

@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/font-awesome.css" />
     <style>
         .active{
             background-color: #209fbf;
@@ -29,7 +29,7 @@
 
     if($_SESSION['accessLevel']=='LABORATORY' || $_SESSION['username']=='rik'){
 
-    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."' ");
+    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."'");
 
     ?>
 <div id="search">
@@ -40,7 +40,7 @@
 
 <div id="sidebar">
     <ul>
-<!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
+    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="active"><a href="lab-index.php"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
     <li> <a href="lab-bloodbank.php"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
     </ul>
@@ -75,44 +75,43 @@
                         </tr>
                       </thead>
                       <tbody>
-                
-                          <?php
-                                foreach($fet_pat as $fet_pats){
 
-                                $pat_sql = select("SELECT firstName,otherName,lastName FROM patient WHERE patientID='".$fet_pats['patientID']."' ");
-                                    foreach($pat_sql as $pname){}
-                            ?>
+			  <?php
+					foreach($fet_pat as $fet_pats){
+					$pat_sql = select("SELECT firstName,otherName,lastName FROM patient WHERE patientID='".$fet_pats['patientID']."' ");
+						foreach($pat_sql as $pname){}
+				?>
                         <tr>
                           <td><?php echo $fet_pats['patientID']; ?></td>
                           <td><?php echo $pname['firstName']." ".$pname['otherName']." ".$pname['lastName']; ?></td>
                           <td><?php echo $fet_pats['staffID']; ?></td>
-                          <td><?php
-                                    $ltest = select("SELECT * FROM labresults WHERE labRequestID='".$fet_pats['labRequestID']."' ");
-                                    foreach($ltest as $labtxt){
-//                                        echo $labtxt['labt'];
+                          <td>
+							  <?php
+								$LabNm = select("SELECT * FROM lablist WHERE labID='".$fet_pats['labID']."' ");
+								foreach($LabNm as $labRow){
+									echo $labRow['labName'];
+								}?>
+                         </td>
+						<td style="text-align:center;">
+							<?php
+								if($fet_pats['paymode'] == 'Private'){
+									if($fet_pats['paystatus'] == 'Not Paid'){?>
+											<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $fet_pats['paystatus'];?></span>
+										<?php }
+								}else{ ?>
+									<span style="background-color:#c92929;" class="label btn-warning text-center"><?php  echo $fet_pats['paymode'];?></span>
+								<?php }
+							?>
 
-                                        $labnam = select("SELECT GROUP_CONCAT(labName) as labt FROM lablist WHERE labID='".$labtxt['labID']."' ");
-                                        foreach($labnam as $labname){
-
-                                            echo $labname['labt'];
-                                        }
-
-
-                                    } ?>
-                                    </td>
-							<td style="text-align:center;">
-								<?php if($fet_pats['paystatus'] == 'Not Paid'){?>
-									<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $fet_pats['paystatus'];?></span>
-								<?php }?>
-
-								<?php if($fet_pats['paystatus'] == 'Paid'){?>
-									<span class="label label-success text-center"><?php  echo $fet_pats['paystatus'];?></span>
-								<?php }?>
-							</td>
-                          <td style='text-align: center;'>
-                          <a href='lab-patient.php?patientID=<?php echo $fet_pats['patientID']."&rID=".$fet_pats['labRequestID']; ?>'><span class='btn btn-primary fa fa-eye'></span></a>
-                           
-                          </td>
+							<?php if($fet_pats['paystatus'] == 'Paid'){?>
+								<span class="label label-success text-center"><?php  echo $fet_pats['paystatus'];?></span>
+							<?php }?>
+						</td>
+					  <td style='text-align: center;'>
+						  <a href='lab-patient.php?patientID=<?php echo $fet_pats['patientID']."&rID=".$fet_pats['labRequestID']; ?>'>
+							  <span class='btn btn-primary fa fa-eye'></span>
+						  </a>
+					  </td>
                         </tr>
                      <?php } ?>
                       </tbody>
