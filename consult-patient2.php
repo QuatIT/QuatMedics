@@ -1,4 +1,4 @@
-<?php session_start(); error_reporting(0); ?>
+<?php session_start(); #error_reporting(0); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -344,7 +344,7 @@ if(isset($_POST['presMeds'])){
                                           <input type="text" class="span12" name="patientID" value="<?php echo $patientID;?>" readonly/>
                                         </div>
                                       </div>
-										<?php if(!empty($consultrow['mode']) || $consultrow['mode']='null'){ ?>
+										<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">Mode :</label>
                                         <div class="controls">
@@ -352,7 +352,7 @@ if(isset($_POST['presMeds'])){
                                         </div>
                                       </div>
                                       <?php } ?>
-										<?php if(!empty($consultrow['insuranceNumber']) || $consultrow['insuranceNumber']='null'){ ?>
+										<?php if(!empty($consultrow['insuranceNumber']) || $consultrow['insuranceNumber']=='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">Insurance Number :</label>
                                         <div class="controls">
@@ -393,7 +393,7 @@ if(isset($_POST['presMeds'])){
                                         </div>
                                       </div>
 
-                                        <?php if(!empty($consultrow['insuranceType']) || $consultrow['insuranceType']='null'){ ?>
+                                        <?php if(!empty($consultrow['insuranceType']) || $consultrow['insuranceType']=='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">Insurance Type :</label>
                                         <div class="controls">
@@ -402,7 +402,7 @@ if(isset($_POST['presMeds'])){
                                       </div>
                                       <?php } ?>
 
-                                      <?php if(!empty($consultrow['company']) || $consultrow['company']='null'){ ?>
+                                      <?php if(!empty($consultrow['company']) || $consultrow['company']=='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">Company :</label>
                                         <div class="controls">
@@ -436,7 +436,7 @@ if(isset($_POST['presMeds'])){
                             </form>
                         </div>
                         <div id="tab2" class="tab-pane">
-                             <form action="#" method="post" class="form-horizontal">
+                             <form action="" method="post" class="form-horizontal">
 								 <div class="span6">
 									 <div class="widget-content nopadding">
 									 	<div class="control-group">
@@ -445,7 +445,7 @@ if(isset($_POST['presMeds'])){
                                             <input type="text" name="consultroom" class="span11" value="<?php echo $roomID?>" readonly>
                                           </div>
                                       	</div>
-										 	<?php if(!empty($consultrow['mode']) || $consultrow['mode']='null'){ ?>
+										 	<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">Pay Mode :</label>
                                         <div class="controls">
@@ -485,7 +485,7 @@ if(isset($_POST['presMeds'])){
                             </form>
                         </div>
                         <div id="tab3" class="tab-pane">
-                             <form action="#" method="post" class="form-horizontal">
+                             <form action="" method="post" class="form-horizontal">
 								 <div class="span6">
 								 	<div class="widget-content nopadding">
                                        <div class="control-group">
@@ -566,7 +566,7 @@ if(isset($_POST['presMeds'])){
 							</div>
 -->
 
-	 <form action="#" method="POST" id="add_name" class="form-horizontal">
+	 <form action="" method="POST" id="add_name" class="form-horizontal">
 		 <div class="span4">
 			<table class="table table-bordered">
 				  <tr>

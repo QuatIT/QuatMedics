@@ -171,13 +171,13 @@ if (isset($_POST['sub_mit'])){
                               <div class="control-group">
                                 <label class="control-label">Body Temperature:</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Body Temperature" value="<?php echo @$vitrow['bodyTemp']; ?>" name="bodytemp" readonly />
+                                  <input type="text" class="span11" placeholder="Body Temperature" value="<?php $vi_s = select('select * from eme_vitals where dateRegistered=CURDATE()'); foreach($vi_s as $vi_r){echo @$vi_r['bodyTemp'].",";} ?>" name="bodytemp" readonly />
                                 </div>
                               </div>
 							   <div class="control-group">
                                 <label class="control-label">Pulse Rate :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Pulse Rate" value="<?php echo @$vitrow['pulseRate']; ?>"  name="pulseRate" readonly/>
+                                  <input type="text" class="span11" placeholder="Pulse Rate" value="<?php $vi_s = select('select * from eme_vitals where dateRegistered=CURDATE()'); foreach($vi_s as $vi_r){echo @$vi_r['pulseRate'].",";} ?>"  name="pulseRate" readonly/>
                                 </div>
                               </div>
 
@@ -185,7 +185,7 @@ if (isset($_POST['sub_mit'])){
                               <div class="control-group">
                                 <label class="control-label">Weight</label>
                                 <div class="controls">
-                                  <input type="text"  class="span11" name="weight" placeholder="Weight" value="<?php echo @$vitrow['weight']; ?>"  readonly />
+                                  <input type="text"  class="span11" name="weight" placeholder="Weight" value="<?php $vi_s = select('select * from eme_vitals where dateRegistered=CURDATE()'); foreach($vi_s as $vi_r){echo @$vi_r['weight'].",";} ?><?php #echo @$vitrow['weight']; ?>"  readonly />
                                 </div>
                               </div>
 
@@ -214,19 +214,19 @@ if (isset($_POST['sub_mit'])){
                               <div class="control-group">
                                 <label class="control-label">Respiration Rate :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" value="<?php echo @$vitrow['respirationRate']; ?>" readonly/>
+                                  <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" value="<?php $vi_s = select('select * from eme_vitals where dateRegistered=CURDATE()'); foreach($vi_s as $vi_r){echo @$vi_r['respirationRate'].",";} ?><?php #echo @$vitrow['respirationRate']; ?>" readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">Blood Pressure</label>
                                 <div class="controls">
-                                  <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" value="<?php echo @$vitrow['bloodPressure']; ?>" readonly />
+                                  <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" value="<?php $vi_s = select('select * from eme_vitals where dateRegistered=CURDATE()'); foreach($vi_s as $vi_r){echo @$vi_r['bloodPressure'].",";} ?><?php #echo @$vitrow['bloodPressure']; ?>" readonly />
                                 </div>
                               </div>
                               <div class="control-group">
                                 <label class="control-label">As AT</label>
                                 <div class="controls">
-                                  <input type="text"  class="span11" name="" placeholder="AS AT TODAY" value="<?php echo @$vitrow['doe']; ?>" readonly />
+                                  <input type="text"  class="span11" name="" placeholder="AS AT TODAY" value="<?php $vi_s = select('select * from eme_vitals where dateRegistered=CURDATE()'); foreach($vi_s as $vi_r){echo @$vi_r['doe'].",";} ?><?php #echo @$vitrow['doe']; ?>" readonly />
                                 </div>
                               </div>
 
@@ -383,11 +383,11 @@ foreach($load_newpatient as $newpatient){
 		foreach($em_vn as $emv_row){}
 	  ?>
 	<ol>
-	  <li><b>Body Temperature: </b> <?php echo $emv_row['bodyTemp']; ?></li>
-	  <li><b>Pulse Rate : </b> <?php echo $emv_row['pulseRate']; ?></li>
-	  <li><b>Weight : </b> <?php echo $emv_row['weight']; ?></li>
-	  <li><b>Respiration Rate : </b> <?php echo $emv_row['respirationRate']; ?></li>
-	  <li><b>Blood Pressure : </b> <?php echo $emv_row['bloodPressure']; ?></li>
+	  <li><b>Body Temperature: </b> <?php echo @$emv_row['bodyTemp']; ?></li>
+	  <li><b>Pulse Rate : </b> <?php echo @$emv_row['pulseRate']; ?></li>
+	  <li><b>Weight : </b> <?php echo @$emv_row['weight']; ?></li>
+	  <li><b>Respiration Rate : </b> <?php echo @$emv_row['respirationRate']; ?></li>
+	  <li><b>Blood Pressure : </b> <?php echo @$emv_row['bloodPressure']; ?></li>
 	  </ol>
 
 	</td>
@@ -413,7 +413,7 @@ foreach($load_newpatient as $newpatient){
 	  <ol>
 		  <?php  foreach($sqls as $srows){ ?>
 		  <li>
-			  <?php echo $srows['dosage']; ?> ( <?php if($srows['med_status']=="administered"){ ?> <span class='' style='color:green;'>administered</span> <?php }else{ ?><span class='' style='color:red;'>not administered</span> <?php } ?> )
+			  <?php echo $srows['dosage']; ?> ( <?php if($srows['med_status']=="administered"){ ?> <span class='' style='color:green;'>administered by <label><?php echo $srows['nurseID']; ?></label></span> <?php }else{ ?><span class='' style='color:red;'>not administered</span> <?php } ?> )
 
 		  </li>
 
