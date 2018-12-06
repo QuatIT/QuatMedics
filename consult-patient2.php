@@ -392,10 +392,8 @@ if(isset($_POST['presMeds'])){
                                           <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
                                         </div>
                                       </div>
-<<<<<<< HEAD
 
-=======
->>>>>>> QuatMedics/master
+
                                         <?php if(!empty($consultrow['insuranceType']) || $consultrow['insuranceType']=='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">INSURANCE TYPE :</label>
