@@ -127,11 +127,12 @@ clearstatcache();
         <meta http-equiv="pragma" content="no-cache" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="css/font-awesome.min.css" />
+<!--<link rel="stylesheet" href="css/font-awesome.min.css" />-->
 		<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
         <link rel="stylesheet" href="css/maruti-login.css" />
-        <link rel="stylesheet" href="assets/css/font-awesome.css" />
+<!--        <link rel="stylesheet" href="assets/css/font-awesome.css" />-->
 	<link rel="stylesheet" href="assets/css/font-awesome.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<style>
 	       body{background: #eee url(light_honeycomb.png);}
 	</style>
