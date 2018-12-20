@@ -35,15 +35,15 @@ $error = '';
 //saving Account..
 if(isset($_POST['saveAccount'])){
 	//count number of service entered..
-	$nameNum = count($_POST['accountName']);
-	$typeNum = count($_POST['accountType']);
+	$nameNum = count(ucwords($_POST['accountName']));
+	$typeNum = count(ucwords($_POST['accountType']));
 	//check number of services..
 	if($nameNum > 0 && $typeNum >0){
 		//saving services into database...
 		for($n=0, $t=0; $n<$nameNum, $t<$typeNum; $n++,$t++){
 				if(trim($_POST['accountName'][$n] != '') && trim($_POST['accountType'][$t] != '')) {
-					$accountName = trim($_POST["accountName"][$n]);
-					$accountType = trim($_POST["accountType"][$t]);
+					$accountName = trim(ucwords($_POST["accountName"][$n]));
+					$accountType = trim(ucwords($_POST["accountType"][$t]));
 //						$serviceType = trim("Service");
 					//generate account ID
 					$accIDs = $consultation->loadAccPrices($centerID) + 1;

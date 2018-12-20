@@ -71,11 +71,11 @@ include 'layout/head.php';
 
 
   if(isset($_POST['addApptmnt'])){      $centerID = $_SESSION['centerID'];
-        $deathId = substr(filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING), 0, 5)."-".sprintf('%06s',$deathIDs);
-        $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
-        $deathDate = filter_input(INPUT_POST, "dod", FILTER_SANITIZE_STRING);
-        $deathTime = filter_input(INPUT_POST, "deathTime", FILTER_SANITIZE_STRING);
-        $reason = filter_input(INPUT_POST, "reason", FILTER_SANITIZE_STRING);
+        $deathId = ucwords(substr(filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING), 0, 5)."-".sprintf('%06s',$deathIDs));
+        $patientID = ucwords(filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING));
+        $deathDate = ucwords(filter_input(INPUT_POST, "dod", FILTER_SANITIZE_STRING));
+        $deathTime = ucwords(filter_input(INPUT_POST, "deathTime", FILTER_SANITIZE_STRING));
+        $reason = ucwords(filter_input(INPUT_POST, "reason", FILTER_SANITIZE_STRING));
 
       $insert_death = insert("INSERT INTO death(deathID,patientID,deathDate,deathTime,reason,dateRegistered,centerID) VALUES('$deathId','$patientID','$deathDate','$deathTime','$reason',CURDATE(),'$centerID' ) ");
 

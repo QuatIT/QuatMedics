@@ -6,6 +6,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
 <link rel="stylesheet" href="css/font-awesome.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
@@ -16,10 +17,37 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+	include 'layout/head.php';
+
+	$patientID = $_GET['pid'];
+
+
+	//patient deatils
+	$patdetail_sql = select("select * from patient where patientID='$patientID'");
+	foreach($patdetail_sql as $patient_row){}
+
+	//calculate age
+	$dateOfBirth = $patient_row['dob'];
+	$today = date("Y-m-d");
+	$diff = date_diff(date_create($dateOfBirth), date_create($today));
+
+//	$consultation_sql = select("select * from consultation where patientID='$patientID' group by patientID order by consultID DESC");
+	$prescription_sql = select("select * from prescriptions where patientID='$patientID' order by prescribeCode asc");
+	foreach($prescription_sql as $prescription_row){}
+
+	$consultation_sql = select("select * from consultation where patientID='$patientID' order by consultID asc");
+	foreach($consultation_sql as $consultation_row){}
+
+	$prescribedmeds = select("select * from prescribedmeds where prescribeCode='".$prescription_row['prescribeCode']."' ");
+	$investigation = select("select * from investigation_tb where patientID='$patientID' && consultID='".$consultation_row['consultID']."' ");
+	$diagnosis = select("select * from diagnose_tb where patientID='$patientID' && consultID='".$consultation_row['consultID']."' ");
+
+	?>
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -31,9 +59,11 @@
 <div id="sidebar">
     <ul>
 <!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
+<!--
     <li> <a href="opd-index.php"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
     <li> <a href="opd-patient.php"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
     <li><a href="opd-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+-->
     </ul>
 </div>
 
@@ -42,9 +72,11 @@
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
+<!--
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
         <a title="" class="tip-bottom"><i class="icon-plus"></i> OPD</a>
         <a title="" class="tip-bottom"><i class="icon-plus"></i> PATIENT INFORMATION</a>
+-->
     </div>
   </div>
   <div class="container">
@@ -64,12 +96,12 @@
 				<div class="container row">
 				<div class="span6" style="padding-left:20px">
 					<h5 style="text-decoration:underline;">Individual Personal Detail</h5>
-					Patient ID: <input type="text" name="patient_id" readonly style="width:100px;">
-					Patient Name: <input type="text" name="patient_name" readonly style="width:250px;">
-					Age: <input type="text" name="age" readonly style="width:50px;">
-					Gender: <input type="text" name="gender" readonly style="width:37px;">
+					Patient ID: <input type="text" name="patient_id" value="<?php echo $patientID; ?>" readonly style="width:100px;">
+					Patient Name: <input type="text" name="patient_name"value="<?php echo $patient_row['firstName']." ".$patient_row['otherName']." ".$patient_row['lastName']; ?>" readonly style="width:250px;">
+					Age: <input type="text" name="age" readonly value="<?php echo $diff->format('%y'); ?>" style="width:50px;">
+					Gender: <input type="text" name="gender" value="<?php echo $patient_row['gender']; ?>" readonly style="width:37px;">
 					NHIS No: <input type="text" name="nhis_no" readonly style="width:100px;">
-					Date: <input type="text" name="date" readonly style="width:100px;">
+					Date: <input type="text" name="date" value="<?php echo $consultation_row['doe']; ?>" readonly style="width:100px;">
 					</div>
 				<div class="span6">
 					<h5 style="text-decoration:underline;">Specialties</h5>
@@ -100,14 +132,21 @@
 						</tr>
 						</thead>
 						<tbody>
+							<?php
+
+								$count = 1;
+								foreach($diagnosis as $diag_row){
+
+							?>
 							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td><?php echo @$count++; ?></td>
+								<td><?php echo @$diag_row['diagnosis']; ?></td>
+								<td><?php echo @$diag_row['icd10'];?></td>
+								<td><?php echo @$diag_row['G-DRG']?></td>
+								<td><?php echo @$diag_row['dateRegistered']?></td>
+								<td><a href="update_diagnosis?id=<?php echo $diag_row['id']; ?>"><!--<i span="fa fa-pencil"></i>--> Update</a> | <a href="delete_diagnosis?id=<?php echo $diag_row['id']; ?>">Delete</a></td>
 							</tr>
+							<?php } ?>
 						</tbody>
 					</table>
 
@@ -128,17 +167,21 @@
 						</tr>
 						</thead>
 						<tbody>
+							<?php
+								$counterz = 1;
+								foreach($prescribedmeds as $prescribedmeds_row){ ?>
 							<tr>
+								<td><?php echo $counterz++; ?></td>
+								<td><?php echo $prescribedmeds_row['medicine'];?></td>
+								<td><?php echo $prescribedmeds_row['dosage'];?></td>
 								<td></td>
 								<td></td>
+								<td><?php echo $prescribedmeds_row['medprice'];?></td>
+								<td><?php echo $prescribedmeds_row['dateInsert'];?></td>
 								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td><a href="update_med?id=<?php echo $prescribedmeds_row['id']; ?>"><!--<i span="fa fa-pencil"></i>--> Update</a> | <a href="delete_med?id=<?php echo $prescribedmeds_row['id']; ?>">Delete</a></td>
 							</tr>
+							<?php } ?>
 						</tbody>
 					</table>
 
@@ -157,12 +200,18 @@
 						</tr>
 						</thead>
 						<tbody>
+							<?php
+
+								$counter='1';
+								foreach($investigation as $invest_row){
+							?>
 							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td><?php echo $counter++; ?></td>
+								<td><?php echo $invest_row['examination']; ?></td>
+								<td><?php echo $invest_row['dateRegistered']; ?></td>
+								<td><a href="update_investigation?id=<?php echo $invest_row['id']; ?>">Update</a> | <a href="delete_investigation?id=<?php echo $invest_row['id']; ?>">Delete</a></td>
 							</tr>
+							<?php } ?>
 						</tbody>
 					</table>
 

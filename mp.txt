@@ -1,0 +1,6 @@
+id
+centerID
+mode #insurance/private(cash)/company
+type #NHIS,ACACIA/private/CompanyName
+dateInsert
+doe

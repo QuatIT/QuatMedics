@@ -38,17 +38,17 @@
 //saving Departments..
 if(isset($_POST['saveDepartment'])){
 	//count number of departments entered..
-	$nameNum = count($_POST['departmentName']);
+	$nameNum = count(ucwords($_POST['departmentName']));
 	//check number of services..
 	if($nameNum > 0 ){
 		//saving services into database...
 		for($n=0; $n<$nameNum; $n++){
 				if(trim($_POST['departmentName'][$n] != '')) {
-					$departmentName = trim($_POST['departmentName'][$n]);
+					$departmentName = trim(ucwords($_POST['departmentName'][$n]));
 
 					//generate department ID
 					$depIDs = $consultation->loadDepartment($centerID)+ 1;
-					$departmentID = "DEP.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$depIDs);
+					$departmentID = ucwords("DEP.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$depIDs));
 
 					//check department name, if already entered else save account..
 					$depExist = select("SELECT * FROM department WHERE departmentName='$departmentName' AND centerID='$centerID'");

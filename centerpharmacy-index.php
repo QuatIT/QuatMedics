@@ -37,8 +37,8 @@
     if(isset($_POST['btnSave'])){
 
       $centerID = $_SESSION['centerID'];
-      $pharmacyID = "PH.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$pharmacyIDs);
-      $pharmacyName = filter_input(INPUT_POST, "pharmacyName", FILTER_SANITIZE_STRING);
+      $pharmacyID = ucwords("PH.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$pharmacyIDs));
+      $pharmacyName = ucwords(filter_input(INPUT_POST, "pharmacyName", FILTER_SANITIZE_STRING));
 //        $status = FREE;
 
         $pharm = insert("INSERT INTO pharmacy(pharmacyID,pharmacyName,centerID,dateregistered) VALUES('$pharmacyID','$pharmacyName','$centerID',CURDATE())");

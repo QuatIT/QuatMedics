@@ -36,26 +36,28 @@
 	//saving services..
     if(isset($_POST['saveServiceprices'])){
 		//count number of service entered..
-		$serviceNum = count($_POST['serviceName']);
-        $servicePriceNum = count($_POST['servicePrice']);
+		$serviceNum = count(ucwords($_POST['serviceName']));
+        $servicePriceNum = count(ucwords($_POST['servicePrice']));
+        $modeOfPaymentNum = count(ucwords($_POST['modeOfPayment']));
 		//check number of services..
-		if($serviceNum > 0 && $servicePriceNum >0){
+		if($serviceNum > 0 && $servicePriceNum >0 && $modeOfPaymentNum >0){
 			//saving services into database...
-            for($n=0, $p=0; $n<$serviceNum, $p<$servicePriceNum; $n++,$p++){
-                    if(trim($_POST['serviceName'][$n] != '') && trim($_POST['servicePrice'][$p] != '')) {
-                        $serviceName = trim($_POST["serviceName"][$n]);
-                        $servicePrice = trim($_POST["servicePrice"][$p]);
-						$serviceType = trim("Service");
+            for($n=0, $p=0, $m=0; $n<$serviceNum, $p<$servicePriceNum, $m<$modeOfPaymentNum; $n++,$p++,$m++){
+                    if(trim($_POST['serviceName'][$n] != '') && trim($_POST['servicePrice'][$p] != '') && trim($_POST['modeOfPayment'][$m] != '')) {
+                        $serviceName = trim(ucwords($_POST["serviceName"][$n]));
+                        $servicePrice = trim(ucwords($_POST["servicePrice"][$p]));
+                        $modeOfPayment = trim(ucwords($_POST["modeOfPayment"][$m]));
+						$serviceType = trim(ucwords("Service"));
 						//generate service ID
 						$serviceIDs = $consultation->loadServicePrices($centerID) + 1;
-						$serviceID = "SV.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs);
+						$serviceID = ucwords("SV.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs));
 
 						//check service name if already entered else save service..
-						$serviceExist = select("SELECT * FROM prices WHERE serviceName='$serviceName'");
+						$serviceExist = select("SELECT * FROM prices WHERE serviceName='$serviceName' && modePayment='$modeOfPayment' ");
 						if($serviceExist){
 							$error = "<script>document.write('Service Already Saved..');</script>";
 						}else{
-							$saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,servicePrice,serviceType,dateInsert) VALUES('$serviceID','$centerID','$serviceName','$servicePrice','$serviceType','$dateToday')");
+							$saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,servicePrice,serviceType,modePayment,dateInsert) VALUES('$serviceID','$centerID','$serviceName','$servicePrice','$serviceType','$modeOfPayment','$dateToday')");
 							if($saveService){
 								$success = "<script>document.write('Services Saved.');window.location='centerprices-index';</script>";
 							}else{
@@ -74,24 +76,26 @@
 		//count number of service entered..
 		$serviceNum = count($_POST['serviceName']);
         $servicePriceNum = count($_POST['servicePrice']);
+        $modeOfPaymentNum = count($_POST['modeOfPayment']);
 		//check number of services..
-		if($serviceNum > 0 && $servicePriceNum >0){
+		if($serviceNum > 0 && $servicePriceNum >0 && $modeOfPaymentNum >0){
 			//saving services into database...
-            for($n=0, $p=0; $n<$serviceNum, $p<$servicePriceNum; $n++,$p++){
-                    if(trim($_POST['serviceName'][$n] != '') && trim($_POST['servicePrice'][$p] != '')) {
+            for($n=0, $p=0, $m=0; $n<$serviceNum, $p<$servicePriceNum, $m<$modeOfPaymentNum; $n++,$p++,$m++){
+                    if(trim($_POST['serviceName'][$n] != '') && trim($_POST['servicePrice'][$p] != '') && trim($_POST['modeOfPayment'][$m] != '')) {
                         $serviceName = trim($_POST["serviceName"][$n]);
                         $servicePrice = trim($_POST["servicePrice"][$p]);
+                        $modeOfPayment = trim($_POST["modeOfPayment"][$m]);
 						$serviceType = trim("Lab");
 						//generate service ID
 						$serviceIDs = $consultation->loadServicePrices($centerID) + 1;
 						$serviceID = "SV.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs);
 
 						//check service name if already entered else save service..
-						$serviceExist = select("SELECT * FROM prices WHERE serviceName='$serviceName'");
+						$serviceExist = select("SELECT * FROM prices WHERE serviceName='$serviceName' && modePayment='$modeOfPayment' ");
 						if($serviceExist){
 							$error = "<script>document.write('Service Already Saved..');</script>";
 						}else{
-							$saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,servicePrice,serviceType,dateInsert) VALUES('$serviceID','$centerID','$serviceName','$servicePrice','$serviceType','$dateToday')");
+							$saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,servicePrice,serviceType,modePayment,dateInsert) VALUES('$serviceID','$centerID','$serviceName','$servicePrice','$serviceType','$modeOfPayment','$dateToday')");
 							if($saveService){
 								$success = "<script>document.write('Services Saved.');window.location='centerprices-index';</script>";
 							}else{
@@ -172,6 +176,18 @@
 									</select>
 								</td>
 								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td>
+								<td><select class="span" name="modeOfPayment[]" required>
+										<option>-- Select Payment Mode --</option>
+
+									<?php
+										$modePayment = select("select * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."' ");
+										if($modePayment){
+											foreach($modePayment as $modePay){ ?>
+									<option><?php echo $modePay['type']; ?></option>
+										<?php }} ?>
+									?>
+									</select>
+								</td>
 								<td><button type="button" name="add" id="add2" class="btn btn-primary">Add Service</button></td>
 							</tr>
 						</table>
@@ -235,6 +251,18 @@
 									</select>
 								</td>
 								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required/></td>
+								<td><select class="span" name="modeOfPayment[]" required>
+										<option>-- Select Payment Mode --</option>
+
+									<?php
+										$modePayment = select("select * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."' ");
+										if($modePayment){
+											foreach($modePayment as $modePay){ ?>
+									<option><?php echo $modePay['type']; ?></option>
+										<?php }} ?>
+									?>
+									</select>
+								</td>
 								<td><button type="button" name="add" id="add" class="btn btn-primary">Add LAB</button></td>
 							</tr>
 						</table>
@@ -332,7 +360,7 @@ function resetMenu() {
         var i=1;
         $('#add2').click(function(){
             i++;
-            $('#dynamic_field2').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Service --</option><option value="CONSULTATION">CONSULTATION</option><option value="ID CARD"> HOSPITAL CARD</option></select></td><td><input type="number" step="any" min="1"  name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field2').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Service --</option><option value="CONSULTATION">CONSULTATION</option><option value="ID CARD"> HOSPITAL CARD</option></select></td><td><input type="number" step="any" min="1"  name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><select class="span" required><option>-- Select Payment Mode</option><?php $modePayment = select("select * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."' ");if($modePayment){	foreach($modePayment as $modePay){ ?><option><?php echo $modePay['type']; ?></option><?php }} ?></select></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){
@@ -347,7 +375,7 @@ function resetMenu() {
         var i=1;
         $('#add').click(function(){
             i++;
-            $('#dynamic_field').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Service --</option><?php $lablist = select("SELECT * FROM lablist");if($lablist){foreach($lablist as $labRow){?><option value="<?php echo $labRow['labName']?>"><?php echo $labRow['labName'];?></option><?php }}?></select></td><td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Service --</option><?php $lablist = select("SELECT * FROM lablist");if($lablist){foreach($lablist as $labRow){?><option value="<?php echo $labRow['labName']?>"><?php echo $labRow['labName'];?></option><?php }}?></select></td><td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><select class="span" required><option>-- Select Payment Mode</option><?php $modePayment = select("select * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."' ");if($modePayment){	foreach($modePayment as $modePay){ ?><option><?php echo $modePay['type']; ?></option><?php }} ?></select></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){

@@ -101,13 +101,14 @@
       $mode = filter_input(INPUT_POST, "mode", FILTER_SANITIZE_STRING);
       $insuranceType = filter_input(INPUT_POST, "insuranceType", FILTER_SANITIZE_STRING);
       $insuranceNumber = filter_input(INPUT_POST, "insuranceNumber", FILTER_SANITIZE_STRING);
+      $ccNumber = filter_input(INPUT_POST, "ccNumber", FILTER_SANITIZE_STRING);
       $company = filter_input(INPUT_POST, "company", FILTER_SANITIZE_STRING);
         $centerID=$_SESSION['centerID'];
         $status = SENT_TO_CONSULTING;
         $patient_busy = PATIENT_BUSY;
 
 //        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
-        $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$company,$status,$centerID,$dateToday);
+        $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$ccNumber,$company,$status,$centerID,$dateToday);
 
 
         if($consultAssignPatient1){
@@ -381,7 +382,9 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                                     </select>
                                 </div>
                               </div>
+
                              <span id="modeload"></span>
+
                               <div class="control-group">
                                 <label class="control-label">Body Temperature:</label>
                                 <div class="controls">
@@ -529,6 +532,18 @@ window.onload = function () {
             // load the select option data into a div
                 $('#loader').html("Please Wait...");
                 $('#modeload').load('loads/mode.php?id='+val, function(){
+                $('#loader').html("");
+               });
+        }
+
+</script>
+
+<script>
+
+        function ccInsure(val){
+            // load the select option data into a div
+                $('#loader').html("Please Wait...");
+                $('#ccmodeload').load('loads/ccmode.php?id='+val, function(){
                 $('#loader').html("");
                });
         }

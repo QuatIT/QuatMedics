@@ -189,6 +189,9 @@ function highlight_word( $content, $word) {
     return $content; // return highlighted data
 }
 
+
+
+
 ?>
 
     <?php

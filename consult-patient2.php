@@ -24,6 +24,12 @@
         }
     </style>
 -->
+
+	<style>
+		table, tr, td {
+			border: 1px solid transparent;
+		}
+	</style>
 </head>
 <body>
 
@@ -170,32 +176,103 @@ if(isset($_POST['adWard'])){
 
 //prescribe medication to patient...
 if(isset($_POST['presMeds'])){
-        $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
-        $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
-        $pharmacyID = filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING);
-        $paymode = filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
-		$paystatus = trim("Not Paid");
+        $diagnoses = ucwords(filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING));
+        $symptoms = ucwords(filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING));
+        $pharmacyID = ucwords(filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING));
+        $paymode = ucwords(filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING));
+		$paystatus = trim(ucwords("Not Paid"));
         $status = SENT_TO_PHARMACY;
-        $prescribeStatus = trim("Prescibed");
+        $prescribeStatus = trim(ucwords("Prescibed"));
         $datePrescribe = trim(date("Y-m-d"));
         $prescriptionCode = randomString('4');
 
-        $medIDNum = count($_POST['medName']);
-        $piecesNum = count($_POST['pieces']);
-        $adayNum = count($_POST['aday']);
-        $totalDaysNum = count($_POST['totalDays']);
+        $medIDNum = count(ucwords($_POST['medName']));
+        $piecesNum = count(ucwords($_POST['pieces']));
+        $adayNum = count(ucwords($_POST['aday']));
+        $totalDaysNum = count(ucwords($_POST['totalDays']));
+        $diagnosis_new = count(ucwords($_POST['diagnosis_new']));
+        $investigation_new = count(ucwords($_POST['investigation_new']));
+        $investigation_new2 = ucwords($_POST['investigation_new']);
+
+	$diagnose1 = '';
+    $diagnosis_new2 = ucwords($_POST['diagnosis_new']);
+
+	foreach($diagnosis_new2 as $diagnose_rowd){
+		$diagnose1 .= $diagnose_rowd."<br>";
+	}
+
+
+	$invest1 = '';
+    $investigation2 = ucwords($_POST['investigation_new']);
+
+	foreach($investigation2 as $investigate_rowd){
+		$invest1 .= $investigate_rowd."<br>";
+	}
+//	echo "<script>alert('{$diagnose1}');</script>";
+//	exit();
+
+
+	if($diagnosis_new > 0){
+		for($b=0; $b<$diagnosis_new; $b++){
+			if(trim($_POST['diagnosis_new'][$b] != '')){
+					$diagd = trim(ucwords($_POST['diagnosis_new'][$b]));
+
+					//insert into diagnosis table
+
+					$diagd_id = "DIAG-".sprintf('%06s',count(select("select * from diagnose_tb")) + 1);
+
+					$consql = select("select * from consultation where consultID='".$_GET['conid']."' ");
+					foreach($consql as $conrow){}
+
+					$dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd',CURDATE(),'".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
+
+//				if($dia){
+//					echo "<script>alert('Guud');</script>";
+//				}
+
+		}
+	}
+	}
+
+
+	if($investigation_new > 0){
+		for($j=0; $j<$investigation_new; $j++){
+			if(trim($_POST['investigation_new'][$j] != '')){
+					$investd = trim(ucwords($_POST['investigation_new'][$j]));
+
+					//insert into investigation table
+
+					$invest_id = "INVEST-".sprintf('%06s',count(select("select * from investigation_tb")) + 1);
+
+					$invsql = select("select * from consultation where consultID='".$_GET['conid']."' ");
+					foreach($invsql as $invrow){}
+
+					$dia = insert("INSERT INTO investigation_tb(patientID,consultID,examination,dateRegistered,investigated_by,centerID,investigationID) VALUES('".$invrow['patientID']."','".$_GET['conid']."','$investd',CURDATE(),'".$_SESSION['username']."','".$_SESSION['centerID']."','$invest_id')");
+
+//				if($dia){
+//					echo "<script>alert('Guud');</script>";
+//				}
+
+		}
+	}
+	}
+
+//exit();
+
 
         if($medIDNum > 0 && $piecesNum > 0) {
 			//saving prescription..
-        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
+//        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
+        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','$datePrescribe','$prescriptionCode','$invest1','$dateToday')");
 
 		//saving the prescribed medications....
 		for($m=0, $p=0, $a=0, $t=0; $m<$medIDNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
-				if(trim($_POST['medName'][$m] != '') && trim($_POST['pieces'][$p] != '') && trim($_POST['aday'][$a] != '') && trim($_POST['totalDays'][$t] != '')) {
-					$medicineID = trim($_POST['medName'][$m]);
-					$pieces = trim($_POST['pieces'][$p]);
-					$aday = trim($_POST['aday'][$a]);
-					$totalDays = trim($_POST['totalDays'][$t]);
+				if(trim($_POST['medName'][$m] != '') && trim($_POST['pieces'][$p] != '') && trim($_POST['aday'][$a] != '') && trim($_POST['totalDays'][$t] != '') ) {
+					$medicineID = trim(ucwords($_POST['medName'][$m]));
+					$pieces = trim(ucwords($_POST['pieces'][$p]));
+					$aday = trim(ucwords($_POST['aday'][$a]));
+					$totalDays = trim(ucwords($_POST['totalDays'][$t]));
+
 					//get medicine name for insert qeury...
 		$findmedname = select("SELECT * FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
 					foreach($findmedname as $nameRow){
@@ -206,7 +283,7 @@ if(isset($_POST['presMeds'])){
 						if($medFrom == 'NHIS'){
 							$unitPrice = $nameRow['nhis_unit_price'];
 						}
-						if($medFrom == 'LOCAL'){
+						if($medFrom == 'PRIVATE'){
 							$unitPrice = $nameRow['center_unit_price'];
 						}
 					}
@@ -222,11 +299,12 @@ if(isset($_POST['presMeds'])){
 				$medprice = trim($unitPrice*$pieces);
 			}
 
-		$insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode','$dateToday')");
+//		$insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode','$dateToday')");
+		$insertMedsz = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode',now())");
 					}
 		}
 
-  if($insertpresciption && $insertMeds){
+  if($insertpresciption=true && $insertMedsz=true){
 		$success =  "PRESCRIPTION SENT SUCCESSFULLY";
 		$updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
 
@@ -300,7 +378,7 @@ if(isset($_POST['presMeds'])){
         <a title="Consultation" class="tip-bottom"><i class="icon-user"></i> CONSULTATION ROOM</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">CONSULTATION ROOM <?php echo $r['roomName'];?></h3>
 	  <?php if($success || $error){?>
 			<div class="row-fluid">
@@ -553,23 +631,13 @@ if(isset($_POST['presMeds'])){
                             </form>
                         </div>
 
-<div id="tab4" class="tab-pane">
-<!--
-						<div class="span12">
-							<form class="form" enctype="multipart/form-data" method="post">
-								<table class="table table-bordered">
-									<tr>
-										<td style="width:70%;"><input type="number" min="1" placeholder="Number of Drugs To Be Prescribed" name="Number" class="span11" /></td>
-										<td><input type="submit" value="GO" name="subName" class="btn btn-primary btn-block" /></td>
-									</tr>
-								</table>
-							</form>
-							</div>
--->
+
+
+						<div id="tab4" class="tab-pane">
 
 	 <form action="" method="POST" id="add_name" class="form-horizontal">
-		 <div class="span4">
-			<table class="table table-bordered">
+		 <div class="span6">
+			<table class="table table-bordered" style="margin-top:-80px;">
 				  <tr>
 					  <td> Presciption Code</td>
 					  <td colspan="2">
@@ -586,28 +654,68 @@ if(isset($_POST['presMeds'])){
 								foreach($pharmsql as $pharmow){
 						  ?>
 				<option value="<?php echo $pharmow['pharmacyID'];?>" ><?php echo $pharmow['pharmacyName'];?></option>
-						  <?php }}else{?>
+						  <?php }}else{ ?>
 						  <option value=""> No Pharmacy Available </option>
 						  <?php }?>
 						</select>
 					  </td>
 				  </tr>
 				  <tr>
-					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>
+					<td colspan="3">Patient's Symptoms<textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea>  </td>
 				  </tr>
+				  <tr>
+					  <td>
+<!--					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>-->
+					   <table border="0" class="" id="diagnosis" style="margin-top:20px;">
+                                <tr>
+
+                                    <td>
+										<label>Diagnosis</label>
+                                        <input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control">
+                                    </td>
+
+                                    <td><br>
+                                        <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success">+</button>
+                                    </td>
+                                </tr>
+                            </table>
+					  </td>
+					  <br><br>
+
+					  <td>
+<!--					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>-->
+					   <table border="0" class="" id="investigation" style="margin-top:20px;">
+                                <tr>
+
+                                    <td>
+										<label>Investigation</label>
+                                        <input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control">
+                                    </td>
+
+                                    <td><br>
+                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success">+</button>
+                                    </td>
+                                </tr>
+                            </table>
+					  </td>
+					  <br><br>
+
+				  </tr>
+<!--
 				  <tr>
 					<td colspan="3"><textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea>  </td>
 				  </tr>
+-->
 			</table>
 		 </div>
 
-			<div class="span8">
+			<div class="span6">
 			  <table class="table table-bordered" id="dynamic_field">
-				<?php if(!empty($consultrow['mode']) || $consultrow['mode']='null'){ ?>
+				<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
 				  <div class="control-group" style="display:none;">
 					<label class="control-label">Pay Mode :</label>
 					<div class="controls">
-					  <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
+					  <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode']; ?>" readonly/>
 					</div>
 				  </div>
 				  <?php } ?>
@@ -617,6 +725,7 @@ if(isset($_POST['presMeds'])){
 						<th> Intakes Per Day</th>
 						<th> Number Of Days</th>
 					</thead>
+				  <tbody>
 					<?php
 					$num = 5;
 					if(!empty($num)){
@@ -633,23 +742,24 @@ if(isset($_POST['presMeds'])){
 
 						  	$centerNHISLevel = $centerName['centerNhisLevel'];
 						  	$level = explode(" ",$centerNHISLevel);
-								$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='".$level[1]."' AND medFrom='NHIS' OR medFrom='LOCAL'");
+								$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='".$level[1]."' AND medFrom='NHIS' OR medFrom='PRIVATE'");
 								if($meds){
 									foreach($meds as $medrow){
 							?>
-							<option value="<?php echo $medrow['medicine_id']; ?>"> <?php  echo $medrow['medicine_name'];?></option>
-							<?php }}?>
+							<option value="<?php echo $medrow['medicine_id']; ?>"> <?php echo $medrow['medicine_name']; ?></option>
+							<?php }} ?>
 							</select>
 							<?php }else{
-								$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='LOCAL'");
+								$medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND mode_of_payment='PRIVATE'");
+//								$medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='LOCAL'");
 							?>
 									<select name="medName[]" class="span11">
 										<option></option>
 										<?php
-										if($meds){
-									foreach($meds as $medrow){
+										if($medsx){
+									foreach($medsx as $medrowx){
 										?>
-							<option value="<?php echo $medrow['medicine_id']; ?>"> <?php  echo $medrow['medicine_name'];?></option>
+							<option value="<?php echo $medrowx['medicine_id']; ?>"> <?php echo $medrowx['medicine_name']; ?></option>
 										<?php }}?>
 									</select>
 							<?php }?>
@@ -658,7 +768,8 @@ if(isset($_POST['presMeds'])){
 						<td><input type="number" min="1" name="aday[]" placeholder="e.g. 3" class="span11" /></td>
 						<td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" /></td>
 					</tr>
-						  <?php }}?>
+						  <?php }} ?>
+				  </tbody>
                                     </table>
                                       <div class="form-actions">
                                           <i class="span7"></i>
@@ -667,6 +778,9 @@ if(isset($_POST['presMeds'])){
 								 </div>
                             </form>
                         </div>
+
+
+
 
 						<div id="tab5" class="tab-pane">
                               <form action="" method="post">
@@ -925,6 +1039,47 @@ function resetMenu() {
         });
 //    });
 </script>
+
+
+<!--Beginning of Diagnosis-->
+        <script>
+            //    $(document).ready(function(){
+            var i = 1;
+            $('#add_diagnosis').click(function() {
+                i++;
+                $('#diagnosis').append('<tr id="row' + i + '"> <td><input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control"></td><td><button type="button" name="remove_diagnosis" id="' + i + '" class="btn btn-danger btn_remove_diagnosis">X</button></td></tr>');
+            });
+
+            $(document).on('click', '.btn_remove_diagnosis', function() {
+                var button_id = $(this).attr("id");
+                $('#row' + button_id + '').remove();
+            });
+
+            //    });
+
+        </script>
+
+<!--End of Diagnosis-->
+
+<!--Beginning of Investigation-->
+        <script>
+            //    $(document).ready(function(){
+            var i = 1;
+            $('#add_investigation').click(function() {
+                i++;
+                $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control"></td><td><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
+            });
+
+            $(document).on('click', '.btn_remove_investigation', function() {
+                var button_id = $(this).attr("id");
+                $('#row' + button_id + '').remove();
+            });
+
+            //    });
+
+        </script>
+
+<!--End of Diagnosis-->
 
 <script>
 

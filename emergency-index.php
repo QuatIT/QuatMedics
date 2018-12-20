@@ -39,7 +39,7 @@
     if(isset($_POST['btnSave'])){
 
       $centerID = $_SESSION['centerID'];
-        $patientid = filter_input(INPUT_POST, "patientid", FILTER_SANITIZE_STRING);
+        $patientid = ucwords(filter_input(INPUT_POST, "patientid", FILTER_SANITIZE_STRING));
 		$emeID = "EME.".sprintf('%06s',count(select("select * from emergency_patient")) + 1);
 
         $search_patient = select("SELECT * FROM patient WHERE patientID='".$patientid."' ");
@@ -96,11 +96,11 @@
 
     if(isset($_POST['btnNewSave'])){
         $centerID = $_SESSION['centerID'];
-        $patientName = filter_input(INPUT_POST, "patientname", FILTER_SANITIZE_STRING);
-        $gender = filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING);
-        $gName = filter_input(INPUT_POST, "gName", FILTER_SANITIZE_STRING);
-        $gMobile = filter_input(INPUT_POST, "gMobile", FILTER_SANITIZE_STRING);
-        $gAddress = filter_input(INPUT_POST, "gAddress", FILTER_SANITIZE_STRING);
+        $patientName = ucwords(filter_input(INPUT_POST, "patientname", FILTER_SANITIZE_STRING));
+        $gender = ucwords(filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING));
+        $gName = ucwords(filter_input(INPUT_POST, "gName", FILTER_SANITIZE_STRING));
+        $gMobile = ucwords(filter_input(INPUT_POST, "gMobile", FILTER_SANITIZE_STRING));
+        $gAddress = ucwords(filter_input(INPUT_POST, "gAddress", FILTER_SANITIZE_STRING));
 		$emeIDs = count(select("select * from emergency_patient")) + 1;
 		$emeID = "EME.".sprintf('%06s',$emeIDs);
 

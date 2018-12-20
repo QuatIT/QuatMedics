@@ -55,13 +55,13 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
 
     if(isset($_POST['addApptmnt'])){
       $centerID = $_SESSION['centerID'];
-      $transferID = "TRANS.".sprintf('%06s',$transID);
-      $from_center = filter_input(INPUT_POST, "fc", FILTER_SANITIZE_STRING);
-      $from_user = filter_input(INPUT_POST, "fu", FILTER_SANITIZE_STRING);
-      $to_center = filter_input(INPUT_POST, "newCenter", FILTER_SANITIZE_STRING);
-      $to_user = filter_input(INPUT_POST, "staffName", FILTER_SANITIZE_STRING);
-      $reason = filter_input(INPUT_POST, "transferReason", FILTER_SANITIZE_STRING);
-      $patientID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
+      $transferID = ucwords("TRANS.".sprintf('%06s',$transID));
+      $from_center = ucwords(filter_input(INPUT_POST, "fc", FILTER_SANITIZE_STRING));
+      $from_user = ucwords(filter_input(INPUT_POST, "fu", FILTER_SANITIZE_STRING));
+      $to_center = ucwords(filter_input(INPUT_POST, "newCenter", FILTER_SANITIZE_STRING));
+      $to_user = ucwords(filter_input(INPUT_POST, "staffName", FILTER_SANITIZE_STRING));
+      $reason = ucwords(filter_input(INPUT_POST, "transferReason", FILTER_SANITIZE_STRING));
+      $patientID = ucwords(filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING));
 
         $transfer_query = insert("INSERT INTO transfer(transferID,from_centerID,to_centerID,from_staffID,to_staffID,reason,patientID,dateRegistered) VALUES('$transferID','$from_center','$to_center','$from_user','$to_user','$reason','$patientID',CURDATE() ) ");
 
