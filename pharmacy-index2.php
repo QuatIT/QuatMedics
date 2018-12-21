@@ -139,7 +139,7 @@
 
         setInterval(function(){
             newpatient();
-        },10000);
+        },100000);
     </script>
 
 

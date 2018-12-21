@@ -93,10 +93,10 @@
 
 		$medname = $rem['medicine_name'];
 
-      $medicine_id = ucwords(filter_input(INPUT_POST, "medicine_name", FILTER_SANITIZE_STRING));
-      $no_of_piece = ucwords(filter_input(INPUT_POST, "no_of_piece", FILTER_SANITIZE_STRING));
+      $medicine_id =  filter_input(INPUT_POST, "medicine_name", FILTER_SANITIZE_STRING);
+      $no_of_piece =  filter_input(INPUT_POST, "no_of_piece", FILTER_SANITIZE_STRING);
 
-		$request_status = ucwords('pending');
+		$request_status =  'pending';
 		$centerID = $_SESSION['centerID'];
 		$requested_by = $_SESSION['username'];
 

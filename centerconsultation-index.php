@@ -37,8 +37,8 @@
 
     if(isset($_POST['btnSave'])){
 
-      $consultRoomID = ucwords("CR.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultRoomIDs));
-      $roomName = ucwords(filter_input(INPUT_POST, "departmentName", FILTER_SANITIZE_STRING));
+      $consultRoomID =  "CR.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultRoomIDs);
+      $roomName =  filter_input(INPUT_POST, "departmentName", FILTER_SANITIZE_STRING);
         $status = FREE;
 
 		$sql = select("SELECT * FROM consultingroom WHERE roomName='".$roomName."' && centerID='".$centerID."' ");

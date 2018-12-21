@@ -37,17 +37,17 @@
 
     if(isset($_POST['addApptmnt'])){
 
-        $babyID = ucwords(substr(filter_input(INPUT_POST, "babylastName", FILTER_SANITIZE_STRING), 0, 5).date('y')."-".trim(sprintf('%06s',$PatientIDs)));
+        $babyID =  substr(filter_input(INPUT_POST, "babylastName", FILTER_SANITIZE_STRING), 0, 5).date('y')."-".trim(sprintf('%06s',$PatientIDs));
 //        $babyID = filter_input(INPUT_POST, "babyID", FILTER_SANITIZE_STRING);
-        $babyFirstName = ucwords(filter_input(INPUT_POST, "babyFirstName", FILTER_SANITIZE_STRING));
-        $babyOtherName = ucwords(filter_input(INPUT_POST, "babyOtherName", FILTER_SANITIZE_STRING));
-        $babylastName = ucwords(filter_input(INPUT_POST, "babylastName", FILTER_SANITIZE_STRING));
-        $babyName = ucwords($babyFirstName.' '.$babyOtherName.' '.$babylastName);
-        $dob = ucwords(filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING));
-        $motherName = ucwords(filter_input(INPUT_POST, "motherName", FILTER_SANITIZE_STRING));
-        $fatherName = ucwords(filter_input(INPUT_POST, "fatherName", FILTER_SANITIZE_STRING));
-        $birthTime = ucwords(filter_input(INPUT_POST, "birthTime", FILTER_SANITIZE_STRING));
-        $country = ucwords(filter_input(INPUT_POST, "country", FILTER_SANITIZE_STRING));
+        $babyFirstName =  filter_input(INPUT_POST, "babyFirstName", FILTER_SANITIZE_STRING);
+        $babyOtherName =  filter_input(INPUT_POST, "babyOtherName", FILTER_SANITIZE_STRING);
+        $babylastName =  filter_input(INPUT_POST, "babylastName", FILTER_SANITIZE_STRING);
+        $babyName =  $babyFirstName.' '.$babyOtherName.' '.$babylastName;
+        $dob =  filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING);
+        $motherName =  filter_input(INPUT_POST, "motherName", FILTER_SANITIZE_STRING);
+        $fatherName =  filter_input(INPUT_POST, "fatherName", FILTER_SANITIZE_STRING);
+        $birthTime =  filter_input(INPUT_POST, "birthTime", FILTER_SANITIZE_STRING);
+        $country =  filter_input(INPUT_POST, "country", FILTER_SANITIZE_STRING);
         $status = LIVING;
 
         $birth = new Birth;

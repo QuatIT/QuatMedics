@@ -86,7 +86,7 @@
     if(isset($_POST['btnSave'])){
 
       $medID = substr(filter_input(INPUT_POST, "medicine_name", FILTER_SANITIZE_STRING), 0, 3)."-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$medIDs);
-      $staffID = $staffID['userID'];
+//      $staffID = $staffID['userID'];
       $medicine_name = filter_input(INPUT_POST, "medicine_name", FILTER_SANITIZE_STRING);
       $medicine_type = filter_input(INPUT_POST, "medicine_type", FILTER_SANITIZE_STRING);
       $no_of_boxes = filter_input(INPUT_POST, "no_of_boxes", FILTER_SANITIZE_STRING);
@@ -96,16 +96,31 @@
       $manufacture_date = filter_input(INPUT_POST, "manufacture_date", FILTER_SANITIZE_STRING);
       $company_name = filter_input(INPUT_POST, "company_name", FILTER_SANITIZE_STRING);
       $invoice_number = filter_input(INPUT_POST, "invoice_number", FILTER_SANITIZE_STRING);
-      $unit_price = filter_input(INPUT_POST, "unit_price", FILTER_SANITIZE_STRING);
+//      $unit_price = filter_input(INPUT_POST, "unit_price", FILTER_SANITIZE_STRING);
+
+		$medicine_type_m = count($_POST['mode']);
+		$px_m = count($_POST['px']);
 
 
-		$chkmed = select("SELECT * FROM pharmacy_inventory WHERE medicine_name='$medicine_name' ");
-		if($chkmed >=1){
-			$errorr = "MEDICINE ALREADY EXISTS. PLEASE GO TO YOUR STOCK TO UPDATE";
-		}else{
+//		$chkmed = select("SELECT * FROM pharmacy_inventory WHERE medicine_name='$medicine_name' ");
+//		if($chkmed >=1){
+//			$errorr = "MEDICINE ALREADY EXISTS. PLEASE GO TO YOUR STOCK TO UPDATE";
+//		}else{
 
 
-		$store = insert("INSERT INTO pharmacy_inventory(medicine_id,medicine_name,medicine_type,no_of_boxes,no_of_piece,no_of_bottles,expire_date,manufacture_date,company_name,invoice_number,unit_price,entered_by,unit_price,centerID,dateRegistered) VALUES('$medID','$medicine_name','$medicine_type','$no_of_boxes','$no_of_piece','$no_of_bottles','$expire_date','$manufacture_date','$company_name','$invoice_number','$unit_price','".$_SESSION['username']."','$unit_price','".$_SESSION['centerID']."',CURDATE() ) ");
+	if($medicine_type_m > 0 && $px_m > 0){
+		for($b=0,$p=0; $b<$medicine_type_m,$p<$px_m; $b++,$p++){
+			if(trim($_POST['mode'][$b] != '') && trim($_POST['px'][$p] != '')){
+					$medc = trim($_POST['mode'][$b]);
+					$pxc = trim($_POST['px'][$p]);
+
+//					$consql = select("select * from consultation where consultID='".$_GET['conid']."' ");
+//					foreach($consql as $conrow){}
+
+//					$dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd',CURDATE(),'".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
+
+
+		$store = insert("INSERT INTO pharmacy_inventory(medicine_id,medicine_name,no_of_boxes,no_of_piece,no_of_bottles,expire_date,manufacture_date,company_name,invoice_number,entered_by,price,centerID,mode_of_payment,dateRegistered) VALUES('$medID','$medicine_name','$no_of_boxes','$no_of_piece','$no_of_bottles','$expire_date','$manufacture_date','$company_name','$invoice_number','".$_SESSION['username']."','$pxc','".$_SESSION['centerID']."','$medc',CURDATE() ) ");
 
 		if($store){
             $success = $medicine_name." stock taken successfully";
@@ -113,8 +128,21 @@
             $error = "Stock failed";
         }
 
+
+//				if($dia){
+//					echo "<script>alert('Guud');</script>";
+//				}
+
+		}
+	}
+	}
+
+
+
+//    }
     }
-    }
+
+
 
 
     ?>
@@ -210,6 +238,8 @@
                                 </div>
                               </div>
 
+
+
 <!--
                               <div class="control-group">
                                 <label class="control-label">Mode of Payment:</label>
@@ -232,6 +262,39 @@
                               </div>
 
 							  <span id="pharm"></span>
+
+							   <table border="0" class="" id="diagnosis" style="margin-top:20px;">
+                                <tr>
+
+                                    <td>
+
+										     <div class="control-group">
+                                <label class="control-label">&nbsp;</label>
+                               <div class="controls">
+								   <label class="form-control">Mode of Payment: </label>
+												  <select name="mode[]" class="span12" >
+
+														<option value=""></option>
+														<option value="PRIVATE">PRIVATE</option>
+														<option value="NHIS">NHIS</option>
+
+												   </select>
+												 </div>
+												 </div>
+                                    </td>
+
+
+                                    <td>
+										<label class="control-label">Unit Price</label>
+                                        <input type="text" name="px[]" placeholder="Price" class="form-control">
+                                    </td>
+
+
+                                    <td><br>
+                                        <button type="button" name="add" id="add" class="btn btn-success">+</button>
+                                    </td>
+                                </tr>
+                            </table>
 
 <!--
                               <div class="control-group">
@@ -276,12 +339,14 @@
                               </div>
 
 
+<!--
                               <div class="control-group">
                                 <label class="control-label">Unit Price</label>
                                 <div class="controls">
                                   <input type="number"  class="span11" name="unit_price" placeholder="Unit Price" required />
                                 </div>
                               </div>
+-->
 
 <!--
                                <div class="control-group">
@@ -326,10 +391,8 @@
                               <th>Medicine Name</th>
                               <th>Number of Boxes</th>
                               <th>Number of Pieces</th>
-<!--
-                              <th>Request Status</th>
-                              <th>Requested By</th>
--->
+                              <th>Mode of Payment</th>
+                              <th>Unit Price</th>
                               <th>Action</th>
                             </tr>
                           </thead>
@@ -354,7 +417,6 @@
                             <tr>
                               <th>Medicine ID</th>
                               <th>Medicine Name</th>
-<!--                              <th>Number of Boxes</th>-->
                               <th>Number of Pieces</th>
                               <th>Action</th>
                             </tr>
@@ -411,6 +473,26 @@ window.onload = function () {
 };
 </script>
 
+
+<!--Beginning of Diagnosis-->
+        <script>
+            //    $(document).ready(function(){
+            var i = 1;
+            $('#add').click(function() {
+                i++;
+                $('#diagnosis').append('<tr id="row' + i + '"> <td><div class="control-group"><label class="control-label">&nbsp;</label><div class="controls"><select name="mode[]" class="span12" ><option value=""></option><option value="PRIVATE">PRIVATE</option><option value="NHIS">NHIS</option></select></div></div></td><td><input type="text" name="px[]" placeholder="Price" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove">X</button></td></tr>');
+            });
+
+            $(document).on('click', '.btn_remove', function() {
+                var button_id = $(this).attr("id");
+                $('#row' + button_id + '').remove();
+            });
+
+            //    });
+
+        </script>
+
+<!--End of Diagnosis-->
 
 
        <script>
