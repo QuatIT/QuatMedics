@@ -1,6 +1,6 @@
 <?php
 session_start();
-//error_reporting(0);
+error_reporting(0);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -311,6 +311,11 @@ $dataPoints = array(
         <?php if($_SESSION['accessLevel'] == 'LABORATORY'){ ?>
         <li><a href="lab-index.php"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
         <li> <a href="lab-bloodbank.php"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
+        <?php } ?>
+
+        <?php if($_SESSION['accessLevel'] == 'FINANCE'){ ?>
+        <li> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
+        <li><a href="finance-insurance"><i class="icon icon-file"></i><span>INSURANCE</span></a></li>
         <?php } ?>
 
     </ul>

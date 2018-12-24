@@ -52,7 +52,7 @@ $centerID = $_SESSION['centerID'];
 
         $centerID = $_SESSION['centerID'];
 
-		$sql_user = select("SELECT * FROM centeruser WHERE email='$email' ");
+		$sql_user = select("SELECT * FROM staff WHERE email='$email' ");
 		if(count($sql_user) < 1){
 
         $centerUser = $user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$centerID);
@@ -116,6 +116,21 @@ $centerID = $_SESSION['centerID'];
       <h3 class="quick-actions">STAFF MANAGEMENT</h3>
 
       <div class="row-fluid">
+          <div class="span12">
+           <?php
+                              if($success){
+                              ?>
+                              <div class="alert alert-success">
+                          <strong>Success!</strong> <?php echo $success; ?>
+                        </div>
+                              <?php } if($error){
+                                  ?>
+                              <div class="alert alert-danger">
+                          <strong>Error!</strong> <?php echo $error; ?>
+                        </div>
+                              <?php
+                              } ?>
+          </div>
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
@@ -129,19 +144,7 @@ $centerID = $_SESSION['centerID'];
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
                         <h5>List Of Patients</h5>
-                          <?php
-                              if($success){
-                              ?>
-                              <div class="alert alert-success">
-                          <strong>Success!</strong> <?php echo $success; ?>
-                        </div>
-                              <?php } if($error){
-                                  ?>
-                              <div class="alert alert-danger">
-                          <strong>Error!</strong> <?php echo $error; ?>
-                        </div>
-                              <?php
-                              } ?>
+
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
@@ -219,6 +222,7 @@ $centerID = $_SESSION['centerID'];
                                     <option value="Midwife"> Midwife</option>
                                     <option value="Psychologist"> Psychologist</option>
                                     <option value="Therapist"> Therapist</option>
+                                    <option value="Acountant"> Acountant</option>
                                   </select>
                                 </div>
                               </div>
@@ -244,7 +248,7 @@ $centerID = $_SESSION['centerID'];
                                   <select name="staffDepartment" >
                                     <option value="default"> </option>
                                       <?php
-                                        $dep = select("SELECT * FROM department WHERE centerID='".$_SESSION['centerID']."' ");
+                                        $dep = select("SELECT * FROM department ");
                                         foreach($dep as $dept){
                                       ?>
                                         <option value="<?php echo $dept['departmentID']; ?>"> <?php echo $dept['departmentName']; ?></option>

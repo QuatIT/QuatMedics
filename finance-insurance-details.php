@@ -86,7 +86,7 @@ include 'layout/head.php';
     <li><a href="finance-cash"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
     <li class="active">
-		<a href="finance-insurance"><i class="icon icon-calendar"></i><span>INSURANCE</span></a>
+		<a href="finance-insurance"><i class="icon icon-file"></i><span>INSURANCE</span></a>
 	</li>
     </ul>
 </div>
@@ -97,8 +97,8 @@ include 'layout/head.php';
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="INSURANCE PAYMENT" class="tip-bottom"><i class="icon-briefcase"></i> INSURANCE PAYMENT</a>
-        <a title="INSURANCE PAYMENT DETAILS" class="tip-bottom"><i class="icon-briefcase"></i> INSURANCE PAYMENT DETAILS</a>
+        <a title="INSURANCE PAYMENT" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT</a>
+        <a title="INSURANCE PAYMENT DETAILS" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT DETAILS</a>
     </div>
   </div>
   <div class="container">

@@ -38,11 +38,9 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 
 <div id="sidebar">
     <ul>
-    <li><a href="finance-cash"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="active"> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
-    <li>
-		<a href="finance-insurance"><i class="icon icon-calendar"></i><span>INSURANCE</span></a>
-	</li>
+    <li><a href="finance-insurance"><i class="icon icon-file"></i><span>INSURANCE</span></a></li>
     </ul>
 </div>
 

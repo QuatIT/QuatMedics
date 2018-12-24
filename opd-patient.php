@@ -15,7 +15,9 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<!--<link rel="stylesheet" href="assets/css/font-awesome.css" />-->
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
         <style>
         .active{
             background-color: #209fbf;
@@ -117,17 +119,24 @@
 		//select opd price..
 //		$opdPrice = select("SELECT * FROM prices WHERE serviceName='OPD' AND centerID='".$_SESSION['centerID']."'");
 //		foreach($opdPrice as $priceRow){}
-		//select consultaion price..
-		$conPrice = select("SELECT * FROM prices WHERE serviceName='CONSULTATION' AND centerID='".$_SESSION['centerID']."'");
+
+
+//select consultaion price..
+    if($mode == "Private"){
+		$conPrice = select("SELECT * FROM prices WHERE serviceName='CONSULTATION' AND centerID='".$_SESSION['centerID']."' AND modePayment='$mode'");
 		foreach($conPrice as $conRow){}
+    }else{
+        $conPrice = select("SELECT * FROM prices WHERE serviceName='CONSULTATION' AND centerID='".$_SESSION['centerID']."' AND modePayment='$insuranceType'");
+		foreach($conPrice as $conRow){}
+        $mode = $insuranceType;
+    }
 
 			//insert opd price....
 //$insertOPD = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','".$priceRow['serviceName']."','".$priceRow['servicePrice']."','".$priceRow['serviceType']."','Not Paid','$dateToday')");
 
-			//insert consultation.. price....
+//insert consultation.. price....
 $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','".$conRow['serviceName']."','".$conRow['servicePrice']."','".$conRow['serviceType']."','Not Paid','$dateToday')");
 			 if($insertCON){
-
 				if($update_patient_status){
 					$success = "<script>document.write('PATIENT ASSIGNED TO CONSULTING ROOM')
 									window.location.href='opd-patient?tab=opd-patient' </script>";

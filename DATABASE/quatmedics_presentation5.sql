@@ -15,11 +15,71 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
+Create database `quatMedics`;
+    use `quatMedics`;
+--
+-- Database: `quatmedics`
+--
+-- --------------------------------------------------------
 
 --
--- Database: `quatmedics_presentation`
+-- Table structure for table `accounts`
 --
 
+CREATE TABLE `accounts` (
+  `accountID` varchar(255) NOT NULL,
+  `centerID` varchar(255) NOT NULL,
+  `accountName` varchar(255) NOT NULL,
+  `accountType` varchar(255) NOT NULL,
+  `accBalance` decimal(10,2) NOT NULL,
+  `dateInsert` date NOT NULL,
+  `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`accountID`, `centerID`, `accountName`, `accountType`, `accBalance`, `dateInsert`, `doe`) VALUES
+('ACC-Akats-000001', 'Akats-000004', 'BANK ACCOUNT', 'DEBIT', '0.00', '2018-11-30', '2018-11-30 10:43:57'),
+('ACC-Akats-000002', 'Akats-000004', 'OPD', 'CREDIT', '0.00', '2018-11-30', '2018-11-30 12:05:00'),
+('ACC-Akats-000003', 'Akats-000004', 'CONSULTATION', 'CREDIT', '0.00', '2018-11-30', '2018-11-30 12:05:00'),
+('ACC-Akats-000004', 'Akats-000004', 'LABORATORY', 'CREDIT', '0.00', '2018-11-30', '2018-11-30 12:05:00'),
+('ACC-Akats-000005', 'Akats-000004', 'WARD', 'CREDIT', '0.00', '2018-11-30', '2018-11-30 12:05:00'),
+('ACC-Akats-000006', 'Akats-000004', 'PHARMACY', 'CREDIT', '0.00', '2018-11-30', '2018-11-30 12:05:00'),
+('ACC-AlTim-000001', 'AlTim-000001', 'BANK ACCOUNT', 'DEBIT', '-65.00', '2018-11-30', '2018-12-06 05:53:51'),
+('ACC-AlTim-000002', 'AlTim-000001', 'LABORATORY', 'CREDIT', '65.00', '2018-11-30', '2018-12-06 05:53:51'),
+('ACC-AlTim-000003', 'AlTim-000001', 'WARD', 'CREDIT', '0.00', '2018-11-30', '2018-11-30 08:47:23'),
+('ACC-AlTim-000004', 'AlTim-000001', 'PHARMACY', 'CREDIT', '0.00', '2018-11-30', '2018-11-30 08:47:24'),
+('ACC-AlTim-000005', 'AlTim-000001', 'CONSULTATION', 'CREDIT', '0.00', '2018-11-30', '2018-11-30 08:47:33'),
+('ACC-AlTim-000006', 'AlTim-000001', 'OPD', 'CREDIT', '0.00', '2018-11-30', '2018-11-30 08:49:11');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accounttransaction`
+--
+
+CREATE TABLE `accounttransaction` (
+  `id` int(255) NOT NULL,
+  `creditAcc` varchar(255) NOT NULL,
+  `debitAcc` varchar(255) NOT NULL,
+  `Amount` decimal(10,2) NOT NULL,
+  `patientID` varchar(255) NOT NULL,
+  `staffID` varchar(255) NOT NULL,
+  `activity` varchar(255) NOT NULL,
+  `dateInsert` date NOT NULL,
+  `doe` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `accounttransaction`
+--
+
+INSERT INTO `accounttransaction` (`id`, `creditAcc`, `debitAcc`, `Amount`, `patientID`, `staffID`, `activity`, `dateInsert`, `doe`) VALUES
+(1, 'LABORATORY', 'LABORATORY', '10.00', 'Owoo-000003', 'Kanfr-000001', 'LAB PAYMENT FOR', '0000-00-00', '2018-12-06 05:42:01'),
+(2, 'LABORATORY', 'BANK ACCOUNT', '25.00', 'Owoo-000003', 'Kanfr-000001', 'LAB PAYMENT FOR', '2018-12-06', '2018-12-06 05:46:41'),
+(3, 'LABORATORY', 'BANK ACCOUNT', '30.00', 'DSFG-000005', 'Kanfr-000001', 'PAYMENT FOR PTT LAB', '2018-12-06', '2018-12-06 05:53:51');
 -- --------------------------------------------------------
 
 --

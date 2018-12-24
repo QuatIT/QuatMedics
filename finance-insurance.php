@@ -38,10 +38,10 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 
 <div id="sidebar">
     <ul>
-    <li><a href="finance-cash"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
     <li class="active">
-		<a href="finance-insurance"><i class="icon icon-calendar"></i><span>INSURANCE</span></a>
+		<a href="finance-insurance"><i class="icon icon-file"></i><span>INSURANCE</span></a>
 	</li>
     </ul>
 </div>
@@ -52,7 +52,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-calendar"></i> INSURANCE PAYMENT</a>
+        <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT</a>
     </div>
   </div>
   <div class="container">
@@ -81,7 +81,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							  <?php
-		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Insurance' AND status='Not Paid' AND serviceName='CONSULTATION'  GROUP BY patientID");
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode !='Private' AND status='Not Paid' AND serviceName='CONSULTATION'  GROUP BY patientID");
 							  if($fetchAll){
 								  foreach($fetchAll as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -124,7 +124,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							   <?php
-	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Insurance'");
+	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode !='Private'");
 							  if($fetchlab){
 								  foreach($fetchlab as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
