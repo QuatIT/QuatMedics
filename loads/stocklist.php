@@ -19,6 +19,8 @@ foreach($load_newpatient as $newpatient){
   <td> <?php echo $newpatient['medicine_name']; ?></td>
   <td> <?php echo $newpatient['no_of_boxes']; ?></td>
   <td> <?php echo $newpatient['no_of_piece']; ?></td>
+  <td> <?php echo $newpatient['mode_of_payment']; ?></td>
+  <td> <?php echo $newpatient['price']; ?></td>
   <td> <a href="update-stock?sid=<?php echo $newpatient['medicine_id']; ?>&tab=admed" class="btn btn-sm btn-primary">Update Stock</a></td>
 </tr>
 

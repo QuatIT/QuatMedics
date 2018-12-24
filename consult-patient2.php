@@ -176,26 +176,26 @@ if(isset($_POST['adWard'])){
 
 //prescribe medication to patient...
 if(isset($_POST['presMeds'])){
-        $diagnoses = ucwords(filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING));
-        $symptoms = ucwords(filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING));
-        $pharmacyID = ucwords(filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING));
-        $paymode = ucwords(filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING));
-		$paystatus = trim(ucwords("Not Paid"));
+        $diagnoses =  filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
+        $symptoms =  filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
+        $pharmacyID =  filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING);
+        $paymode =  filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
+		$paystatus = trim( "Not Paid");
         $status = SENT_TO_PHARMACY;
-        $prescribeStatus = trim(ucwords("Prescibed"));
+        $prescribeStatus = trim( "Prescibed");
         $datePrescribe = trim(date("Y-m-d"));
         $prescriptionCode = randomString('4');
 
-        $medIDNum = count(ucwords($_POST['medName']));
-        $piecesNum = count(ucwords($_POST['pieces']));
-        $adayNum = count(ucwords($_POST['aday']));
-        $totalDaysNum = count(ucwords($_POST['totalDays']));
-        $diagnosis_new = count(ucwords($_POST['diagnosis_new']));
-        $investigation_new = count(ucwords($_POST['investigation_new']));
-        $investigation_new2 = ucwords($_POST['investigation_new']);
+        $medIDNum = count( $_POST['medName']);
+        $piecesNum = count( $_POST['pieces']);
+        $adayNum = count( $_POST['aday']);
+        $totalDaysNum = count( $_POST['totalDays']);
+        $diagnosis_new = count( $_POST['diagnosis_new']);
+        $investigation_new = count($_POST['investigation_new']);
+        $investigation_new2 = $_POST['investigation_new'];
 
 	$diagnose1 = '';
-    $diagnosis_new2 = ucwords($_POST['diagnosis_new']);
+    $diagnosis_new2 = $_POST['diagnosis_new'];
 
 	foreach($diagnosis_new2 as $diagnose_rowd){
 		$diagnose1 .= $diagnose_rowd."<br>";
@@ -203,7 +203,7 @@ if(isset($_POST['presMeds'])){
 
 
 	$invest1 = '';
-    $investigation2 = ucwords($_POST['investigation_new']);
+    $investigation2 = $_POST['investigation_new'];
 
 	foreach($investigation2 as $investigate_rowd){
 		$invest1 .= $investigate_rowd."<br>";
@@ -215,7 +215,7 @@ if(isset($_POST['presMeds'])){
 	if($diagnosis_new > 0){
 		for($b=0; $b<$diagnosis_new; $b++){
 			if(trim($_POST['diagnosis_new'][$b] != '')){
-					$diagd = trim(ucwords($_POST['diagnosis_new'][$b]));
+					$diagd = trim($_POST['diagnosis_new'][$b]);
 
 					//insert into diagnosis table
 
@@ -238,7 +238,7 @@ if(isset($_POST['presMeds'])){
 	if($investigation_new > 0){
 		for($j=0; $j<$investigation_new; $j++){
 			if(trim($_POST['investigation_new'][$j] != '')){
-					$investd = trim(ucwords($_POST['investigation_new'][$j]));
+					$investd = trim($_POST['investigation_new'][$j]);
 
 					//insert into investigation table
 
@@ -268,10 +268,10 @@ if(isset($_POST['presMeds'])){
 		//saving the prescribed medications....
 		for($m=0, $p=0, $a=0, $t=0; $m<$medIDNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
 				if(trim($_POST['medName'][$m] != '') && trim($_POST['pieces'][$p] != '') && trim($_POST['aday'][$a] != '') && trim($_POST['totalDays'][$t] != '') ) {
-					$medicineID = trim(ucwords($_POST['medName'][$m]));
-					$pieces = trim(ucwords($_POST['pieces'][$p]));
-					$aday = trim(ucwords($_POST['aday'][$a]));
-					$totalDays = trim(ucwords($_POST['totalDays'][$t]));
+					$medicineID = trim( $_POST['medName'][$m]);
+					$pieces = trim( $_POST['pieces'][$p]);
+					$aday = trim( $_POST['aday'][$a]);
+					$totalDays = trim( $_POST['totalDays'][$t]);
 
 					//get medicine name for insert qeury...
 		$findmedname = select("SELECT * FROM pharmacy_inventory WHERE medicine_id='$medicineID'");

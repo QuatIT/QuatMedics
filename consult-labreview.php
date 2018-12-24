@@ -87,12 +87,12 @@ include 'layout/head.php';
 
 
 if(isset($_POST['reqLab'])){
-    $labNumber = count(ucwords($_POST['labName']));
+    $labNumber = count( $_POST['labName']);
 
     if($labNumber > 0) {
         for($i=0; $i<$labNumber; $i++){
                 if(trim($_POST["labName"][$i] != '')) {
-                    $labID = trim(ucwords($_POST["labName"][$i]));
+                    $labID = trim( $_POST["labName"][$i]);
                     $status = SENT_TO_LAB;
 $insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status')");
 
@@ -112,10 +112,10 @@ $insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,cent
 
 
 if(isset($_POST['adWard'])){
-    $wardID = ucwords(filter_input(INPUT_POST, "wardID", FILTER_SANITIZE_STRING));
-    $admitDetails = ucwords(filter_input(INPUT_POST, "admitDetails", FILTER_SANITIZE_STRING));
-    $admitDate = ucwords(filter_input(INPUT_POST, "admitDate", FILTER_SANITIZE_STRING));
-    $dischargeDate = ucwords(filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING));
+    $wardID =  filter_input(INPUT_POST, "wardID", FILTER_SANITIZE_STRING);
+    $admitDetails =  filter_input(INPUT_POST, "admitDetails", FILTER_SANITIZE_STRING);
+    $admitDate =  filter_input(INPUT_POST, "admitDate", FILTER_SANITIZE_STRING);
+    $dischargeDate =  filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING);
     $status = SENT_TO_WARD;
     //generate wardassign IDs
     $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
@@ -142,13 +142,13 @@ if(isset($_POST['adWard'])){
 }
 
     if(isset($_POST['presMeds'])){
-        $diagnoses = ucwords(filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING));
-        $symptoms = ucwords(filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING));
-        $pharmacyID = ucwords(filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING));
-        $paymode = ucwords(filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING));
-		$paystatus = trim(ucwords("Not Paid"));
+        $diagnoses =  filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
+        $symptoms =  filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
+        $pharmacyID =  filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING);
+        $paymode =  filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
+		$paystatus = trim( "Not Paid");
         $status = SENT_TO_PHARMACY;
-        $prescribeStatus = trim(ucwords("Prescibed"));
+        $prescribeStatus = trim( "Prescibed");
         $datePrescribe = trim(date("Y-m-d"));
         $prescriptionCode = randomString('4');
 
@@ -162,8 +162,8 @@ if(isset($_POST['adWard'])){
 			//saving the prescribed medications....
             for($m=0, $d=0; $m<$medNum, $d<$dosageNum; $m++,$d++){
                     if(trim($_POST["medicine"][$m] != '') && trim($_POST['dosage'][$d] != '')) {
-                        $medicine = trim(ucwords($_POST["medicine"][$m]));
-                        $dosage = trim(ucwords($_POST["dosage"][$d]));
+                        $medicine = trim( $_POST["medicine"][$m]);
+                        $dosage = trim( $_POST["dosage"][$d]);
 
       $insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$paymode','$dateToday')");
                         }

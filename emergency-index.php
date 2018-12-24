@@ -39,7 +39,7 @@
     if(isset($_POST['btnSave'])){
 
       $centerID = $_SESSION['centerID'];
-        $patientid = ucwords(filter_input(INPUT_POST, "patientid", FILTER_SANITIZE_STRING));
+        $patientid =  filter_input(INPUT_POST, "patientid", FILTER_SANITIZE_STRING);
 		$emeID = "EME.".sprintf('%06s',count(select("select * from emergency_patient")) + 1);
 
         $search_patient = select("SELECT * FROM patient WHERE patientID='".$patientid."' ");
@@ -96,11 +96,11 @@
 
     if(isset($_POST['btnNewSave'])){
         $centerID = $_SESSION['centerID'];
-        $patientName = ucwords(filter_input(INPUT_POST, "patientname", FILTER_SANITIZE_STRING));
-        $gender = ucwords(filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING));
-        $gName = ucwords(filter_input(INPUT_POST, "gName", FILTER_SANITIZE_STRING));
-        $gMobile = ucwords(filter_input(INPUT_POST, "gMobile", FILTER_SANITIZE_STRING));
-        $gAddress = ucwords(filter_input(INPUT_POST, "gAddress", FILTER_SANITIZE_STRING));
+        $patientName =  filter_input(INPUT_POST, "patientname", FILTER_SANITIZE_STRING);
+        $gender =  filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING);
+        $gName =  filter_input(INPUT_POST, "gName", FILTER_SANITIZE_STRING);
+        $gMobile =  filter_input(INPUT_POST, "gMobile", FILTER_SANITIZE_STRING);
+        $gAddress =  filter_input(INPUT_POST, "gAddress", FILTER_SANITIZE_STRING);
 		$emeIDs = count(select("select * from emergency_patient")) + 1;
 		$emeID = "EME.".sprintf('%06s',$emeIDs);
 
@@ -202,8 +202,6 @@
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-<!--                              <th>Photo</th>-->
-<!--                              <th>Patient Number</th>-->
                               <th>Patient Name</th>
                               <th>Guardian Name</th>
                               <th>Guardian Mobile</th>
@@ -213,7 +211,7 @@
                           </thead>
                           <tbody id="emepatient1">
 
-<!--
+<!-- 0545448774
                             <tr>
                               <td class="span2">
                                 <a class="thumbnail lightbox_trigger" href="images/gallery/imgbox2.jpg">

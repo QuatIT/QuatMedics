@@ -35,19 +35,19 @@ $centerID = $_SESSION['centerID'];
 
     if(isset($_POST['btnSave'])){
 
-        $staffID = ucwords(substr(filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING), 0, 5)."-".sprintf('%06s',$staffIDs));
-        $firstName = ucwords(filter_input(INPUT_POST, "firstName", FILTER_SANITIZE_STRING));
-        $lastName = ucwords(filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING));
-        $otherName = ucwords(filter_input(INPUT_POST, "otherName", FILTER_SANITIZE_STRING));
-        $gender = ucwords(filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING));
-        $dob = ucwords(filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING));
-        $specialty = ucwords(filter_input(INPUT_POST, "specialty", FILTER_SANITIZE_STRING));
-        $staffCategory = ucwords(filter_input(INPUT_POST, "staffCategory", FILTER_SANITIZE_STRING));
-        $staffDepartment = ucwords(filter_input(INPUT_POST, "staffDepartment", FILTER_SANITIZE_STRING));
-        $email = ucwords(filter_input(INPUT_POST, "email", FILTER_SANITIZE_STRING));
+        $staffID =  substr(filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING), 0, 5)."-".sprintf('%06s',$staffIDs);
+        $firstName =  filter_input(INPUT_POST, "firstName", FILTER_SANITIZE_STRING);
+        $lastName =  filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING);
+        $otherName =  filter_input(INPUT_POST, "otherName", FILTER_SANITIZE_STRING);
+        $gender =  filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING);
+        $dob =  filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING);
+        $specialty =  filter_input(INPUT_POST, "specialty", FILTER_SANITIZE_STRING);
+        $staffCategory =  filter_input(INPUT_POST, "staffCategory", FILTER_SANITIZE_STRING);
+        $staffDepartment =  filter_input(INPUT_POST, "staffDepartment", FILTER_SANITIZE_STRING);
+        $email =  filter_input(INPUT_POST, "email", FILTER_SANITIZE_STRING);
 
-        $username = ucwords(filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING));
-        $password = ucwords(filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING));
+        $username =  filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING);
+        $password =  filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
         $userID = $staffID;
 
         $centerID = $_SESSION['centerID'];

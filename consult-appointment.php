@@ -54,12 +54,12 @@ foreach($codesql as $coderow){
 
 
 if(isset($_POST['addApptmnt'])){
-        $patientID = ucwords(filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING));
-        $appointDate = ucwords(filter_input(INPUT_POST, "appointDate", FILTER_SANITIZE_STRING));
-        $appointTime = ucwords(filter_input(INPUT_POST, "appointTime", FILTER_SANITIZE_STRING));
-        $reason = ucwords(filter_input(INPUT_POST, "reason", FILTER_SANITIZE_STRING));
-        $sms = ucwords(filter_input(INPUT_POST, "sms", FILTER_SANITIZE_STRING));
-		$status = trim(ucwords("PENDIND"));
+        $patientID =  filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
+        $appointDate =  filter_input(INPUT_POST, "appointDate", FILTER_SANITIZE_STRING);
+        $appointTime =  filter_input(INPUT_POST, "appointTime", FILTER_SANITIZE_STRING);
+        $reason =  filter_input(INPUT_POST, "reason", FILTER_SANITIZE_STRING);
+        $sms =  filter_input(INPUT_POST, "sms", FILTER_SANITIZE_STRING);
+		$status = trim( "PENDIND");
 	$centerID = $_SESSION['centerID'];
     $addapointment = $consultation->createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime,$status,$reason,$sms,$centerID);
     if($addapointment){
