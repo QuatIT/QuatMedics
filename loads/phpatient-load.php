@@ -14,10 +14,10 @@ foreach($load_newpatient as $newpatient){
 $sqlll = select("SELECT * FROM patient WHERE patientID='".$newpatient['patientID']."' ");
  foreach($sqlll as $srowss){}
 
-	$selz = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$newpatient['prescribeCode']."'  && prescribeStatus='Prescibed' ");
+	$selz = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$newpatient['prescribeCode']."'  && paystatus='Not Paid' ");
 		foreach($selz as $slz){}
 
-	if($slz=='Prescibed'){
+	if($slz['paystatus']=='Not Paid'){
 ?>
 
 
@@ -25,7 +25,7 @@ $sqlll = select("SELECT * FROM patient WHERE patientID='".$newpatient['patientID
 
   <td><?php echo $newpatient['patientID']; ?></td>
   <td> <?php echo $srowss['firstName']." ".$srowss['otherName']." ".$srowss['lastName']; ?></td>
-  <td> <?php echo $newpatient['prescribeStatus']; ?></td>
+  <td> <?php echo $slz['paystatus']; ?></td>
   <td>
 	  <?php
 

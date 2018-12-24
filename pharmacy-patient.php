@@ -238,7 +238,7 @@ input:checked + .slider:before {
                                       ?>
 
                                       <span class="switch">
-  <label for="switch-id<?php echo $med['prescribeid']; ?>"><input type="checkbox"  value="served" name="prescribe<?php echo $med['prescribeid']; ?>" class="switch" id="switch-id<?php echo $med['prescribeid']; ?>">Serve</label>
+  <label for="switch-id<?php echo $med['prescribeid']; ?>"><input type="checkbox"  value="served" name="prescribe<?php echo $med['prescribeid']; ?>" class="switch" id="switch-id<?php echo $med['prescribeid']; ?>">Serve<?php echo $med['prescribeid']; ?></label>
 </span>
 
 
@@ -260,6 +260,12 @@ input:checked + .slider:before {
                                                     $checked = 'checked';
 
                                                     $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='$chkbox' WHERE prescribeid='".$med['prescribeid']."' ");
+
+													$med = select("select * from prescribedmeds where prescribeid='".$med['prescribeid']."' ");
+													foreach($med as $medic_row){}
+
+//													$up_medic = update('update pharmacy_inventory set ')
+
                                                     echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
                                                 }else{
                                                     $checked = '';
@@ -267,6 +273,7 @@ input:checked + .slider:before {
                                                     echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
                                                 }
                                             }
+
 
 
                                                   if(isset($_POST['comment'.$med['prescribeid']])){

@@ -6,7 +6,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
     echo "<script>window.location.href='index'</script>";
 }
 
-$load_newpatient = select("SELECT * FROM pharmacy_inventory WHERE centerID='".$_SESSION['centerID']."' ORDER BY medicine_id ASC");
+$load_newpatient = select("SELECT * FROM dispensary_tb WHERE centerID='".$_SESSION['centerID']."' && expire_date= DATE_ADD(CURDATE(), INTERVAL 8 DAY) ORDER BY medicine_id ASC");
 
 foreach($load_newpatient as $newpatient){
 
@@ -17,11 +17,8 @@ foreach($load_newpatient as $newpatient){
 
   <td><?php echo $newpatient['medicine_id']; ?></td>
   <td> <?php echo $newpatient['medicine_name']; ?></td>
-  <td> <?php echo $newpatient['no_of_boxes']; ?></td>
   <td> <?php echo $newpatient['no_of_piece']; ?></td>
-  <td> <?php echo $newpatient['mode_of_payment']; ?></td>
-  <td> <?php echo $newpatient['price']; ?></td>
-  <td> <a href="update-stock?id=<?php echo $newpatient['id']; ?>&sid=<?php echo $newpatient['medicine_id']; ?>&tab=admed" class="btn btn-sm btn-primary">Update Stock</a></td>
+  <td> <?php echo $newpatient['expire_date']; ?></td>
 </tr>
 
 

@@ -11,7 +11,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 $q = $_GET['id'];
 
 
-if($q=="Capsule" || $q=="Tablet" || $q=="Drops" || $q=="Inhalers" || $q=="Injections" || $q=="Implants"){
+if($q=="Capsule" || $q=="Tablet"|| $q=="Inhalers" ){
 
 	?>
 
@@ -25,7 +25,8 @@ if($q=="Capsule" || $q=="Tablet" || $q=="Drops" || $q=="Inhalers" || $q=="Inject
                               </div>
 
 <?php
-}elseif($q == "Syrup" || $q == "Suppositories"){
+	$type = 'solid';
+}elseif($q == "Syrup" || $q == "Suppositories" || $q=="Injections" || $q=="Drops" ){
 
 	?>
 
@@ -39,7 +40,7 @@ if($q=="Capsule" || $q=="Tablet" || $q=="Drops" || $q=="Inhalers" || $q=="Inject
 
 
 <?php
-
+$type='liquid';
 }else{ echo '';}
 
 
