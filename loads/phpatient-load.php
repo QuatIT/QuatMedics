@@ -26,6 +26,7 @@ $sqlll = select("SELECT * FROM patient WHERE patientID='".$newpatient['patientID
   <td><?php echo $newpatient['patientID']; ?></td>
   <td> <?php echo $srowss['firstName']." ".$srowss['otherName']." ".$srowss['lastName']; ?></td>
   <td> <?php echo $slz['paystatus']; ?></td>
+  <td> <?php echo $slz['prescribeStatus']; ?></td>
   <td>
 	  <?php
 

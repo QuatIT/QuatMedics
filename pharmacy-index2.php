@@ -86,7 +86,8 @@
                             <tr>
                               <th>Patient ID</th>
                               <th>Patient Name</th>
-                              <th>Status</th>
+                              <th>Payment Status</th>
+                              <th>Prescribe Status</th>
                               <th>Action</th>
 <!--                              <th>Action</th>-->
                             </tr>
