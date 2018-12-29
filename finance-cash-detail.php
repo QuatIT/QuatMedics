@@ -40,12 +40,13 @@ include 'layout/head.php';
 	$concharge = select("SELECT * FROM paymentfixed WHERE patientID='$patid' AND serviceName='CONSULTATION' AND id='$id'");
 	foreach($concharge as $conRow){
 		$consultPrice = $conRow['servicePrice'];
+		$consultDate = $conRow['dateinsert'];
 	}
 
 
 	//get lab details...
 	$labTotal = 0;
-	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='Private' AND dateInsert='$dateToday'");
+	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='Private' AND dateInsert='$consultDate'");
 	foreach($fetchlab as $labRow){
 					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
 						  foreach($getlabName as $labNmRow){}
@@ -53,7 +54,7 @@ include 'layout/head.php';
 	}
 
 	//get medicine charges...
-	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$dateToday'");
+	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$consultDate'");
 					  if($getPresciptionID){
 						  foreach($getPresciptionID as $presRow){
 							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
@@ -171,6 +172,7 @@ include 'layout/head.php';
 				  </tr>
 				  <tbody>
 					  <?php
+                      if($fetchlab){
 					  foreach($fetchlab as $labRow){
 					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
 						  foreach($getlabName as $labNmRow){}
@@ -189,7 +191,9 @@ include 'layout/head.php';
 						   <?php }?>
 						</td>
 					  </tr>
-					  <?php }?>
+					  <?php }}else{?>
+                            <tr><td colspan="3"> No Lab Test Conducted.</td></tr>
+                      <?php }?>
 				  </tbody>
 				  <tr>
 				  		<th> MEDICATION </th>
@@ -200,7 +204,7 @@ include 'layout/head.php';
 				  <tbody>
 
 					  <?php
-					  	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$dateToday'");
+					  	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$consultDate'");
 					  if($getPresciptionID){
 						  foreach($getPresciptionID as $presRow){
 							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
@@ -222,7 +226,11 @@ include 'layout/head.php';
 							<?php //echo $medrow['paystatus']?>
 						</td>
 					  </tr>
-					  <?php }}}
+					  <?php }}}else{ ?>
+                         <tr>
+                            <td colspan="4"> No Medications Prescribed.</td>
+                        </tr>
+                      <?php }
 					  $total = 0;
 					   @$getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
 							  foreach($getMeds as $medrow){

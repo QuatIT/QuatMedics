@@ -70,7 +70,7 @@
                           <th>PATIENT NAME</th>
                           <th>DOCTOR</th>
                           <th>LAB TYPE</th>
-                          <th>STATUS</th>
+                          <th>PAYMENT STATUS</th>
                           <th>ACTION</th>
                         </tr>
                       </thead>

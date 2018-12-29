@@ -51,9 +51,9 @@ foreach($rm as $r){}
 $consultdet = select("SELECT * from consultation WHERE consultID='$conid'");
 //get consulting staff details...
 $staff = select("SELECT staffID from centeruser where userName='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
-foreach($staff as $staffrow){
-	$staffID = $staffrow['staffID'];
-}
+    foreach($staff as $staffrow){
+        $staffID = $staffrow['staffID'];
+    }
 //get patient details for consultation...
 foreach($consultdet as $consultrow){
 	   $patientID = $consultrow['patientID'];
@@ -709,7 +709,7 @@ if(isset($_POST['presMeds'])){
 			</table>
 		 </div>
 
-			<div class="span6">
+         <div class="span6">
 			  <table class="table table-bordered" id="dynamic_field">
 				<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
 				  <div class="control-group" style="display:none;">
@@ -770,14 +770,14 @@ if(isset($_POST['presMeds'])){
 					</tr>
 						  <?php }} ?>
 				  </tbody>
-                                    </table>
-                                      <div class="form-actions">
-                                          <i class="span7"></i>
-                                        <button onclick="return confirm('Confirm Action.');" type="submit" name="presMeds" class="btn btn-primary btn-block span5"> Save Prescription</button>
-                                      </div>
-								 </div>
-                            </form>
-                        </div>
+                </table>
+                  <div class="form-actions">
+                      <i class="span7"></i>
+                    <button onclick="return confirm('Confirm Action.');" type="submit" name="presMeds" class="btn btn-primary btn-block span5"> Save Prescription</button>
+                  </div>
+             </div>
+        </form>
+    </d iv>
 
 
 
@@ -934,7 +934,7 @@ doctorappointment.patientID='$patientID'");
                                 </div>
                             </div>
                         </div>
-						</div>
+                    </div>
 			  	</div>
 		  </div>
       </div>
@@ -942,7 +942,9 @@ doctorappointment.patientID='$patientID'");
 </div>
 
 <div class="row-fluid">
-  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+    <div id="footer" class="span12">
+      2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
+    </div>
 </div>
 <script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>
@@ -1042,54 +1044,50 @@ function resetMenu() {
 
 
 <!--Beginning of Diagnosis-->
-        <script>
-            //    $(document).ready(function(){
-            var i = 1;
-            $('#add_diagnosis').click(function() {
-                i++;
-                $('#diagnosis').append('<tr id="row' + i + '"> <td><input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control"></td><td><button type="button" name="remove_diagnosis" id="' + i + '" class="btn btn-danger btn_remove_diagnosis">X</button></td></tr>');
-            });
+<script>
+    //    $(document).ready(function(){
+    var i = 1;
+    $('#add_diagnosis').click(function() {
+        i++;
+        $('#diagnosis').append('<tr id="row' + i + '"> <td><input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control"></td><td><button type="button" name="remove_diagnosis" id="' + i + '" class="btn btn-danger btn_remove_diagnosis">X</button></td></tr>');
+    });
 
-            $(document).on('click', '.btn_remove_diagnosis', function() {
-                var button_id = $(this).attr("id");
-                $('#row' + button_id + '').remove();
-            });
+    $(document).on('click', '.btn_remove_diagnosis', function() {
+        var button_id = $(this).attr("id");
+        $('#row' + button_id + '').remove();
+    });
 
-            //    });
+    //    });
 
-        </script>
-
+</script>
 <!--End of Diagnosis-->
 
 <!--Beginning of Investigation-->
-        <script>
-            //    $(document).ready(function(){
-            var i = 1;
-            $('#add_investigation').click(function() {
-                i++;
-                $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control"></td><td><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
-            });
+<script>
+    //    $(document).ready(function(){
+    var i = 1;
+    $('#add_investigation').click(function() {
+        i++;
+        $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control"></td><td><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
+    });
 
-            $(document).on('click', '.btn_remove_investigation', function() {
-                var button_id = $(this).attr("id");
-                $('#row' + button_id + '').remove();
-            });
+    $(document).on('click', '.btn_remove_investigation', function() {
+        var button_id = $(this).attr("id");
+        $('#row' + button_id + '').remove();
+    });
 
-            //    });
-
-        </script>
-
+    //    });
+</script>
 <!--End of Diagnosis-->
 
 <script>
-
-        function medtype(val){
-            // load the select option data into a div
-                $('#loader').html("Please Wait...");
-                $('#modeload').load('loads/medtype.php?tp='+val, function(){
-                $('#loader').html("");
-               });
-        }
+function medtype(val){
+    // load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#modeload').load('loads/medtype.php?tp='+val, function(){
+        $('#loader').html("");
+       });
+}
 </script>
 </body>
 </html>
