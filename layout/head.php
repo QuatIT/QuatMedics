@@ -19,7 +19,7 @@ $LAB_RESULT_UPLOAD = PARENT_DIR.$centerID.'/labresults/';
 $PATIENT_UPLOAD = PARENT_DIR.$centerID.'/patient/';
 
 //search and display hospital name
-$centerName_sql = select("SELECT * FROM medicalCenter WHERE centerID='".$_SESSION['centerID']."' ");
+$centerName_sql = select("SELECT * FROM medicalcenter WHERE centerID='".$_SESSION['centerID']."' ");
 foreach($centerName_sql as $centerName){}
 
 ?>
@@ -66,6 +66,10 @@ foreach($centerName_sql as $centerName){}
 
       <?php #if($_SESSION['accessLevel']=='PHARMACY'){ ?>
     <li class="" ><a title="" href="emergency-index"><i class="icon icon-exclamation-sign"></i> <span class="text">EMERGENCY</span></a></li>
+      <?php #} ?>
+
+      <?php #if($_SESSION['accessLevel']=='PHARMACY'){ ?>
+    <li class="" ><a title="" href="claim-index"><i class="icon icon-file"></i> <span class="text">CLAIMS</span></a></li>
       <?php #} ?>
 
       <?php if($_SESSION['accessLevel']=='WARD'){ ?>

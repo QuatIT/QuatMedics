@@ -1,7 +1,7 @@
 Create database `quatMedics`;
     use `quatMedics`;
 
-create table `medicalCenter`(
+create table `medicalcenter`(
     `centerID` varchar(255) not null primary key,
     `centerName` varchar(255) not null,
     `centerCategory` varchar(50) not null, /*Hopital, Clinic, etc*/
@@ -19,7 +19,7 @@ create table `department`(
     `dateCreated` varchar(255) not null,
     `doe` timestamp,
     index(centerID),
-    foreign key (centerID) references `medicalCenter`(centerID)
+    foreign key (centerID) references `medicalcenter`(centerID)
 )engine = InnoDB;
 
 create table `patient`(
@@ -36,7 +36,7 @@ create table `patient`(
     `dateRegistered` varchar(50) not null,
     `doe` timestamp,
     index (centerID),
-    foreign key (centerID) references `medicalCenter`(centerID)
+    foreign key (centerID) references `medicalcenter`(centerID)
 )engine = InnoDB;
 
 create table `doctors`(
@@ -81,7 +81,7 @@ create table `wardList`(
     `dateRegistered` varchar(255) not null,
     `doe` timestamp,
     index(centerID),
-    foreign key (centerID) references `medicalCenter`(centerID)
+    foreign key (centerID) references `medicalcenter`(centerID)
 )engine = InnoDB;
 
 create table `wardAssigns`(
@@ -121,7 +121,7 @@ create table `pharmacy`(
     `dateRegistered` varchar(50) not null,
     `doe` timestamp,
     index(centerID),
-    foreign key(centerID) references `medicalCenter`(centerID)
+    foreign key(centerID) references `medicalcenter`(centerID)
 )engine = InnoDB;
 
 create table `prescriptions`(
@@ -144,7 +144,7 @@ create table `labList`(
     `labType` varchar(255) not null,
     `doe` timestamp,
     index(centerID),
-    foreign key(centerID) references `medicalCenter`(centerID)
+    foreign key(centerID) references `medicalcenter`(centerID)
 )engine = InnoDB;
 
 create table `labResults`(

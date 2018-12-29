@@ -23,12 +23,12 @@
     }
 
     public function centerAdminLogin($username,$password){
-      $result=query("SELECT * FROM medicalCenter WHERE username='$username' && password='$password' ") ;
+      $result=query("SELECT * FROM medicalcenter WHERE username='$username' && password='$password' ") ;
       return $result;
     }
 
     public function centerUserLogin($username,$password){
-      $result=query("SELECT * FROM centerUser WHERE username='$username' && password='$password' ") ;
+      $result=query("SELECT * FROM centeruser WHERE username='$username' && password='$password' ") ;
       return $result;
     }
 
