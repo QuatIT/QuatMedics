@@ -107,7 +107,7 @@ if(isset($_POST['reqLab'])){
 					$getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
 					foreach($getLp as $labPrice){}
 
-$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$paystatus','".$labPrice['servicePrice']."','$dateToday')");
+$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
 
                         if($insertLabReq){
                              $success =  "LAB REQUEST SENT SUCCESSFULLY";
@@ -153,12 +153,12 @@ if(isset($_POST['adWard'])){
 				$medicine = trim($_POST["medicine"][$m]);
 				$dosage = trim($_POST["dosage"][$d]);
 
-		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,symptoms,diagnoses,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$symptoms','$diagnoses','$dateToday')");
+		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,symptoms,diagnoses,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$symptoms','$diagnoses','".$consultrow['dateInsert']."')");
 				}
 
 		}
 
-    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails,bedID,dateInsert) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$bedID','$dateToday')");
+    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails,bedID,dateInsert) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$bedID','".$consultrow['dateInsert']."')");
 
 	//update bed status to occupied..
 	$updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$bedID'");
@@ -224,7 +224,7 @@ if(isset($_POST['presMeds'])){
 					$consql = select("select * from consultation where consultID='".$_GET['conid']."' ");
 					foreach($consql as $conrow){}
 
-					$dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd',CURDATE(),'".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
+					$dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
 
 //				if($dia){
 //					echo "<script>alert('Guud');</script>";
@@ -247,7 +247,7 @@ if(isset($_POST['presMeds'])){
 					$invsql = select("select * from consultation where consultID='".$_GET['conid']."' ");
 					foreach($invsql as $invrow){}
 
-					$dia = insert("INSERT INTO investigation_tb(patientID,consultID,examination,dateRegistered,investigated_by,centerID,investigationID) VALUES('".$invrow['patientID']."','".$_GET['conid']."','$investd',CURDATE(),'".$_SESSION['username']."','".$_SESSION['centerID']."','$invest_id')");
+					$dia = insert("INSERT INTO investigation_tb(patientID,consultID,examination,dateRegistered,investigated_by,centerID,investigationID) VALUES('".$invrow['patientID']."','".$_GET['conid']."','$investd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$invest_id')");
 
 //				if($dia){
 //					echo "<script>alert('Guud');</script>";
@@ -263,7 +263,7 @@ if(isset($_POST['presMeds'])){
         if($medIDNum > 0 && $piecesNum > 0) {
 			//saving prescription..
 //        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
-        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','$datePrescribe','$prescriptionCode','$invest1','$dateToday')");
+        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','".$consultrow['dateInsert']."','$prescriptionCode','$invest1','".$consultrow['dateInsert']."')");
 
 		//saving the prescribed medications....
 		for($m=0, $p=0, $a=0, $t=0; $m<$medIDNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
@@ -280,27 +280,27 @@ if(isset($_POST['presMeds'])){
 						$medFrom = $nameRow['medFrom'];
 						$medicinetype = $nameRow['Type'];
 
-						if($medFrom == 'NHIS'){
-							$unitPrice = $nameRow['nhis_unit_price'];
-						}
-						if($medFrom == 'PRIVATE'){
-							$unitPrice = $nameRow['center_unit_price'];
-						}
-					}
-				//set dosage..
-				$dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
-			if($medicinetype=='solid'){
-				//medicine price calculation..
-				$totalPiece = ($pieces*$aday)*$totalDays;
-				$medprice = trim($unitPrice*$totalPiece);
-			}else{
-				//medicine price calculation..
-//				$totalPiece = ($pieces*$aday)*$totalDays
-				$medprice = trim($unitPrice*$pieces);
-			}
-
+//						if($medFrom == 'NHIS'){
+				        $unitPrice = $nameRow['price'];
+//						}
+//						if($medFrom == 'PRIVATE'){
+//							$unitPrice = $nameRow['center_unit_price'];
+//						}
+//					   }
+                            //set dosage..
+                            $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
+                        if($medicinetype=='solid'){
+                            //medicine price calculation..
+                            $totalMeds = ($pieces*$aday)*$totalDays;
+                            $medprice = trim($unitPrice*$totalMeds);
+                        }else{
+                            //medicine price calculation..
+                            $totalMeds = 1;
+                            $medprice = trim($unitPrice);
+                        }
+                    }
 //		$insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode','$dateToday')");
-		$insertMedsz = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode',now())");
+		$insertMedsz = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode', '".$consultrow['dateInsert']."')");
 					}
 		}
 
@@ -727,7 +727,7 @@ if(isset($_POST['presMeds'])){
 					</thead>
 				  <tbody>
 					<?php
-					$num = 5;
+					$num = 6;
 					if(!empty($num)){
 					  for($i=0; $i<$num;$i++){
 					?>
@@ -735,14 +735,15 @@ if(isset($_POST['presMeds'])){
 						<td style="width:40%;">
 							<?php
 							if($consultrow['mode'] == 'Insurance'){
+                                $insuranceType = $consultrow['insuranceType'];
 							?>
 							<select name="medName[]" class="span11">
-								<optgroup> NHIS MEDICATION</optgroup>
+								<option></option>
 							<?php
 
 						  	$centerNHISLevel = $centerName['centerNhisLevel'];
-						  	$level = explode(" ",$centerNHISLevel);
-								$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='".$level[1]."' AND medFrom='NHIS' OR medFrom='PRIVATE'");
+//						  	$level = explode(" ",$centerNHISLevel);
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='Private'");
 								if($meds){
 									foreach($meds as $medrow){
 							?>
@@ -750,7 +751,7 @@ if(isset($_POST['presMeds'])){
 							<?php }} ?>
 							</select>
 							<?php }else{
-								$medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND mode_of_payment='PRIVATE'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND mode_of_payment='Private'");
 //								$medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='LOCAL'");
 							?>
 									<select name="medName[]" class="span11">
@@ -777,7 +778,7 @@ if(isset($_POST['presMeds'])){
                   </div>
              </div>
         </form>
-    </d iv>
+    </div>
 
 
 

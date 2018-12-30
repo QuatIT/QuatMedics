@@ -40,12 +40,13 @@ include 'layout/head.php';
 	$concharge = select("SELECT * FROM paymentfixed WHERE patientID='$patid' AND serviceName='CONSULTATION' AND id='$id'");
 	foreach($concharge as $conRow){
 		$consultPrice = $conRow['servicePrice'];
+		$consultDate = $conRow['dateinsert'];
 	}
 
 
 	//get lab details...
 	$labTotal = 0;
-	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='Insurance' AND dateInsert='$dateToday'");
+	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='Insurance' AND dateInsert='$consultDate'");
 	foreach($fetchlab as $labRow){
 					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
 						  foreach($getlabName as $labNmRow){}
@@ -53,7 +54,7 @@ include 'layout/head.php';
 	}
 
 	//get medicine charges...
-	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$dateToday'");
+	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$consultDate'");
 					  if($getPresciptionID){
 						  foreach($getPresciptionID as $presRow){
 							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
@@ -197,12 +198,12 @@ include 'layout/head.php';
 				  		<th> MEDICATION </th>
 				  		<th> DOSAGE</th>
 				  		<th> PRICE</th>
-				  		<th> Status</th>
+				  		<th> STATUS</th>
 				  </tr>
 				  <tbody>
 
 					  <?php
-					  	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$dateToday'");
+					  	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$consultDate'");
 					  if($getPresciptionID){
 						  foreach($getPresciptionID as $presRow){
 							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
