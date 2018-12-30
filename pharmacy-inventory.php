@@ -64,10 +64,11 @@
     $active='';
     $success = '';
     $error = '';
+	$type='';
 
     $tab = $_GET['tab'];
 
-    if($tab == "admed"){
+    if($tab == "tab2"){
         $active2 = "active";
 //        $patient = select("SELECT * FROM emergency_patient WHERE patientID='".$_GET['pid']."' ORDER BY patientID ASC");
 //        foreach($patient as $pID){}
@@ -107,6 +108,11 @@
 //			$errorr = "MEDICINE ALREADY EXISTS. PLEASE GO TO YOUR STOCK TO UPDATE";
 //		}else{
 
+		if($type=="Tablet" || $type=="Capsule" || $type=="Inhalers"){
+			$typ = "solid";
+		}else{
+			$typ = 'liquid';
+		}
 
 	if($medicine_type_m > 0 && $px_m > 0){
 		for($b=0,$p=0; $b<$medicine_type_m,$p<$px_m; $b++,$p++){
@@ -120,7 +126,7 @@
 //					$dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd',CURDATE(),'".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
 
 
-		$store = insert("INSERT INTO pharmacy_inventory(medicine_id,medicine_name,no_of_boxes,no_of_piece,no_of_bottles,expire_date,manufacture_date,company_name,invoice_number,entered_by,price,centerID,mode_of_payment,dateRegistered) VALUES('$medID','$medicine_name','$no_of_boxes','$no_of_piece','$no_of_bottles','$expire_date','$manufacture_date','$company_name','$invoice_number','".$_SESSION['username']."','$pxc','".$_SESSION['centerID']."','$medc',CURDATE() ) ");
+		$store = insert("INSERT INTO pharmacy_inventory(medicine_id,medicine_name,no_of_boxes,no_of_piece,no_of_bottles,expire_date,manufacture_date,company_name,invoice_number,entered_by,price,centerID,mode_of_payment,Type,dateRegistered) VALUES('$medID','$medicine_name','$no_of_boxes','$no_of_piece','$no_of_bottles','$expire_date','$manufacture_date','$company_name','$invoice_number','".$_SESSION['username']."','$pxc','".$_SESSION['centerID']."','$medc','$typ',CURDATE() ) ");
 
 		if($store){
             $success = $medicine_name." stock taken successfully";
@@ -232,7 +238,7 @@
                                         <option value="Drops">Drops</option>
                                         <option value="Inhalers">Inhalers</option>
                                         <option value="Injections">Injections</option>
-                                        <option value="Implants">Implants</option>
+<!--                                        <option value="Implants">Implants</option>-->
 
                                    </select>
                                 </div>

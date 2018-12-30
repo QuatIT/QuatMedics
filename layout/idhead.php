@@ -18,7 +18,7 @@ $centerID=$_SESSION['centerID'];
     $PATIENT_UPLOAD = PARENT_DIR.$centerID.'/patient/';
 
 //search and display hospital name
-$centerName_sql = select("SELECT * FROM medicalCenter WHERE centerID='".$_SESSION['centerID']."' ");
+$centerName_sql = select("SELECT * FROM medicalcenter WHERE centerID='".$_SESSION['centerID']."' ");
 foreach($centerName_sql as $centerName){}
 
 ?>

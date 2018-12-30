@@ -243,12 +243,12 @@ input:checked + .slider:before {
 
 
 
-                                        <td><input type="text" <?php if($med['comment']){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php echo $med['comment']; ?>" placeholder="ENTER COMMENT / NOTE"></td>
+                                        <td><input type="text" <?php if($med['comment']){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php if($med['comment']!='NULL'){echo $med['comment'];}else{echo "";} ?>" placeholder="ENTER COMMENT / NOTE"></td>
 
 
                                       <?php }else{ ?>
                                                 <span class="label label-success">Served</span>
-                                             <td><input type="text" <?php if(!empty($med['comment']) || $med['comment']='null'){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php echo $med['comment']; ?>" placeholder="ENTER COMMENT / NOTE"></td>
+                                             <td><input type="text" <?php if(!empty($med['comment']) || $med['comment']='null'){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php if($med['comment']!='NULL'){echo $med['comment'];}else{echo "";} ?>" placeholder="ENTER COMMENT / NOTE"></td>
 
                                      <?php   }
 
@@ -260,6 +260,25 @@ input:checked + .slider:before {
                                                     $checked = 'checked';
 
                                                     $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='$chkbox' WHERE prescribeid='".$med['prescribeid']."' ");
+
+													$med = select("select * from prescribedmeds where prescribeid='".$med['prescribeid']."' ");
+													foreach($med as $medic_row){}
+
+													$phinven = select("select * from pharmacy_inventory where mode_of_payment='".$medic_row['paymode']."' && medicine_name='".$medic_row['medicine']."' ");
+													foreach($phinven as $phinven_row){}
+
+													if($phinven_row['no_of_bottles']=="NULL" || $phinven_row['no_of_bottles']=="0" || empty($phinven_row['no_of_bottles'])){
+														$remaining_med = $phinven_row['no_of_piece'] - $medic_row['totalMed'];
+
+														$up_medic = update("update pharmacy_inventory set no_of_piece='$remaining_med' where mode_of_payment='".$medic_row['paymode']."' && medicine_name='".$medic_row['medicine']."' ");
+													}else{
+													$remaining_med = $phinven_row['no_of_bottles'] - $medic_row['totalMed'];
+
+														$up_medic = update("update pharmacy_inventory set no_of_piece='$remaining_med' where mode_of_payment='".$medic_row['paymode']."' && medicine_name='".$medic_row['medicine']."' ");
+													}
+
+
+
                                                     echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
                                                 }else{
                                                     $checked = '';
@@ -267,6 +286,7 @@ input:checked + .slider:before {
                                                     echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
                                                 }
                                             }
+
 
 
                                                   if(isset($_POST['comment'.$med['prescribeid']])){

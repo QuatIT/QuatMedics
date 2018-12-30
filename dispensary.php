@@ -135,12 +135,23 @@
 </div>
 <!--close-top-Header-menu-->
 
+<!--
 <div id="sidebar">
     <ul>
     <li> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
     <li> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
     <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
     <li class="active"><a href="dispensary"> <span>Dispensary</span></a></li>
+    </ul>
+</div>
+-->
+
+<div id="sidebar">
+    <ul>
+    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li class=""> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
+    <li class="active"> <a href="pharmacy-index2"><i class="icon icon-briefcase"></i> <span>Pharmacy2</span></a> </li>
+    <li> <a href="dispensary?tab=admed"><span>Dispensary</span></a> </li>
     </ul>
 </div>
 

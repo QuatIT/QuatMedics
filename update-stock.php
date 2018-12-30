@@ -65,6 +65,7 @@
     $success = '';
     $error = '';
 
+    $id = $_GET['id'];
     $tab = $_GET['tab'];
     $sid = $_GET['sid'];
 
@@ -79,13 +80,63 @@
         $active  = "active";
     }elseif($tab == "srequests"){
         $active3  = "active";
+    }elseif($tab == "expire"){
+        $active4  = "active";
     }
 
 
 	$medIDs = count(select("SELECT * FROM pharmacy_inventory")) + 1;
 
-    if(isset($_POST['btnSave'])){
+//    if(isset($_POST['btnSave'])){
+//
+//
+//      $medID = substr(filter_input(INPUT_POST, "medicine_name", FILTER_SANITIZE_STRING), 0, 3)."-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$medIDs);
+////      $staffID = $staffID['userID'];
+//      $medicine_name = filter_input(INPUT_POST, "medicine_name", FILTER_SANITIZE_STRING);
+//      $medicine_type = filter_input(INPUT_POST, "medicine_type", FILTER_SANITIZE_STRING);
+//      $no_of_boxes = filter_input(INPUT_POST, "no_of_boxes", FILTER_SANITIZE_STRING);
+//      $no_of_piece = filter_input(INPUT_POST, "no_of_piece", FILTER_SANITIZE_STRING);
+//      $no_of_bottles = filter_input(INPUT_POST, "no_of_bottles", FILTER_SANITIZE_STRING);
+//      $expire_date = filter_input(INPUT_POST, "expire_date", FILTER_SANITIZE_STRING);
+//      $manufacture_date = filter_input(INPUT_POST, "manufacture_date", FILTER_SANITIZE_STRING);
+//      $company_name = filter_input(INPUT_POST, "company_name", FILTER_SANITIZE_STRING);
+//      $invoice_number = filter_input(INPUT_POST, "invoice_number", FILTER_SANITIZE_STRING);
+//      $px_m = filter_input(INPUT_POST, "px", FILTER_SANITIZE_STRING);
+//      $medicine_type_m = filter_input(INPUT_POST, "mode", FILTER_SANITIZE_STRING);
+//
+//		$new_piece = $stk['no_of_piece'] + $no_of_piece;
+//		$new_bottles = $stk['no_of_bottles'] + $no_of_bottles;
+//		$new_boxes = $stk['no_of_boxes'] + $no_of_boxes;
+//
+//
+//	if($medicine_type_m > 0 && $px_m > 0){
+//		for($b=0,$p=0; $b<$medicine_type_m,$p<$px_m; $b++,$p++){
+//			if(trim($_POST['mode'][$b] != '') && trim($_POST['px'][$p] != '')){
+//					$medc = trim($_POST['mode'][$b]);
+//					$pxc = trim($_POST['px'][$p]);
+//
+//
+//		$store = insert("INSERT INTO pharmacy_inventory_history(medicine_id,medicine_name,medicine_type,no_of_boxes,no_of_piece,no_of_bottles,expire_date,manufacture_date,company_name,invoice_number,price,entered_by,centerID,mode_of_payment,dateRegistered) VALUES('$medID','$medicine_name','$medicine_type','$no_of_boxes','$no_of_piece','$no_of_bottles','$expire_date','$manufacture_date','$company_name','$invoice_number','".$unit_price."','".$_SESSION['username']."','".$_SESSION['centerID']."','$medc',CURDATE() ) ");
+//
+////		$store = update("UPDATE pharmacy_inventory SET no_of_boxes='$new_boxes', no_of_piece='$new_piece', no_of_bottles='$new_bottles',expire_date='$expire_date', manufacture_date='$manufacture_date', company_name='$company_name', invoice_number='$invoice_number', price = '$pxc', entered_by='".$_SESSION['username']."', centerID='".$_SESSION['centerID']."', mode_of_payment='$medc',dateRegistered=CURDATE() WHERE medicine_id='$sid' && id='$id' ");
+//
+//		if($store){
+//            $success .= $medicine_name." stock taken successfully";
+////            $success = "<script>window.location.href='pharmacy-inventory?tab=admed'</script>";
+//
+//        }else{
+//            $error = "Stock failed";
+//        }
+//
+//    }
+//    }
+//    }
+//    }
 
+
+
+
+    if(isset($_POST['btnSave'])){
 
       $medID = substr(filter_input(INPUT_POST, "medicine_name", FILTER_SANITIZE_STRING), 0, 3)."-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$medIDs);
 //      $staffID = $staffID['userID'];
@@ -98,25 +149,56 @@
       $manufacture_date = filter_input(INPUT_POST, "manufacture_date", FILTER_SANITIZE_STRING);
       $company_name = filter_input(INPUT_POST, "company_name", FILTER_SANITIZE_STRING);
       $invoice_number = filter_input(INPUT_POST, "invoice_number", FILTER_SANITIZE_STRING);
-      $unit_price = filter_input(INPUT_POST, "unit_price", FILTER_SANITIZE_STRING);
+//      $unit_price = filter_input(INPUT_POST, "unit_price", FILTER_SANITIZE_STRING);
+
+		$medicine_type_m = count($_POST['mode']);
+		$px_m = count($_POST['px']);
+
 
 		$new_piece = $stk['no_of_piece'] + $no_of_piece;
 		$new_bottles = $stk['no_of_bottles'] + $no_of_bottles;
 		$new_boxes = $stk['no_of_boxes'] + $no_of_boxes;
 
-		$store .= insert("INSERT INTO pharmacy_inventory_history(medicine_id,medicine_name,medicine_type,no_of_boxes,no_of_piece,no_of_bottles,expire_date,manufacture_date,company_name,invoice_number,unit_price,entered_by,centerID,dateRegistered) VALUES('$medID','$medicine_name','$medicine_type','$no_of_boxes','$no_of_piece','$no_of_bottles','$expire_date','$manufacture_date','$company_name','$invoice_number','".$unit_price."','".$_SESSION['username']."','".$_SESSION['centerID']."',CURDATE() ) ");
 
-		$store = update("UPDATE pharmacy_inventory SET no_of_boxes='$new_boxes', no_of_piece='$new_piece', no_of_bottles='$new_bottles',expire_date='$expire_date', manufacture_date='$manufacture_date', company_name='$company_name', invoice_number='$invoice_number', unit_price = '$unit_price', entered_by='".$_SESSION['username']."', centerID='".$_SESSION['centerID']."', dateRegistered=CURDATE() WHERE medicine_id='$medID' ");
+//		$chkmed = select("SELECT * FROM pharmacy_inventory WHERE medicine_name='$medicine_name' ");
+//		if($chkmed >=1){
+//			$errorr = "MEDICINE ALREADY EXISTS. PLEASE GO TO YOUR STOCK TO UPDATE";
+//		}else{
+
+
+	if($medicine_type_m > 0 && $px_m > 0){
+		for($b=0,$p=0; $b<$medicine_type_m,$p<$px_m; $b++,$p++){
+			if(trim($_POST['mode'][$b] != '') && trim($_POST['px'][$p] != '')){
+					$medc = trim($_POST['mode'][$b]);
+					$pxc = trim($_POST['px'][$p]);
+
+//					$consql = select("select * from consultation where consultID='".$_GET['conid']."' ");
+//					foreach($consql as $conrow){}
+
+//					$dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd',CURDATE(),'".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
+
+
+		$store .= insert("INSERT INTO pharmacy_inventory_history(medicine_id,medicine_name,no_of_boxes,no_of_piece,no_of_bottles,expire_date,manufacture_date,company_name,invoice_number,entered_by,price,centerID,mode_of_payment,dateRegistered) VALUES('$medID','$medicine_name','$no_of_boxes','$no_of_piece','$no_of_bottles','$expire_date','$manufacture_date','$company_name','$invoice_number','".$_SESSION['username']."','$pxc','".$_SESSION['centerID']."','$medc',CURDATE() ) ");
+
+				$store = update("UPDATE pharmacy_inventory SET no_of_boxes='$no_of_boxes', no_of_piece='$no_of_piece', no_of_bottles='$no_of_bottles', expire_date='$expire_date', manufacture_date='$manufacture_date', company_name='$company_name', invoice_number='$invoice_number', entered_by='".$_SESSION['username']."', price='$pxc', centerID='".$_SESSION['centerID']."', mode_of_payment='$medc', dateRegistered=CURDATE() WHERE medicine_id='$sid' && id='$id'  ");
 
 		if($store){
-            $success .= $medicine_name." stock taken successfully";
-            $success = "<script>window.location.href='pharmacy-inventory?tab=admed'</script>";
-
+            $success = $medicine_name." stock taken successfully";
         }else{
             $error = "Stock failed";
         }
 
-    }
+
+//				if($dia){
+//					echo "<script>alert('Guud');</script>";
+//				}
+
+		}
+	}
+	}
+	}
+
+
 
 
     ?>
@@ -174,7 +256,8 @@
 
                     <li class="<?php echo $active2; ?>"><a data-toggle="tab" href="#tab2">Add Stock </a></li>
                     <li class="<?php echo $active; ?>"><a data-toggle="tab" href="#tab1">Stock List</a></li>
-                    <li class="<?php echo $active3; ?>"><a data-toggle="tab" href="#srequests">Stock Requests <span class="badge">5</span></a></li>
+                    <li class="<?php echo $active3; ?>"><a data-toggle="tab" href="#srequests">Stock Requests <span class="badge"><?php echo count(select("SELECT * FROM dispensary_tb WHERE request_status='pending' ")); ?></span></a></li>
+<!--                    <li class="<?php #echo $active4; ?>"><a data-toggle="tab" href="#expire">7Days to Expire Medicine <span class="badge"><?php #echo count(select("SELECT * FROM dispensary_tb WHERE centerID='".$_SESSION['centerID']."' && expire_date= DATE_ADD(CURDATE(), INTERVAL 8 DAY) ORDER BY medicine_id ASC")); ?></span></a></li>-->
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -197,7 +280,7 @@
                                <div class="controls">
                                   <select name="medicine_type" class="span11" onchange="pharm_cat(this.value);" required>
 									  <option></option>
-                                        <option value="<?php echo $stk['medicine_type']; ?>"><?php echo $stk['medicine_type']; ?></option>
+                                        <option value="<?php echo $stk['unit_of_pricing']; ?>"><?php echo $stk['unit_of_pricing']; ?></option>
 
 
                                    </select>
@@ -226,6 +309,39 @@
                               </div>
 
 							  <span id="pharm"></span>
+
+							   <table border="0" class="" id="diagnosis" style="margin-top:20px;">
+                                <tr>
+
+                                    <td>
+
+										     <div class="control-group">
+                                <label class="control-label">&nbsp;</label>
+                               <div class="controls">
+								   <label class="form-control">Mode of Payment: </label>
+												  <select name="mode[]" class="span12" >
+
+														<option value=""></option>
+														<option value="PRIVATE">PRIVATE</option>
+														<option value="NHIS">NHIS</option>
+
+												   </select>
+												 </div>
+												 </div>
+                                    </td>
+
+
+                                    <td>
+										<label class="control-label">Unit Price</label>
+                                        <input type="text" name="px[]" placeholder="Price" class="form-control">
+                                    </td>
+
+
+                                    <td><br>
+                                        <button type="button" name="add" id="add" class="btn btn-success">+</button>
+                                    </td>
+                                </tr>
+                            </table>
 
 <!--
                               <div class="control-group">
@@ -270,12 +386,14 @@
                               </div>
 
 
+<!--
                               <div class="control-group">
                                 <label class="control-label">Unit Price</label>
                                 <div class="controls">
                                   <input type="number"  class="span11" name="unit_price" placeholder="Unit Price" required />
                                 </div>
                               </div>
+-->
 
 <!--
                                <div class="control-group">
@@ -320,6 +438,8 @@
                               <th>Medicine Name</th>
                               <th>Number of Boxes</th>
                               <th>Number of Pieces</th>
+                              <th>Mode of Payment</th>
+                              <th>Unit Price</th>
                               <th>Action</th>
                             </tr>
                           </thead>
@@ -356,6 +476,34 @@
 						 </div>
 
                 </div>
+
+<!--
+                <div id="expire" class="tab-pane <?php #echo $active4; ?>">
+
+					 <div class="widget-box">
+                      <div class="widget-title">
+                         <span class="icon"><i class="icon-th"></i></span>
+                        <h5>7Days to Expire Medicine</h5>
+                      </div>
+                      <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th>Medicine ID</th>
+                              <th>Medicine Name</th>
+                              <th>Number of Boxes</th>
+                              <th>Number of Pieces</th>
+                              <th>Expire Date</th>
+                            </tr>
+                          </thead>
+                          <tbody id="expiredate"></tbody>
+
+						  </table>
+						 </div>
+						 </div>
+
+                </div>
+-->
 
 
             </div>
@@ -433,6 +581,30 @@ window.onload = function () {
 
 </script>
 
+
+
+<!--Beginning of Diagnosis-->
+        <script>
+            //    $(document).ready(function(){
+            var i = 1;
+            $('#add').click(function() {
+                i++;
+                $('#diagnosis').append('<tr id="row' + i + '"> <td><div class="control-group"><label class="control-label">&nbsp;</label><div class="controls"><select name="mode[]" class="span12" ><option value=""></option><option value="PRIVATE">PRIVATE</option><option value="NHIS">NHIS</option></select></div></div></td><td><input type="text" name="px[]" placeholder="Price" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove">X</button></td></tr>');
+            });
+
+            $(document).on('click', '.btn_remove', function() {
+                var button_id = $(this).attr("id");
+                $('#row' + button_id + '').remove();
+            });
+
+            //    });
+
+        </script>
+
+<!--End of Diagnosis-->
+
+
+
 <!--
        <script>
     function out_patient_list(){
@@ -474,6 +646,44 @@ window.onload = function () {
 
 
         </script>
+
+
+
+       <script>
+    function stock(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/stockrequest.php",false);
+        xmlhttp.send(null);
+        document.getElementById("stockrequests").innerHTML=xmlhttp.responseText;
+    }
+        stock();
+
+        setInterval(function(){
+            stock();
+        },1000);
+
+
+    </script>
+
+
+       <script>
+    function expiredate(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/expiredate.php",false);
+        xmlhttp.send(null);
+        document.getElementById("expiredate").innerHTML=xmlhttp.responseText;
+    }
+        expiredate();
+
+        setInterval(function(){
+            expiredate();
+        },1000);
+
+
+    </script>
+
+
+
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

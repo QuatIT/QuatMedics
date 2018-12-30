@@ -2,7 +2,7 @@
 <?php
 include '../assets/core/connection.php';
 
-$load_MedCenter = select("SELECT * FROM medicalCenter ORDER BY centerID ASC");
+$load_MedCenter = select("SELECT * FROM medicalcenter ORDER BY centerID ASC");
 
 ?>
 
