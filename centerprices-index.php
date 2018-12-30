@@ -108,6 +108,43 @@
 			$error = "<script>document.write('Empty Fields, Try Again.');</script>";
 		}
     }
+	//saving ward services..
+    if(isset($_POST['saveWardPrices'])){
+		//count number of service entered..
+		$serviceNum = count($_POST['serviceName']);
+        $servicePriceNum = count($_POST['servicePrice']);
+        $modeOfPaymentNum = count($_POST['modeOfPayment']);
+		//check number of services..
+		if($serviceNum > 0 && $servicePriceNum >0 && $modeOfPaymentNum >0){
+			//saving services into database...
+            for($n=0, $p=0, $m=0; $n<$serviceNum, $p<$servicePriceNum, $m<$modeOfPaymentNum; $n++,$p++,$m++){
+                    if(trim($_POST['serviceName'][$n] != '') && trim($_POST['servicePrice'][$p] != '') && trim($_POST['modeOfPayment'][$m] != '')) {
+                        $serviceName = trim($_POST['serviceName'][$n]);
+                        $servicePrice = trim($_POST['servicePrice'][$p]);
+                        $modeOfPayment = trim($_POST['modeOfPayment'][$m]);
+						$serviceType = trim("Ward");
+						//generate service ID
+						$serviceIDs = $consultation->loadServicePrices($centerID) + 1;
+						$serviceID = "SV.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$serviceIDs);
+
+						//check service name if already entered else save service..
+						$serviceExist = select("SELECT * FROM prices WHERE serviceName='$serviceName' AND modePayment='$modeOfPayment' AND centerID='$centerID' ");
+						if($serviceExist){
+							$error = "<script>document.write('Service Already Saved..');</script>";
+						}else{
+							$saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,servicePrice,serviceType,modePayment,dateInsert) VALUES('$serviceID','$centerID','$serviceName','$servicePrice','$serviceType','$modeOfPayment','$dateToday')");
+							if($saveService){
+								$success = "<script>document.write('Services Saved.');window.location='centerprices-index';</script>";
+							}else{
+								$error = "<script>document.write('Services Not Saved, Try Again.');</script>";
+							}
+						}
+               		}
+            }
+		}else{
+			$error = "<script>document.write('Empty Fields, Try Again.');</script>";
+		}
+    }
 
     ?>
 
@@ -242,9 +279,9 @@
 							<tr>
 								<td>
 									<select class="span" name="serviceName[]">
-										<option>-- Select Service --</option>
+										<option>-- Select Lab --</option>
 										<?php
-											$lablist = select("SELECT * FROM lablist");
+											$lablist = select("SELECT * FROM lablist WHERE centerID='$centerID'");
 										if($lablist){
 											foreach($lablist as $labRow){
 										?>
@@ -282,7 +319,7 @@
 							<th> LAB NAME</th>
 							<th> PAYMODE</th>
 							<th> LAB PRICE</th>
-							<th> ACCTION</th>
+							<th> ACTION</th>
 						</thead>
 						<tbody>
 							<?php
@@ -304,6 +341,85 @@
 				</div>
 			</div>
 		  </div>
+
+          <hr/>
+
+        <div class="widget-box">
+            <div class="widget-content tab-content">
+				<div class="span6">
+                    <form action="#" method="post" class="form-horizontal">
+						  <table class="table table-bordered" id="dynamic_field3">
+							  <tr>
+							  	<td colspan="3" style="height:10px;">
+								  	<h4 class="text-center" style="height:10px;"> WARD PRICING</h4>
+								  </td>
+							  </tr>
+							<tr>
+								<td>
+									<select class="span" name="serviceName[]">
+										<option>-- Select Ward --</option>
+										<?php
+											$wardlist = select("SELECT * FROM wardlist WHERE centerID='$centerID'");
+										if($wardlist){
+											foreach($wardlist as $wardRow){
+										?>
+										<option value="<?php echo $wardRow['wardName']?>"><?php echo $wardRow['wardName'];?></option>
+										<?php }}?>
+									</select>
+								</td>
+								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required/></td>
+								<td><select class="span" name="modeOfPayment[]" required>
+										<option>-- Payment Mode --</option>
+
+									<?php
+										$modePayment = select("select * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."' ");
+										if($modePayment){
+											foreach($modePayment as $modePay){ ?>
+									<option><?php echo $modePay['type']; ?></option>
+										<?php }} ?>
+									?>
+									</select>
+								</td>
+								<td><button type="button" name="add" id="add3" class="btn btn-primary">Add</button></td>
+							</tr>
+						</table>
+						  <div class="form-actions">
+							  <i class="span5"></i>
+							  <button type="submit" name="saveWardPrices" class="btn btn-primary btn-block span6"> Save Prices</button>
+						  </div>
+              		</form>
+				</div>
+
+
+				<div class="span6">
+					<table class="table table-bordered table-stripped">
+						<thead>
+							<th> WARD NAME</th>
+							<th> PAYMODE</th>
+							<th> WARD PRICE</th>
+							<th> ACTION</th>
+						</thead>
+						<tbody>
+							<?php
+							$allService = select("SELECT * FROM prices WHERE centerID='$centerID' AND serviceType='Ward'");
+							if($allService){
+								foreach($allService as $serviceRow){
+							?>
+							<tr>
+								<td><?php echo $serviceRow['serviceName'];?></td>
+								<td><?php echo $serviceRow['modePayment'];?></td>
+								<td><?php echo $serviceRow['servicePrice'];?></td>
+								<td><a href="#?sid=<?php echo $serviceRow['serviceID'];?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a></td>
+							</tr>
+							<?php }}else{?>
+							<tr><td colspan="3"> <h6 class="text-center">NO SERVICE CHARGE SAVED.</h6></td></tr>
+							<?php }?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		  </div>
+
 	  </div>
     </div>
 </div>
@@ -379,7 +495,22 @@ function resetMenu() {
         var i=1;
         $('#add').click(function(){
             i++;
-            $('#dynamic_field').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Service --</option><?php $lablist = select("SELECT * FROM lablist");if($lablist){foreach($lablist as $labRow){?><option value="<?php echo $labRow['labName']?>"><?php echo $labRow['labName'];?></option><?php }}?></select></td><td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><select class="span" required><option>-- Payment Mode</option><?php $modePayment = select("select * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."' ");if($modePayment){	foreach($modePayment as $modePay){ ?><option><?php echo $modePay['type']; ?></option><?php }} ?></select></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Lab --</option><?php $lablist = select("SELECT * FROM lablist");if($lablist){foreach($lablist as $labRow){?><option value="<?php echo $labRow['labName']?>"><?php echo $labRow['labName'];?></option><?php }}?></select></td><td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><select class="span" required><option>-- Payment Mode</option><?php $modePayment = select("select * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."' ");if($modePayment){	foreach($modePayment as $modePay){ ?><option><?php echo $modePay['type']; ?></option><?php }} ?></select></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+//    });
+</script>
+
+<script>
+//    $(document).ready(function(){
+        var i=1;
+        $('#add3').click(function(){
+            i++;
+            $('#dynamic_field3').append('<tr id="row'+i+'"><td><select class="span" name="serviceName[]"><option>-- Select Ward --</option><?php $wardlist = select("SELECT * FROM wardlist WHERE centerID='$centerID'");if($wardlist){foreach($wardlist as $wardRow){?><option value="<?php echo $wardRow['wardName']?>"><?php echo $wardRow['wardName'];?></option><?php }}?></select></td><td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><select class="span" required><option>-- Payment Mode</option><?php $modePayment = select("select * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."' ");if($modePayment){	foreach($modePayment as $modePay){ ?><option><?php echo $modePay['type']; ?></option><?php }} ?></select></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){
