@@ -633,7 +633,7 @@ if(isset($_POST['presMeds'])){
 
 
 
-						<div id="tab4" class="tab-pane">
+<div id="tab4" class="tab-pane">
 
 	 <form action="" method="POST" id="add_name" class="form-horizontal">
 		 <div class="span6">
@@ -720,7 +720,7 @@ if(isset($_POST['presMeds'])){
 				  </div>
 				  <?php } ?>
 					<thead>
-						<th> Medicine Name</th>
+						<th style="width:40%;"> Medicine Name</th>
 						<th> No of intakes / Pieces</th>
 						<th> Intakes Per Day</th>
 						<th> Number Of Days</th>
@@ -751,7 +751,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							<?php }} ?>
 							</select>
 							<?php }else{
-                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND mode_of_payment='Private'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
 //								$medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='LOCAL'");
 							?>
 									<select name="medName[]" class="span11">

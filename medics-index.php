@@ -355,7 +355,7 @@ $dataPoints = array(
 <?php }
       if($_SESSION['accessLevel']=='CONSULTATION'){
 //        $room = Consultation::find_consultingroom();
-        $room = select("SELECT * FROM consultingroom WHERE status='".FREE."' || status='' ");
+        $room = select("SELECT * FROM consultingroom WHERE centerID='$centerID' AND status='".FREE."' || status='' ");
 
       ?>
 

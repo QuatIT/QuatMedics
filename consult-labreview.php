@@ -86,15 +86,25 @@ include 'layout/head.php';
         }
 
 
+//Request Laboratory.....
 if(isset($_POST['reqLab'])){
-    $labNumber = count( $_POST['labName']);
+    $labNumber = count($_POST['labName']);
+	    $paymode = filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
 
     if($labNumber > 0) {
         for($i=0; $i<$labNumber; $i++){
-                if(trim($_POST["labName"][$i] != '')) {
-                    $labID = trim( $_POST["labName"][$i]);
+                if(trim($_POST["labName"][$i] != '')){
+                    $labID = trim($_POST["labName"][$i]);
                     $status = SENT_TO_LAB;
-$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status')");
+					$paystatus = trim("Not Paid");
+					//get labName from lablist table...
+					$getLabName = select("SELECT labName FROM lablist where labID='$labID'");
+					foreach($getLabName as $labName){}
+					//get lab price from prices table using the name...
+					$getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
+					foreach($getLp as $labPrice){}
+
+$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
 
                         if($insertLabReq){
                              $success =  "LAB REQUEST SENT SUCCESSFULLY";
@@ -111,12 +121,18 @@ $insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,cent
 }
 
 
+//Admit patient to ward..
 if(isset($_POST['adWard'])){
-    $wardID =  filter_input(INPUT_POST, "wardID", FILTER_SANITIZE_STRING);
-    $admitDetails =  filter_input(INPUT_POST, "admitDetails", FILTER_SANITIZE_STRING);
-    $admitDate =  filter_input(INPUT_POST, "admitDate", FILTER_SANITIZE_STRING);
-    $dischargeDate =  filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING);
+    $wardID = filter_input(INPUT_POST, "wardID", FILTER_SANITIZE_STRING);
+    $admitDetails = filter_input(INPUT_POST, "admitDetails", FILTER_SANITIZE_STRING);
+    $admitDate = filter_input(INPUT_POST, "admitDate", FILTER_SANITIZE_STRING);
+    $dischargeDate = filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING);
+    $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
+    $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
+    $bedID = filter_input(INPUT_POST, "bedID", FILTER_SANITIZE_STRING);
     $status = SENT_TO_WARD;
+	$medsNum = count($_POST['medicine']);
+	$dosagesNum = count($_POST['dosage']);
     //generate wardassign IDs
     $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
     if(count($wardasignsql) >=1){
@@ -127,12 +143,26 @@ if(isset($_POST['adWard'])){
             $assignID = $oldid[0]."-".$newID;
         }
     }else{
-        $assignID = "ASSIGN.".$centerID."-"."1";
+        $assignID = "ASSIGN.".$centerID."-1";
     }
 
-    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails')");
+		for($m=0, $d=0; $m<$medsNum, $d<$dosagesNum; $m++,$d++){
+			if(trim($_POST["medicine"][$m] != '') && trim($_POST['dosage'][$d] != '')) {
+				$medicine = trim($_POST["medicine"][$m]);
+				$dosage = trim($_POST["dosage"][$d]);
 
-    if($insertassign){
+		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,symptoms,diagnoses,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$symptoms','$diagnoses','".$consultrow['dateInsert']."')");
+				}
+
+		}
+
+    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails,bedID,dateInsert) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$bedID','".$consultrow['dateInsert']."')");
+
+	//update bed status to occupied..
+	$updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$bedID'");
+
+
+    if($insertassign &&$updateBedStatus){
         $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
         $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
         echo "<script>window.location='consult-index?roomID={$roomID}'';</script>";
@@ -141,7 +171,9 @@ if(isset($_POST['adWard'])){
     }
 }
 
-    if(isset($_POST['presMeds'])){
+
+//prescribe medication to patient...
+if(isset($_POST['presMeds'])){
         $diagnoses =  filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
         $symptoms =  filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
         $pharmacyID =  filter_input(INPUT_POST, "pharmacyID", FILTER_SANITIZE_STRING);
@@ -152,27 +184,127 @@ if(isset($_POST['adWard'])){
         $datePrescribe = trim(date("Y-m-d"));
         $prescriptionCode = randomString('4');
 
-        $medNum = count($_POST['medicine']);
-        $dosageNum = count($_POST['dosage']);
+        $medIDNum = count( $_POST['medName']);
+        $piecesNum = count( $_POST['pieces']);
+        $adayNum = count( $_POST['aday']);
+        $totalDaysNum = count( $_POST['totalDays']);
+        $diagnosis_new = count( $_POST['diagnosis_new']);
+        $investigation_new = count($_POST['investigation_new']);
+        $investigation_new2 = $_POST['investigation_new'];
 
-        if($medNum > 0 && $dosageNum > 0) {
-		//saving prescription..
-        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
+	$diagnose1 = '';
+    $diagnosis_new2 = $_POST['diagnosis_new'];
 
-			//saving the prescribed medications....
-            for($m=0, $d=0; $m<$medNum, $d<$dosageNum; $m++,$d++){
-                    if(trim($_POST["medicine"][$m] != '') && trim($_POST['dosage'][$d] != '')) {
-                        $medicine = trim( $_POST["medicine"][$m]);
-                        $dosage = trim( $_POST["dosage"][$d]);
+	foreach($diagnosis_new2 as $diagnose_rowd){
+		$diagnose1 .= $diagnose_rowd."<br>";
+	}
 
-      $insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$paymode','$dateToday')");
+
+	$invest1 = '';
+    $investigation2 = $_POST['investigation_new'];
+
+	foreach($investigation2 as $investigate_rowd){
+		$invest1 .= $investigate_rowd."<br>";
+	}
+//	echo "<script>alert('{$diagnose1}');</script>";
+//	exit();
+
+
+	if($diagnosis_new > 0){
+		for($b=0; $b<$diagnosis_new; $b++){
+			if(trim($_POST['diagnosis_new'][$b] != '')){
+					$diagd = trim($_POST['diagnosis_new'][$b]);
+
+					//insert into diagnosis table
+
+					$diagd_id = "DIAG-".sprintf('%06s',count(select("select * from diagnose_tb")) + 1);
+
+					$consql = select("select * from consultation where consultID='".$_GET['conid']."' ");
+					foreach($consql as $conrow){}
+
+					$dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
+
+//				if($dia){
+//					echo "<script>alert('Guud');</script>";
+//				}
+
+		}
+	}
+	}
+
+
+	if($investigation_new > 0){
+		for($j=0; $j<$investigation_new; $j++){
+			if(trim($_POST['investigation_new'][$j] != '')){
+					$investd = trim($_POST['investigation_new'][$j]);
+
+					//insert into investigation table
+
+					$invest_id = "INVEST-".sprintf('%06s',count(select("select * from investigation_tb")) + 1);
+
+					$invsql = select("select * from consultation where consultID='".$_GET['conid']."' ");
+					foreach($invsql as $invrow){}
+
+					$dia = insert("INSERT INTO investigation_tb(patientID,consultID,examination,dateRegistered,investigated_by,centerID,investigationID) VALUES('".$invrow['patientID']."','".$_GET['conid']."','$investd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$invest_id')");
+
+//				if($dia){
+//					echo "<script>alert('Guud');</script>";
+//				}
+
+		}
+	}
+	}
+
+//exit();
+
+
+        if($medIDNum > 0 && $piecesNum > 0) {
+			//saving prescription..
+//        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
+        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','".$consultrow['dateInsert']."','$prescriptionCode','$invest1','".$consultrow['dateInsert']."')");
+
+		//saving the prescribed medications....
+		for($m=0, $p=0, $a=0, $t=0; $m<$medIDNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
+				if(trim($_POST['medName'][$m] != '') && trim($_POST['pieces'][$p] != '') && trim($_POST['aday'][$a] != '') && trim($_POST['totalDays'][$t] != '') ) {
+					$medicineID = trim( $_POST['medName'][$m]);
+					$pieces = trim( $_POST['pieces'][$p]);
+					$aday = trim( $_POST['aday'][$a]);
+					$totalDays = trim( $_POST['totalDays'][$t]);
+
+					//get medicine name for insert qeury...
+		$findmedname = select("SELECT * FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
+					foreach($findmedname as $nameRow){
+						$medicine = $nameRow['medicine_name'];
+						$medFrom = $nameRow['medFrom'];
+						$medicinetype = $nameRow['Type'];
+
+//						if($medFrom == 'NHIS'){
+				        $unitPrice = $nameRow['price'];
+//						}
+//						if($medFrom == 'PRIVATE'){
+//							$unitPrice = $nameRow['center_unit_price'];
+//						}
+//					   }
+                            //set dosage..
+                            $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
+                        if($medicinetype=='solid'){
+                            //medicine price calculation..
+                            $totalMeds = ($pieces*$aday)*$totalDays;
+                            $medprice = trim($unitPrice*$totalMeds);
+                        }else{
+                            //medicine price calculation..
+                            $totalMeds = 1;
+                            $medprice = trim($unitPrice);
                         }
-            }
+                    }
+//		$insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode','$dateToday')");
+		$insertMedsz = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode', '".$consultrow['dateInsert']."')");
+					}
+		}
 
-              if($insertpresciption && $insertMeds){
-                    $success =  "PRESCRIPTION SENT SUCCESSFULLY";
-                    $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
-
+  if($insertpresciption=true && $insertMedsz=true){
+		$success =  "PRESCRIPTION SENT SUCCESSFULLY";
+		$updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
 
             //sms
             $medcen = select("SELECT * FROM medicalcenter WHERE centerID='".$_SESSION['centerID']."' ");
@@ -201,9 +333,7 @@ if(isset($_POST['adWard'])){
                 $error= 'couldnt send code to patient';
             }
 
-
-
-                    echo "<script>window.top.close();</script>";
+                    echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
                 }else{
                     $error =  "ERROR: PRESCRIPTION NOT SENT";
                 }
@@ -243,7 +373,7 @@ if(isset($_POST['adWard'])){
         <a title="Lab Result Review" class="tip-bottom"><i class="icon-user"></i> LAB RESULT REVIEW</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">CONSULTATION ROOM <?php echo $r['roomName'];?></h3>
 <div class="row-fluid">
     <div class="span12">
@@ -274,7 +404,7 @@ if(isset($_POST['adWard'])){
   <iframe src="<?php echo $labrow['labResult'];?>" style="width:100%;height:500px;"></iframe>
 		  </div>
 		  <?php }?>
-          <div class="span6" style="margin-left:10px;">
+          <div class="span12"  style="margin-left:0px;">
                 <div class="widget-box">
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
@@ -282,74 +412,82 @@ if(isset($_POST['adWard'])){
                             <li><a data-toggle="tab" href="#tab2"> Request Lab</a></li>
                             <li><a data-toggle="tab" href="#tab3"> Admit To Ward</a></li>
                             <li><a data-toggle="tab" href="#tab4"> Prescribe Medication</a></li>
+                            <li><a data-toggle="tab" href="#tab5"> ICD-10</a></li>
                         </ul>
                     </div>
                     <div class="widget-content tab-content">
                         <div id="tab1" class="tab-pane active">
                             <form action="#" method="post" class="form-horizontal">
-								<div class="span12">
+								<div class="span6">
 									<div class="widget-content">
 										<div class="control-group">
-                                        <label class="control-label">Patient ID :</label>
+                                        <label class="control-label">PATIENT ID :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientID" value="<?php echo $patientID;?>" readonly/>
                                         </div>
                                       </div>
-                                        <div class="control-group">
-                                        <label class="control-label">Patient Name :</label>
-                                        <div class="controls">
-                                          <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
-                                        </div>
-                                      </div>
-										<?php if(!empty($consultrow['mode']) || $consultrow['mode'] !='null'){ ?>
+										<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">Payment Mode :</label>
+                                        <label class="control-label">PAYMENT MODE :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['mode'];?>" readonly/>
                                         </div>
                                       </div>
                                       <?php } ?>
-										<?php if(!empty($consultrow['insuranceNumber']) || $consultrow['insuranceNumber']='null' ){ ?>
+										<?php if(!empty($consultrow['insuranceNumber']) || $consultrow['insuranceNumber']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">Insurance Number :</label>
+                                        <label class="control-label">INSURANCE NUMBER :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['insuranceNumber'];?>" readonly/>
                                         </div>
                                       </div>
                                       <?php } ?>
 										<div class="control-group">
-                                        <label class="control-label">Body Temperature :</label>
+                                        <label class="control-label">BODY TEMPERATURE :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="bodyTemp" value="<?php echo $consultrow['bodyTemperature'];?>" readonly/>
                                         </div>
                                       </div>
 										<div class="control-group">
-                                        <label class="control-label">Respiration Rate :</label>
+                                        <label class="control-label">RESPIRATION RATE :</label>
                                         <div class="controls">
                 <input type="text" class="span12" name="respirationRate" value="<?php echo $consultrow['respirationRate'];?>" readonly/>
                                         </div>
                                       </div>
 										<div class="control-group">
-                                        <label class="control-label">Weight :</label>
+                                        <label class="control-label">WEIGHT :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="weight" value="<?php echo $consultrow['weight'];?>" readonly/>
+                                        </div>
+											<div class="controls"></div>
+                                      </div>
+
+									</div>
+								</div>
+
+
+								<div class="span6">
+                                  <div class="widget-content">
+                                      <div class="control-group">
+                                        <label class="control-label">PATIENT NAME :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
                                         </div>
                                       </div>
 
 
-
-                                        <?php if(!empty($consultrow['insuranceType']) || $consultrow['insuranceType']='null'){ ?>
+                                        <?php if(!empty($consultrow['insuranceType']) || $consultrow['insuranceType']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">Insurance Type :</label>
+                                        <label class="control-label">INSURANCE TYPE :</label>
                                         <div class="controls">
-                                          <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['insuranceType'];?>" readonly/>
+                                          <input type="text" class="span12" name="insuranceType" value="<?php echo $consultrow['insuranceType'];?>" readonly/>
                                         </div>
                                       </div>
                                       <?php } ?>
 
-                                      <?php if(!empty($consultrow['company']) || $consultrow['company']='null'){ ?>
+                                      <?php if(!empty($consultrow['company']) || $consultrow['company']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">Company :</label>
+                                        <label class="control-label">COMPANY :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['company'];?>" readonly/>
                                         </div>
@@ -357,21 +495,21 @@ if(isset($_POST['adWard'])){
                                       <?php } ?>
 
                                       <div class="control-group">
-                                        <label class="control-label">Pulse Rate :</label>
+                                        <label class="control-label">PULSE RATE :</label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="bloodPressure" value="<?php echo $consultrow['pulseRate'];?>" readonly/>
                                         </div>
                                       </div>
 
                                       <div class="control-group">
-                                        <label class="control-label">Blood Pressure :</label>
+                                        <label class="control-label">BLOOD PRESSURE :</label>
                                         <div class="controls">
                 <input type="text" class="span12" name="bloodPressure" value="<?php echo $consultrow['bloodPressure'];?>" readonly/>
                                         </div>
                                       </div>
 
                                       <div class="control-group">
-                                        <label class="control-label">Other Health Vitals :</label>
+                                        <label class="control-label">OTHER HEALTH VITALS :</label>
                                         <div class="controls">
                                             <textarea class="span12" name="healthVitals" readonly><?php echo $consultrow['otherHealth'];?></textarea>
                                         </div>
@@ -381,21 +519,40 @@ if(isset($_POST['adWard'])){
                             </form>
                         </div>
                         <div id="tab2" class="tab-pane">
-                             <form action="#" method="post" class="form-horizontal">
-								 <div class="span12">
+                             <form action="" method="post" class="form-horizontal">
+								 <div class="span6">
 									 <div class="widget-content nopadding">
 									 	<div class="control-group">
-                                        <label class="control-label"> Consulting Room</label>
+                                        <label class="control-label"> CONSULTING ROOM</label>
                                           <div class="controls">
                                             <input type="text" name="consultroom" class="span11" value="<?php echo $roomID?>" readonly>
                                           </div>
                                       	</div>
+										 	<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
+                                      <div class="control-group">
+                                        <label class="control-label">PAYMENT MODE :</label>
+                                        <div class="controls">
+                                          <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
+                                        </div>
+                                      </div>
+                                      <?php } ?>
+									 </div>
+								 </div>
+								 <div class="span6">
+									 <div class="widget-content nopadding">
+									 	<div class="control-group">
+                                        <label class="control-label"> STAFF ID</label>
+                                          <div class="controls">
+                                            <input type="text" name="staffid" class="span11" value="<?php echo $staffID;?>" readonly>
+                                          </div>
+                                      </div>
+									 </div>
 										 <div class="control-group">
-                                        <label class="control-label">Request lab</label>
+                                        <label class="control-label">REQUEST LAB TEST</label>
                                         <div class="controls">
                                           <select multiple name="labName[]">
                                                <?php
-                                            $lablist = select("SELECT * from lablist");
+                                            $lablist = select("SELECT * from lablist WHERE centerID='".$_SESSION['centerID']."'");
                                             foreach($lablist as $labrow){
                                             ?>
                                             <option value="<?php echo $labrow['labID'];?>"><?php echo $labrow['labName'];?></option>
@@ -403,16 +560,6 @@ if(isset($_POST['adWard'])){
                                           </select>
                                         </div>
                                       </div>
-										 <div class="control-group">
-                                        <label class="control-label"> Staff ID</label>
-                                          <div class="controls">
-                                            <input type="text" name="consultroom" class="span11" value="<?php echo $staffID;?>" readonly>
-                                          </div>
-                                      </div>
-									 </div>
-								 </div>
-								 <div class="span12">
-
 									 <div class="form-actions">
                                           <i class="span1"></i>
                                         <button type="submit" name="reqLab" class="btn btn-primary btn-block span10"> Request Lab</button>
@@ -421,16 +568,16 @@ if(isset($_POST['adWard'])){
                             </form>
                         </div>
                         <div id="tab3" class="tab-pane">
-                             <form action="#" method="post" class="form-horizontal">
-								 <div class="span12">
-								 	                                  <div class="widget-content nopadding">
+                             <form action="" method="post" class="form-horizontal">
+								 <div class="span6">
+								 	<div class="widget-content nopadding">
                                        <div class="control-group">
-                                        <label class="control-label">Admit To ward</label>
+                                        <label class="control-label">WARD</label>
                                         <div class="controls">
-                                          <select name="wardID">
+                                          <select name="wardID" onchange="ward_id(this.value);">
                                             <option value=""></option>
                                               <?php
-                                                $wardsql = select("SELECT * From wardlist");
+                                                $wardsql = select("SELECT * From wardlist WHERE centerID='".$_SESSION['centerID']."'");
                                               foreach($wardsql as $wardrow){
                                               ?>
                                             <option value="<?php echo $wardrow['wardID'];?>"> <?php echo $wardrow['wardName'];?> </option>
@@ -438,8 +585,11 @@ if(isset($_POST['adWard'])){
                                           </select>
                                         </div>
                                       </div>
+                                       <div class="control-group" id="bedlist">
+
+										</div>
                                        <div class="control-group">
-                                        <label class="control-label">Admission Details</label>
+                                        <label class="control-label">ADMISSION DETAILS</label>
                                         <div class="controls">
                                           <select name="admitDetails">
                                             <option value=""> </option>
@@ -450,21 +600,27 @@ if(isset($_POST['adWard'])){
                                         </div>
                                       </div>
                                       <div class="control-group">
-                                        <label class="control-label"> Date Admitted</label>
+                                        <label class="control-label"> DATE ADMITTED</label>
                                           <div class="controls">
                                             <input type="date" class="span11" name="admitDate" required/>
                                           </div>
                                       </div>
                                       <div class="control-group">
-                                        <label class="control-label"> Discharge Date</label>
+                                        <label class="control-label"> DISCHARGE DATE</label>
                                           <div class="controls">
-                                            <input type="date" class="span11" name="dischargeDate" required/>
+                                            <input type="date" class="span11" name="dischargeDate"/>
                                           </div>
                                       </div>
                                   </div>
-<!--								 </div>-->
-<!--								 <div class="span12">-->
+								 </div>
+								 <div class="span6">
                                       <table class="table table-bordered" id="dynamic_field2">
+										  <tr>
+										  	<td colspan="3"><textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea></td>
+										  </tr>
+										  <tr>
+										  	<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea></td>
+										  </tr>
                                         <tr>
                                             <td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" required /></td>
                                             <td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" required /></td>
@@ -478,127 +634,170 @@ if(isset($_POST['adWard'])){
 								 </div>
                             </form>
                         </div>
-                        <div id="tab4" class="tab-pane">
-                             <form action="#" method="post" id="add_name" class="form-horizontal">
-								 <div class="span12">
-								 	<table class="table table-bordered">
-                                          <tr>
-                                              <td> Presciption Code</td>
-                                              <td colspan="2">
-									<input type="text" name="prescribeCode" value="<?php echo $prescribeCode;?>" readonly class="span12" /></td>
-                                          </tr>
-                                          <tr>
-                                            <td> Pharmacy</td>
-                                            <td colspan="2">
-                                              <select name="pharmacyID" class="span12" required>
 
-                                                  <?php
-                                                    $pharmsql = select("SELECT * from pharmacy WHERE centerID='".$_SESSION['centerID']."'");
-                                                    if(count($pharmsql)>=1){
-                                                        foreach($pharmsql as $pharmow){
-                                                  ?>
-                                        <option value="<?php echo $pharmow['pharmacyID'];?>" ><?php echo $pharmow['pharmacyName'];?></option>
-                                                  <?php }}else{?>
-                                                  <option value=""> No Pharmacy Available </option>
-                                                  <?php }?>
-                                                </select>
-                                              </td>
-                                          </tr>
-                                          <tr>
-                                            <td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>
-                                          </tr>
-                                          <tr>
-                                            <td colspan="3"><textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea>  </td>
-                                          </tr>
-                                    </table>
-								 </div>
-								 <div class="span12">
-                                      <table class="table table-bordered" id="dynamic_field">
-										   	<?php if(!empty($consultrow['mode']) || $consultrow['mode']='null'){ ?>
-                                      <div class="control-group" style="display:none;">
-                                        <label class="control-label">Pay Mode :</label>
-                                        <div class="controls">
-                                          <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
-                                        </div>
-                                      </div>
-                                      <?php } ?>
-                                        <tr>
-                                            <td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" required /></td>
-                                            <td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" required /></td>
-                                            <td><button type="button" name="add" id="add" class="btn btn-primary">Add Medicine</button></td>
-                                        </tr>
-                                    </table>
-                                      <div class="form-actions">
-                                          <i class="span1"></i>
-                                        <button type="submit" name="presMeds" class="btn btn-primary btn-block span10"> Save Prescription</button>
-                                      </div>
-								 </div>
-                            </form>
+
+
+<div id="tab4" class="tab-pane">
+
+	 <form action="" method="POST" id="add_name" class="form-horizontal">
+		 <div class="span6">
+			<table class="table table-bordered" style="margin-top:-80px;">
+				  <tr>
+					  <td> Presciption Code</td>
+					  <td colspan="2">
+			<input type="text" name="prescribeCode" value="<?php echo $prescribeCode;?>" readonly class="span12" /></td>
+				  </tr>
+				  <tr>
+					<td> Pharmacy</td>
+					<td colspan="2">
+					  <select name="pharmacyID" class="span12" required>
+
+						  <?php
+							$pharmsql = select("SELECT * from pharmacy WHERE centerID='".$_SESSION['centerID']."'");
+							if(count($pharmsql)>=1){
+								foreach($pharmsql as $pharmow){
+						  ?>
+				<option value="<?php echo $pharmow['pharmacyID'];?>" ><?php echo $pharmow['pharmacyName'];?></option>
+						  <?php }}else{ ?>
+						  <option value=""> No Pharmacy Available </option>
+						  <?php }?>
+						</select>
+					  </td>
+				  </tr>
+				  <tr>
+					<td colspan="3">Patient's Symptoms<textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea>  </td>
+				  </tr>
+				  <tr>
+					  <td>
+<!--					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>-->
+					   <table border="0" class="" id="diagnosis" style="margin-top:20px;">
+                                <tr>
+
+                                    <td>
+										<label>Diagnosis</label>
+                                        <input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control">
+                                    </td>
+
+                                    <td><br>
+                                        <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success">+</button>
+                                    </td>
+                                </tr>
+                            </table>
+					  </td>
+					  <br><br>
+
+					  <td>
+<!--					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>-->
+					   <table border="0" class="" id="investigation" style="margin-top:20px;">
+                                <tr>
+
+                                    <td>
+										<label>Investigation</label>
+                                        <input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control">
+                                    </td>
+
+                                    <td><br>
+                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success">+</button>
+                                    </td>
+                                </tr>
+                            </table>
+					  </td>
+					  <br><br>
+
+				  </tr>
+<!--
+				  <tr>
+					<td colspan="3"><textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea>  </td>
+				  </tr>
+-->
+			</table>
+		 </div>
+
+         <div class="span6">
+			  <table class="table table-bordered" id="dynamic_field">
+				<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
+				  <div class="control-group" style="display:none;">
+					<label class="control-label">Pay Mode :</label>
+					<div class="controls">
+					  <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode']; ?>" readonly/>
+					</div>
+				  </div>
+				  <?php } ?>
+					<thead>
+						<th style="width:40%;"> Medicine Name</th>
+						<th> No of intakes / Pieces</th>
+						<th> Intakes Per Day</th>
+						<th> Number Of Days</th>
+					</thead>
+				  <tbody>
+					<?php
+					$num = 6;
+					if(!empty($num)){
+					  for($i=0; $i<$num;$i++){
+					?>
+					<tr>
+						<td style="width:40%;">
+							<?php
+							if($consultrow['mode'] == 'Insurance'){
+                                $insuranceType = $consultrow['insuranceType'];
+							?>
+							<select name="medName[]" class="span11">
+								<option></option>
+							<?php
+
+						  	$centerNHISLevel = $centerName['centerNhisLevel'];
+//						  	$level = explode(" ",$centerNHISLevel);
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='Private'");
+								if($meds){
+									foreach($meds as $medrow){
+							?>
+							<option value="<?php echo $medrow['medicine_id']; ?>"> <?php echo $medrow['medicine_name']; ?></option>
+							<?php }} ?>
+							</select>
+							<?php }else{
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
+//								$medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='LOCAL'");
+							?>
+									<select name="medName[]" class="span11">
+										<option></option>
+										<?php
+										if($medsx){
+									foreach($medsx as $medrowx){
+										?>
+							<option value="<?php echo $medrowx['medicine_id']; ?>"> <?php echo $medrowx['medicine_name']; ?></option>
+										<?php }}?>
+									</select>
+							<?php }?>
+						</td>
+						<td><input type="number" min="1" name="pieces[]" placeholder="e.g. 2" class="span11" /></td>
+						<td><input type="number" min="1" name="aday[]" placeholder="e.g. 3" class="span11" /></td>
+						<td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" /></td>
+					</tr>
+						  <?php }} ?>
+				  </tbody>
+                </table>
+                  <div class="form-actions">
+                      <i class="span7"></i>
+                    <button onclick="return confirm('Confirm Action.');" type="submit" name="presMeds" class="btn btn-primary btn-block span5"> Save Prescription</button>
+                  </div>
+             </div>
+        </form>
+    </div>
+
+
+
+
+						<div id="tab5" class="tab-pane">
+                              <form action="" method="post">
+								  <input type="text" placeholder="ICD-10 SEARCH" class="class-form span12 text-center" style="height:30px;" name="search_icd" onkeyup="icd(this.value);">
+							  </form>
+							 <div class="widget-box" style="height:300px; overflow-y: scroll;">
+								<span id="icd_load"></span>
+                    		</div>
                         </div>
                     </div>
                 </div>
           </div>
-<!--
-          <div class="span6">
-              <div class="widget-box widget-chat" style="height: auto;">
-                    <div class="widget-title">
-                        <span class="icon">
-                            <i class="icon-comment"></i>
-                        </span>
-                        <h5>Patient Medical Records</h5>
-                    </div>
-                    <div class="widget-content nopadding" style="height: auto;">
-                        <div class="chat-users panel-right2">
-                          <div class="panel-title">
-                            <h5>BY DATE</h5>
-                          </div>
-                          <div class="panel-content nopadding">
-                            <ul class="contact-list">
-                                <li id="" class="online newbtn btn-primary">
-                                  <a href=""><i class="fa fa-calendar"></i><span> Medical Records</span></a>
-                                </li>
-                              <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 15-05-2018</span></a></li>
-                              <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 18-05-2018</span></a></li>
-                              <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 23-06-2018</span></a></li>
-                              <li id="" class=""><a href=""><i class="fa fa-calendar fa-lg"></i>  <span> 12-07-2018</span></a></li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div class="chat-content panel-left2" style="height: auto;">
-                          <div class="chat-messages" id="chat-messages" style="height: auto;">
-                            <div id="chat-messages-inner">
-                                <p id="'+id+'" class="user-'+idname+'">
-                                    <span class="msg-block"><i class="fa fa-user"></i>
-                                        <strong>OPD</strong> <span class="time">9:15 am</span>
-                                        <span class="msg"> Vitals Checked, BP, TP, RR, PR</span>
-                                    </span>
-                                </p>
-                                <p id="'+id+'" class="user-'+idname+'">
-                                    <span class="msg-block"><i class="fa fa-user"></i>
-                                        <strong>CONSULTATION</strong> <span class="time">9:15 am</span>
-                                        <span class="msg"> What ever Happened in the consulting room</span>
-                                    </span>
-                                </p>
-                                <p id="'+id+'" class="user-'+idname+'">
-                                    <span class="msg-block"><i class="icon icon-plus-sign"></i>
-                                        <strong>PHARMACY</strong> <span class="time">9:15 am</span>
-                                        <span class="msg"> What ever Happened at the pharmacy</span>
-                                    </span>
-                                </p>
-                                <p id="'+id+'" class="user-'+idname+'">
-                                    <span class="msg-block"><i class="icon icon-plus-sign"></i>
-                                        <strong>PHARMACY</strong> <span class="time">9:15 am</span>
-                                        <span class="msg"> What ever Happened at the pharmacy</span>
-                                    </span>
-                                </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-				</div>
-          </div>
--->
-
       </div>
   </div>
 </div>
