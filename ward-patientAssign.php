@@ -73,6 +73,7 @@
 
 <div id="sidebar">
     <ul>
+    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
         <?php
         if($_SESSION['accessLevel']=='WARD'){ ?>
     <li> <a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a> </li>

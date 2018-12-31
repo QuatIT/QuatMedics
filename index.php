@@ -147,34 +147,36 @@ clearstatcache();
     </head>
     <body>
         <div id="loginbox">
-            <form id="loginform" class="form-vertical" action="" method="post">
+            <form id="loginform" class="form-vertical" method="POST">
 				 <div class="control-group normal_text" style="background-color:#0c3f84;">
                      <h3>Q<i class="fa fa-stethoscope"></i>AT MEDICS</h3>
                 </div>
                 <?php
                       if($success){
                       ?>
-                      <div class="alert alert-success">
-                  <strong>Success!</strong> <?php echo $success; ?>
+                      <div class="alert alert-success text-center">
+                  <strong class="text-center">Success! <?php echo $success; ?></strong>
                 </div>
                       <?php } if($error){
                           ?>
-                      <div class="alert alert-danger">
-                  <strong>Error!</strong> <?php echo $error; ?>
+                      <div class="alert alert-danger text-center">
+                  <strong class="text-center">Error! <?php echo $error; ?></strong>
                 </div>
                       <?php
                       } ?>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                            <span class="add-on"><i class="fa fa-user-md"></i></span><input type="text" name="username" placeholder="Username" />
+<!--                            <span class="add-on"><i class="fa fa-user-md"></i></span>-->
+                            <input type="text" name="username" placeholder="USER NAME" class="text-center" required/>
                         </div>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                            <span class="add-on"><i class="icon-lock"></i></span><input type="password" name="password" placeholder="Password" />
+<!--                            <span class="add-on"><i class="icon-lock"></i></span>-->
+                            <input type="password" name="password" placeholder="PASSWORD" class="text-center" required/>
                         </div>
                     </div>
                 </div>
@@ -188,7 +190,8 @@ clearstatcache();
 
                     <div class="controls">
                         <div class="main_input_box">
-                            <span class="add-on"><i class="icon-envelope"></i></span><input type="text" placeholder="E-mail address" />
+<!--                            <span class="add-on"><i class="icon-envelope"></i></span>-->
+                            <input type="text" placeholder="E-mail address" />
                         </div>
                     </div>
 

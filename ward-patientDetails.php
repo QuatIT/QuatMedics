@@ -440,15 +440,11 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                               </tr>
                              <?php }?>
 
-                      </div> </tbody>
+                       </tbody>
                         </table>
+                        </div>
                     </div>
-
-
-
-
-
-
+                </div>
             </div>
         </div>
       </div>

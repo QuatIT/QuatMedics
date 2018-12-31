@@ -129,7 +129,7 @@ $bedNumber = Ward::get_bed_id()+1;
 
 <div id="sidebar">
     <ul>
-<!--    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
+    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="active"><a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a></li>
     <li> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
