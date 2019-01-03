@@ -1,6 +1,16 @@
 <?php
 session_start();
 include 'assets/core/connection.php';
+if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
+    echo "<script>window.location.href='index'</script>";
+}else{
+    $staff = select("SELECT * from centeruser WHERE username='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
+    foreach($staff as $staffrow){
+        $staffID = $staffrow['staffID'];
+        $centerID = $staffrow['centerID'];
+    }
+}
+
 
 $id = $_GET['id'];
 $dateToday = trim(date('Y-m-d'));
@@ -10,9 +20,8 @@ $consultdet = select("SELECT * FROM paymentfixed WHERE id='$id'");
 foreach($consultdet as $consultRow){
     $centerID = $consultRow['centerID'];
 	$conPrice = $consultRow['servicePrice'];
-//	$labID = $consultRow['labID'];
 	$patientID = $consultRow['patientID'];
-	$dateInsert = $consultRow['dateInsert'];
+	$dateInsert = $consultRow['dateinsert'];
 }
 
 //select Consultation credit account...
@@ -47,7 +56,7 @@ $updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerI
 
 //insert transaction..
 $activity = 'PAYMENT FOR CONSULTATION';
-$transaction = insert("INSERT INTO accounttransaction(creditAcc,debitAcc,Amount,patientID,staffID,activity,dateInsert) VALUES('$ConCrName','$cnterDBName','$conPrice','$patientID','$staffID','$activity','$dateInsert')");
+$transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,debitAcc,Amount,patientID,staffID,activity,dateInsert) VALUES('$centerID','$ConCrName','$cnterDBName','$conPrice','$patientID','$staffID','$activity','$dateInsert')");
 
 //update consult paymentfixed row..
 $status = trim("Paid");

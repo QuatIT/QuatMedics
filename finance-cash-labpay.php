@@ -1,6 +1,16 @@
 <?php
 session_start();
 include 'assets/core/connection.php';
+if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
+    echo "<script>window.location.href='index'</script>";
+}else{
+    $staff = select("SELECT * from centeruser WHERE username='".$_SESSION['username']."' AND password='".$_SESSION['password']."'");
+    foreach($staff as $staffrow){
+        $staffID = $staffrow['staffID'];
+        $centerID = $staffrow['centerID'];
+    }
+}
+
 
 $id = $_GET['id'];
 $dateToday = trim(date('Y-m-d'));
@@ -10,7 +20,7 @@ foreach($getdetails as $detailRow){
 	$labprice = $detailRow['labprice'];
 	$labID = $detailRow['labID'];
 	$patientID = $detailRow['patientID'];
-	$staffID = $detailRow['staffID'];
+//	$staffID = $detailRow['staffID'];
 }
 $status = trim("Paid");
 
@@ -54,7 +64,7 @@ $updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerI
 
 //insert transaction..
 $activity = 'PAYMENT FOR '.$labName;
-$transaction = insert("INSERT INTO accounttransaction(creditAcc,debitAcc,Amount,patientID,staffID,activity,dateInsert) VALUES('$labCrName','$cnterDBName','$labprice','$patientID','$staffID','$activity','$dateToday')");
+$transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,debitAcc,Amount,patientID,staffID,activity,dateInsert) VALUES('$centerID','$labCrName','$cnterDBName','$labprice','$patientID','$staffID','$activity','$dateToday')");
 
 //update lab results row..
 $update = update("UPDATE labresults SET paystatus='$status' WHERE id='$id'");

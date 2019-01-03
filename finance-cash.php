@@ -73,8 +73,8 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                             <tr>
                               <th>PID</th>
                               <th> NAME</th>
-                              <th> OPD</th>
-                              <th> Action</th>
+                              <th> CONSULTATION</th>
+                              <th> ACTION</th>
                             </tr>
                           </thead>
                           <tbody>

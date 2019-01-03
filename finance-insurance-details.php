@@ -240,34 +240,6 @@ include 'layout/head.php';
 
 				  </tbody>
 			  </table>
-<!--
-                    <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                         <h5>LAB and Other Prices</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>PID</th>
-                              <th>LAB DETAILS</th>
-                              <th>WARD DETAILS</th>
-                              <th>ACTION</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-							  <tr>
-							  	<td> Patient ID</td>
-							  	<td> Malaria Test</td>
-							  	<td> </td>
-							  	<td> <a href="#"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
-							  </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
--->
                 </div>
 		  </div>
       </div>

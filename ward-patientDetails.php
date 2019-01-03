@@ -175,7 +175,10 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                   <li><a data-toggle="tab" href="#tab2">Patient Treatment</a></li>
                  <li><a data-toggle="tab" href="#tab5"> Nurse's Checklist</a></li>
                     <!-- <li><a data-toggle="tab" href="#tab3">Doctor's Remarks</a></li> -->
-                    <li><a data-toggle="tab" href="#tab4">Treatment History</a></li><?php #} ?>
+                    <li><a data-toggle="tab" href="#tab4">Treatment History</a></li>
+                    <li><a data-toggle="tab" href="#tab5">Patient Discharge</a></li>
+
+                    <?php #} ?>
                 </ul>
             </div>
                  <?php } ?>
