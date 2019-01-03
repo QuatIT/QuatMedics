@@ -14,14 +14,14 @@ error_reporting(0);
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/series-label.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/highcharts-3d.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
+<link rel="stylesheet" href="assets/css/font-awesome.css" />
 
 
 
@@ -318,6 +318,11 @@ $dataPoints = array(
         <li><a href="finance-insurance"><i class="icon icon-file"></i><span>INSURANCE</span></a></li>
         <?php } ?>
 
+        <?php if($_SESSION['accessLevel'] == 'WARD'){ ?>
+        <li><a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a></li>
+        <li> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
+        <?php } ?>
+
     </ul>
 </div>
 
@@ -350,7 +355,7 @@ $dataPoints = array(
 <?php }
       if($_SESSION['accessLevel']=='CONSULTATION'){
 //        $room = Consultation::find_consultingroom();
-        $room = select("SELECT * FROM consultingroom WHERE status='".FREE."' || status='' ");
+        $room = select("SELECT * FROM consultingroom WHERE centerID='$centerID' AND status='".FREE."' || status='' ");
 
       ?>
 
@@ -1020,7 +1025,7 @@ doChunk();
 <!--</div>-->
 </div>
 <div class="row-fluid">
-  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>
