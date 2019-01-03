@@ -32,6 +32,8 @@ include 'layout/head.php';
 		$id = $_GET['id'];
 	}
 
+$_SESSION['current_page']=$_SERVER['REQUEST_URI'];
+
 	//get patient details..
 	$pdet = select("SELECT * FROM patient where patientID='$patid'");
 	foreach($pdet as $prow){}
@@ -79,26 +81,20 @@ include 'layout/head.php';
   <input type="text" placeholder="Search here..." disabled/>
   <button type="submit" class="tip-left" title="Search" disabled><i class="icon-search icon-white"></i></button>
 </div>
-
 <!--close-top-Header-menu-->
-
 <div id="sidebar">
     <ul>
-    <li><a href="finance-cash"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
-    <li>
-		<a href="finance-insurance"><i class="icon icon-calendar"></i><span>INSURANCE</span></a>
-	</li>
+        <li><a href="finance-cash"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+        <li class="active"> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
+        <li><a href="finance-insurance"><i class="icon icon-calendar"></i><span>INSURANCE</span></a></li>
     </ul>
 </div>
-
-
 
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-briefcase"></i> CASH PAYMENT</a>
+        <a title="CASH PAYMENT" href="finance-cash" class="tip-bottom"><i class="icon-briefcase"></i> CASH PAYMENT</a>
         <a title="CASH PAYMENT DETAILS" class="tip-bottom"><i class="icon-briefcase"></i> CASH PAYMENT DETAILS</a>
     </div>
   </div>
@@ -106,7 +102,7 @@ include 'layout/head.php';
       <h3 class="quick-actions">CASH PAYMENT DETAILS</h3>
 
       <div class="row-fluid">
-		  <div class="span6">
+		  <div class="span5">
 				<form action="#" method="post" class="form-horizontal">
 					  <div class="widget-title">
 						  <span class="icon"> <i class="icon-align-justify"></i> </span>
@@ -131,28 +127,35 @@ include 'layout/head.php';
 			<input type="text" style="font-weight:bolder;" class="span11" name="overall" value="<?php echo $overallTotal;?>" readonly/>
 							</div>
 						  </div>
+<!--
 						  <div class="form-actions">
 							  <i class="span1"></i>
 							<button type="submit" name="makeAllPaymeny" class="btn btn-primary btn-block span10"> Make Payment</button>
 						  </div>
+-->
 					  </div>
 				</form>
 		</div>
-		  <div class="span6">
-			  <table>
 
-			  </table>
+		  <div class="span7">
 			   <div class="widget-title">
 				<span class="icon"> <i class="icon-align-justify"></i> </span>
-				<h5>OVERALL CHARGES</h5>
+				<h5>SERVICES AND CHARGES</h5>
 			  </div>
 
+              <!-- ============== TABLE FOR CONSULTATION AND OPD CHARGES ==================      -->
 			  <table class="table table-bordered">
+                  <thead>
+                    <th> SERVICE</th>
+                    <th> PRICE</th>
+                    <th> STATUS</th>
+                    <th> ACTION</th>
+                  </thead>
 				  <tbody>
 				  		<tr>
 						<td> CONSULTATION CHARGE</td>
-						<td colspan="2"><?php echo $conRow['servicePrice'];?></td>
-						<td>
+						<td><?php echo $conRow['servicePrice'];?></td>
+						<td style="text-align:center;">
 							<?php// echo $conRow['status'];?>
 							<?php if($conRow['status'] == 'Not Paid'){?>
 							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $conRow['status'];?></span>
@@ -162,26 +165,39 @@ include 'layout/head.php';
 							<span class="label label-success text-center"><?php  echo $conRow['status'];?></span>
 						   <?php }?>
 						</td>
+                        <td style="text-align:center;">
+                            <?php if($conRow['status'] == 'Not Paid'){?>
+                            <a onclick="return confirm('Confirm Payment');" href="finance-cash-consultpay?id=<?php echo $conRow['id'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+                            <?php }?>
+                        </td>
 					  </tr>
 				  </tbody>
+              </table>
+              <!-- ============== END OF TABLE FOR CONSULTATION AND OPD CHARGES ==================      -->
 
-				  <tr>
+              <hr/>
+
+              <!-- ============== TABLE FOR LAB TESTS AND PRICES ==================      -->
+              <?php
+              if($fetchlab){
+              ?>
+              <table class="table table-bordered">
+				  <thead>
 				  		<th> LAB TEST </th>
 				  		<th colspan="2"> PRICE</th>
-				  		<th> STATUS</th>
-				  </tr>
+				  		<th colspan="2"> STATUS</th>
+				  </thead>
 				  <tbody>
 					  <?php
-                      if($fetchlab){
+
 					  foreach($fetchlab as $labRow){
 					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
 						  foreach($getlabName as $labNmRow){}
-
 					  ?>
 				  		<tr>
 						<td> <?php echo $labNmRow['labName'];?></td>
 						<td colspan="2"><?php echo $labRow['labprice'];?></td>
-						<td>
+						<td style="text-align:center;">
 							<?php if($labRow['paystatus'] == 'Not Paid'){?>
 							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $labRow['paystatus'];?></span>
 						   <?php }?>
@@ -191,16 +207,24 @@ include 'layout/head.php';
 						   <?php }?>
 						</td>
 					  </tr>
-					  <?php }}else{?>
-                            <tr><td colspan="3"> No Lab Test Conducted.</td></tr>
-                      <?php }?>
+					  <?php }?>
 				  </tbody>
-				  <tr>
+              </table>
+              <?php }?>
+
+              <!-- ============== END OF TABLE FOR LAB TESTS AND PRICES ==================      -->
+
+              <hr/>
+
+              <!--  TABLE FOR MEDICATIONS AND PRESCRIPTIONS  -->
+              <table class="table table-bordered">
+				  <thead>
 				  		<th> MEDICATION </th>
 				  		<th> DOSAGE</th>
 				  		<th> PRICE</th>
-				  		<th> Status</th>
-				  </tr>
+				  		<th> STATUS</th>
+				  		<th> ACTION</th>
+				  </thead>
 				  <tbody>
 
 					  <?php
@@ -225,10 +249,19 @@ include 'layout/head.php';
 						   <?php }?>
 							<?php //echo $medrow['paystatus']?>
 						</td>
+                          <td>
+                            <?php if($medrow['paystatus'] == 'Not Paid'){?>
+                            <a onclick="return confirm('Confirm Payment');" href="finance-cash-medpay?id=<?php echo $medrow['prescribeid'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+                           <?php }?>
+
+                            <?php if($medrow['paystatus'] == 'Paid'){?>
+                            <span class="label label-success text-center"><?php  echo $medrow['paystatus'];?></span>
+                           <?php }?>
+                        </td>
 					  </tr>
 					  <?php }}}else{ ?>
                          <tr>
-                            <td colspan="4"> No Medications Prescribed.</td>
+                            <td colspan="5" style="text-align:center;" > NO MEDICATION PRESCRIBED.</td>
                         </tr>
                       <?php }
 					  $total = 0;
@@ -239,40 +272,14 @@ include 'layout/head.php';
 					  ?>
 					  <tr>
 					  	<td colspan="2" style="text-align:right"> <b>Total</b></td>
-					  	<td colspan="2"> <b><?php echo "Ghc ".$total;?></b></td>
+					  	<td colspan="3"> <b><?php echo "Ghc ".$total;?></b></td>
 
 					  </tr>
 
 				  </tbody>
 			  </table>
-<!--
-                    <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                         <h5>LAB and Other Prices</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>PID</th>
-                              <th>LAB DETAILS</th>
-                              <th>WARD DETAILS</th>
-                              <th>ACTION</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-							  <tr>
-							  	<td> Patient ID</td>
-							  	<td> Malaria Test</td>
-							  	<td> </td>
-							  	<td> <a href="#"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
-							  </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
--->
+            <!-- ================== END OF TABLE FOR MEDICATIONS AND PRESCRIPTIONS ===================== -->
+
                 </div>
 		  </div>
       </div>

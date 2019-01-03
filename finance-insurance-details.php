@@ -98,7 +98,7 @@ include 'layout/head.php';
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="INSURANCE PAYMENT" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT</a>
+        <a title="INSURANCE PAYMENT" href="finance-insurance" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT</a>
         <a title="INSURANCE PAYMENT DETAILS" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT DETAILS</a>
     </div>
   </div>

@@ -14,7 +14,7 @@ foreach($getdetails as $detailRow){
 }
 $status = trim("Paid");
 
-//get Lab Name..
+//get Lab Name for transaction table..
 $getlabName = select("SELECT labName FROM lablist WHERE labID='$labID'");
 if($getlabName){
 	foreach($getlabName as $labNameRow){
@@ -42,12 +42,16 @@ if($getCenterDBAcc){
 
 //new bedit account..
 $newDebbal =  ($cnterDBAcc-$labprice);
+
 //new credit account..
 $newCrBal = ($labCrAcc+$labprice);
+
 //update CREDIT account...
 $updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountName='".$labCrName."' AND accountType='CREDIT'");
+
 //update DEBIT account...
 $updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerID='$centerID' AND accountName='".$cnterDBName."' AND accountType='DEBIT'");
+
 //insert transaction..
 $activity = 'PAYMENT FOR '.$labName;
 $transaction = insert("INSERT INTO accounttransaction(creditAcc,debitAcc,Amount,patientID,staffID,activity,dateInsert) VALUES('$labCrName','$cnterDBName','$labprice','$patientID','$staffID','$activity','$dateToday')");
