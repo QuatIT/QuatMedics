@@ -132,7 +132,6 @@ $get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER
 
 //NURSE CHECKLIST
 $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
-<<<<<<< HEAD
 
 //GET ADMISSION STAFF DETAILS
     $staffDet = select("SELECT * FROM staff WHERE staffID='".$pat['staffID']."'");
@@ -141,8 +140,7 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
             $staffName = $staffRow['lastName'].' '.$staffRow['firstName'].' '.$staffRow['otherNames'];
         }
     }
-=======
->>>>>>> QuatMedics/master
+
 ?>
 
 <div id="search">
@@ -182,103 +180,49 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                     <li><a data-toggle="tab" href="#tab2">PATIENT TREATMENT</a></li>
                     <li><a data-toggle="tab" href="#tab5"> NURSE'S CHECKLIST</a></li>
                     <!-- <li><a data-toggle="tab" href="#tab3">Doctor's Remarks</a></li> -->
-<<<<<<< HEAD
                     <li><a data-toggle="tab" href="#tab4">TREATEMENT HISTORY</a></li>
                     <li><a data-toggle="tab" href="#tab7">PATIENT DISCHARGE</a></li>
-=======
-                    <li><a data-toggle="tab" href="#tab4">Treatment History</a></li>
-                    <li><a data-toggle="tab" href="#tab7">Patient Discharge</a></li>
-
->>>>>>> QuatMedics/master
-                    <?php #} ?>
+                    <?php } ?>
                 </ul>
             </div>
-                 <?php } ?>
+
 <div class="widget-content tab-content">
-<<<<<<< HEAD
 
 <!-- =========================  START OF TAB 1 ================================   -->
-<div id="tab1" class="tab-pane active">
+ <div id="tab1" class="tab-pane active">
     <form action="#" method="post" class="form-horizontal">
     <div class="span6">
-          <div class="widget-contentS">
+          <div class="widget-title">
+              <span class="icon"> <i class="icon-align-justify"></i> </span>
+            <h5>Admission Details</h5>
+          </div>
+          <div class="widget-content nopadding">
                <div class="control-group">
-                <label class="control-label">PATIENT : </label>
+                <label class="control-label">Patient : </label>
                 <div class="controls">
-                    <input type="text" value="<?php echo $patDetails['lastName'].' '.$patDetails['firstName'].' '.$patDetails['otherName']; ?>" name="patientName" class="span11" readonly>
+                    <input type="text" value="<?php echo $patDetails['firstName'].' '.$patDetails['otherName'].' '.$patDetails['lastName']; ?>" name="patientName" class="span11" readonly>
                 </div>
               </div>
               <div class="control-group">
-                <label class="control-label">ADMITTED ON :</label>
+                <label class="control-label">Admission Date :</label>
                 <div class="controls">
-<input name="admitDate" value="<?php echo $pat['admitDate']; ?>" class="span11" type="text" readonly/>
-=======
-                 <div id="tab1" class="tab-pane active">
-                    <form action="#" method="post" class="form-horizontal">
-                    <div class="span6">
-                          <div class="widget-title">
-                              <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Admission Details</h5>
-                          </div>
-                          <div class="widget-content nopadding">
-                               <div class="control-group">
-                                <label class="control-label">Patient : </label>
-                                <div class="controls">
-                                    <input type="text" value="<?php echo $patDetails['firstName'].' '.$patDetails['otherName'].' '.$patDetails['lastName']; ?>" name="patientName" class="span11" readonly>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Admission Date :</label>
-                                <div class="controls">
-                                    <input name="admitDate" value="<?php echo $pat['admitDate']; ?>" class="span11" type="text" readonly/>
-                                </div>
-                                  <div class="controls"></div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-title">
-                          </div>
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Discharge Date :</label>
-                                <div class="controls">
-                                  <input type="text" value="<?php echo $pat['dischargeDate']; ?>"  class="span11" name="dischargeDate" readonly />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Assign Nurse : </label>
-                                <div class="controls">
-                                  <input type="text" value="<?php echo $pat['staffID']; ?>"  name="AssignedNurse" class="span11" readonly>
-                                    <br/>
-                                    <br/>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Description :</label>
-                                <div class="controls">
-                                    <textarea class="span11" name="description" readonly><?php echo $pat['admitDetails']; ?></textarea>
-                                </div>
-                                </div>
-                                </div>
-                    </form>
->>>>>>> QuatMedics/master
+                    <input name="admitDate" value="<?php echo $pat['admitDate']; ?>" class="span11" type="text" readonly/>
                 </div>
                   <div class="controls"></div>
               </div>
           </div>
       </div>
-        <div class="span6">
-            <div class="widget-content nopadding">
-            <!--
-            <div class="control-group">
-            <label class="control-label">Discharge Date :</label>
-            <div class="controls">
-            <input type="text" value="<?php // echo $pat['dischargeDate']; ?>"  class="span11" name="dischargeDate" readonly />
-            </div>
-            </div>
-            -->
-                <div class="control-group">
+    <div class="span6">
+          <div class="widget-title">
+          </div>
+          <div class="widget-content nopadding">
+              <div class="control-group">
+                <label class="control-label">Discharge Date :</label>
+                <div class="controls">
+                  <input type="text" value="<?php echo $pat['dischargeDate']; ?>"  class="span11" name="dischargeDate" readonly />
+                </div>
+              </div>
+               <div class="control-group">
                     <label class="control-label">ADMITTED BY: </label>
                     <div class="controls">
                     <input type="text" value="<?php echo $pat['staffID']; ?>" name="AssignedNurse" class="span11" readonly>
