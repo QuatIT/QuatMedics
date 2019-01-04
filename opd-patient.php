@@ -127,6 +127,11 @@
 		foreach($conPrice as $conRow){}
     }else{
         $conPrice = select("SELECT * FROM prices WHERE serviceName='CONSULTATION' AND centerID='".$_SESSION['centerID']."' AND modePayment='$insuranceType'");
+
+//generate claim number and insert into consultation tables
+$claim_number = sprintf('%10s',count(select("select * from consultation where claimNumber='NULL' || cliamNumber='' ")) + 1);
+$insert_cliamNumber = update("update consultation set claimNumber='$claim_number' where patientID='$patientID' && consultID='$consultID' ");
+
 		foreach($conPrice as $conRow){}
         $mode = $insuranceType;
     }

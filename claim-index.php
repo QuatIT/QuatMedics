@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+
     <style>
         table thead tr td{font-weight: bolder;}
     </style>
@@ -31,16 +31,16 @@
 	$patientID = $_GET['pid'];
 
     $count = 1;
-    
+
     //fetch nhis clients from consultation
     if(isset($_POST['btnfetch'])){
         $datefrom = $_POST['datefrom'];
         $dateto = $_POST['dateto'];
-        
-        $nhis_sql = select("select * from consultation where insuranceType='NHIS' && dateInsert between '$datefrom' AND '$dateto' ");
-        
+
+        $nhis_sql = select("select * from consultation where centerID='".$_SESSION['centerID']."' && insuranceType='NHIS' && dateInsert between '$datefrom' AND '$dateto' ");
+
     }
-    
+
 	?>
 
 <div id="search">
@@ -97,7 +97,7 @@
 
                             <label>TO</label>
                                 <input class="form-control span11" type="date" name="dateto">
-                            
+
                             </div>
                         <div class="span4">
 
@@ -127,8 +127,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
-                                         foreach($nhis_sql as $nhis_row){ 
+                                <?php
+                                         foreach($nhis_sql as $nhis_row){
                                              $mem = select("select * from patient where patientID='".$nhis_row['patientID']."' ");
                                              foreach($mem as $mem_row){}
                                 ?>

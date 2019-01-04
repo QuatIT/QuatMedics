@@ -118,6 +118,7 @@
                         <tr>
                           <th>Patient Number</th>
                           <th>Patient Name</th>
+                          <th>Patient Age</th>
                           <th>Nurse Name</th>
                           <th>Status</th>
                           <th>Action</th>
