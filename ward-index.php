@@ -129,7 +129,7 @@ $bedNumber = Ward::get_bed_id()+1;
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li><a href="medics-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li class="active"><a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a></li>
     <li> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
     </ul>
@@ -141,7 +141,8 @@ $bedNumber = Ward::get_bed_id()+1;
   <div id="content-header">
     <div id="breadcrumb">
         <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a href="ward-index" title="" class="tip-bottom"><i class="icon-plus"></i> WARD</a>
+        <a href="ward-index" title="" class="tip-bottom"><i class="icon-time"></i> WARD</a>
+        <a title="" class="tip-bottom"><i class="icon-plus"></i> BED MANAGEMENT</a>
     </div>
   </div>
   <div class="container">
@@ -238,7 +239,7 @@ $bedNumber = Ward::get_bed_id()+1;
 </div>
 <div class="row-fluid ">
  	<div id="footer" class="span12">
-	  2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
+	  2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
 	</div>
 </div>
 <script src="js/excanvas.min.js"></script>

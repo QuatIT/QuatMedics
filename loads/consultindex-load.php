@@ -10,10 +10,18 @@ foreach($load_consultation as $consultRow){
     $staffID = $consultRow['staffID'];
     $status = $consultRow['status'];
 
-    $fetchpatient = select("SELECT firstName,lastName,otherName from patient WHERE patientID='$patientID'");
+    $fetchpatient = select("SELECT firstName,lastName,otherName,dob from patient WHERE patientID='$patientID'");
     $fetchstaff = select("SELECT firstName,lastName,otherName from staff WHERE staffID='$staffID'");
 
     foreach($fetchpatient as $ptndetails){
+
+
+      	//calculate age
+      	$dateOfBirth = $patient_row['dob'];
+      	$today = date("Y-m-d");
+      	$age = date_diff(date_create($dateOfBirth), date_create($today));
+
+
         $name = $ptndetails['firstName']." ".$ptndetails['otherName']." ".$ptndetails['lastName'];
     }
 
@@ -26,6 +34,7 @@ foreach($load_consultation as $consultRow){
 <tr>
   <td><?php echo $patientID;?></td>
   <td><?php echo $name;?></td>
+  <td><?php echo $age->format('%y');?></td>
   <td><?php echo $staffname;?></td>
   <td>
       <?php if($status == "sent_to_consulting"){?>

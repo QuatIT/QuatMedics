@@ -127,6 +127,11 @@
 		foreach($conPrice as $conRow){}
     }else{
         $conPrice = select("SELECT * FROM prices WHERE serviceName='CONSULTATION' AND centerID='".$_SESSION['centerID']."' AND modePayment='$insuranceType'");
+
+//generate claim number and insert into consultation tables
+$claim_number = sprintf('%10s',count(select("select * from consultation where claimNumber='NULL' || cliamNumber='' ")) + 1);
+$insert_cliamNumber = update("update consultation set claimNumber='$claim_number' where patientID='$patientID' && consultID='$consultID' ");
+
 		foreach($conPrice as $conRow){}
         $mode = $insuranceType;
     }
@@ -476,7 +481,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
   </div>
 </div>
 <div class="row-fluid ">
-  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>

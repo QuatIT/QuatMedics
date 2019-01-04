@@ -25,6 +25,8 @@
 	include 'layout/head.php';
 
 	$patientID = $_GET['pid'];
+	$insurance = $_GET['insurance'];
+	$claim_date = $_GET['dinst'];
 
 
 	//patient deatils
@@ -37,15 +39,15 @@
 	$diff = date_diff(date_create($dateOfBirth), date_create($today));
 
 //	$consultation_sql = select("select * from consultation where patientID='$patientID' group by patientID order by consultID DESC");
-	$prescription_sql = select("select * from prescriptions where patientID='$patientID' order by prescribeCode asc");
+	$prescription_sql = select("select * from prescriptions where patientID='$patientID' && datePrescribe='$claim_date' order by prescribeCode asc");
 	foreach($prescription_sql as $prescription_row){}
 
-	$consultation_sql = select("select * from consultation where patientID='$patientID' order by consultID asc");
+	$consultation_sql = select("select * from consultation where patientID='$patientID' && insuranceType='".$_GET['insurance']."' && dateInsert='".$_GET['dinst']."' order by consultID asc");
 	foreach($consultation_sql as $consultation_row){}
 
-	$prescribedmeds = select("select * from prescribedmeds where prescribeCode='".$prescription_row['prescribeCode']."' ");
-	$investigation = select("select * from investigation_tb where patientID='$patientID' && consultID='".$consultation_row['consultID']."' ");
-	$diagnosis = select("select * from diagnose_tb where patientID='$patientID' && consultID='".$consultation_row['consultID']."' ");
+	$prescribedmeds = select("select * from prescribedmeds where dateInsert='$claim_date' && prescribeCode='".$prescription_row['prescribeCode']."' ");
+	$investigation = select("select * from investigation_tb where dateRegistered='$claim_date' && patientID='$patientID' && consultID='".$consultation_row['consultID']."' ");
+	$diagnosis = select("select * from diagnose_tb where dateRegistered='$claim_date' && patientID='$patientID' && consultID='".$consultation_row['consultID']."' ");
 
 	?>
 
@@ -94,19 +96,24 @@
             <div class="widget-content tab-content" style="">
 
 				<div class="container row">
-				<div class="span6" style="padding-left:20px">
+				<div class="span7" style="padding-left:20px">
 					<h5 style="text-decoration:underline;">Individual Personal Detail</h5>
 					Patient ID: <input type="text" name="patient_id" value="<?php echo $patientID; ?>" readonly style="width:100px;">
-					Patient Name: <input type="text" name="patient_name"value="<?php echo $patient_row['firstName']." ".$patient_row['otherName']." ".$patient_row['lastName']; ?>" readonly style="width:250px;">
-					Age: <input type="text" name="age" readonly value="<?php echo $diff->format('%y'); ?>" style="width:50px;">
+					Patient Name: <input type="text" name="patient_name"value="<?php echo $patient_row['firstName']." ".$patient_row['otherName']." ".$patient_row['lastName']; ?>" readonly style="width:300px;">
+					<br>Age: <input type="text" name="age" readonly value="<?php echo $diff->format('%y'); ?>" style="width:50px;">
 					Gender: <input type="text" name="gender" value="<?php echo $patient_row['gender']; ?>" readonly style="width:37px;">
-					NHIS No: <input type="text" name="nhis_no" readonly style="width:100px;">
-					Date: <input type="text" name="date" value="<?php echo $consultation_row['doe']; ?>" readonly style="width:100px;">
+					NHIS No: <input type="text" name="nhis_no" value="<?php echo $consultation_row['insuranceNumber']; ?>" readonly style="width:100px;">
+					Date: <input type="text" name="date" value="<?php echo $consultation_row['dateInsert']; ?>" readonly style="width:150px;">
 					</div>
-				<div class="span6">
+				<div class="span5">
 					<h5 style="text-decoration:underline;">Specialties</h5>
 					<input type="checkbox" name="OUT"> Out-Patient
 					<input type="checkbox" name="IN"> In-Patient
+
+					<hr>
+
+					<b>Number of Claims:</b> <?php $numcliams = select("select * from consultation where patientID='$patientID' && insuranceType='NHIS'"); echo count($numcliams); ?>
+					 | <b>Claim Number:</b> <?php echo $consultation_row['claimNumber']; ?>
 					</div>
 					</div>
 				</div>
@@ -142,9 +149,9 @@
 								<td><?php echo @$count++; ?></td>
 								<td><?php echo @$diag_row['diagnosis']; ?></td>
 								<td><?php echo @$diag_row['icd10'];?></td>
-								<td><?php echo @$diag_row['G-DRG']?></td>
+								<td><?php echo @$diag_row['g']?></td>
 								<td><?php echo @$diag_row['dateRegistered']?></td>
-								<td><a href="update_diagnosis?id=<?php echo $diag_row['id']; ?>"><!--<i span="fa fa-pencil"></i>--> Update</a> | <a href="delete_diagnosis?id=<?php echo $diag_row['id']; ?>">Delete</a></td>
+								<td><a class="btn btn-link" href="update_diagnosis?id=<?php echo $diag_row['id']; ?>&pid=<?php echo $patientID; ?>&insurance=<?php echo $insurance; ?>&dinst=<?php echo $claim_date; ?>"><!--<i span="fa fa-pencil"></i>--> Update</a> | <a href="delete_diagnosis?id=<?php echo $diag_row['id']; ?>">Delete</a></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -163,23 +170,29 @@
 							<th>Amount</th>
 							<th>Date</th>
 							<th>Code</th>
-							<th>Action</th>
+							<!-- <th>Action</th> -->
 						</tr>
 						</thead>
 						<tbody>
 							<?php
 								$counterz = 1;
-								foreach($prescribedmeds as $prescribedmeds_row){ ?>
+								foreach($prescribedmeds as $prescribedmeds_row){
+										$meds = select("select * from pharmacy_inventory where mode_of_payment='$insurance' && medicine_name='".$prescribedmeds_row['medicine']."'  ");
+										foreach($meds as $med){}
+
+											// $amount = $med['price'] * $prescribedmeds_row['totalMeds'];
+									?>
 							<tr>
 								<td><?php echo $counterz++; ?></td>
 								<td><?php echo $prescribedmeds_row['medicine'];?></td>
 								<td><?php echo $prescribedmeds_row['dosage'];?></td>
-								<td></td>
-								<td></td>
+								<td><?php echo $med['price'];?></td>
+								<td><?php echo $prescribedmeds_row['totalMeds'];?></td>
 								<td><?php echo $prescribedmeds_row['medprice'];?></td>
 								<td><?php echo $prescribedmeds_row['dateInsert'];?></td>
+								<!-- <td><?php #echo $amount; ?></td> -->
 								<td></td>
-								<td><a href="update_med?id=<?php echo $prescribedmeds_row['id']; ?>"><!--<i span="fa fa-pencil"></i>--> Update</a> | <a href="delete_med?id=<?php echo $prescribedmeds_row['id']; ?>">Delete</a></td>
+								<!-- <td><a class="btn btn-link" href="update_med?id=<?php #echo $prescribedmeds_row['id']; ?>"> Update</a> | <a href="delete_med?id=<?php #echo $prescribedmeds_row['id']; ?>">Delete</a></td> -->
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -209,8 +222,56 @@
 								<td><?php echo $counter++; ?></td>
 								<td><?php echo $invest_row['examination']; ?></td>
 								<td><?php echo $invest_row['dateRegistered']; ?></td>
-								<td><a href="update_investigation?id=<?php echo $invest_row['id']; ?>">Update</a> | <a href="delete_investigation?id=<?php echo $invest_row['id']; ?>">Delete</a></td>
+								<td><a class="btn btn-link" data-toggle="modal" data-target="#update_investigation<?php echo $invest_row['id']; ?>" >Update</a> | <a href="delete_investigation?id=<?php echo $invest_row['id']; ?>">Delete</a></td>
+
+								<?php
+										if(isset($_POST['btninvestigation'.$invest_row['id']])){
+											$findings = $_POST['examination'];
+
+											$update_findings = update("update investigation_tb set examination='$findings' where id='".$invest_row['id']."' ");
+
+											      if($update_findings){
+											        $success =  "<script>document.write('FINDINGS UPDATED SUCCESSFULLY')
+											                      window.location.href='claimform?pid={$patientID}&insurance={$insurance}&dinst={$claim_date}'</script>";
+											      }else{
+											        $error = "FINDINGS UPDATE FAILED";
+											      }
+														echo "<script>window.location.href='claimform?pid={$patientID}&insurance={$insurance}&dinst={$claim_date}'</script>";
+										}
+								?>
+
+								<!-- Modal -->
+								<div id="update_investigation<?php echo $invest_row['id']; ?>" class="modal fade" role="dialog">
+								<div class="modal-dialog">
+
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title">Examination Findings</h4>
+										</div>
+										<form action="" method="post">
+											<div class="modal-body">
+												<div class="span11">
+														Findings
+														<textarea name="examination" class="form-control span12"><?php echo @$invest_row['examination']; ?></textarea>
+												</div>
+											</div>
+
+									       <div class="modal-footer">
+									         <button type="submit" class="btn btn-primary" name="btninvestigation<?php echo $invest_row['id']; ?>">Update</button>
+									         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									       </div>
+											 </form>
+								     </div>
+
+								   </div>
+								 </div>
+
+
 							</tr>
+
+
 							<?php } ?>
 						</tbody>
 					</table>
@@ -230,7 +291,7 @@
     </div>
 </div>
 <div class="row-fluid">
-  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>

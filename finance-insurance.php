@@ -168,7 +168,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 </div>
 <div class="row-fluid ">
  	<div id="footer" class="span12">
-	  2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
+	  2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
 	</div>
 </div>
 <script src="js/excanvas.min.js"></script>

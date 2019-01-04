@@ -98,7 +98,7 @@ include 'layout/head.php';
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="INSURANCE PAYMENT" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT</a>
+        <a title="INSURANCE PAYMENT" href="finance-insurance" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT</a>
         <a title="INSURANCE PAYMENT DETAILS" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT DETAILS</a>
     </div>
   </div>
@@ -240,41 +240,13 @@ include 'layout/head.php';
 
 				  </tbody>
 			  </table>
-<!--
-                    <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                         <h5>LAB and Other Prices</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>PID</th>
-                              <th>LAB DETAILS</th>
-                              <th>WARD DETAILS</th>
-                              <th>ACTION</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-							  <tr>
-							  	<td> Patient ID</td>
-							  	<td> Malaria Test</td>
-							  	<td> </td>
-							  	<td> <a href="#"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
-							  </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
--->
                 </div>
 		  </div>
       </div>
 </div>
 <div class="row-fluid ">
  	<div id="footer" class="span12">
-	  2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
+	  2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
 	</div>
 </div>
 <script src="js/excanvas.min.js"></script>
