@@ -203,11 +203,17 @@ include 'sms.php';
 ?>
 <style>
 input[type=text] { text-transform: uppercase; }
+table tr td { text-transform: uppercase; }
 select option { text-transform: uppercase; }
 /*option.upper { text-transform: uppercase; }*/
 textarea { text-transform: uppercase; }
 </style>
 <script>
+    
+    $('input[type=text]').val (function () {
+    return this.value.toUpperCase();
+})
+    
 $(document).on('blur', "input[type=text]", function () {
     $(this).val(function (_, val) {
         return val.toUpperCase();
