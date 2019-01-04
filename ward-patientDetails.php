@@ -122,7 +122,6 @@ if($staff_ID){
 
 }
 
-
 //$_GET['patient'];
 //$_GET['bedNumber'];
 //$_GET['Admitted'];
@@ -130,13 +129,10 @@ if($staff_ID){
 
 
 // fetch vitals
-
 $get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER BY id DESC LIMIT 1");
 
 //NURSE CHECKLIST
 $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
-
-
 ?>
 
 
@@ -176,7 +172,7 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                  <li><a data-toggle="tab" href="#tab5"> Nurse's Checklist</a></li>
                     <!-- <li><a data-toggle="tab" href="#tab3">Doctor's Remarks</a></li> -->
                     <li><a data-toggle="tab" href="#tab4">Treatment History</a></li>
-                    <li><a data-toggle="tab" href="#tab5">Patient Discharge</a></li>
+                    <li><a data-toggle="tab" href="#tab7">Patient Discharge</a></li>
 
                     <?php #} ?>
                 </ul>
@@ -184,7 +180,6 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                  <?php } ?>
 <div class="widget-content tab-content">
                  <div id="tab1" class="tab-pane active">
-
                     <form action="#" method="post" class="form-horizontal">
                     <div class="span6">
                           <div class="widget-title">

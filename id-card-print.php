@@ -49,7 +49,7 @@ foreach($centerName_sql as $centerName){}
                         </td>
                         </tr>
                         <tr>
-                            <td style="width:35%; text-align:center;" rowspan="5"> 
+                            <td style="width:35%; text-align:center;" rowspan="5">
 								<?php if(empty($patientrow['patient_image']) || $patientrow['patient_image']=''){?>
 								<span class="text-center"> No Photo</span>
 								<?php }else{?>

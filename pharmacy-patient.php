@@ -223,7 +223,7 @@ input:checked + .slider:before {
                         </tr>
                       </thead>
                       <tbody>
-                       
+
                           <?php foreach($pre_med as $med){ ?>
 
                              <tr>
