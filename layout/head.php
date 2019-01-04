@@ -34,9 +34,7 @@ foreach($centerName_sql as $centerName){}
 <div class="btn-group rightzero">
     <a class="top_message tip-left" title="Manage Files"><i class="icon-file"></i></a>
     <a class="top_message tip-bottom" title="Manage Users"><i class="icon-user"></i></a>
-    <a class="top_message tip-bottom" title="Manage Comments"><i class="icon-comment"></i>
-        <span class="label label-important">5</span>
-    </a>
+    <a class="top_message tip-bottom" title="Manage Comments"><i class="icon-comment"></i><span class="label label-important">5</span></a>
     <a class="top_message tip-bottom" title="Manage Orders"><i class="icon-shopping-cart"></i></a>
 </div>
 <!--close-top-Header-messaages-->
@@ -46,38 +44,42 @@ foreach($centerName_sql as $centerName){}
   <ul class="nav">
 
       <?php if($_SESSION['accessLevel']=='OPD'){ ?>
-       <li class="" ><a title="" href="medics-index"><i class="icon icon-home"></i> <span class="text">HOME</span></a></li>
-    <li class="" ><a title="" href="opd-index"><i class="icon icon-user"></i> <span class="text">OPD</span></a></li>
+        <li class="" ><a title="" href="medics-index"><i class="icon icon-home"></i> <span class="text">HOME</span></a></li>
+        <li class="" ><a title="" href="opd-index"><i class="icon icon-user"></i> <span class="text">OPD</span></a></li>
       <?php } ?>
 
       <?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
-       <li class="" ><a title="" href="medics-index?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-home"></i> <span class="text">HOME</span></a></li>
-    <li class="" ><a title="" href="consult-index?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-briefcase"></i> <span class="text">CONSULTATION</span></a></li>
+        <li class="" ><a title="" href="medics-index?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-home"></i><span class="text">HOME</span></a></li>
+        <li class="" ><a title="" href="consult-index?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-briefcase"></i> <span class="text">CONSULTATION</span></a></li>
       <?php } ?>
 
       <?php if($_SESSION['accessLevel']=='LABORATORY'){ ?>
-      <li class="" ><a title="" href="medics-index"><i class="icon icon-home"></i> <span class="text">HOME</span></a></li>
-    <li class="" ><a title="" href="lab-index"><i class="icon icon-filter"></i> <span class="text">LABORATORY</span></a></li>
+        <li class="" ><a title="" href="medics-index"><i class="icon icon-home"></i> <span class="text">HOME</span></a></li>
+        <li class="" ><a title="" href="lab-index"><i class="icon icon-filter"></i> <span class="text">LABORATORY</span></a></li>
       <?php } ?>
 
-      <?php if($_SESSION['accessLevel']=='PHARMACY'){ ?>
-    <li class="" ><a title="" href="pharmacy-index"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
+      <?php if($_SESSION['accessLevel']=='PHARMACY'){?>
+        <li class="" ><a title="" href="medics-index"><i class="icon icon-home"></i> <span class="text">HOME</span></a></li>
+        <li class="" ><a title="" href="pharmacy-index"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
       <?php } ?>
 
-      <?php #if($_SESSION['accessLevel']=='PHARMACY'){ ?>
-    <li class="" ><a title="" href="emergency-index"><i class="icon icon-exclamation-sign"></i> <span class="text">EMERGENCY</span></a></li>
-      <?php #} ?>
-
-      <?php #if($_SESSION['accessLevel']=='PHARMACY'){ ?>
-    <li class="" ><a title="" href="claim-index"><i class="icon icon-file"></i> <span class="text">CLAIMS</span></a></li>
-      <?php #} ?>
+      <?php if($_SESSION['accessLevel']=='FINANCE'){ ?>
+        <li class="" ><a title="" href="medics-index"><i class="icon icon-home"></i> <span class="text">HOME</span></a></li>
+        <li class="" ><a title="" href="finance-cash"><i class="icon icon-briefcase"></i> <span class="text">ACCOUNTS</span></a></li>
+        <li class="" ><a title="" href="claim-index"><i class="icon icon-list-alt"></i> <span class="text">CLAIMS</span></a></li>
+      <?php } ?>
 
       <?php if($_SESSION['accessLevel']=='WARD'){ ?>
-    <li class="" ><a title="" href="ward-index"><i class="icon icon-home"></i> <span class="text">WARD</span></a></li>
+        <li class="" ><a title="" href="medics-index"><i class="icon icon-home"></i> <span class="text">HOME</span></a></li>
+        <li class="" ><a title="" href="ward-index"><i class="icon icon-time"></i> <span class="text">WARD</span></a></li>
+        <li class="" ><a title="" href="center-registrarB?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-file"></i> <span class="text">BIRTH AND DEATH</span></a></li>
       <?php } ?>
-<?php if($_SESSION['username']!='rik'){ ?>
-    <li class="" ><a title="" href="center-registrarB?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-file"></i> <span class="text">BIRTH AND DEATH</span></a></li>
 
+      <?php if($_SESSION['accessLevel']=='OPD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['accessLevel']=='WARD'){ ?>
+        <li class="" ><a title="" href="emergency-index"><i class="icon icon-exclamation-sign"></i> <span class="text">EMERGENCY</span></a></li>
+      <?php } ?>
+
+<?php if($_SESSION['username']!='rik'){ ?>
     <li class="dropdown" id="settings">
         <a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle">
             <i class="icon icon-cog"></i>
@@ -85,7 +87,7 @@ foreach($centerName_sql as $centerName){}
             <b class="caret"></b>
         </a>
       <ul class="dropdown-menu">
-        <li><a title="" href="#"><i class="icon icon-user"></i> Profile</a></li>
+<!--        <li><a title="" href="#"><i class="icon icon-user"></i> Profile</a></li>-->
           <?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
         <li><a title="Logout" href="logout?c=<?php echo $_GET['roomID']; ?>"><i class="icon icon-share-alt"></i> Logout</a></li>
           <?php }else{ ?>
@@ -104,7 +106,6 @@ foreach($centerName_sql as $centerName){}
        <li class="" ><a title="" href="medics-index"><i class="icon icon-home"></i> <span class="text">HOME</span></a></li>
     <li class="" ><a title="" href="opd-index"><i class="icon icon-user"></i> <span class="text">OPD</span></a></li>
 -->
-
     <li class="" ><a title="" href="consult-index?roomID=<?php echo $_GET['roomID']; ?>"><i class="icon icon-briefcase"></i> <span class="text">CONSULTATION</span></a></li>
     <li class="" ><a title="" href="lab-index"><i class="icon icon-filter"></i> <span class="text">LABORATORY</span></a></li>
     <li class="" ><a title="" href="pharmacy-index"><i class="icon icon-plus-sign"></i> <span class="text">PHARMACY</span></a></li>
@@ -118,7 +119,7 @@ foreach($centerName_sql as $centerName){}
             <b class="caret"></b>
         </a>
       <ul class="dropdown-menu">
-        <li><a title="" href="#"><i class="icon icon-user"></i> Profile</a></li>
+<!--        <li><a title="" href="#"><i class="icon icon-user"></i> Profile</a></li>-->
           <?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
         <li><a title="Logout" href="logout?c=<?php echo $_GET['roomID']; ?>"><i class="icon icon-share-alt"></i> Logout_consulting</a></li>
           <?php }else{ ?>
