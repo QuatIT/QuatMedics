@@ -151,7 +151,9 @@
 								<td><?php echo @$diag_row['icd10'];?></td>
 								<td><?php echo @$diag_row['g']?></td>
 								<td><?php echo @$diag_row['dateRegistered']?></td>
-								<td><a class="btn btn-link" href="update_diagnosis?id=<?php echo $diag_row['id']; ?>&pid=<?php echo $patientID; ?>&insurance=<?php echo $insurance; ?>&dinst=<?php echo $claim_date; ?>"><!--<i span="fa fa-pencil"></i>--> Update</a> | <a href="delete_diagnosis?id=<?php echo $diag_row['id']; ?>">Delete</a></td>
+								<td><a class="btn btn-link" href="update_diagnosis?id=<?php echo $diag_row['id']; ?>&pid=<?php echo $patientID; ?>&insurance=<?php echo $insurance; ?>&dinst=<?php echo $claim_date; ?>"><!--<i span="fa fa-pencil"></i>--> Update</a>
+									<!-- |	<a href="delete_diagnosis?id=<?php echo $diag_row['id']; ?>">Delete</a> -->
+								</td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -222,7 +224,9 @@
 								<td><?php echo $counter++; ?></td>
 								<td><?php echo $invest_row['examination']; ?></td>
 								<td><?php echo $invest_row['dateRegistered']; ?></td>
-								<td><a class="btn btn-link" data-toggle="modal" data-target="#update_investigation<?php echo $invest_row['id']; ?>" >Update</a> | <a href="delete_investigation?id=<?php echo $invest_row['id']; ?>">Delete</a></td>
+								<td><a class="btn btn-link" data-toggle="modal" data-target="#update_investigation<?php echo $invest_row['id']; ?>" >Update</a>
+									<!-- | <a href="delete_investigation?id=<?php #echo $invest_row['id']; ?>">Delete</a> -->
+								</td>
 
 								<?php
 										if(isset($_POST['btninvestigation'.$invest_row['id']])){
