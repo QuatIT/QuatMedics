@@ -192,10 +192,7 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
  <div id="tab1" class="tab-pane active">
     <form action="#" method="post" class="form-horizontal">
     <div class="span6">
-          <div class="widget-title">
-              <span class="icon"> <i class="icon-align-justify"></i> </span>
-            <h5>Admission Details</h5>
-          </div>
+
           <div class="widget-content nopadding">
                <div class="control-group">
                 <label class="control-label">Patient : </label>
@@ -213,15 +210,16 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
           </div>
       </div>
     <div class="span6">
-          <div class="widget-title">
-          </div>
+
           <div class="widget-content nopadding">
+<!--
               <div class="control-group">
                 <label class="control-label">Discharge Date :</label>
                 <div class="controls">
-                  <input type="text" value="<?php echo $pat['dischargeDate']; ?>"  class="span11" name="dischargeDate" readonly />
+                  <input type="text" value="<?php // echo $pat['dischargeDate']; ?>"  class="span11" name="dischargeDate" readonly />
                 </div>
               </div>
+-->
                <div class="control-group">
                     <label class="control-label">ADMITTED BY: </label>
                     <div class="controls">
@@ -584,5 +582,4 @@ function resetMenu() {
 </script>
 </body>
 </html>
-
 <?php }else{echo "<script>window.location='404'</script>";}?>
