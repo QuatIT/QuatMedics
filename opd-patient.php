@@ -105,13 +105,20 @@
       $insuranceNumber = filter_input(INPUT_POST, "insuranceNumber", FILTER_SANITIZE_STRING);
       $ccNumber = filter_input(INPUT_POST, "ccNumber", FILTER_SANITIZE_STRING);
       $company = filter_input(INPUT_POST, "company", FILTER_SANITIZE_STRING);
-        $centerID=$_SESSION['centerID'];
-        $status = SENT_TO_CONSULTING;
-        $patient_busy = PATIENT_BUSY;
+      $centerID=$_SESSION['centerID'];
+      $status = SENT_TO_CONSULTING;
+      $lab_status1 = SENT_TO_LAB;
+      $patient_busy = PATIENT_BUSY;
+      $assign_lab = $_POST['assign_lab'];
+
+
+if($assign_lab == "sent_to_lab"){
+      $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$ccNumber,$company,$lab_status1,$centerID,$dateToday);
+}else{
 
 //        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
         $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$ccNumber,$company,$status,$centerID,$dateToday);
-
+}
 
         if($consultAssignPatient1){
             $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."' WHERE patientID='$patientID' ");
@@ -119,6 +126,44 @@
 		//select opd price..
 //		$opdPrice = select("SELECT * FROM prices WHERE serviceName='OPD' AND centerID='".$_SESSION['centerID']."'");
 //		foreach($opdPrice as $priceRow){}
+
+
+
+
+$labNumber = count($_POST['labName']);
+// echo "<script>alert('{$labNumber}')</script>";exit;
+
+$labReq_ID = count(select("select * from labresults")) + 1;
+$labReqID = "LABREQ.".$_SESSION['centerID']."-".$labReq_ID;
+// echo "<script>alert('{$labReqID}')</script>";exit;
+
+if($labNumber > 0) {
+    for($i=0; $i<$labNumber; $i++){
+            if(trim($_POST["labName"][$i] != '')){
+                $labID = trim($_POST["labName"][$i]);
+                $status = SENT_TO_LAB;
+      $paystatus = trim("Not Paid");
+      //get labName from lablist table...
+      $getLabName = select("SELECT labName FROM lablist where labID='$labID'");
+      foreach($getLabName as $labName){}
+      //get lab price from prices table using the name...
+      $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
+      foreach($getLp as $labPrice){}
+
+$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$consultID."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$assign_lab','$mode','$paystatus','".$labPrice['servicePrice']."',CURDATE())");
+
+                    if($insertLabReq){
+                         $success =  "LAB REQUEST SENT SUCCESSFULLY";
+    $updatePatient = update("UPDATE consultation set status='$assign_lab' where patientID='$patientID' AND consultID='$consultID'");
+                        #echo "<script>window.location='opd-patient?tab=opd-patient';</script>";
+                    }else{
+                        $error =  "ERROR: LAB REQUEST NOT SENT";
+                    }
+                }
+    }
+}else{
+   $error =  "ERROR: NO LAB REQUEST MADE";
+}
 
 
 //select consultaion price..
@@ -129,8 +174,8 @@
         $conPrice = select("SELECT * FROM prices WHERE serviceName='CONSULTATION' AND centerID='".$_SESSION['centerID']."' AND modePayment='$insuranceType'");
 
 //generate claim number and insert into consultation tables
-$claim_number = sprintf('%10s',count(select("select * from consultation where claimNumber='NULL' || cliamNumber='' ")) + 1);
-$insert_cliamNumber = update("update consultation set claimNumber='$claim_number' where patientID='$patientID' && consultID='$consultID' ");
+$claim_number = sprintf('%10s',count(select("select * from consultation where claimNumber='NULL' || claimNumber='' ")) + 1);
+$insert_claimNumber = update("update consultation set claimNumber='$claim_number' where patientID='$patientID' && consultID='$consultID' ");
 
 		foreach($conPrice as $conRow){}
         $mode = $insuranceType;
@@ -375,7 +420,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                               <div class="control-group">
                                 <label class="control-label">Patient :</label>
                                <div class="controls">
-                                  <select name="patientID" id="patientId" class="selectpicker" onchange="pname(this.value);">
+                                  <select name="patientID" id="patientId" class="" onchange="pname(this.value);">
                                         <?php
                                         if(!empty($_GET['pid'])){
                                         ?>
@@ -454,14 +499,38 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                                <div class="control-group">
                                 <label class="control-label">Assign Consulting Room</label>
                                 <div class="controls">
-                                  <select name="consultRoom">
+                                  <select name="consultRoom" >
                                     <option value="default"> -- Select Consulting Room --</option>
+                                    <optgroup label="Consulting Room"> Consulting Room
                                       <?php
                                         $consultingroom = $consultation->loadConsultRoomByID($centerID);
                                         foreach($consultingroom as $roomRow){
                                       ?>
                                     <option value="<?php echo $roomRow['roomID'];?>"> <?php echo $roomRow['roomName'];?></option>
-                                      <?php }?>
+                                      <?php } ?>
+
+                                    </optgroup>
+                                    <!-- <optgroup label="Laboratory">Laboratory
+                                        <option value="sent_to_lab">Laboratory</option>
+                                    </optgroup> -->
+
+                                  </select>
+                                </div>
+                                  <div class="controls"></div>
+                              </div>
+
+                              <div class="control-group">
+                                <label class="control-label"> Assign Lab: </label>
+                                  <div class="controls">
+                                    <input type="checkbox" value="sent_to_lab" name="assign_lab" onchange="labchk(this.value);">
+                                  </div>
+                              </div>
+
+                               <div class="control-group">
+                                <label class="control-label">Select Lab Request: </label>
+                                <div class="controls">
+                                  <select multiple name="labName[]" id="labchkload">
+                                    <option></option>
                                   </select>
                                 </div>
                                   <div class="controls"></div>
@@ -546,6 +615,18 @@ window.onload = function () {
             // load the select option data into a div
                 $('#loader').html("Please Wait...");
                 $('#modeload').load('loads/mode.php?id='+val, function(){
+                $('#loader').html("");
+               });
+        }
+
+</script>
+
+<script>
+
+        function labchk(val){
+            // load the select option data into a div
+                $('#loader').html("Please Wait...");
+                $('#labchkload').load('loads/labchk.php?id='+val, function(){
                 $('#loader').html("");
                });
         }

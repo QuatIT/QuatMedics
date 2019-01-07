@@ -16,10 +16,10 @@ foreach($load_consultation as $consultRow){
     foreach($fetchpatient as $ptndetails){
 
 
-      	//calculate age
-      	$dateOfBirth = $patient_row['dob'];
-      	$today = date("Y-m-d");
-      	$age = date_diff(date_create($dateOfBirth), date_create($today));
+      //calculate age
+      $dateOfBirth = $ptndetails['dob'];
+      $today = date("Y-m-d");
+      $diff = date_diff(date_create($dateOfBirth), date_create($today));
 
 
         $name = $ptndetails['firstName']." ".$ptndetails['otherName']." ".$ptndetails['lastName'];
@@ -33,8 +33,8 @@ foreach($load_consultation as $consultRow){
 
 <tr>
   <td><?php echo $patientID;?></td>
-  <td><?php echo $name;?></td>
-  <td><?php echo $age->format('%y');?></td>
+  <td><?php echo $ptndetails['firstName']." ".$ptndetails['otherName']." ".$ptndetails['lastName']?></td>
+  <td><?php echo $diff->format('%y'); ?></td>
   <td><?php echo $staffname;?></td>
   <td>
       <?php if($status == "sent_to_consulting"){?>
@@ -54,4 +54,3 @@ foreach($load_consultation as $consultRow){
 
 <?php }?>
 <!--<tr><td colspan="5"> No Data Available in table</td></tr>-->
-<?php// }?>
