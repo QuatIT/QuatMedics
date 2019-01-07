@@ -433,7 +433,8 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
               </thead>
               <tbody>
                 <?php
-                $report = select("SELECT * FROM review_tb WHERE patientID='$patDetails'");
+                // $report = select("SELECT * FROM review_tb WHERE patientID='$patDetails'");
+                $report = select("SELECT * FROM review_tb WHERE patientID='$patientID'");
                     foreach($report as $reports){
                       $rev_iew = select("SELECT * FROM docreview_tb");
                     foreach($rev_iew as $rev_iews){}?>
