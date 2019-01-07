@@ -144,3 +144,8 @@ $('textarea').val (function () {
     return this.value.toUpperCase();
 });
 </script>
+<style>
+    .control-label{
+        font-weight: bolder;
+    }
+</style>
