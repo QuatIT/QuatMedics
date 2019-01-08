@@ -65,7 +65,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                         <h5>Fixed Prices</h5>
+                         <h5>CONSULTATION AND MEDICATION CHARGES</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
@@ -100,6 +100,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 <!--            </div>-->
 <!--        </div>		  -->
 		  </div>
+
 		  <div class="span6">
 <!--        <div class="widget-box">-->
 <!--            <div class="widget-content tab-content">-->
@@ -107,7 +108,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                         <h5>LAB and Other Prices</h5>
+                         <h5>LABORATORY CHARGES</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
@@ -156,6 +157,64 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 <!--        </div>		  -->
 		  </div>
 
+      </div>
+
+      <div class="row-fluid">
+      		  <div class="span6">
+<!--        <div class="widget-box">-->
+<!--            <div class="widget-content tab-content">-->
+<!--                <div id="tab1" class="tab-pane active">-->
+                    <div class="widget-box">
+                      <div class="widget-title">
+                         <span class="icon"><i class="icon-th"></i></span>
+                         <h5>WARD CHARGES</h5>
+                      </div>
+                      <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th>PID</th>
+                              <th>NAME</th>
+                              <th>LAB NAME</th>
+                              <th>PRICE</th>
+                              <th>ACTION</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+							   <?php
+	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private'");
+							  if($fetchlab){
+								  foreach($fetchlab as $PrivateRow){
+									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
+									  foreach($pdet as $prow){}
+
+									  $labN = select("SELECT * FROM lablist WHERE labID='".$PrivateRow['labID']."'");
+									  foreach($labN as $labRow){}
+							  ?>
+							  <tr>
+							  	<td> <?php echo $PrivateRow['patientID'];?></td>
+							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
+							  	<td> <?php echo $labRow['labName'];?></td>
+							  	<td> <?php echo $PrivateRow['labprice'];?></td>
+							  	<td>
+									<?php if($PrivateRow['paystatus'] == 'Not Paid'){?>
+									<a onclick="return confirm('Confirm Payment');" href="finance-cash-labpay?id=<?php echo $PrivateRow['id'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+								   <?php }?>
+
+									<?php if($PrivateRow['paystatus'] == 'Paid'){?>
+									<span class="label label-success text-center"><?php  echo $PrivateRow['paystatus'];?></span>
+								   <?php }?>
+								</td>
+							  </tr>
+							  <?php }}?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>		  -->
+		  </div>
       </div>
   </div>
 </div>

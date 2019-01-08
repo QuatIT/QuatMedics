@@ -55,7 +55,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
         <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">INSURANCE PAYMENT</h3>
 
       <div class="row-fluid">

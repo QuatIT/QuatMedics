@@ -78,9 +78,10 @@
 
 if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
     $patientID = $_GET['patid'];
-    $wardID = $_REQUEST['wrdno'];
-        $wardc = new Ward;
-        $patien = new Patient;
+    $wardID = $_GET['wrdno'];
+    $assignID = $_GET['assign'];
+    $wardc = new Ward;
+    $patien = new Patient;
     $patient = $wardc->find_by_wardPatient_id($patientID);
     foreach($patient as $pat){}
 
@@ -141,6 +142,7 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
         }
     }
 
+
 ?>
 
 <div id="search">
@@ -152,9 +154,9 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
 <div id="sidebar">
     <ul>
     <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-        <li><a href="ward-index"><i class="icon icon-plus"></i> <span>Bed Management</span></a></li>
+        <li><a href="ward-index?wrdno=<?php echo $wardID;?>"><i class="icon icon-plus"></i> <span>Bed Management</span></a></li>
         <li class="active" style="background-color:#209fbf;">
-            <a href="ward-patient"><i class="icon icon-user"></i> <span>Patient Management</span></a>
+            <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a>
         </li>
     </ul>
 </div>
@@ -456,10 +458,9 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
 
 <!-- =========================  START OF TAB 7 ================================   -->
 <div id="tab7" class="tab-pane">
-    <form action="#" method="post" class="form-horizontal">
+    <form action="#" method="post" class="form-horizontal" enctype="multipart/form-data">
     <div class="span6">
           <div class="widget-content">
-
               <div class="control-group">
                 <label class="control-label">PATIENT ID :</label>
                <div class="controls">
@@ -478,7 +479,6 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                 <div class="controls">
                     <input name="admitDate" value="<?php echo $pat['admitDate']; ?>" class="span11" type="text" readonly/>
                 </div>
-                  <div class="controls"></div>
               </div>
           </div>
       </div>
@@ -495,6 +495,19 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                     <div class="controls">
                         <textarea class="span11" name="description" readonly><?php echo $pat['admitDetails']; ?></textarea>
                     </div>
+                </div>
+              <div class="control-group">
+                <label class="control-label">NO. OF DAYS ADMITTED :</label>
+                <div class="controls">
+                    <?php
+                       $days = (strtotime($dateToday) - strtotime($pat['admitDate'])) / (60 * 60 * 24);
+                    ?>
+                    <input name="admitDate" value="<?php echo $days; ?>" class="span11" type="text" readonly/>
+                </div>
+              </div>
+                <div class="form-actions">
+                    <i class="span1"></i>
+                    <input type="submit" name="DischargePatient" value="DISCHARGE PATIENT" onclick="return confirm('Confirm Patient Discharge.');"  class="btn btn-primary btn-block span10" />
                 </div>
             </div>
         </div>

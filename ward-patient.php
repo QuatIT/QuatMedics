@@ -63,7 +63,7 @@ if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Admitted Patient List</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">ADMITTED PATIENTS</a></li>
 <!--                    <li><a data-toggle="tab" href="#tab2">Admit New Patient</a></li>-->
                 </ul>
             </div>
@@ -76,12 +76,12 @@ if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Patient ID</th>
-                              <th>Admin Details</th>
-                              <th>Nurse</th>
-                              <th>Admitted</th>
-                              <th>Discharged</th>
-                              <th>Action</th>
+                              <th>PATIENT ID</th>
+                              <th>ADMITTED FOR</th>
+                              <th>NURSE</th>
+                              <th>ADMITTED</th>
+                              <th>DISCHARGE</th>
+                              <th>ACTION</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -95,7 +95,7 @@ if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
                               <td><?php echo $wrd_assign['admitDate']; ?></td>
                               <td> <?php echo $wrd_assign['dischargeDate']; ?></td>
                               <td style="text-align: center;">
-                                   <a href="ward-patientDetails?patid=<?php echo $wrd_assign['patientID'].'&wrdno='.$wardID.'&assign='.$wrd_assign['assignID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
+                <a href="ward-patientDetails?patid=<?php echo $wrd_assign['patientID'].'&wrdno='.$wardID.'&assign='.$wrd_assign['assignID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
 <!--                                   <a href="ward-patientAssign?patid=<?php #echo $wrd_assign['patientID'].'&wrdno='.$wardID; ?>"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>-->
                               </td>
                             </tr>
@@ -104,99 +104,6 @@ if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
                         </table>
                       </div>
                     </div>
-                </div>
-                <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
-                    <div class="span6">
-<!--                        <div class="widget-box">-->
-                          <div class="widget-title">
-                              <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Admission Details</h5>
-                          </div>
-                          <div class="widget-content nopadding">
-                               <div class="control-group">
-                                <label class="control-label">Patient : </label>
-                                <div class="controls">
-                                  <select name="patientID" >
-                                    <option value="default"> -- Select Patient --</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                  </select>
-                                </div>
-                              </div>
-                               <div class="control-group">
-                                <label class="control-label">Bed Number : </label>
-                                <div class="controls">
-                                  <select name="bedNumber" >
-                                    <option value="default"> -- Select Bed --</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Admission Date :</label>
-                                <div class="controls">
-                                    <input name="admitDate" class="span11" type="datetime-local" />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Description :</label>
-                                <div class="controls">
-                                    <textarea class="span11" name="description"></textarea>
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-title">
-                          </div>
-                          <div class="widget-content nopadding">
-                               <div class="control-group">
-                                <label class="control-label">Patient Status: </label>
-                                <div class="controls">
-                                  <select name="patientStatus" >
-                                    <option value="default"> -- Select Status --</option>
-                                    <option > Admit</option>
-                                    <option > Under Treatment</option>
-                                    <option > Operation</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Bed Type :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Bed Type" name="bedType" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Discharge Date :</label>
-                                <div class="controls">
-                                  <input type="datetime-local" class="span11" name="dischargeDate" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Assign Nurse : </label>
-                                <div class="controls">
-                                  <select name="nurseID" >
-                                    <option value="default"> -- Select Nurse --</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                  </select>
-                                    <br/>
-                                    <br/>
-                                </div>
-                              </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Admit Patient</button>
-                              </div>
-                          </div>
-                      </div>
-                    </form>
                 </div>
             </div>
         </div>
