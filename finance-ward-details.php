@@ -73,15 +73,15 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 //						  }
 //					  }
 
-	//get medinine total
-//	@ $medtotal = 0;
-//   @$getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
-//		  foreach($getMeds as $medrow){
-//			  $medtotal+=$medrow['medprice'];
-//		  }
+//	get medinine total
+	@ $medtotal = 0;
+   @$getMeds = select("SELECT * FROM wardmeds WHERE assignID='$assignID'");
+		  foreach($getMeds as $medrow){
+			  $medtotal+=$medrow['charge'];
+		  }
 //
-//	$overall =($consultPrice+$medtotal);
-//	$overallTotal = "GHC ".$overall;
+	$overall =($assignRow['charge']+$medtotal);
+	$overallTotal = "GHC ".$overall;
 ?>
 
 <div id="search">
@@ -272,11 +272,12 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                             <td colspan="5" style="text-align:center;" > NO MEDICATION PRESCRIBED.</td>
                         </tr>
                       <?php }
-					  $total = 0;
-					   @$getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
-							  foreach($getMeds as $medrow){
-								  $total+=$medrow['medprice'];
-							  }
+                        //	get medinine total
+                            @$total = 0;
+                           @$getMeds = select("SELECT * FROM wardmeds WHERE assignID='$assignID'");
+                                  foreach($getMeds as $medrow){
+                                      $total+=$medrow['charge'];
+                                  }
 					  ?>
 					  <tr>
 					  	<td colspan="2" style="text-align:right"> <b>Total</b></td>
