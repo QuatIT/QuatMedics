@@ -7,9 +7,9 @@ $wid = $_GET['wid'];
 $sql = select("SELECT * FROM bedlist WHERE wardId='$wid' AND status='Free'");
 if(count($sql) > 0){
 ?>
-	<label class="control-label">Bed Number</label>
+	<label class="control-label">BED NUMBER</label>
 		<div class="controls">
-		  <select name="bedID" class="span11">
+		  <select name="bedID" class="span11" required>
               <option></option>
 			 <?php
 				foreach($sql as $query){

@@ -105,7 +105,7 @@
         <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">CONSULTING ROOM - <?php echo $r['roomName'];?></h3>
       <div class="row-fluid">
           <div class="span8">

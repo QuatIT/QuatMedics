@@ -157,7 +157,12 @@
     }
 
     public function find_by_wardPatient_id($patientID){
-      $result=query("SELECT * FROM wardassigns WHERE patientID='".$patientID."' ");
+      $result=query("SELECT * FROM wardassigns WHERE patientID='$patientID' ");
+      return $result;
+    }
+
+    public function find_by_assign_id($assignID){
+      $result=query("SELECT * FROM wardassigns WHERE assignID='$assignID' ");
       return $result;
     }
 
@@ -170,7 +175,6 @@
     public function find_num_ward($centerID){
       $result=query("SELECT * FROM wardlist WHERE centerID='$centerID' ");
       $num = count($result);
-
       return $num;
     }
 

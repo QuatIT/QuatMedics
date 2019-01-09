@@ -77,18 +77,22 @@
  //include 'status_administered.php';
 
 if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
+
     $patientID = $_GET['patid'];
     $wardID = $_GET['wrdno'];
     $assignID = $_GET['assign'];
-    $wardc = new Ward;
-    $patien = new Patient;
-    $patient = $wardc->find_by_wardPatient_id($patientID);
+    $wardc = new Ward();
+    $patien = new Patient();
+    //fetch assign details......
+    $patient = $wardc->find_by_assign_id($assignID);
     foreach($patient as $pat){}
 
-//    echo "<script>alert('{$pat['patientID']}')</script>";
+//echo "<script>alert('{$pat['patientID']}')</script>";
     $pat_fxn = $patien->find_by_patient_id($patientID);
     foreach($pat_fxn as $patDetails){}
-
+//get ward details..
+    $wardDet = select("SELECT * FROM wardlist where wardID='$wardID'");
+    foreach($wardDet as $wardRw){}
 //patient treatment
 if(isset($_POST['saveTreatment'])){
     $comments= filter_input(INPUT_POST,"comment",FILTER_SANITIZE_STRING);
@@ -119,7 +123,6 @@ if($staff_ID){
       $rev_iew= insert("INSERT INTO docreview_tb(WardID,PatientID,staffID,DocReview)VALUES('".$wardID."','".$patientID."','".$staff_IDs['staffID']."','".$review."')");
 //          header('location:ward-index.php');
   }
-
 }
 
 //$_GET['patient'];
@@ -135,13 +138,36 @@ $get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER
 $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
 
 //GET ADMISSION STAFF DETAILS
-    $staffDet = select("SELECT * FROM staff WHERE staffID='".$pat['staffID']."'");
-    if($staffDet){
-        foreach($staffDet as $staffRow){
-            $staffName = $staffRow['lastName'].' '.$staffRow['firstName'].' '.$staffRow['otherNames'];
-        }
+$staffDet = select("SELECT * FROM staff WHERE staffID='".$pat['staffID']."'");
+if($staffDet){
+    foreach($staffDet as $staffRow){
+        $staffName = $staffRow['lastName'].' '.$staffRow['firstName'].' '.$staffRow['otherNames'];
+    }
+}
+
+
+//Move Patient TO Account For Discharge Payment..
+if(isset($_POST['moveToAcc'])){
+    $patientID = trim(htmlentities($_POST['patientID']));
+    $patientName = trim(htmlentities($_POST['patientName']));
+    $admitDate = trim(htmlentities($_POST['admitDate']));
+    $NoOfDays = trim(htmlentities($_POST['NoOfDays']));
+
+    //Get price for ward..
+    $WardPricing = select("SELECT * FROM prices WHERE serviceType='Ward' AND centerID='$centerID' AND serviceName='".$wardRw['wardName']."'");
+    foreach($WardPricing as $priceRow){
+        $wardCharge = $priceRow['servicePrice'];
     }
 
+    //calculate the total charge with days admitted..
+    $totalWardCharge = ($wardCharge*$NoOfDays);
+
+    //update ward assign row with new price..
+    $update = update("UPDATE wardassigns SET charge='$totalWardCharge' WHERE assignID='$assignID'");
+    if($update){
+        $success = "<script>document.write('Moved To Account For Payment');window.location='ward-patient?wrdno=$wardID';</script>";
+    }
+}
 
 ?>
 
@@ -171,7 +197,16 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
   </div>
   <div class="container-fluid">
       <h3 class="quick-actions">PATIENT MANAGEMENT</h3>
-
+        <?php if($success){ ?>
+              <div class="alert alert-success">
+                  <strong>Success!</strong> <?php echo $success; ?>
+                </div>
+        <?php } if($error){ ?>
+              <div class="alert alert-danger">
+                  <strong>Error!</strong> <?php echo $error; ?>
+                </div>
+              <?php
+            } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -502,13 +537,22 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
                     <?php
                        $days = (strtotime($dateToday) - strtotime($pat['admitDate'])) / (60 * 60 * 24);
                     ?>
-                    <input name="admitDate" value="<?php echo $days; ?>" class="span11" type="text" readonly/>
+                    <input name="NoOfDays" value="<?php echo $days; ?>" class="span11" type="text" readonly/>
                 </div>
               </div>
+
                 <div class="form-actions">
+
                     <i class="span1"></i>
-                    <input type="submit" name="DischargePatient" value="DISCHARGE PATIENT" onclick="return confirm('Confirm Patient Discharge.');"  class="btn btn-primary btn-block span10" />
-                </div>
+                <?php
+                if($pat['paystatus'] =='Not Paid'){ ?>
+    <input type="submit" name="moveToAcc" value="MOVE TO ACCOUNT" onclick="return confirm('Move To Account For Payment.');"  class="btn btn-primary btn-block span10" />
+
+                <?php }else{ ?>
+    <input type="submit" name="DischargePatient" value="DISCHARGE PATIENT" onclick="return confirm('Confirm Patient Discharge.');"  class="btn btn-primary btn-block span10" />
+
+                <?php }?>
+                    </div>
             </div>
         </div>
      </form>

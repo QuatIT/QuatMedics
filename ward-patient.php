@@ -56,7 +56,7 @@ if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
         <a href="ward-patient?wrdno=<?php echo $wardID;?>" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">WARD PATIENT MANAGEMENT</h3>
 
       <div class="row-fluid">
