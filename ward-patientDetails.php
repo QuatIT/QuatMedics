@@ -75,7 +75,9 @@
 
  include 'layout/head.php';
  //include 'status_administered.php';
-
+    $success = '';
+    $error = '';
+//error_reporting(0);
 if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
 
     $patientID = $_GET['patid'];
@@ -141,7 +143,7 @@ $checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
 $staffDet = select("SELECT * FROM staff WHERE staffID='".$pat['staffID']."'");
 if($staffDet){
     foreach($staffDet as $staffRow){
-        $staffName = $staffRow['lastName'].' '.$staffRow['firstName'].' '.$staffRow['otherNames'];
+        $staffName = $staffRow['lastName'].' '.$staffRow['firstName'].' '.$staffRow['otherName'];
     }
 }
 

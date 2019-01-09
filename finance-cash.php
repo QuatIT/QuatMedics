@@ -176,29 +176,29 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                               <th>PID</th>
                               <th>NAME</th>
                               <th>WARD NAME</th>
-<!--                              <th>PRICE</th>-->
+                              <th>PRICE</th>
                               <th>ACTION</th>
                             </tr>
                           </thead>
                           <tbody>
 							   <?php
-	$fetchward = select("SELECT * FROM wardassigns WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND paystatus='Not Paid'");
+	$fetchward = select("SELECT * FROM wardassigns WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND paystatus='Not Paid' AND charge !='0'");
 							  if($fetchward){
 								  foreach($fetchward as $wardRow){
 									  $pdet = select("select * from patient where patientID='".$wardRow['patientID']."'");
 									  foreach($pdet as $prow){}
 
-									  $labN = select("SELECT * FROM wardlist WHERE wardID='".$wardRow['wardID']."'");
-									  foreach($labN as $labRow){}
+									  $warddet = select("SELECT * FROM wardlist WHERE wardID='".$wardRow['wardID']."'");
+									  foreach($warddet as $warddets){}
 							  ?>
 							  <tr>
 							  	<td> <?php echo $wardRow['patientID'];?></td>
 							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
-							  	<td> <?php echo $labRow['wardName'];?></td>
-<!--							  	<td> <?php //echo $PrivateRow['labprice'];?></td>-->
+							  	<td> <?php echo $warddets['wardName'];?></td>
+							  	<td> <?php echo $wardRow['charge'];?></td>
 							  	<td>
 									<?php if($wardRow['paystatus'] == 'Not Paid'){?>
-									<a href="#?id=<?php echo $wardRow['assignID'];?>"><i class="btn btn-success btn-md fa fa-eye"></i></a>
+									<a href="finance-ward-details?id=<?php echo $wardRow['assignID'];?>"><i class="btn btn-success btn-md fa fa-eye"></i></a>
 								   <?php }?>
 
 									<?php if($wardRow['paystatus'] == 'Paid'){?>

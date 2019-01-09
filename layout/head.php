@@ -12,7 +12,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
     }
 }
 
-$centerID=$_SESSION['centerID'];
+$centerID = $_SESSION['centerID'];
 
 $LICENCE_UPLOAD = PARENT_DIR.$centerID.'/licence/';
 $LAB_RESULT_UPLOAD = PARENT_DIR.$centerID.'/labresults/';
