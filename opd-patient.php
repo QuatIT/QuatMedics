@@ -635,13 +635,13 @@ window.onload = function () {
 
 <script>
 
-        function ccInsure(val){
-            // load the select option data into a div
-                $('#loader').html("Please Wait...");
-                $('#ccmodeload').load('loads/ccmode.php?id='+val, function(){
-                $('#loader').html("");
-               });
-        }
+function ccInsure(val){
+    // load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#ccmodeload').load('loads/ccmode.php?id='+val, function(){
+        $('#loader').html("");
+       });
+}
 
 </script>
 
@@ -662,12 +662,12 @@ window.onload = function () {
 -->
 
 <script type="text/javascript">
-    setInterval("my_function();",5000);
-    function my_function(){
+setInterval("my_function();",5000);
+function my_function(){
 //      $('#outpatientlist').load('loads/oldpatient-load.php');
-        document.getElementById("outpatientlist").innerHTML
-    }
-  </script>
+    document.getElementById("outpatientlist").innerHTML
+}
+</script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

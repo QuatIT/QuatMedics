@@ -29,7 +29,7 @@
 
     if($_SESSION['accessLevel']=='LABORATORY' || $_SESSION['username']=='rik'){
 
-    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."'");
+    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."' GROUP BY patientID");
 
     ?>
 <div id="search">
@@ -84,7 +84,13 @@
                         <tr>
                           <td><?php echo $fet_pats['patientID']; ?></td>
                           <td><?php echo $pname['firstName']." ".$pname['otherName']." ".$pname['lastName']; ?></td>
-                          <td><?php echo $fet_pats['staffID']; ?></td>
+                          <td>
+                              <?php
+                                    $stafSQl = select("select * From staff where staffID='".$fet_pats['staffID']."'");
+                                    foreach($stafSQl as $staffRow){}
+                                    echo $staffRow['lastName'].' '.$staffRow['firstName'].' '.$staffRow['otherName'];
+                              ?>
+                            </td>
                           <td>
 							  <?php
 								$LabNm = select("SELECT * FROM lablist WHERE labID='".$fet_pats['labID']."' ");

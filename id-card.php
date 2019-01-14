@@ -66,7 +66,7 @@
                         <tr class="text-center">
                         <td colspan="3">
                             <h4 class="text-center">
-                                <span style="color:#1860c3;">QUAT</span>MEDIC | <span style="color:#49cced;"><?php echo $centerName['centerName']; ?></span>
+                                <img src="quatmedics.png" alt="QUATMEDIC LOGO" title="QuatMedic Logo" style="height:50px;" /> | <span style="color:#49cced;"><?php echo $centerName['centerName']; ?></span>
                             </h4>
                         </td>
                         </tr>
@@ -78,21 +78,21 @@
                         <tr>
                             <td style="width:20%; text-align:center;" rowspan="5">
 								<?php if(empty($patientrow['patient_image']) || $patientrow['patient_image']='null'){?>
-								<span class="text-center"> No Photo</span>
+								<span class="text-center"> NO IMAGE UPLOADED</span>
 								<?php }else{?>
 								<img src="<?php echo $patientrow['patient_image'];?>" style="width:320px; height:200px;" />
 								<?php }?>
 							</td>
-                            <td> ID Number : </td>
+                            <td> ID NUMBER : </td>
                             <td><?php echo $patientrow['patientID'];?></td>
                         </tr>
                         <tr>
-                            <td> Name : </td>
+                            <td> FULL NAME </td>
                             <td><?php echo $patientrow['lastName']." ".$patientrow['firstName']." ".$patientrow['otherName'];?></td>
                         </tr>
                         <tr> <td> DOB : </td><td><?php echo $patientrow['dob'];?></td></tr>
-                        <tr> <td> Gender : </td><td><?php echo $patientrow['gender'];?></td></tr>
-                        <tr> <td> Phone : </td><td><?php echo $patientrow['phoneNumber'];?></td></tr>
+                        <tr> <td> GENDER : </td><td><?php echo $patientrow['gender'];?></td></tr>
+                        <tr> <td> PHONE : </td><td><?php echo $patientrow['phoneNumber'];?></td></tr>
                     </tbody>
                 </table>
 

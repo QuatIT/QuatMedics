@@ -77,35 +77,41 @@ if(count($codesql) >=1){
 }
 
 //generate labRequestID
-$codesql = select("SELECT * From labresults order by labrequestID DESC limit 1");
-if(count($codesql) >=1){
-	foreach($codesql as $coderow){
-		$code = $coderow['labRequestID'];
-		$oldcode = explode("-",$code);
-		$newID = $oldcode[1]+1;
-		$labReqID = $oldcode[0].".$centerID"."-".$newID;
-	}
-}else{
-	$labReqID = "LABREQ.".$centerID."-1";
-}
+//$codesql = select("SELECT * From labresults order by labrequestID DESC limit 1");
+//if(count($codesql) >=1){
+//	foreach($codesql as $coderow){
+//		$code = $coderow['labRequestID'];
+//		$oldcode = explode("_",$code);
+//		$newID = $oldcode[1]+1;
+//		$labReqID = $oldcode[0].".$centerID"."-".$newID;
+//	}
+//}else{
+//	$labReqID = "LAB-".$centerID."_1";
+//    $centerLabID =  "LAB.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$centerLabIDs);
+//}
+//
+//GENERATE LAB REQUEST ID
+    $getNumber = select("SELECT * FROM labresults WHERE centerID='$centerID'");
+        $totalNumber = count($getNumber) + 1;
+        $labReqID =  "LR.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$totalNumber);
 
 //Request Laboratory.....
 if(isset($_POST['reqLab'])){
     $labNumber = count($_POST['labName']);
 	    $paymode = filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
 
-    if($labNumber > 0) {
-        for($i=0; $i<$labNumber; $i++){
-                if(trim($_POST["labName"][$i] != '')){
-                    $labID = trim($_POST["labName"][$i]);
-                    $status = SENT_TO_LAB;
-					$paystatus = trim("Not Paid");
-					//get labName from lablist table...
-					$getLabName = select("SELECT labName FROM lablist where labID='$labID'");
-					foreach($getLabName as $labName){}
-					//get lab price from prices table using the name...
-					$getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
-					foreach($getLp as $labPrice){}
+if($labNumber > 0) {
+    for($i=0; $i<$labNumber; $i++){
+        if(trim($_POST["labName"][$i] != '')){
+            $labID = trim($_POST["labName"][$i]);
+            $status = SENT_TO_LAB;
+            $paystatus = trim("Not Paid");
+            //get labName from lablist table...
+            $getLabName = select("SELECT labName FROM lablist where labID='$labID'");
+            foreach($getLabName as $labName){}
+            //get lab price from prices table using the name...
+            $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
+            foreach($getLp as $labPrice){}
 
 $insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
 

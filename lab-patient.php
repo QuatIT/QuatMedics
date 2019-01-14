@@ -129,19 +129,16 @@ if(isset($_FILES['file'])){
   <div class="container">
       <h3 class="quick-actions">PATIENT LAB RESULTS</h3>
 
-            <?php
-                      if($success){
-                      ?>
-                      <div class="alert alert-success">
-                  <strong>Success!</strong> <?php echo $success; ?>
-                </div>
-                      <?php } if($error){
-                          ?>
-                      <div class="alert alert-danger">
-                  <strong>Error!</strong> <?php echo $error; ?>
-                </div>
-                      <?php
-                      } ?>
+<?php
+  if($success){ ?>
+  <div class="alert alert-success">
+      <strong>Success!</strong> <?php echo $success; ?>
+    </div>
+  <?php } if($error){ ?>
+  <div class="alert alert-danger">
+      <strong>Error!</strong> <?php echo $error; ?>
+    </div>
+<?php } ?>
 
 
       <div class="row-fluid">
@@ -194,7 +191,7 @@ if(isset($_FILES['file'])){
 														<?php }?>
 													</select>
 												</td>
-												<td><input type="file" class="span11" name="file" accept="application/pdf" required/></td>
+												<td><input type="file" class="span11" name="file[]" accept="application/pdf" required/></td>
 												</tr>
 												<?php }?>
 											</tbody>
@@ -216,7 +213,9 @@ if(isset($_FILES['file'])){
   </div>
 </div>
 <div class="row-fluid ">
-  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+    <div id="footer" class="span12">
+      2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
+    </div>
 </div>
 <script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>
