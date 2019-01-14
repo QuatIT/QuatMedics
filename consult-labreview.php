@@ -37,7 +37,7 @@ include 'layout/head.php';
    	$conid = $_GET['conid'];
     $roomID = $_GET['roomID'];
 	$patientID = $_GET['patientID'];
-//	$centerID = $_GET['centerID'];
+	$lbr = $_GET['lbr'];
 //	$rsult = $_GET['labresult'];
 
 	$rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
@@ -58,62 +58,53 @@ include 'layout/head.php';
         }
     }
 
-         //generate presciptionCode
-        $codesql = select("SELECT * From prescriptions order by prescribeCode DESC limit 1");
-        if(count($codesql) >=1){
-            foreach($codesql as $coderow){
-                $code = $coderow['prescribeCode'];
-                $oldcode = explode("-",$code);
-                $newID = $oldcode[1]+1;
-                $prescribeCode = $oldcode[0]."-".$newID;
-            }
-        }else{
-            $prescribeCode = "PRSCB.".$centerID."-"."1";
-        }
+ //generate presciptionCode
+$codesql = select("SELECT * From prescriptions order by prescribeCode DESC limit 1");
+if(count($codesql) >=1){
+    foreach($codesql as $coderow){
+        $code = $coderow['prescribeCode'];
+        $oldcode = explode("-",$code);
+        $newID = $oldcode[1]+1;
+        $prescribeCode = $oldcode[0]."-".$newID;
+    }
+}else{
+    $prescribeCode = "PRSCB.".$centerID."-"."1";
+}
 
 
-         //generate labRequestID
-        $codesql = select("SELECT * From labresults order by labrequestID DESC limit 1");
-        if(count($codesql) >=1){
-            foreach($codesql as $coderow){
-                $code = $coderow['labRequestID'];
-                $oldcode = explode("-",$code);
-                $newID = $oldcode[1]+1;
-                $labReqID = $oldcode[0]."-".$newID;
-            }
-        }else{
-            $labReqID = "LABREQ.".$centerID."-"."1";
-        }
-
+//GENERATE LAB REQUEST ID
+    $getNumber = select("SELECT * FROM labresults WHERE centerID='$centerID'");
+        $totalNumber = count($getNumber) + 1;
+        $labReqID =  "LR.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$totalNumber);
 
 //Request Laboratory.....
 if(isset($_POST['reqLab'])){
     $labNumber = count($_POST['labName']);
 	    $paymode = filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
 
-    if($labNumber > 0) {
-        for($i=0; $i<$labNumber; $i++){
-                if(trim($_POST["labName"][$i] != '')){
-                    $labID = trim($_POST["labName"][$i]);
-                    $status = SENT_TO_LAB;
-					$paystatus = trim("Not Paid");
-					//get labName from lablist table...
-					$getLabName = select("SELECT labName FROM lablist where labID='$labID'");
-					foreach($getLabName as $labName){}
-					//get lab price from prices table using the name...
-					$getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
-					foreach($getLp as $labPrice){}
+if($labNumber > 0) {
+    for($i=0; $i<$labNumber; $i++){
+        if(trim($_POST["labName"][$i] != '')){
+            $labID = trim($_POST["labName"][$i]);
+//            $status = SENT_TO_LAB;
+            $paystatus = trim("Not Paid");
+            //get labName from lablist table...
+            $getLabName = select("SELECT labName FROM lablist where labID='$labID'");
+            foreach($getLabName as $labName){}
+            //get lab price from prices table using the name...
+            $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
+            foreach($getLp as $labPrice){}
 
-$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
+$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','".SENT_TO_LAB."','$paymode','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
 
-                        if($insertLabReq){
-                             $success =  "LAB REQUEST SENT SUCCESSFULLY";
-        $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
-                            echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
-                        }else{
-                            $error =  "ERROR: LAB REQUEST NOT SENT";
-                        }
-                    }
+    if($insertLabReq){
+         $success =  "LAB REQUEST SENT SUCCESSFULLY";
+    $updatePatient = update("UPDATE consultation set status='".SENT_TO_LAB."' where patientID='$patientID' AND consultID='$conid'");
+        echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
+    }else{
+        $error =  "ERROR: LAB REQUEST NOT SENT";
+    }
+    }
         }
     }else{
        $error =  "ERROR: NO LAB REQUEST MADE";
@@ -394,14 +385,14 @@ if(isset($_POST['presMeds'])){
 </div>
       <div class="row-fluid">
 		  <?php
-		  $labres = select("SELECt * From labresults WHERE consultID='$conid' AND patientID='$patientID'");
-			foreach($labres as $labrow){
-			$status = trim('Reviewed');
-			$updateResult = update("UPDATE labresults SET status='$status' WHERE labRequestID='".$labrow['labRequestID']."'");
+		  $labres = select("SELECt * From labresults WHERE labRequestID='$lbr'");
+			foreach($labres as $labrevRow){
+//			$Newstatus = trim('Reviewed');
+$updateResult = update("UPDATE labresults SET status='Reviewed' WHERE id='".$labrevRow['id']."'");
 
 		  ?>
 		  <div class="span6" style="margin-left:0px;">
-  <iframe src="<?php echo $labrow['labResult'];?>" style="width:100%;height:500px;"></iframe>
+  <iframe src="<?php echo $labrevRow['labResult'];?>" style="width:100%;height:500px;"></iframe>
 		  </div>
 		  <?php }?>
           <div class="span12"  style="margin-left:0px;">
@@ -474,8 +465,6 @@ if(isset($_POST['presMeds'])){
                                           <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
                                         </div>
                                       </div>
-
-
                                         <?php if(!empty($consultrow['insuranceType']) || $consultrow['insuranceType']=='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">INSURANCE TYPE :</label>
@@ -555,14 +544,14 @@ if(isset($_POST['presMeds'])){
                                             $lablist = select("SELECT * from lablist WHERE centerID='".$_SESSION['centerID']."'");
                                             foreach($lablist as $labrow){
                                             ?>
-                                            <option value="<?php echo $labrow['labID'];?>"><?php echo $labrow['labName'];?></option>
+                                    <option value="<?php echo $labrow['labID'];?>"><?php echo $labrow['labName'];?></option>
                                               <?php }?>
                                           </select>
                                         </div>
                                       </div>
 									 <div class="form-actions">
                                           <i class="span1"></i>
-                                        <button type="submit" name="reqLab" class="btn btn-primary btn-block span10"> Request Lab</button>
+                        <button type="submit" name="reqLab" class="btn btn-primary btn-block span10"> Request Lab</button>
                                       </div>
 								 </div>
                             </form>
