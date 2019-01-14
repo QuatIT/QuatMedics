@@ -1,6 +1,9 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
+
+
+
 <head>
 <title>QUAT MEDICS ADMIN</title>
 <meta charset="UTF-8" />
@@ -15,8 +18,10 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
     <style>
         .active{
@@ -42,6 +47,7 @@
 	border-right: 0;
 }
     </style>
+    <meta http-equiv="refresh" content="30">
 </head>
 <body>
 
@@ -91,6 +97,7 @@ VALUES('".$find_ids['bloodID']."','".$donor_ID."','".$cent_ids['centerID']."','"
     $success= "<script>document.write('Entry Was Successful');
                         window.location.href='lab-bloodbank';</script>";
 
+// $group_add = insert("INSERT INTO bloodgroup_tb WHERE bloodgroup='$bloodGroup'");
 
   }
 
@@ -107,17 +114,101 @@ $blood_tally = update("UPDATE bloodgroup_tb SET bloodBags = bloodBags + $num_of_
 //save into bloodGroup_tb
 if(isset($_POST['save_blood'])){
 
+ // $increase=0;
+  // $count_chk = select("SELECT COUNT(*) as blood_pint FROM bloodgroup_tb WHERE bloodGroup = '".$bloodGroup."'");
+  // foreach($count_chk as $count_chks){
+  //   if($count_chks['blood_pint'] > 0){
+  //     echo "<script>alert('Blood group already exists')</script>";
+  //   }else{
+
+
+ // $bloodGroup = $_POST['bloodGroup'];
   $bloodGroup = filter_input(INPUT_POST, 'bloodGroup',FILTER_SANITIZE_STRING);
   $numberOfBags = filter_input(INPUT_POST, 'numberOfBags',FILTER_SANITIZE_STRING);
 
+  // $ftch_grp = select("SELECT * FROM bloodGroup_tb");
+  // foreach($ftch_grp as $ftch_grps){$ftch_grps['bloodGroup'];}
 
-  $group_insert=insert("INSERT INTO bloodgroup_tb(bloodID,bloodGroup,bloodBags)VALUES('$blood_ID ','".$bloodGroup."','".$numberOfBags."')");
-  if($group_insert){
-    $success= "<script>document.write('Entry Was Successful');
-                    window.location.href='lab-bloodbank.php'</script>";
-  }
+// echo $bloodGroup;
+
+// exit();
+  $chk_duplication = select("SELECT * FROM bloodgroup_tb WHERE bloodGroup='$bloodGroup'  && centerID='".$_SESSION['centerID']."'");
+  foreach($chk_duplication as $chk_duplications){}
+  if(count($chk_duplications['bloodGroup']) >= 1 ){
+    echo "<script>alert('Blood group is already in the database');
+    window.location.href='lab-bloodbank.php'
+    </script>";
+  }else{
+  $group_insertz=insert("INSERT INTO bloodgroup_tb(bloodID,bloodGroup,charge,bloodBags,centerID,dateInsert) VALUES('$blood_ID','$bloodGroup','null','null','".$_SESSION['centerID']."', CURDATE())");
+  // if($group_insert){
+  //   $success= "<script>document.write('Entry Was Successful');
+  //                   window.location.href='lab-bloodbank.php'</script>";
+
+      if(!$group_insertz){
+        echo "bad";
+       }
+
+ }
+
+ }
+
+ //BLOOD REQUEST
+
+ $bl_request = select("SELECT * FROM bloodrequest WHERE flag='' ");
+ foreach($bl_request as $bl_requests){}
+
+
+ $bld_count = select("SELECT COUNT(*) as blood_counter FROM bloodrequest WHERE flag=''");
+ foreach( $bld_count as  $bld_counts){}
+
+
+  //USER
+
+
+
+  //APPROVE/DENY REQUESTS
+
+  if(isset($_POST['app_deny'])){
+    $selxr = filter_input(INPUT_POST,'selxr',FILTER_SANITIZE_STRING);
+    $flag =1;
+    // $selxr1 = filter_input(INPUT_POST,'selxr1',FILTER_SANITIZE_STRING);
+    // $selxr2 = filter_input(INPUT_POST,'selxr2',FILTER_SANITIZE_STRING);
+
+//      $get_use = select("SELECT * FROM centeruser WHERE userName ='".$_SESSION['username']."'");
+// foreach( $get_use as  $get_uses){ $get_uses['staffID'];}
+
+     $bl_request = select("SELECT * FROM bloodrequest WHERE flag = '' ");
+ foreach($bl_request as $bl_requests){}
+
+$bl_count = select("SELECT COUNT(*) as request_count FROM bloodrequest WHERE flag=''");
+foreach($bl_count as $bl_counts){ $req_count=$bl_counts['request_count'];}
+
+
+
+if($req_count > 0){
+   for($i=0; $i<$req_count; $i++){
+
+  $request_update = update("UPDATE bloodrequest SET status='".$selxr."', approved_by ='".$_SESSION['username']."' ,request_time = NOW(), flag= '$flag' WHERE requestID = '".$bl_requests['requestID']."' ");
+
+
+
 }
-?>
+    }
+
+  }
+
+}
+
+  // foreach($request_update as $request_updates){}
+
+
+
+
+
+
+//}
+
+    ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
@@ -126,9 +217,9 @@ if(isset($_POST['save_blood'])){
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li> <a href="lab-index"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
-    <li class="active"><a href="lab-bloodbank"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
+<!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
+    <li> <a href="lab-index.php"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
+    <li class="active"><a href="lab-bloodbank.php"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
     </ul>
 </div>
 
@@ -161,9 +252,15 @@ if(isset($_POST['save_blood'])){
             <div class="widget-title">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab1">Blood Group List</a></li>
+
                     <li><a data-toggle="tab" href="#tab2">Add New Blood Group</a></li>
+                    <li><a data-toggle="tab" href="#tabRequest">Blood Request - <?php echo $bld_counts['blood_counter']; ?></a></li>
+
                 </ul>
             </div>
+
+
+
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
                     <div class="widget-box">
@@ -232,30 +329,18 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header <?php echo $blood_grpx['bloodID']; ?></h4>
+        <h4 class="modal-title">QuatMedics <?php echo $blood_grpx['bloodID']; ?></h4>
       </div>
       <div class="modal-body">
-<!--        <p>Some text in the modal.</p>-->
+
           <form action="" method="post">
 
                                          <center><p><b>RESET CHARGE</b>&nbsp;&nbsp;&nbsp;&nbsp;<input type='number' name='eff_chng' id='eff_chng' class='form-control'></p>
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='ch_sub<?php echo $blood_grpx['id']; ?>' id='ch_sub' class='btn btn-info' value='CHANGE'></center>
 
-<!--                                       </div>-->
-<!--
-                                       <div class='modal-footer'>
-                                         <button type='button' name='mod_dismiss' id='mod_dismiss' class='btn btn-default' data-dismiss='modal'><b>Close</b></button>
-                                       </div>
--->
           </form>
                                      </div>
 
-<!--      </div>-->
-<!--
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
--->
     </div>
 
   </div>
@@ -310,9 +395,139 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
                       </div>
                     </form>
                 </div>
-            </div>
-        </div>
-      </div>
+           <!--  </div> -->
+       <!--  </div> -->
+    <!--   </div> -->
+
+
+
+
+  <div id="tabRequest" class="tab-pane">
+                    <form action="#" method="post" class="form-horizontal">
+                    <div class="span6">
+                          <div class="widget-content nopadding">
+                              <div class="control-group">
+                                <div class = 'container'>
+                                <table class='table table-bordered' style='width:1100px;' >
+                                  <thead class='thead-dark'>
+                                  <tr>
+
+
+                                    <th>REQUEST ID</th>
+                                    <th>FROM</th>
+                                    <th>STAFF ID</th>
+                                    <th>QUANTITY</th>
+                                    <th>TIME</th>
+                                    <th>AVAILABLE</th>
+                                    <th>PATIENT ID</th>
+                                    <th>ACTION</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php foreach( $bl_request as  $bl_requests){
+                                    $b_count = select("SELECT * FROM bloodgroup_tb WHERE bloodID= '".$bl_requests['bloodID']."'");
+                                    foreach($b_count as $b_counts){}
+                                    ?>
+                                  <tr>
+                                    <td><input type='text' name='reqID' id='reqID' style='background:transparent;border:0px;' value='<?php echo $bl_requests['requestID'];?>'></td>
+                                    <td><?php echo $bl_requests['request']; ?></td>
+                                    <td><?php echo $bl_requests['staffID']; ?></td>
+                                    <td><?php echo $bl_requests['quantity']; ?></td>
+                                    <td><?php echo $bl_requests['doe']; ?></td>
+                                    <td><?php echo $b_counts['bloodBags'];?></td>
+                                    <td><?php echo $bl_requests['patientID'];?></td>
+                                    <td><select name='selxr' id='selxr' class='form-control' style='width:120px;' >
+                                      <option></option>
+                                      <option value='APPROVED'>APPROVE
+
+                                      </option>
+                                      <option value='DENIED'>DENY</option>
+                                       <option value='Not Enough Available'>NOT ENOUGH</option>
+                                    </select></td>
+
+                                     <!-- <button type='submit' class='btn-sm btn-info' name='selxr1' id='selxr1' value='APPROVED <?php $reqID; ?>'>Approve</button> -->
+
+
+
+                                      <?php
+                                     // $reqID = filter_input(INPUT_POST,'reqID',FILTER_SANITIZE_STRING);
+//                                       if(isset($_POST['selxr1'.$bl_requests['requestID']])){
+//     $reqID = filter_input(INPUT_POST,'reqID',FILTER_SANITIZE_STRING);
+
+//    $selxr1 = filter_input(INPUT_POST,'selxr1',FILTER_SANITIZE_STRING);
+//     // $selxr2 = filter_input(INPUT_POST,'selxr2',FILTER_SANITIZE_STRING);
+
+//      $bl_request = select("SELECT * FROM bloodrequest ");
+//  foreach($bl_request as $bl_requests){}
+//  $bl_count = select("SELECT COUNT(*) as request_count FROM bloodrequest");
+// foreach($bl_count as $bl_counts){ $req_count=$bl_counts['request_count'];}
+
+// $approve = update("UPDATE bloodrequest SET status='".$selxr1."', approved_by ='".$_SESSION['username']."' ,request_time = NOW() WHERE requestID = '".$bl_requests['requestID']."' ");
+  // echo "<script>alert('{$bl_requests['requestID']}')</script>";
+  }
+
+
+  ?>
+<!--  </button> -->
+
+
+
+                                    <!--   &nbsp;&nbsp;<button type='submit' class='btn-sm btn-warning' name='selxr2<?php $reqID; ?>' id='selxr2<?php $reqID; ?>' value='Denied<?php $reqID;?>'>Deny -->
+
+                                        <?php
+
+   //                                      if(isset($_POST['selxr2'])){
+   //  $reqID = filter_input(INPUT_POST,'reqID',FILTER_SANITIZE_STRING);
+
+   // $selxr2 = filter_input(INPUT_POST,'selxr2',FILTER_SANITIZE_STRING);
+    // $selxr2 = filter_input(INPUT_POST,'selxr2',FILTER_SANITIZE_STRING);
+
+//      $bl_request = select("SELECT * FROM bloodrequest ");
+//  foreach($bl_request as $bl_requests){}
+//  $bl_count = select("SELECT COUNT(*) as request_count FROM bloodrequest");
+// foreach($bl_count as $bl_counts){ $req_count=$bl_counts['request_count'];}
+
+// $deny = update("UPDATE bloodrequest SET status='".$selxr2."', approved_by ='".$_SESSION['username']."' ,request_time = NOW() WHERE requestID = '".$reqID."' ");
+//                                     }
+
+                                        ?>
+
+                                      <!-- </button> -->
+
+
+
+
+                                    </td>
+                                 <!--  <?php #} ?> -->
+                                  </tr>
+
+                                </tbody>
+
+
+
+                                </table>
+                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' style='margin-left:81.5%;' name='app_deny' id='app_deny' class='btn btn-primary '  value='SEND'>
+                              </div>
+                          </div>
+                      </div>
+                    <div class="span6">
+                          <div class="widget-content nopadding">
+                              <div class="control-group">
+
+
+                               </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </form>
+                </div>
+           <!--  </div> -->
+       <!--  </div> -->
+     <!--  </div> -->
+
+
+
 
 
 <!--      <hr/>-->
@@ -358,6 +573,8 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
                       </div>
                     </div>
                 </div>
+
+
                 <div id="tab4" class="tab-pane">
                     <form action="#" method="post" class="form-horizontal">
                     <div class="span6">
@@ -401,6 +618,8 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
                               </div>
                           </div>
                       </div>
+
+
                     <div class="span6">
                           <div class="widget-content nopadding">
 
@@ -435,24 +654,27 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
                                 </div>
                               </div>
 
-
-
                               <div class="form-actions">
                                   <i class="span1"></i>
                                 <button type="submit" class="btn btn-primary btn-block span10"name="save_group">Save Blood</button>
                               </div>
                           </div>
-                      </div>
+                        </div>
                     </form>
                 </div>
             </div>
+
         </div>
       </div>
 
     </div>
 </div>
+
+
+
+
 <div class="row-fluid ">
-  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN By  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>
@@ -505,6 +727,22 @@ function resetMenu() {
 </script>
 
 
+
+<!-- <script>
+  $(document).ready(function(){
+$('#app_deny').click(function(){
+  $('').hide();
+
+
+});
+
+  });
+
+
+</script> -->
+
+
 </body>
 </html>
-<?php }else{echo "<script>window.location='404'</script>";}?>
+<!-- <?php #}else{echo "<script>window.location='404'</script>";}?> -->
+
