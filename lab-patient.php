@@ -90,7 +90,7 @@ if(!empty($file) and empty($labresult)){
                 $file_destination = $LAB_RESULT_UPLOAD.$file_name_new;
                 //check if file has been loaded earlier and move it from temporary location into folder
                 if(move_uploaded_file($file_tmp,$file_destination)){
-    $qry =update("UPDATE labresults SET labResult='$file_destination',status='".SENT_TO_CONSULTING."' WHERE labRequestID='".$labRequestID."' AND labID='$labID' ");
+    $qry =update("UPDATE labresults SET labResult='$file_destination',status='".SENT_TO_CONSULTING."',type='1' WHERE labRequestID='".$labRequestID."' AND labID='$labID' ");
     if($qry){
         $success = "<script>document.write('FILE UPLOAD SUCCESSFULL.');</script>";
     }
@@ -104,7 +104,7 @@ if(!empty($file) and empty($labresult)){
 }
 
 if(!empty($labresult) and empty($file)){
-    $qry =update("UPDATE labresults SET labResult='$labresult',status='".SENT_TO_CONSULTING."' WHERE labRequestID='$labRequestID' AND labID='$labID' ");
+    $qry =update("UPDATE labresults SET labResult='$labresult',status='".SENT_TO_CONSULTING."', type='2' WHERE labRequestID='$labRequestID' AND labID='$labID' ");
     if($qry){
         $success = "<script>document.write('RESULT SENT SUCCESSFULLY.');</script>";
     }

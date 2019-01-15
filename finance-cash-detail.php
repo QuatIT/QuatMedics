@@ -87,6 +87,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
         <li><a href="finance-cash"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
         <li class="active"> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
         <li><a href="finance-insurance"><i class="icon icon-calendar"></i><span>INSURANCE</span></a></li>
+        <li><a href="finance-cash-report"><i class="icon-list-alt"></i><span>REPORT</span></a></li>
     </ul>
 </div>
 

@@ -217,6 +217,8 @@ $req_stat = select("SELECT * FROM bloodrequest WHERE patientID='".$get_PID."' &&
   $req_cnt = select("SELECT COUNT(*) as request_co FROM bloodrequest WHERE patientID='".$get_PID."' && flag= 1 && confirm='' && dateInsert = CURDATE() ");
 foreach($req_cnt as $req_cnts){$req_cnts['request_co'];}
 
+
+
 //CONFIRM RECEIPT
 if(isset($_POST['sub_mitx'])){
   $con_firm='confirmed';

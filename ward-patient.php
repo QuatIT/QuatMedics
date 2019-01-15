@@ -78,7 +78,7 @@ if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
                             <tr>
                               <th>PATIENT ID</th>
                               <th>ADMITTED FOR</th>
-                              <th>NURSE</th>
+                              <th>ADMITTED BY</th>
                               <th>ADMITTED</th>
                               <th>DISCHARGE</th>
                               <th>ACTION</th>
@@ -91,12 +91,17 @@ if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
                             <tr>
                               <td><?php echo $wrd_assign['patientID']; ?></td>
                               <td><?php echo $wrd_assign['admitDetails']; ?></td>
-                              <td><?php echo $wrd_assign['staffID']; ?></td>
+                              <td>
+                                  <?php
+                                    $doc = select("SELECT * FROM staff where staffID='".$wrd_assign['staffID']."'");
+                                     foreach($doc as $docrow){}
+                                    echo $docrow['lastName'].' '.$docrow['firstName'].' '.$docrow['otherName'];
+                                  ?>
+                                </td>
                               <td><?php echo $wrd_assign['admitDate']; ?></td>
                               <td> <?php echo $wrd_assign['dischargeDate']; ?></td>
                               <td style="text-align: center;">
-                <a href="ward-patientDetails?patid=<?php echo $wrd_assign['patientID'].'&wrdno='.$wardID.'&assign='.$wrd_assign['assignID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
-<!--                                   <a href="ward-patientAssign?patid=<?php #echo $wrd_assign['patientID'].'&wrdno='.$wardID; ?>"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>-->
+            <a href="ward-patientDetails?patid=<?php echo $wrd_assign['patientID'].'&wrdno='.$wardID.'&assign='.$wrd_assign['assignID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
                               </td>
                             </tr>
                               <?php } ?>
