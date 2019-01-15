@@ -48,7 +48,7 @@ foreach($load_consultation as $consultRow){
       <?php }?>
     </td>
   <td style="text-align: center;">
-       <a href="consult-patient2?conid=<?php echo $consultRow['consultID'];?>&roomID=<?php echo $roomID;?>"> <span class="btn btn-primary fa fa-eye"></span></a>
+       <a href="consult-patient?conid=<?php echo $consultRow['consultID'];?>&roomID=<?php echo $roomID;?>"> <span class="btn btn-primary fa fa-eye"></span></a>
   </td>
 </tr>
 
