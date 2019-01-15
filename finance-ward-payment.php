@@ -63,7 +63,7 @@ if($updateCredit){
         $transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,debitAcc,Amount,patientID,staffID,activity,dateInsert) VALUES('$centerID','$wdCrName','$cnterDBName','".$assignRow['charge']."','".$assignRow['patientID']."','$staffID','$activity','$dateInsert')");
 
         if($transaction){
-           //update consult prescribedmeds row..
+           //update wardassigns row..
             $status = trim("Paid");
             $update = update("UPDATE wardassigns SET paystatus='$status' WHERE assignID='$id'");
 
