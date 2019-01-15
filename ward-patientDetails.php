@@ -372,16 +372,61 @@ if(isset($_POST['moveToAcc'])){
           <div class="widget-content nopadding">
               <table class="table table-bordered" id="dynamic_field">
                   <tr>
-                      <td colspan="3"><textarea style="width:100%;" placeholder="Comments" name="comment"></textarea></td>
+                      <td colspan="4"><textarea style="width:100%;" rows="3" placeholder="Comments" name="comment"></textarea></td>
                   </tr>
-                <tr>
-                    <td><input type="text" name="treatment[]" placeholder="Treatment / Medicine" class="span11" required /></td>
-                    <td><input type="text" name="dosage[]" placeholder="Dosage / Details" class="span11" required /></td>
-                    <td style="text-align:center;"><button type="button" name="add" id="add" class="btn btn-primary">ADD TREATMENT</button></td>
-                </tr>
+
+                  <tr>
+						<th style="width:40%;"> Medicine Name</th>
+						<th> No of intakes / Pieces</th>
+						<th> Intakes Per Day</th>
+						<th> Number Of Days</th>
+					</tr>
+                		<?php
+					$num = 6;
+					if(!empty($num)){
+					  for($i=0; $i<$num;$i++){
+					?>
+					<tr>
+						<td style="width:40%;">
+							<?php
+							if($pat['paymode'] == 'Insurance'){
+                                $insuranceType = $pat['insuranceType'];
+							?>
+							<select name="medName[]" class="span11">
+								<option></option>
+							 <?php
+
+						  	$centerNHISLevel = $centerName['centerNhisLevel'];
+//						  	$level = explode(" ",$centerNHISLevel);
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='Private'");
+								if($meds){
+									foreach($meds as $medrow){
+							?>
+							<option value="<?php echo $medrow['medicine_id']; ?>"> <?php echo $medrow['medicine_name']; ?></option>
+							 <?php }} ?>
+							</select>
+							<?php }else{
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
+							?>
+                            <select name="medName[]" class="span11">
+                                <option></option>
+                                <?php
+                                if($medsx){
+                            foreach($medsx as $medrowx){
+                                ?>
+                    <option value="<?php echo $medrowx['medicine_id']; ?>"> <?php echo $medrowx['medicine_name']; ?></option>
+                                <?php }}?>
+                            </select>
+							<?php }?>
+						</td>
+						<td><input type="number" min="1" name="pieces[]" placeholder="e.g. 2" class="span11" /></td>
+						<td><input type="number" min="1" name="aday[]" placeholder="e.g. 3" class="span11" /></td>
+						<td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" /></td>
+					</tr>
+						  <?php }} ?>
             </table>
               <div class="form-actions" style="padding-left:0px;padding-right:0px;">
-                  <i class="span9"></i>
+                  <i class="span10"></i>
                 <button type="submit" name="saveTreatment" class="btn btn-primary"> SAVE TREATMENT</button>
               </div>
           </div>

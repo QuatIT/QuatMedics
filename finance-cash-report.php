@@ -66,6 +66,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>DATE</th>
                   <th>CREDIT ACCOUNT</th>
                   <th>DEBIT ACCOUNT(s)</th>
                   <th>AMOUNT</th>
@@ -80,6 +81,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                   ?>
                   <tr>
                     <td><?php echo $transRow['id'];?></td>
+                    <td><?php echo $transRow['dateInsert'];?></td>
                     <td><?php echo $transRow['creditAcc'];?></td>
                     <td><?php echo $transRow['debitAcc'];?></td>
                     <td><?php echo $transRow['Amount'];?></td>

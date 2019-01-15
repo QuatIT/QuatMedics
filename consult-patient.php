@@ -790,14 +790,10 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                                 </tr>
                             </table>
 					  </td>
-					  <br><br>
+					  <br>
+                      <br>
 
 				  </tr>
-<!--
-				  <tr>
-					<td colspan="3"><textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea>  </td>
-				  </tr>
--->
 			</table>
 		 </div>
 

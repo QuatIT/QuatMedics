@@ -89,6 +89,7 @@ include 'layout/head.php';
     <li class="active">
 		<a href="finance-insurance"><i class="icon icon-file"></i><span>INSURANCE</span></a>
 	</li>
+    <li><a href="finance-cash-report"><i class="icon-list-alt"></i><span>REPORT</span></a></li>
     </ul>
 </div>
 
