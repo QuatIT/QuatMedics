@@ -644,7 +644,7 @@ window.onload = function () {
 
 <script>
 
-<<<<<<< HEAD
+
         function ccInsure(val){
             // load the select option data into a div
                 $('#loader').html("Please Wait...");
@@ -652,15 +652,15 @@ window.onload = function () {
                 $('#loader').html("");
                });
         }
-=======
-function ccInsure(val){
-    // load the select option data into a div
-        $('#loader').html("Please Wait...");
-        $('#ccmodeload').load('loads/ccmode.php?id='+val, function(){
-        $('#loader').html("");
-       });
-}
->>>>>>> QuatMedics/master
+
+// function ccInsure(val){
+//     // load the select option data into a div
+//         $('#loader').html("Please Wait...");
+//         $('#ccmodeload').load('loads/ccmode.php?id='+val, function(){
+//         $('#loader').html("");
+//        });
+// }
+
 
 </script>
 
