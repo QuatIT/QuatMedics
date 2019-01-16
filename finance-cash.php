@@ -65,7 +65,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                         <h5>Fixed Prices</h5>
+                         <h5>CONSULTATION AND MEDICATION CHARGES</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
@@ -79,7 +79,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							  <?php
-		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND serviceName='CONSULTATION'  GROUP BY patientID");
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND serviceName='CONSULTATION' AND status='Not Paid'");
 							  if($fetchAll){
 								  foreach($fetchAll as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -100,6 +100,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 <!--            </div>-->
 <!--        </div>		  -->
 		  </div>
+
 		  <div class="span6">
 <!--        <div class="widget-box">-->
 <!--            <div class="widget-content tab-content">-->
@@ -107,7 +108,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                         <h5>LAB and Other Prices</h5>
+                         <h5>LABORATORY CHARGES</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
@@ -122,7 +123,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							   <?php
-	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private'");
+	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND paystatus='Not Paid'");
 							  if($fetchlab){
 								  foreach($fetchlab as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -156,6 +157,64 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 <!--        </div>		  -->
 		  </div>
 
+      </div>
+
+      <div class="row-fluid">
+      		  <div class="span6">
+<!--        <div class="widget-box">-->
+<!--            <div class="widget-content tab-content">-->
+<!--                <div id="tab1" class="tab-pane active">-->
+                    <div class="widget-box">
+                      <div class="widget-title">
+                         <span class="icon"><i class="icon-th"></i></span>
+                         <h5>WARD CHARGES</h5>
+                      </div>
+                      <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th>PID</th>
+                              <th>NAME</th>
+                              <th>WARD NAME</th>
+                              <th>PRICE</th>
+                              <th>ACTION</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+							   <?php
+	$fetchward = select("SELECT * FROM wardassigns WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND paystatus='Not Paid' AND charge !='0'");
+							  if($fetchward){
+								  foreach($fetchward as $wardRow){
+									  $pdet = select("select * from patient where patientID='".$wardRow['patientID']."'");
+									  foreach($pdet as $prow){}
+
+									  $warddet = select("SELECT * FROM wardlist WHERE wardID='".$wardRow['wardID']."'");
+									  foreach($warddet as $warddets){}
+							  ?>
+							  <tr>
+							  	<td> <?php echo $wardRow['patientID'];?></td>
+							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
+							  	<td> <?php echo $warddets['wardName'];?></td>
+							  	<td> <?php echo $wardRow['charge'];?></td>
+							  	<td>
+									<?php if($wardRow['paystatus'] == 'Not Paid'){?>
+									<a href="finance-ward-details?id=<?php echo $wardRow['assignID'];?>"><i class="btn btn-success btn-md fa fa-eye"></i></a>
+								   <?php }?>
+
+									<?php if($wardRow['paystatus'] == 'Paid'){?>
+									<span class="label label-success text-center"><?php  echo $PrivateRow['paystatus'];?></span>
+								   <?php }?>
+								</td>
+							  </tr>
+							  <?php }}?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>		  -->
+		  </div>
       </div>
   </div>
 </div>

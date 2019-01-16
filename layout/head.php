@@ -12,7 +12,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
     }
 }
 
-$centerID=$_SESSION['centerID'];
+$centerID = $_SESSION['centerID'];
 
 $LICENCE_UPLOAD = PARENT_DIR.$centerID.'/licence/';
 $LAB_RESULT_UPLOAD = PARENT_DIR.$centerID.'/labresults/';
@@ -26,7 +26,11 @@ foreach($centerName_sql as $centerName){}
 
 <!--Header-part-->
 <div id="header">
-  <h1><a> <span style="color:#1860c3;">Q<i class="fa fa-stethoscope"></i>AT</span>MEDIC | <small><?php echo $centerName['centerName']; ?></small></a> </h1>
+    <h1>
+        <a>
+             <img src="quatmedics.png" alt="QUATMEDIC LOGO" title="QuatMedic Logo" style="height:50px;" /> | <small><?php echo $centerName['centerName']; ?></small>
+        </a>
+    </h1>
 </div>
 <!--close-Header-part-->
 
@@ -144,3 +148,8 @@ $('textarea').val (function () {
     return this.value.toUpperCase();
 });
 </script>
+<style>
+    .control-label{
+        font-weight: bolder;
+    }
+</style>

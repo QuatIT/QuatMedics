@@ -16,45 +16,50 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
+    <style>
+        .active{
+            background-color: #209fbf;
+        }
+    </style>
 </head>
 <body>
 
-<?php include 'layout/head.php'; ?>
+<?php
+include 'layout/head.php';
+$_SESSION['current_page']=$_SERVER['REQUEST_URI'];
+?>
 
 <div id="search">
-  <input type="text" placeholder="Search here..."/>
-  <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
+  <input type="text" placeholder="Search here..." disabled/>
+  <button type="submit" class="tip-left" title="Search" disabled><i class="icon-search icon-white"></i></button>
 </div>
 
 <!--close-top-Header-menu-->
 
 <div id="sidebar">
     <ul>
-<!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li> <a href="opd-index.php"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
-    <li> <a href="opd-patient.php"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
-    <li><a href="opd-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
+    <li><a href="finance-insurance"><i class="icon icon-file"></i><span>INSURANCE</span></a></li>
+    <li class="active"><a href="finance-cash-report"><i class="icon-list-alt"></i><span>REPORT</span></a></li>
     </ul>
 </div>
-
-
 
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="" class="tip-bottom"><i class="icon-plus"></i> OPD</a>
-        <a title="" class="tip-bottom"><i class="icon-plus"></i> PATIENT INFORMATION</a>
+        <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-briefcase"></i> CASH PAYMENT</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">ACCOUNT TRANSACTION</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
           <div class="widget-title">
              <span class="icon"><i class="icon-th"></i></span>
-            <h5>Transaction Table</h5>
+            <h5>TRANSACTION TABLE</h5>
           </div>
           <div class="widget-content nopadding">
             <table class="table table-bordered data-table">
@@ -68,15 +73,21 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="gradeX">
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0</td>
-                  <td>Win 95+</td>
-                  <td>Win 95+</td>
-                  <td class="center">4</td>
-                </tr>
-
+                  <?php
+                  $trans = SELECT("SELECT * FROM accounttransaction WHERE centerID='$centerID' ORDER BY id ASC");
+                  if($trans){
+                      foreach($trans as $transRow){
+                  ?>
+                  <tr>
+                    <td><?php echo $transRow['id'];?></td>
+                    <td><?php echo $transRow['creditAcc'];?></td>
+                    <td><?php echo $transRow['debitAcc'];?></td>
+                    <td><?php echo $transRow['Amount'];?></td>
+                    <td><?php echo $transRow['activity'];?></td>
+                  </tr>
+                  <?php }}else{?>
+                  <tr><td colspan="5"> NO ACCOUNT TRANSACTION SAVED.</td></tr>
+                  <?php }?>
               </tbody>
             </table>
           </div>
@@ -84,8 +95,10 @@
       </div>
     </div>
 </div>
-<div class="row-fluid">
-  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+<div class="row-fluid ">
+ 	<div id="footer" class="span12">
+	  2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
+	</div>
 </div>
 <script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>
@@ -109,7 +122,19 @@
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
 
+<script>
+function dis(){
+    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","loads/consultappoint-load?staffID=<?php echo $staffID;?>",false);
+    xmlhttp.send(null);
+    document.getElementById("appointment").innerHTML=xmlhttp.responseText;
+}
+    dis();
 
+    setInterval(function(){
+        dis();
+    },1000);
+</script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to
@@ -124,31 +149,15 @@
               resetMenu();
           }
           // else, send page to designated URL
-        else {
+          else {
             document.location.href = newURL;
           }
       }
   }
-
 // resets the menu selection upon entry to this page:
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
-</script>
-
-<script>
-//    $(document).ready(function(){
-        var i=1;
-        $('#add2').click(function(){
-            i++;
-            $('#dynamic_field2').append('<tr id="row'+i+'"><td><select class="span" name="serviceType"><option value="Service">Service</option><option value="Lab"> Lab Test</option></select></td><td><input type="text" name="ServiceName[]" placeholder="Service or Lab Name" class="span11" required /></td><td><input type="text" name="servicePrice[]" placeholder="Price" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
-        });
-
-        $(document).on('click', '.btn_remove', function(){
-            var button_id = $(this).attr("id");
-            $('#row'+button_id+'').remove();
-        });
-//    });
 </script>
 </body>
 </html>

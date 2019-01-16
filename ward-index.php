@@ -47,48 +47,50 @@
 </head>
 <body>
 <?php
-    include 'layout/head.php';
+include 'layout/head.php';
+$WARD = new Ward();
 
-    if($_SESSION['accessLevel']=='WARD'){
-    $success = '';
-    $error = '';
-     $wardID = $_GET['wrdno'];
+if($_SESSION['accessLevel']=='WARD'){
+$success = '';
+$error = '';
+$wardID = $_GET['wrdno'];
 
 //    if(!empty($wardID)){
-        $wardByID = Ward::find_by_ward_id($wardID);
-        foreach($wardByID as $ward_id){}
+$wardByID = $WARD->find_by_ward_id($wardID);
+foreach($wardByID as $ward_id){}
 //    }else{
-        $ward = Ward::find_ward();
-      $centerID= $centerName['centerID'];
+$ward = $WARD->find_ward();
+$centerID= $centerName['centerID'];
+
+//}
 
 
-//    }
-
-      //bed id
-//      $bed_ID = ward::get_bed_id() + 1;
-      $bed_ID = count(select("SELECT * FROM bedlist ")) + 1;
+//bed id
+//$bed_ID = ward::get_bed_id() + 1;
+$bed_ID = count(select("SELECT * FROM bedlist ")) + 1;
 $bedID ="BED-".substr($centerID,0,12)."-".substr($wardID,0,8)."-".sprintf('%01s',$bed_ID);
-$bedNumber = Ward::get_bed_id()+1;
+$bedNumber = $WARD->get_bed_id()+1;
+
 
 
 //add new bed
-      if(isset($_POST['btnSave'])){
+  if(isset($_POST['btnSave'])){
 
-        //$bedNumber = filter_input(INPUT_POST, "bedNumber", FILTER_SANITIZE_STRING);
-        $bedDescription = filter_input(INPUT_POST, "bedDescription", FILTER_SANITIZE_STRING);
-        $bedCharge = filter_input(INPUT_POST, "bedCharge", FILTER_SANITIZE_STRING);
-        $bedStatus = "Free";
+    //$bedNumber = filter_input(INPUT_POST, "bedNumber", FILTER_SANITIZE_STRING);
+    $bedDescription = filter_input(INPUT_POST, "bedDescription", FILTER_SANITIZE_STRING);
+//        $bedCharge = filter_input(INPUT_POST, "bedCharge", FILTER_SANITIZE_STRING);
+    $bedStatus = "Free";
 
-       $bed = Ward::saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
-        if($bed){
-            //$success = "BED CREATED SUCCESSFULLY;";
+   $bed = $WARD->saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$wardID,$bedStatus);
+    if($bed){
+        //$success = "BED CREATED SUCCESSFULLY;";
 
-             $success= 'BED CREATED SUCCESSFULLY!';
-             //echo $success;
-        }else{
-            //$error = "";
+         $success= 'BED CREATED SUCCESSFULLY!';
+         //echo $success;
+    }else{
+        //$error = "";
 //            $error= 'BED NOT CREATED';
-            //echo $error;
+        //echo $error;
 //            $bedNumber = Ward::get_bed_id()+1;
 //             $bed = Ward::saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
 //             if($bed){
@@ -97,10 +99,10 @@ $bedNumber = Ward::get_bed_id()+1;
 //             $success= 'BED CREATED SUCCESSFULLY!';
 //             //echo $success;
 //        }else{
-                  $error= 'BED NOT CREATED';
+              $error= 'BED NOT CREATED';
 //             }
-        }
     }
+}
 
 
 
@@ -164,74 +166,65 @@ $bedNumber = Ward::get_bed_id()+1;
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Bed List</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Bed</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">BED LIST</a></li>
+<!--                    <li><a data-toggle="tab" href="#tab2">Add New Bed</a></li>-->
                 </ul>
             </div>
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
-                    <div class="widget-box">
-                      <div class="widget-title">
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>Bed Number</th>
-                              <th>Description</th>
-                              <th>Charge</th>
-                              <th>Status</th>
-                            </tr>
-                          </thead>
-                          <tbody id="load_bed"></tbody>
-                        </table>
-                      </div>
-                    </div>
-                </div>
-                <div id="tab2" class="tab-pane">
-                    <form action="" method="post" class="form-horizontal">
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                     <div class="span6">
-<!--                        <div class="widget-box">-->
-                          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Bed-info</h5>
-                          </div>
                           <div class="widget-content nopadding">
-<!--                            <form action="#" method="post" class="form-horizontal">-->
                              <div class="control-group">
-                                <label class="control-label">Bed Number :</label>
+                                <label class="control-label">BED NUMBER :</label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Bed Number" value="<?php echo $bedNumber; ?>" name="bedNumber" readonly />
                                 </div>
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label">Bed Description :</label>
+                                <label class="control-label">BED DESCRIPTION :</label>
                                 <div class="controls">
                                     <textarea class="span11" name="bedDescription" required></textarea>
                                 </div>
                               </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Bed-info</h5>
-                          </div>
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Charge :</label>
-                                <div class="controls">
-                                  <input type="number" class="span11" placeholder="Bed Charge" name="bedCharge" required />
-                                </div>
-                              </div>
-<!--                              <div class="controls"></div>-->
+
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Bed</button>
+                                <button type="submit" name="saveBed" class="btn btn-primary btn-block span10">SAVE BED</button>
                               </div>
                           </div>
                       </div>
                     </form>
+
+                    <div class="span6">
+                     <div class="widget-box">
+                         <div class="widget-title">
+                              <span class="icon"> <i class="icon-align-justify"></i> </span>
+                            <h5>Bed-info</h5>
+                          </div>
+                          <div class="widget-content nopadding">
+                            <table class="table table-bordered data-table">
+                              <thead>
+                                <tr>
+                                  <th>Bed Number</th>
+                                  <th>Description</th>
+<!--                                  <th>Charge</th>-->
+                                  <th>Status</th>
+                                </tr>
+                              </thead>
+                              <tbody id="load_bed"></tbody>
+                            </table>
+                          </div>
+                    </div>
                 </div>
+
+            </div>
+<!--
+                <div id="tab2" class="tab-pane">
+
+                </div>
+-->
             </div>
         </div>
       </div>

@@ -37,7 +37,7 @@ include 'layout/head.php';
    	$conid = $_GET['conid'];
     $roomID = $_GET['roomID'];
 	$patientID = $_GET['patientID'];
-//	$centerID = $_GET['centerID'];
+	$lbr = $_GET['lbr'];
 //	$rsult = $_GET['labresult'];
 
 	$rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
@@ -58,62 +58,53 @@ include 'layout/head.php';
         }
     }
 
-         //generate presciptionCode
-        $codesql = select("SELECT * From prescriptions order by prescribeCode DESC limit 1");
-        if(count($codesql) >=1){
-            foreach($codesql as $coderow){
-                $code = $coderow['prescribeCode'];
-                $oldcode = explode("-",$code);
-                $newID = $oldcode[1]+1;
-                $prescribeCode = $oldcode[0]."-".$newID;
-            }
-        }else{
-            $prescribeCode = "PRSCB.".$centerID."-"."1";
-        }
+ //generate presciptionCode
+$codesql = select("SELECT * From prescriptions order by prescribeCode DESC limit 1");
+if(count($codesql) >=1){
+    foreach($codesql as $coderow){
+        $code = $coderow['prescribeCode'];
+        $oldcode = explode("-",$code);
+        $newID = $oldcode[1]+1;
+        $prescribeCode = $oldcode[0]."-".$newID;
+    }
+}else{
+    $prescribeCode = "PRSCB.".$centerID."-"."1";
+}
 
 
-         //generate labRequestID
-        $codesql = select("SELECT * From labresults order by labrequestID DESC limit 1");
-        if(count($codesql) >=1){
-            foreach($codesql as $coderow){
-                $code = $coderow['labRequestID'];
-                $oldcode = explode("-",$code);
-                $newID = $oldcode[1]+1;
-                $labReqID = $oldcode[0]."-".$newID;
-            }
-        }else{
-            $labReqID = "LABREQ.".$centerID."-"."1";
-        }
-
+//GENERATE LAB REQUEST ID
+    $getNumber = select("SELECT * FROM labresults WHERE centerID='$centerID'");
+        $totalNumber = count($getNumber) + 1;
+        $labReqID =  "LR.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$totalNumber);
 
 //Request Laboratory.....
 if(isset($_POST['reqLab'])){
     $labNumber = count($_POST['labName']);
 	    $paymode = filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
 
-    if($labNumber > 0) {
-        for($i=0; $i<$labNumber; $i++){
-                if(trim($_POST["labName"][$i] != '')){
-                    $labID = trim($_POST["labName"][$i]);
-                    $status = SENT_TO_LAB;
-					$paystatus = trim("Not Paid");
-					//get labName from lablist table...
-					$getLabName = select("SELECT labName FROM lablist where labID='$labID'");
-					foreach($getLabName as $labName){}
-					//get lab price from prices table using the name...
-					$getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
-					foreach($getLp as $labPrice){}
+if($labNumber > 0) {
+    for($i=0; $i<$labNumber; $i++){
+        if(trim($_POST["labName"][$i] != '')){
+            $labID = trim($_POST["labName"][$i]);
+//            $status = SENT_TO_LAB;
+            $paystatus = trim("Not Paid");
+            //get labName from lablist table...
+            $getLabName = select("SELECT labName FROM lablist where labID='$labID'");
+            foreach($getLabName as $labName){}
+            //get lab price from prices table using the name...
+            $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
+            foreach($getLp as $labPrice){}
 
-$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
+$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','".SENT_TO_LAB."','$paymode','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
 
-                        if($insertLabReq){
-                             $success =  "LAB REQUEST SENT SUCCESSFULLY";
-        $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
-                            echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
-                        }else{
-                            $error =  "ERROR: LAB REQUEST NOT SENT";
-                        }
-                    }
+    if($insertLabReq){
+         $success =  "LAB REQUEST SENT SUCCESSFULLY";
+    $updatePatient = update("UPDATE consultation set status='".SENT_TO_LAB."' where patientID='$patientID' AND consultID='$conid'");
+        echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
+    }else{
+        $error =  "ERROR: LAB REQUEST NOT SENT";
+    }
+    }
         }
     }else{
        $error =  "ERROR: NO LAB REQUEST MADE";
@@ -132,7 +123,13 @@ if(isset($_POST['adWard'])){
     $bedID = filter_input(INPUT_POST, "bedID", FILTER_SANITIZE_STRING);
     $status = SENT_TO_WARD;
 	$medsNum = count($_POST['medicine']);
-	$dosagesNum = count($_POST['dosage']);
+//	$dosagesNum = count($_POST['dosage']);
+    $piecesNum = count( $_POST['pieces']);
+    $adayNum = count( $_POST['aday']);
+    $totalDaysNum = count( $_POST['totalDays']);
+    $paystatus = "Not Paid";
+    $paymode =  filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
+
     //generate wardassign IDs
     $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
     if(count($wardasignsql) >=1){
@@ -146,26 +143,52 @@ if(isset($_POST['adWard'])){
         $assignID = "ASSIGN.".$centerID."-1";
     }
 
-		for($m=0, $d=0; $m<$medsNum, $d<$dosagesNum; $m++,$d++){
-			if(trim($_POST["medicine"][$m] != '') && trim($_POST['dosage'][$d] != '')) {
-				$medicine = trim($_POST["medicine"][$m]);
-				$dosage = trim($_POST["dosage"][$d]);
+    //INSERT MEDICINE AS PATIENT IS ADMITTED..
+		for($m=0, $p=0, $a=0, $t=0; $m<$medsNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
+				if(trim($_POST['medicine'][$m] != '') && trim($_POST['pieces'][$p] != '') && trim($_POST['aday'][$a] != '') && trim($_POST['totalDays'][$t] != '') ) {
+					$medicineID = trim( $_POST['medicine'][$m]);
+					$pieces = trim( $_POST['pieces'][$p]);
+					$aday = trim( $_POST['aday'][$a]);
+					$totalDays = trim( $_POST['totalDays'][$t]);
 
-		$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,symptoms,diagnoses,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$symptoms','$diagnoses','".$consultrow['dateInsert']."')");
-				}
+        //get medicine name for insert qeury...
+		$findmedname = select("SELECT * FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
+					foreach($findmedname as $nameRow){
+						$medicine = $nameRow['medicine_name'];
+						$medFrom = $nameRow['medFrom'];
+						$medicinetype = $nameRow['Type'];
+				        $unitPrice = $nameRow['price'];
 
-		}
+                    //set dosage..
+                    $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
+                        if($medicinetype=='solid'){
+                            //medicine price calculation..
+                            $totalMeds = ($pieces*$aday)*$totalDays;
+                            $medprice = trim($unitPrice*$totalMeds);
+                        }else{
+                            //medicine price calculation..
+                            $totalMeds = 1;
+                            $medprice = trim($unitPrice);
+                        }
+                    }
 
-    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,patientID,staffID,admitDate,dischargeDate,admitDetails,bedID,dateInsert) VALUES('$assignID','$wardID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$bedID','".$consultrow['dateInsert']."')");
+$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,paymode,paystatus,charge,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$diagnoses','$symptoms','$paymode','$paystatus','$medprice','".$consultrow['dateInsert']."')");
+        }
 
-	//update bed status to occupied..
-	$updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$bedID'");
+}
+
+$insertassign = insert("INSERT INTO wardassigns(assignID,wardID,bedID,patientID,staffID,admitDate,dischargeDate,admitDetails,centerID,consultingroom,paymode,paystatus,dateInsert) VALUES('$assignID','$wardID','$bedID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$centerID','$roomID','$paymode','$paystatus','".$consultrow['dateInsert']."')");
+
+//update bed status to occupied..
+$updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$bedID'");
 
 
-    if($insertassign &&$updateBedStatus){
-        $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
+    if($insertassign && $updateBedStatus){
         $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
-        echo "<script>window.location='consult-index?roomID={$roomID}'';</script>";
+        if($updatePatient){
+            $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
+        echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
+        }
     }else{
         $error =  "ERROR: PATIENT ADMITTION NOT SAVED";
     }
@@ -394,16 +417,34 @@ if(isset($_POST['presMeds'])){
 </div>
       <div class="row-fluid">
 		  <?php
-		  $labres = select("SELECt * From labresults WHERE consultID='$conid' AND patientID='$patientID'");
-			foreach($labres as $labrow){
-			$status = trim('Reviewed');
-			$updateResult = update("UPDATE labresults SET status='$status' WHERE labRequestID='".$labrow['labRequestID']."'");
-
+		  $labres = select("SELECt * From labresults WHERE labRequestID='$lbr'");
+			foreach($labres as $labrevRow){
+                $labdet = select("select * from lablist where labID='".$labrevRow['labID']."'");
+                foreach($labdet as $labrw){}
+//			$Newstatus = trim('Reviewed');
+$updateResult = update("UPDATE labresults SET status='Reviewed' WHERE id='".$labrevRow['id']."'");
+                if($labrevRow['type'] == '1'){
 		  ?>
 		  <div class="span6" style="margin-left:0px;">
-  <iframe src="<?php echo $labrow['labResult'];?>" style="width:100%;height:500px;"></iframe>
+  <iframe src="<?php echo $labrevRow['labResult'];?>" style="width:100%;height:500px;"></iframe>
 		  </div>
-		  <?php }?>
+		  <?php }
+          if($labrevRow['type'] == '2'){
+          ?>
+          <div class="span6">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-th-list"></i>
+								</span>
+								<h5>LAB RESULTS FOR - <?php echo $labrw['labName'];?></h5>
+							</div>
+							<div class="widget-content">
+                                <?php echo $labrevRow['labResult'];?>
+							</div>
+						</div>
+					</div>
+          <?php }}?>
           <div class="span12"  style="margin-left:0px;">
                 <div class="widget-box">
                     <div class="widget-title">
@@ -474,8 +515,6 @@ if(isset($_POST['presMeds'])){
                                           <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
                                         </div>
                                       </div>
-
-
                                         <?php if(!empty($consultrow['insuranceType']) || $consultrow['insuranceType']=='null'){ ?>
                                       <div class="control-group">
                                         <label class="control-label">INSURANCE TYPE :</label>
@@ -555,86 +594,141 @@ if(isset($_POST['presMeds'])){
                                             $lablist = select("SELECT * from lablist WHERE centerID='".$_SESSION['centerID']."'");
                                             foreach($lablist as $labrow){
                                             ?>
-                                            <option value="<?php echo $labrow['labID'];?>"><?php echo $labrow['labName'];?></option>
+                                    <option value="<?php echo $labrow['labID'];?>"><?php echo $labrow['labName'];?></option>
                                               <?php }?>
                                           </select>
                                         </div>
                                       </div>
 									 <div class="form-actions">
                                           <i class="span1"></i>
-                                        <button type="submit" name="reqLab" class="btn btn-primary btn-block span10"> Request Lab</button>
-                                      </div>
-								 </div>
-                            </form>
-                        </div>
-                        <div id="tab3" class="tab-pane">
-                             <form action="" method="post" class="form-horizontal">
-								 <div class="span6">
-								 	<div class="widget-content nopadding">
-                                       <div class="control-group">
-                                        <label class="control-label">WARD</label>
-                                        <div class="controls">
-                                          <select name="wardID" onchange="ward_id(this.value);">
-                                            <option value=""></option>
-                                              <?php
-                                                $wardsql = select("SELECT * From wardlist WHERE centerID='".$_SESSION['centerID']."'");
-                                              foreach($wardsql as $wardrow){
-                                              ?>
-                                            <option value="<?php echo $wardrow['wardID'];?>"> <?php echo $wardrow['wardName'];?> </option>
-                                              <?php }?>
-                                          </select>
-                                        </div>
-                                      </div>
-                                       <div class="control-group" id="bedlist">
-
-										</div>
-                                       <div class="control-group">
-                                        <label class="control-label">ADMISSION DETAILS</label>
-                                        <div class="controls">
-                                          <select name="admitDetails">
-                                            <option value=""> </option>
-                                            <option value="Treatment And Observation"> Treatment And Observation </option>
-                                            <option value="Operation"> Operation</option>
-                                            <option value="Other Reasons"> Other Reasons</option>
-                                          </select>
-                                        </div>
-                                      </div>
-                                      <div class="control-group">
-                                        <label class="control-label"> DATE ADMITTED</label>
-                                          <div class="controls">
-                                            <input type="date" class="span11" name="admitDate" required/>
-                                          </div>
-                                      </div>
-                                      <div class="control-group">
-                                        <label class="control-label"> DISCHARGE DATE</label>
-                                          <div class="controls">
-                                            <input type="date" class="span11" name="dischargeDate"/>
-                                          </div>
-                                      </div>
-                                  </div>
-								 </div>
-								 <div class="span6">
-                                      <table class="table table-bordered" id="dynamic_field2">
-										  <tr>
-										  	<td colspan="3"><textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea></td>
-										  </tr>
-										  <tr>
-										  	<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea></td>
-										  </tr>
-                                        <tr>
-                                            <td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" required /></td>
-                                            <td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" required /></td>
-                                            <td><button type="button" name="add" id="add2" class="btn btn-primary">Add Medicine</button></td>
-                                        </tr>
-                                    </table>
-                                      <div class="form-actions">
-                                          <i class="span1"></i>
-                                        <button type="submit" name="adWard" class="btn btn-primary btn-block span10"> Admit To Ward</button>
+                        <button type="submit" name="reqLab" class="btn btn-primary btn-block span10"> Request Lab</button>
                                       </div>
 								 </div>
                             </form>
                         </div>
 
+<!-- ======================== START ADMIT TO WARD TAB ===================-->
+<div id="tab3" class="tab-pane">
+     <form action="" method="post" class="form-horizontal">
+         <div class="span6">
+            <div class="widget-content nopadding">
+                <?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
+				  <div class="control-group">
+					<label class="control-label">PAYMENT MODE </label>
+					<div class="controls">
+					  <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode']; ?>" readonly/>
+					</div>
+				  </div>
+				  <?php } ?>
+               <div class="control-group">
+                <label class="control-label">WARD</label>
+                <div class="controls">
+                  <select name="wardID" onchange="ward_id(this.value);">
+                    <option value=""></option>
+                      <?php
+                        $wardsql = select("SELECT * From wardlist WHERE centerID='".$_SESSION['centerID']."'");
+                      foreach($wardsql as $wardrow){
+                      ?>
+                    <option value="<?php echo $wardrow['wardID'];?>"> <?php echo $wardrow['wardName'];?> </option>
+                      <?php }?>
+                  </select>
+                </div>
+              </div>
+               <div class="control-group" id="bedlist">
+
+                </div>
+               <div class="control-group">
+                <label class="control-label">ADMISSION DETAILS</label>
+                <div class="controls">
+                  <select name="admitDetails">
+                    <option value=""> </option>
+                    <option value="Treatment And Observation"> Treatment And Observation </option>
+                    <option value="Operation"> Operation</option>
+                    <option value="Other Reasons"> Other Reasons</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label"> DATE ADMITTED</label>
+                  <div class="controls">
+                    <input type="date" class="span11" name="admitDate" required/>
+                  </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label"> DISCHARGE DATE</label>
+                  <div class="controls">
+                    <input type="date" class="span11" name="dischargeDate"/>
+                  </div>
+              </div>
+          </div>
+         </div>
+         <div class="span6">
+              <table class="table table-bordered" id="dynamic_field2">
+                  <tr>
+                    <td colspan="4"><textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea></td>
+                  </tr>
+                  <tr>
+                    <td colspan="4"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea></td>
+                  </tr>
+                  <tr>
+						<th style="width:60%;"> MEDICINE NAME</th>
+						<th> INTAKES</th>
+						<th> / DAY</th>
+						<th> No.OF DAYS</th>
+					</tr>
+                  <?php
+                  $total = 4;
+                    for($i=0;$i<$total;$i++){
+                  ?>
+
+                <tr>
+                    <td>
+                        <?php
+							if($consultrow['mode'] == 'Insurance'){
+                                $insuranceType = $consultrow['insuranceType'];
+							?>
+							<select name="medicine[]" class="span11">
+								<option>--  SELECT MEDICATION --</option>
+							 <?php
+
+						  	$centerNHISLevel = $centerName['centerNhisLevel'];
+//						  	$level = explode(" ",$centerNHISLevel);
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='Private'");
+								if($meds){
+								foreach($meds as $medrow){
+							?>
+							<option value="<?php echo $medrow['medicine_id']; ?>"> <?php echo $medrow['medicine_name']; ?></option>
+							 <?php }} ?>
+							</select>
+							<?php }else{
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
+							?>
+                            <select name="medicine[]" class="span11">
+                                <option>--  SELECT MEDICATION --</option>
+                                <?php
+                                if($medsx){
+                            foreach($medsx as $medrowx){
+                                ?>
+                    <option value="<?php echo $medrowx['medicine_id']; ?>"> <?php echo $medrowx['medicine_name']; ?></option>
+                                <?php }}?>
+                            </select>
+							<?php }?>
+
+                    </td>
+                        <td><input type="number" min="1" name="pieces[]" placeholder="e.g. 2" class="span11" /></td>
+						<td><input type="number" min="1" name="aday[]" placeholder="e.g. 3" class="span11" /></td>
+						<td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" /></td>
+                </tr>
+                  <?php }?>
+            </table>
+              <div class="form-actions">
+                  <i class="span1"></i>
+                <button type="submit" name="adWard" class="btn btn-primary btn-block span10"> Admit To Ward</button>
+              </div>
+         </div>
+    </form>
+</div>
+<!-- ======================== END ADMIT TO WARD TAB ===================-->
 
 
 <div id="tab4" class="tab-pane">

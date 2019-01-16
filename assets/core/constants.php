@@ -8,7 +8,11 @@ define("DB_USER" , "root");
 //define("DB_PASSWORD" , "#edicon,123456789.");
 define("DB_PASSWORD" , "");
 //define("DB_NAME" , "quatmedics_presentation");
+<<<<<<< HEAD
 define("DB_NAME" , "quat_medic");
+=======
+define("DB_NAME" , "quatmedics");
+>>>>>>> QuatMedics/master
 
 //backup server
 define("DB_SERVER2" , "quatitsolutions.com");

@@ -5,7 +5,7 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -22,6 +22,7 @@ session_start();
 <script src="https://code.highcharts.com/highcharts-3d.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 
 
 
@@ -316,6 +317,7 @@ $dataPoints = array(
         <?php if($_SESSION['accessLevel'] == 'FINANCE'){ ?>
         <li> <a href="finance-cash"><i class="icon icon-briefcase"></i><span>CASH PAYMENT</span></a> </li>
         <li><a href="finance-insurance"><i class="icon icon-file"></i><span>INSURANCE</span></a></li>
+        <li><a href="finance-cash-report"><i class="icon-list-alt"></i><span>REPORT</span></a></li>
         <?php } ?>
 
         <?php if($_SESSION['accessLevel'] == 'WARD'){ ?>

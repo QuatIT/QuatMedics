@@ -148,8 +148,9 @@ clearstatcache();
     <body>
         <div id="loginbox">
             <form id="loginform" class="form-vertical" method="POST">
-				 <div class="control-group normal_text" style="background-color:#0c3f84;">
-                     <h3>Q<i class="fa fa-stethoscope"></i>AT MEDICS</h3>
+				 <div class="control-group normal_text" style="background-color:#e8e7e7; padding:0px;">
+<!--                     <h3>Q<i class="fa fa-stethoscope"></i>AT MEDICS</h3>-->
+                     <img src="quatmedics.png" alt="QUATMEDIC LOGO" title="QuatMedic Logo" style="height:90px;" />
                 </div>
                 <?php
                       if($success){
@@ -180,13 +181,13 @@ clearstatcache();
                         </div>
                     </div>
                 </div>
-                <div class="form-actions">
+                <div class="form-actions" style="background-color:#e8e7e7">
                     <span class="pull-left"><a href="#" class="flip-link btn btn-inverse" id="to-recover">Lost password?</a></span>
                     <span class="pull-right"><input type="submit" name="btnSave" class="btn btn-primary" value="Login" /></span>
                 </div>
             </form>
             <form id="recoverform" action="" method="post" class="form-vertical">
-				<p class="normal_text" style="background-color:#0c3f84;">Enter your e-mail address below and we will send you a recovery guide</p>
+				<p class="normal_text" style="background-color:#e7e7e8; color:#2092bc; font-weight:bold;">Enter E-mail To Recieve Recovery Guide</p>
 
                     <div class="controls">
                         <div class="main_input_box">
@@ -195,7 +196,7 @@ clearstatcache();
                         </div>
                     </div>
 
-                <div class="form-actions">
+                <div class="form-actions" style="background-color:#e8e7e7">
                     <span class="pull-left"><a href="#" class="flip-link btn btn-inverse" id="to-login">&laquo; Back to login</a></span>
                     <span class="pull-right"><input type="submit" class="btn btn-info" value="Recover" /></span>
                 </div>

@@ -102,7 +102,7 @@ include 'layout/head.php';
         <a title="INSURANCE PAYMENT DETAILS" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT DETAILS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">INSURANCE PAYMENT DETAILS</h3>
 
       <div class="row-fluid">

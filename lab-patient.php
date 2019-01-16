@@ -27,7 +27,7 @@
 
 <?php
     include 'layout/head.php';
-
+//require_once 'assets/core/connection.php';
     if($_SESSION['accessLevel']=='LABORATORY' || $_SESSION['username']=='rik'){
 
  $success = '';
@@ -42,10 +42,6 @@ $labRequestID=$_REQUEST['rID'];
 $pat = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' && patientID='".$patientID."' ");
 foreach($pat as $patname){}
 
-
-
-
-
 //generate labResultID
 //$labResultID = substr("donor",0,3);
 $labResultID = mt_rand(0,99).mt_rand(101,998);
@@ -53,52 +49,75 @@ $labResultID = mt_rand(0,99).mt_rand(101,998);
 
 
 if(isset($_POST['lab_result'])){
+    $patient_ID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
+    $labResults=filter_input(INPUT_POST, "labResults", FILTER_SANITIZE_STRING);
+    //fetching uder status 1=uploaded  0=pending
 
-$patient_ID = filter_input(INPUT_POST, "patientID", FILTER_SANITIZE_STRING);
-$labResults=filter_input(INPUT_POST, "labResults", FILTER_SANITIZE_STRING);
+//$numFile = count($_FILES['file']);
+//$numText = count($_POST['txtresults']);
+$numLab = count($_POST['labID']);
 
+for($l=0; $l<$numLab; $l++){
+    $labID = $_POST['labID'][$l];
 
+    if(isset($_POST['txtresult'][$l])){
+        $labresult = $_POST['txtresult'][$l];
+    }else{
+        $labresult = '';
+    }
 
-//fetching uder status 1=uploaded  0=pending
+    if(isset($_FILES['file']['name'][$l])){
+        $file = $_FILES['file']['name'][$l];
+    }else{
+        $file = '';
+    }
 
+if(!empty($file) and empty($labresult)){
+    //file properties
+    $file_name=$_FILES['file']['name'][$l];
+    $file_tmp=$_FILES['file']['tmp_name'][$l];
+    $file_size= $_FILES['file']['size'][$l];
+    $file_error = $_FILES['file']['error'][$l];
+    //etract extension
+    $file_ext =explode('.',$file_name);
+    $file_ext = strtolower(end($file_ext));
+    $allowed = array('application','pdf');
 
-if(isset($_FILES['file'])){
-	$file = $_FILES['file'];
-
-	//file properties
-	$file_name=$file['name'];
-	$file_tmp=$file['tmp_name'];
-	$file_size= $file['size'];
-	$file_error = $file['error'];
-
-	//etract extension
-	$file_ext =explode('.',$file_name);
-	$file_ext = strtolower(end($file_ext));
-//	$allowed = array("pdf","doc","docx","png","jpg","jpeg","gif");
-	$allowed = array('application','pdf');
-
-	if(in_array($file_ext, $allowed)){
-		if($file_error===0){
-			if($file_size <= 4097152){
-
-			 $file_name_new=uniqid('', true).'.'.$file_ext;
-                  $file_destination = $LAB_RESULT_UPLOAD.$file_name_new;
-
-			 	//check if file has been loaded earlier and move it from temporary location into folder
-			 	if(move_uploaded_file($file_tmp,$file_destination)){
-                    // echo $file_destination;
-            $qry =update("UPDATE labresults SET labResult='$file_destination',status='".SENT_TO_CONSULTING."' WHERE labRequestID='".$labRequestID."' ");
-//            $qry =insert("INSERT INTO labresults(labResultID,patientID,labResult,status)VALUES('$labResultID','".$patient_ID."','".$file_destination."','')");
-            if($qry){
-
-                $success = "<script>document.write('File Upload Successful');
-                                window.location.href='lab-index'</script>";
+    if(in_array($file_ext, $allowed)){
+        if($file_error===0){
+            if($file_size <= 4097152){
+             $file_name_new=uniqid('', true).'.'.$file_ext;
+                $file_destination = $LAB_RESULT_UPLOAD.$file_name_new;
+                //check if file has been loaded earlier and move it from temporary location into folder
+                if(move_uploaded_file($file_tmp,$file_destination)){
+    $qry =update("UPDATE labresults SET labResult='$file_destination',status='".SENT_TO_CONSULTING."',type='1' WHERE labRequestID='".$labRequestID."' AND labID='$labID' ");
+    if($qry){
+        $success = "<script>document.write('FILE UPLOAD SUCCESSFULL.');</script>";
+    }
+                }else{
+                   $error = "<script>document.write('FILE NOT MOVED, TRY AGAIN');</script>";
+                }
             }
-			 	}
-			}
 
-		}
-	}
+        }
+    }
+}
+
+if(!empty($labresult) and empty($file)){
+    $qry =update("UPDATE labresults SET labResult='$labresult',status='".SENT_TO_CONSULTING."', type='2' WHERE labRequestID='$labRequestID' AND labID='$labID' ");
+    if($qry){
+        $success = "<script>document.write('RESULT SENT SUCCESSFULLY.');</script>";
+    }
+}
+
+if(empty($labresult) && empty($file)){
+     $error = "<script>document.write('EMPTY RESULT FIELDS.');</script>";
+}
+    if(!empty($labresult) && !empty($file)){
+     $error = "<script>document.write('ONE FIELD CAN ONLY BE USED.');</script>";
+}
+
+
 }
 }
 
@@ -122,26 +141,23 @@ if(isset($_FILES['file'])){
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="laboratory" class="tip-bottom"><i class="icon-filter"></i> LABORATORY</a>
+        <a title="laboratory" href="lab-index" class="tip-bottom"><i class="icon-filter"></i> LABORATORY</a>
         <a title="Patient lab Result" class="tip-bottom"><i class="icon-user"></i> LAB RESULTS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">PATIENT LAB RESULTS</h3>
 
-            <?php
-                      if($success){
-                      ?>
-                      <div class="alert alert-success">
-                  <strong>Success!</strong> <?php echo $success; ?>
-                </div>
-                      <?php } if($error){
-                          ?>
-                      <div class="alert alert-danger">
-                  <strong>Error!</strong> <?php echo $error; ?>
-                </div>
-                      <?php
-                      } ?>
+<?php
+  if($success){ ?>
+  <div class="alert alert-success">
+      <strong>Success!</strong> <?php echo $success; ?>
+    </div>
+  <?php } if($error){ ?>
+  <div class="alert alert-danger">
+      <strong>Error!</strong> <?php echo $error; ?>
+    </div>
+<?php } ?>
 
 
       <div class="row-fluid">
@@ -149,13 +165,13 @@ if(isset($_FILES['file'])){
                 <div class="widget-box">
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#tab1">Patient Lab Details</a></li>
+                            <li class="active"><a data-toggle="tab" href="#tab1">PATIENT LAB DETAILS</a></li>
                         </ul>
                     </div>
                     <div class="widget-content tab-content">
                         <div id="tab1" class="tab-pane active">
                             <form action="#" method="post" class="form-horizontal" enctype="multipart/form-data">
-                                <div class="span6">
+                                <div class="span5">
                                     <div class="widget-content nopadding">
                                       <div class="control-group">
                                         <label class="control-label">PATIENT ID :</label>
@@ -171,13 +187,14 @@ if(isset($_FILES['file'])){
                                       </div>
                                   </div>
                                 </div>
-                                <div class="span6">
+                                <div class="span7">
                                     <div class="widget-content nopadding">
 
 										<table class="table table-stripped">
 											<thead>
 												<th>LAB NAME</th>
-												<th>LAB RESULT UPLOAD</th>
+												<th>LAB UPLOAD</th>
+												<th>LAB RESULTS</th>
 											</thead>
 											<tbody>
 												<?php
@@ -194,14 +211,15 @@ if(isset($_FILES['file'])){
 														<?php }?>
 													</select>
 												</td>
-												<td><input type="file" class="span11" name="file" accept="application/pdf" required/></td>
+												<td><input type="file" class="span11" name="file[]" accept="application/pdf"/></td>
+												<td><input type="text" class="span11" name="txtresult[]"/></td>
 												</tr>
 												<?php }?>
 											</tbody>
 										</table>
-                                      <div class="form-actions">
-                                          <i class="span1"></i>
-                                        <button type="submit" class="btn btn-primary btn-block span10" name="lab_result" >Send Lab Results</button>
+                                      <div class="form-actions" style="padding-right:0px;">
+                                          <i class="span6"></i>
+                            <button type="submit" class="btn btn-primary btn-block span5" name="lab_result" >SEND RESULTS</button>
                                       </div>
                                   </div>
                                 </div>
@@ -216,7 +234,9 @@ if(isset($_FILES['file'])){
   </div>
 </div>
 <div class="row-fluid ">
-  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+    <div id="footer" class="span12">
+      2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a>
+    </div>
 </div>
 <script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>
@@ -267,6 +287,11 @@ if(isset($_FILES['file'])){
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
+</script>
+<script>
+$(".alert").delay(7000).slideUp(1000, function() {
+    $(this).alert('close');
+});
 </script>
 </body>
 </html>

@@ -140,9 +140,9 @@
 
   class Ward{
 
-      public function createWard($WardID,$centerID,$wardName,$numOfBeds){
-          $result= insert("INSERT INTO wardlist(WardID,centerID,wardName,numOfBeds,dateRegistered) VALUES('$WardID','$centerID','$wardName','$numOfBeds',CURDATE() ) ");
-          return $result;
+    public function createWard($WardID,$centerID,$wardName,$numOfBeds){
+      $result= insert("INSERT INTO wardlist(WardID,centerID,wardName,numOfBeds,dateRegistered) VALUES('$WardID','$centerID','$wardName','$numOfBeds',CURDATE() ) ");
+      return $result;
     }
 
 
@@ -157,7 +157,12 @@
     }
 
     public function find_by_wardPatient_id($patientID){
-      $result=query("SELECT * FROM wardassigns WHERE patientID='".$patientID."' ");
+      $result=query("SELECT * FROM wardassigns WHERE patientID='$patientID' ");
+      return $result;
+    }
+
+    public function find_by_assign_id($assignID){
+      $result=query("SELECT * FROM wardassigns WHERE assignID='$assignID' ");
       return $result;
     }
 
@@ -170,22 +175,20 @@
     public function find_num_ward($centerID){
       $result=query("SELECT * FROM wardlist WHERE centerID='$centerID' ");
       $num = count($result);
-
       return $num;
     }
 
 
-   public function saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus){
-        $result = insert("INSERT INTO bedlist(centerID,bedID,bedNumber,bedDescription,BedCharge,wardID,status) VALUES('".$centerID."','".$bedID."','".$bedNumber."','".$bedDescription."','".$bedCharge."','".$wardID."','".$bedStatus."') ");
+   public function saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$wardID,$bedStatus){
+        $result = insert("INSERT INTO bedlist(centerID,bedID,bedNumber,bedDescription,wardID,status) VALUES('".$centerID."','".$bedID."','".$bedNumber."','".$bedDescription."','".$bedCharge."','".$wardID."','".$bedStatus."') ");
            return $result;
     }
-      public function get_bed_id(){
-  $result=query("SELECT * FROM bedlist WHERE wardID='".$_GET['wrdno']."'");
-  $num = count($result);
 
-  return $num;
-
-  }
+    public function get_bed_id(){
+      $result=query("SELECT * FROM bedlist WHERE wardID='".$_GET['wrdno']."'");
+      $num = count($result);
+      return $num;
+    }
 
   }
 

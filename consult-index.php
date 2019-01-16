@@ -105,7 +105,7 @@
         <a title="Consultation" class="tip-bottom"><i class="icon-briefcase"></i> CONSULTATION</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">CONSULTING ROOM - <?php echo $r['roomName'];?></h3>
       <div class="row-fluid">
           <div class="span8">
@@ -144,7 +144,7 @@
                     <div class="new-update clearfix">
                         <i class="icon-warning-sign"></i>
                         <div class="update-done">
- <a href="consult-labreview?patientID=<?php echo $labupdate['patientID'];?>&roomID=<?php echo $roomID;?>&conid=<?php echo $labupdate['consultID'];?>" target="popup"  >
+ <a href="consult-labreview?patientID=<?php echo $labupdate['patientID'];?>&roomID=<?php echo $roomID;?>&conid=<?php echo $labupdate['consultID'];?>&lbr=<?php echo $labupdate['labRequestID']; ?>" target="popup"  >
                                 <strong>Lab Result For <?php echo $labupdate['patientID']; ?> Available</strong>
                             </a>
 
@@ -153,42 +153,10 @@ onclick="window.open('consult-labreview?patientID=<?php //echo $labupdate['patie
 
 -->
 
-<!--                          <a href="#" title=""><strong>Lab Result For Patient PTN001 Available</strong></a>-->
                         </div>
                       <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
                     </div>
                       <?php } ?>
-
-<!--
-                    <div class="new-update clearfix">
-                        <i class="icon-user"></i>
-                        <span class="update-notice">
-                            <a href="#" title=""><strong>Patient PTN023 Assigned From OPD </strong></a>
-                        </span>
-                        <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
-                    </div>
-                    <div class="new-update clearfix">
-                        <i class="icon-home"></i>
-                        <span class="update-alert">
-                            <a href="#" title=""><strong>Patient PTN023 Admitted To Maternal Ward</strong></a>
-                        </span>
-                        <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
-                    </div>
-                    <div class="new-update clearfix">
-                        <i class="icon-plus-sign"></i>
-                        <span class="update-done">
-                            <a href="#" title=""><strong> Prescription For Patient PTN221 Given Out</strong></a>
-                        </span>
-                        <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
-                    </div>
-                    <div class="new-update clearfix">
-                        <i class="icon-user"></i>
-                        <span class="update-notice">
-                            <a href="#" title=""><strong>Patient PTN053 Assigned From OPD </strong></a>
-                        </span>
-                        <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
-                    </div>
--->
                   </div>
                 </div>
           </div>

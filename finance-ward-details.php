@@ -27,53 +27,60 @@
 <?php
 include 'layout/head.php';
 
-	if(isset($_GET['id']) && isset($_GET['pid'])){
-		$patid = $_GET['pid'];
-		$id = $_GET['id'];
-	}
+if(isset($_GET['id'])){
+    $assignID = $_GET['id'];
+}
 
 $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 
+	//get admit details..
+	$assigndet = select("SELECT * FROM wardassigns WHERE assignID='$assignID'");
+	foreach($assigndet as $assignRow){}
+
 	//get patient details..
-	$pdet = select("SELECT * FROM patient where patientID='$patid'");
+	$pdet = select("SELECT * FROM patient where patientID='".$assignRow['patientID']."'");
 	foreach($pdet as $prow){}
 
-	//GET CONSULTATION CHARGE..
-	$concharge = select("SELECT * FROM paymentfixed WHERE patientID='$patid' AND serviceName='CONSULTATION' AND id='$id'");
-	foreach($concharge as $conRow){
-		$consultPrice = $conRow['servicePrice'];
-		$consultDate = $conRow['dateinsert'];
-	}
+    //get ward details...
+    $warddet = select("SELECT * FROM wardlist WHERE wardID='".$assignRow['wardID']."'");
+    foreach($warddet as $wardrow){}
+
+//	//GET CONSULTATION CHARGE..
+//	$concharge = select("SELECT * FROM paymentfixed WHERE patientID='$patid' AND serviceName='CONSULTATION' AND id='$id'");
+//	foreach($concharge as $conRow){
+//		$consultPrice = $conRow['servicePrice'];
+//		$consultDate = $conRow['dateinsert'];
+//	}
 
 
-	//get lab details...
-	$labTotal = 0;
-	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='Private' AND dateInsert='$consultDate'");
-	foreach($fetchlab as $labRow){
-					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
-						  foreach($getlabName as $labNmRow){}
-		$labTotal += $labRow['labprice'];
-	}
+//	//get lab details...
+//	$labTotal = 0;
+//	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='Private' AND dateInsert='$consultDate'");
+//	foreach($fetchlab as $labRow){
+//					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
+//						  foreach($getlabName as $labNmRow){}
+//		$labTotal += $labRow['labprice'];
+//	}
 
 	//get medicine charges...
-	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$consultDate'");
-					  if($getPresciptionID){
-						  foreach($getPresciptionID as $presRow){
-							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
-							  foreach($getMeds as $medrow){
+//	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$consultDate'");
+//					  if($getPresciptionID){
+//						  foreach($getPresciptionID as $presRow){
+//							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
+//							  foreach($getMeds as $medrow){
+//
+//							  }
+//						  }
+//					  }
 
-							  }
-						  }
-					  }
-
-	//get medinine total
+//	get medinine total
 	@ $medtotal = 0;
-   @$getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
+   @$getMeds = select("SELECT * FROM wardmeds WHERE assignID='$assignID'");
 		  foreach($getMeds as $medrow){
-			  $medtotal+=$medrow['medprice'];
+			  $medtotal+=$medrow['charge'];
 		  }
-
-	$overall =($consultPrice+$medtotal);
+//
+	$overall =($assignRow['charge']+$medtotal);
 	$overallTotal = "GHC ".$overall;
 ?>
 
@@ -99,7 +106,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
         <a title="CASH PAYMENT DETAILS" class="tip-bottom"><i class="icon-briefcase"></i> CASH PAYMENT DETAILS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">CASH PAYMENT DETAILS</h3>
 
       <div class="row-fluid">
@@ -148,27 +155,29 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 			  <table class="table table-bordered">
                   <thead>
                     <th> SERVICE</th>
+                    <th> NO. OF DAYS</th>
                     <th> PRICE</th>
                     <th> STATUS</th>
                     <th> ACTION</th>
                   </thead>
 				  <tbody>
 				  		<tr>
-						<td> CONSULTATION CHARGE</td>
-						<td><?php echo $conRow['servicePrice'];?></td>
+						<td> <?php echo $wardrow['wardName'];?> CHARGE</td>
+						<td><?php echo $assignRow['charge'];?></td>
+						<td><?php echo $assignRow['charge'];?></td>
 						<td style="text-align:center;">
 							<?php// echo $conRow['status'];?>
-							<?php if($conRow['status'] == 'Not Paid'){?>
-							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $conRow['status'];?></span>
+							<?php if($assignRow['paystatus'] == 'Not Paid'){?>
+							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $assignRow['paystatus'];?></span>
 						   <?php }?>
 
-							<?php if($conRow['status'] == 'Paid'){?>
-							<span class="label label-success text-center"><?php  echo $conRow['status'];?></span>
+							<?php if($assignRow['paystatus'] == 'Paid'){?>
+							<span class="label label-success text-center"><?php  echo $assignRow['paystatus'];?></span>
 						   <?php }?>
 						</td>
                         <td style="text-align:center;">
-                            <?php if($conRow['status'] == 'Not Paid'){?>
-                            <a onclick="return confirm('Confirm Payment');" href="finance-cash-consultpay?id=<?php echo $conRow['id'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+                            <?php if($assignRow['paystatus'] == 'Not Paid'){?>
+                            <a onclick="return confirm('Confirm Payment');" href="finance-ward-payment?id=<?php echo $assignRow['assignID'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
                             <?php }?>
                         </td>
 					  </tr>
@@ -179,8 +188,9 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
               <hr/>
 
               <!-- ============== TABLE FOR LAB TESTS AND PRICES ==================      -->
+<!--
               <?php
-              if($fetchlab){
+              //if($fetchlab){
               ?>
               <table class="table table-bordered">
 				  <thead>
@@ -190,34 +200,35 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 				  </thead>
 				  <tbody>
 					  <?php
-
-					  foreach($fetchlab as $labRow){
-					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
-						  foreach($getlabName as $labNmRow){}
+//
+//					  foreach($fetchlab as $labRow){
+//					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
+//						  foreach($getlabName as $labNmRow){}
 					  ?>
 				  		<tr>
-						<td> <?php echo $labNmRow['labName'];?></td>
-						<td colspan="2"><?php echo $labRow['labprice'];?></td>
+						<td> <?php// echo $labNmRow['labName'];?></td>
+						<td colspan="2"><?php// echo $labRow['labprice'];?></td>
 						<td style="text-align:center;">
-							<?php if($labRow['paystatus'] == 'Not Paid'){?>
-							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $labRow['paystatus'];?></span>
-						   <?php }?>
+							<?php //if($labRow['paystatus'] == 'Not Paid'){?>
+							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  //echo $labRow['paystatus'];?></span>
+						   <?php //}?>
 
-							<?php if($labRow['paystatus'] == 'Paid'){?>
-							<span class="label label-success text-center"><?php  echo $labRow['paystatus'];?></span>
-						   <?php }?>
+							<?php// if($labRow['paystatus'] == 'Paid'){?>
+							<span class="label label-success text-center"><?php//  echo $labRow['paystatus'];?></span>
+						   <?php// }?>
 						</td>
 					  </tr>
-					  <?php }?>
+					  <?php //}?>
 				  </tbody>
               </table>
-              <?php }?>
+              <?php// }?>
+-->
 
               <!-- ============== END OF TABLE FOR LAB TESTS AND PRICES ==================      -->
 
               <hr/>
 
-              <!--  TABLE FOR MEDICATIONS AND PRESCRIPTIONS  -->
+              <!--=======================  TABLE FOR MEDICATIONS AND PRESCRIPTIONS ==================== -->
               <table class="table table-bordered">
 				  <thead>
 				  		<th> MEDICATION </th>
@@ -229,47 +240,45 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 				  <tbody>
 
 					  <?php
-					  	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$consultDate'");
-					  if($getPresciptionID){
-						  foreach($getPresciptionID as $presRow){
-							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
-							  foreach($getMeds as $medrow){
-
+					  	$getPresciption = select("SELECT * From wardmeds WHERE assignID='".$assignRow['assignID']."'");
+					  if($getPresciption){
+						  foreach($getPresciption as $presRow){
 					  ?>
 					  <tr>
-					  	<td><?php echo $medrow['medicine']; ?></td>
-					  	<td><?php echo $medrow['dosage']; ?></td>
-					  	<td><?php echo $medrow['medprice']; ?></td>
-					  	<td>
-							<?php if($medrow['paystatus'] == 'Not Paid'){?>
-							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $medrow['paystatus'];?></span>
+					  	<td><?php echo $presRow['medicine']; ?></td>
+					  	<td><?php echo $presRow['dosage']; ?></td>
+					  	<td><?php echo $presRow['charge']; ?></td>
+					  	<td style="text-align:center;">
+							<?php if($presRow['paystatus'] == 'Not Paid'){?>
+							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $presRow['paystatus'];?></span>
 						   <?php }?>
 
-							<?php if($medrow['paystatus'] == 'Paid'){?>
-							<span class="label label-success text-center"><?php  echo $medrow['paystatus'];?></span>
+							<?php if($presRow['paystatus'] == 'Paid'){?>
+							<span class="label label-success text-center"><?php  echo $presRow['paystatus'];?></span>
 						   <?php }?>
 							<?php //echo $medrow['paystatus']?>
 						</td>
-                          <td>
-                            <?php if($medrow['paystatus'] == 'Not Paid'){?>
-                            <a onclick="return confirm('Confirm Payment');" href="finance-cash-medpay?id=<?php echo $medrow['prescribeid'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+                          <td style="text-align:center;">
+                            <?php if($presRow['paystatus'] == 'Not Paid'){?>
+                            <a onclick="return confirm('Confirm Payment');" href="finance-ward-medpay?id=<?php echo $presRow['medID'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
                            <?php }?>
 
-                            <?php if($medrow['paystatus'] == 'Paid'){?>
-                            <span class="label label-success text-center"><?php  echo $medrow['paystatus'];?></span>
+                            <?php if($presRow['paystatus'] == 'Paid'){?>
+                            <span class="label label-success text-center"><?php  echo $presRow['paystatus'];?></span>
                            <?php }?>
                         </td>
 					  </tr>
-					  <?php }}}else{ ?>
+					  <?php }}else{ ?>
                          <tr>
                             <td colspan="5" style="text-align:center;" > NO MEDICATION PRESCRIBED.</td>
                         </tr>
                       <?php }
-					  $total = 0;
-					   @$getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
-							  foreach($getMeds as $medrow){
-								  $total+=$medrow['medprice'];
-							  }
+                        //	get medinine total
+                            @$total = 0;
+                           @$getMeds = select("SELECT * FROM wardmeds WHERE assignID='$assignID'");
+                                  foreach($getMeds as $medrow){
+                                      $total+=$medrow['charge'];
+                                  }
 					  ?>
 					  <tr>
 					  	<td colspan="2" style="text-align:right"> <b>Total</b></td>

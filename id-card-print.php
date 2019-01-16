@@ -39,7 +39,7 @@ foreach($centerName_sql as $centerName){}
                         <tr class="text-center">
                         <td colspan="3" style="border:0px;">
                             <h4 class="text-center">
-                                <span style="color:#1860c3;">QUAT</span>MEDIC | <span style="color:#49cced;"><?php echo $centerName['centerName']; ?></span>
+                                <img src="quatmedics.png" alt="QUATMEDIC LOGO" title="QuatMedic Logo" style="height:50px;" /> | <span style="color:#49cced;"><?php echo $centerName['centerName']; ?></span>
                             </h4>
                         </td>
                         </tr>
