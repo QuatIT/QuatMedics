@@ -152,17 +152,17 @@
     }
 
     public function find_by_wardAssign_id($wardID){
-      $result=query("SELECT * FROM wardassigns WHERE wardID='".$wardID."' ");
+      $result=query("SELECT * FROM wardassigns WHERE wardID='".$wardID."' AND admitstatus!='DISCHARGED' ");
       return $result;
     }
 
     public function find_by_wardPatient_id($patientID){
-      $result=query("SELECT * FROM wardassigns WHERE patientID='$patientID' ");
+      $result=query("SELECT * FROM wardassigns WHERE patientID='$patientID' AND admitstatus!='DISCHARGED' ");
       return $result;
     }
 
     public function find_by_assign_id($assignID){
-      $result=query("SELECT * FROM wardassigns WHERE assignID='$assignID' ");
+      $result=query("SELECT * FROM wardassigns WHERE assignID='$assignID' AND admitstatus!='DISCHARGED' ");
       return $result;
     }
 

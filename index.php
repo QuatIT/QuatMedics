@@ -1,7 +1,7 @@
 <?php
 include 'assets/core/connection.php';
 session_start();
-
+error_reporting(0);
 $success = '';
 $error = '';
 clearstatcache();

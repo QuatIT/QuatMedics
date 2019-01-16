@@ -194,7 +194,7 @@ $insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID
 
 }
 
-$insertassign = insert("INSERT INTO wardassigns(assignID,wardID,bedID,patientID,staffID,admitDate,dischargeDate,admitDetails,centerID,consultingroom,paymode,paystatus,dateInsert) VALUES('$assignID','$wardID','$bedID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$centerID','$roomID','$paymode','$paystatus','".$consultrow['dateInsert']."')");
+$insertassign = insert("INSERT INTO wardassigns(assignID,wardID,consultID,bedID,patientID,staffID,admitDate,dischargeDate,admitDetails,centerID,consultingroom,paymode,paystatus,dateInsert) VALUES('$assignID','$wardID','$conid','$bedID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$centerID','$roomID','$paymode','$paystatus','".$consultrow['dateInsert']."')");
 
 //update bed status to occupied..
 $updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$bedID'");

@@ -171,6 +171,28 @@ if(isset($_POST['moveToAcc'])){
     }
 }
 
+
+//DISCHARGE PATIENT FROM WARD, AFTER FINANCE PAYMENT.
+    if(isset($_POST['DischargePatient'])){
+        $patientID = trim(htmlentities($_POST['patientID']));
+
+        //SET DISCHARGE DATE..
+        $dischargedate = update("UPDATE wardassigns SET dischargeDate='$dateToday',admitstatus='DISCHARGED' WHERE assignID='$assignID'");
+        if($dischargedate){
+            //SET PATIENT TO DISCHARGED.
+                $updatePatient = update("UPDATE consultation SET status='DONE' WHERE patientID='$patientID' AND consultID='".$pat['consultID']."'");
+            if($updatePatient){
+                //RELEASE PATIENT..
+                $releasePatient = ("UPDATE patient SET patient_status ='' WHERE patientID='$patientID'");
+                if($releasePatient){
+                    $success = "<script>document.write('PATIENT DISCHARGED.');window.location='ward-patient?wrdno=$wardID';</script>";
+                }else{
+                   $error = "<script>document.write('PATIENT DISCHARGED FAILED, TRY AGAIN.');window.location='ward-patient?wrdno=$wardID';</script>";
+                }
+            }
+        }
+    }
+
 ?>
 
 <div id="search">
@@ -597,7 +619,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
     <input type="submit" name="moveToAcc" value="MOVE TO ACCOUNT" onclick="return confirm('Move To Account For Payment.');"  class="btn btn-primary btn-block span10" />
 
                 <?php }else{ ?>
-    <input type="submit" name="DischargePatient" value="DISCHARGE PATIENT" onclick="return confirm('Confirm Patient Discharge.');"  class="btn btn-primary btn-block span10" />
+    <input type="submit" name="DischargePatient" onclick="return confirm('CONFIRM DISCHARGE.');" value="DISCHARGE PATIENT" onclick="return confirm('Confirm Patient Discharge.');"  class="btn btn-primary btn-block span10" />
 
                 <?php }?>
                     </div>
