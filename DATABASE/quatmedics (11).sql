@@ -18,8 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-create Database `quat_medics`;
-  use `quat_medics`;
+create Database `quat_medic`;
+  use `quat_medic`;
 --
 -- Database: `quatmedics`
 --
@@ -16509,7 +16509,7 @@ ALTER TABLE `centeruser`
 --
 ALTER TABLE `consultation`
   ADD PRIMARY KEY (`consultID`),
-  ADD KEY `patientID` (`patientID`);
+  --ADD KEY `patientID` (`patientID`);
 
 --
 -- Indexes for table `consultingroom`
@@ -16925,8 +16925,8 @@ ALTER TABLE `centeruser`
 --
 -- Constraints for table `consultation`
 --
-ALTER TABLE `consultation`
-  ADD CONSTRAINT `consultation_ibfk_1` FOREIGN KEY (`patientID`) REFERENCES `patient` (`patientID`);
+--ALTER TABLE `consultation`
+--  ADD CONSTRAINT `consultation_ibfk_1` FOREIGN KEY (`patientID`) REFERENCES `patient` (`patientID`);
 
 --
 -- Constraints for table `department`
