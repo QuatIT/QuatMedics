@@ -112,8 +112,8 @@
 
 					<hr>
 
-					<b>Number of Claims:</b> <?php $numcliams = select("select * from consultation where patientID='$patientID' && insuranceType='NHIS'"); echo count($numcliams); ?>
-					 | <b>Claim Number:</b> <?php echo $consultation_row['claimNumber']; ?>
+					<b>Number of Claims:</b> <?php $numcliams = select("select * from consultation where patientID='$patientID' && insuranceType='NHIS'"); echo @count($numcliams); ?>
+					 | <b>Claim Number:</b> <?php echo @$consultation_row['claimNumber']; ?>
 					</div>
 					</div>
 				</div>
@@ -185,13 +185,13 @@
 											// $amount = $med['price'] * $prescribedmeds_row['totalMeds'];
 									?>
 							<tr>
-								<td><?php echo $counterz++; ?></td>
-								<td><?php echo $prescribedmeds_row['medicine'];?></td>
-								<td><?php echo $prescribedmeds_row['dosage'];?></td>
-								<td><?php echo $med['price'];?></td>
-								<td><?php echo $prescribedmeds_row['totalMeds'];?></td>
-								<td><?php echo $prescribedmeds_row['medprice'];?></td>
-								<td><?php echo $prescribedmeds_row['dateInsert'];?></td>
+								<td><?php echo @$counterz++; ?></td>
+								<td><?php echo @$prescribedmeds_row['medicine'];?></td>
+								<td><?php echo @$prescribedmeds_row['dosage'];?></td>
+								<td><?php echo @$med['price'];?></td>
+								<td><?php echo @$prescribedmeds_row['totalMeds'];?></td>
+								<td><?php echo @$prescribedmeds_row['medprice'];?></td>
+								<td><?php echo @$prescribedmeds_row['dateInsert'];?></td>
 								<!-- <td><?php #echo $amount; ?></td> -->
 								<td></td>
 								<!-- <td><a class="btn btn-link" href="update_med?id=<?php #echo $prescribedmeds_row['id']; ?>"> Update</a> | <a href="delete_med?id=<?php #echo $prescribedmeds_row['id']; ?>">Delete</a></td> -->
@@ -221,9 +221,9 @@
 								foreach($investigation as $invest_row){
 							?>
 							<tr>
-								<td><?php echo $counter++; ?></td>
-								<td><?php echo $invest_row['examination']; ?></td>
-								<td><?php echo $invest_row['dateRegistered']; ?></td>
+								<td><?php echo @$counter++; ?></td>
+								<td><?php echo @$invest_row['examination']; ?></td>
+								<td><?php echo @$invest_row['dateRegistered']; ?></td>
 								<td><a class="btn btn-link" data-toggle="modal" data-target="#update_investigation<?php echo $invest_row['id']; ?>" >Update</a>
 									<!-- | <a href="delete_investigation?id=<?php #echo $invest_row['id']; ?>">Delete</a> -->
 								</td>

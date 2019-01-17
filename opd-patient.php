@@ -105,11 +105,13 @@
       $insuranceNumber = filter_input(INPUT_POST, "insuranceNumber", FILTER_SANITIZE_STRING);
       $ccNumber = filter_input(INPUT_POST, "ccNumber", FILTER_SANITIZE_STRING);
       $company = filter_input(INPUT_POST, "company", FILTER_SANITIZE_STRING);
+      // $insurance_number = filter_input(INPUT_POST, "insurance_number", FILTER_SANITIZE_STRING);
+      $insurance_exp = filter_input(INPUT_POST, "insurance_exp", FILTER_SANITIZE_STRING);
       $centerID=$_SESSION['centerID'];
       $status = SENT_TO_CONSULTING;
       $lab_status1 = SENT_TO_LAB;
       $patient_busy = PATIENT_BUSY;
-      $assign_lab = $_POST['assign_lab'];
+      @$assign_lab = $_POST['assign_lab'];
 
 
 if($assign_lab == "sent_to_lab"){
@@ -121,7 +123,7 @@ if($assign_lab == "sent_to_lab"){
 }
 
         if($consultAssignPatient1){
-            $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."' WHERE patientID='$patientID' ");
+            $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."', insurance_number='$insuranceNumber',insurance_exp='$insurance_exp' WHERE patientID='$patientID' ");
 
 		//select opd price..
 //		$opdPrice = select("SELECT * FROM prices WHERE serviceName='OPD' AND centerID='".$_SESSION['centerID']."'");
@@ -444,6 +446,13 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
 
                              <span id="modeload"></span>
 
+                                     <!-- <div class="control-group">
+                                       <label class="control-label">Expire Date:</label>
+                                       <div class="controls">
+                                         <input type="date" id="modeload" class="span11" placeholder="Expire Date" value="<?php #echo $_SESSION['exp_date']; ?>" name="exp_date" readonly />
+                                       </div>
+                                     </div> -->
+
                               <div class="control-group">
                                 <label class="control-label">Body Temperature:</label>
                                 <div class="controls">
@@ -614,7 +623,7 @@ window.onload = function () {
         function modey(val){
             // load the select option data into a div
                 $('#loader').html("Please Wait...");
-                $('#modeload').load('loads/mode.php?id='+val, function(){
+                $('#modeload').load('loads/mode.php?id='+val+'&pid=<?php echo $_GET["pid"]; ?>', function(){
                 $('#loader').html("");
                });
         }
@@ -635,13 +644,23 @@ window.onload = function () {
 
 <script>
 
-function ccInsure(val){
-    // load the select option data into a div
-        $('#loader').html("Please Wait...");
-        $('#ccmodeload').load('loads/ccmode.php?id='+val, function(){
-        $('#loader').html("");
-       });
-}
+
+        function ccInsure(val){
+            // load the select option data into a div
+                $('#loader').html("Please Wait...");
+                $('#ccmodeload').load('loads/ccmode.php?id='+val+'&pid=<?php echo $_GET["pid"]; ?>', function(){
+                $('#loader').html("");
+               });
+        }
+
+// function ccInsure(val){
+//     // load the select option data into a div
+//         $('#loader').html("Please Wait...");
+//         $('#ccmodeload').load('loads/ccmode.php?id='+val, function(){
+//         $('#loader').html("");
+//        });
+// }
+
 
 </script>
 

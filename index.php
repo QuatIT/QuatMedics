@@ -169,7 +169,7 @@ clearstatcache();
                     <div class="controls">
                         <div class="main_input_box">
 <!--                            <span class="add-on"><i class="fa fa-user-md"></i></span>-->
-                            <input type="text" name="username" placeholder="USER NAME" class="text-center" required/>
+                            <input type="text" name="username" placeholder="USER NAME" class="text-center"  autofocus required/>
                         </div>
                     </div>
                 </div>

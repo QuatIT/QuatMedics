@@ -9,8 +9,12 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 
 //$q = "PNT-0001";
 $q = $_REQUEST['id'];
+$pid = $_REQUEST['pid'];
 
 if($q == 'Insurance'){
+
+$sql = select("select * from patient where patientID='$pid' ");
+foreach($sql as $row){}
 
 ?>
 
@@ -27,6 +31,15 @@ if($q == 'Insurance'){
                                     </select>
                                 </div>
                               </div>
+
+
+        <div class="control-group">
+          <label class="control-label">Expire Date:</label>
+          <div class="controls">
+            <input type="date" class="span11" placeholder="Expire Date" value="<?php echo $row['insurance_exp']; ?>" name="exp_date" required />
+          </div>
+        </div>
+
 
 <span id="ccmodeload"></span>
 

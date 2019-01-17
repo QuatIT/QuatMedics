@@ -28,7 +28,7 @@
 <?php
 	include 'layout/head.php';
 
-	$patientID = $_GET['pid'];
+	// $patientID = $_GET['pid'];
 
     $count = 1;
 

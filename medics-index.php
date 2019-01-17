@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+// error_reporting(0);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,7 +113,7 @@ thead th {
 
     $centerID=$_SESSION['centerID'];
     @$roomID = $_GET['roomID'];
-$update_consulting = update("UPDATE consultingroom SET status='free' WHERE roomID='$roommID'");
+$update_consulting = update("UPDATE consultingroom SET status='free' WHERE roomID='$roomID'");
     $dashboard = new Dashboard;
 
 
@@ -184,17 +184,17 @@ foreach($get_pat as $get_pats){
    $percentile=100;
 
 // nhis percentage
-  $cal_nhis = ($nhis)/($all_consult)* ($percentile);
+  @$cal_nhis = ($nhis)/($all_consult)* ($percentile);
 
 
 //nhis Acacia
-$cal_acacia = ($acacia)/($all_consult)* ($percentile);
+@$cal_acacia = ($acacia)/($all_consult)* ($percentile);
 
   //company percentage
-$cal_company = ($company)/($all_consult)*($percentile);
+@$cal_company = ($company)/($all_consult)*($percentile);
 
   //private percentage
-$cal_private = ($private)/($all_consult)*($percentile);
+@$cal_private = ($private)/($all_consult)*($percentile);
 
 //WARD
 $room_ward = select("SELECT * FROM wardlist");
