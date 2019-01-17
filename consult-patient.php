@@ -36,6 +36,7 @@
 
 <?php
 include 'layout/head.php';
+$_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 //check access or redirect to 404...
 if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
 
@@ -76,30 +77,29 @@ if(count($codesql) >=1){
 	$prescribeCode = "PRSCB.".$centerID."-1";
 }
 
-//generate labRequestID
-//$codesql = select("SELECT * From labresults order by labrequestID DESC limit 1");
-//if(count($codesql) >=1){
-//	foreach($codesql as $coderow){
-//		$code = $coderow['labRequestID'];
-//		$oldcode = explode("_",$code);
-//		$newID = $oldcode[1]+1;
-//		$labReqID = $oldcode[0].".$centerID"."-".$newID;
-//	}
-//}else{
-//	$labReqID = "LAB-".$centerID."_1";
-//    $centerLabID =  "LAB.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$centerLabIDs);
-//}
-//
 //GENERATE LAB REQUEST ID
     $getNumber = select("SELECT * FROM labresults WHERE centerID='$centerID'");
         $totalNumber = count($getNumber) + 1;
         $labReqID =  "LR.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$totalNumber);
 
+
+//SAVE CONSULTATION NOTES
+    if(isset($_POST['SaveNote'])){
+        $keyword = filter_input(INPUT_POST, "keyword", FILTER_SANITIZE_STRING);
+        $noteDetails = trim(htmlentities($_POST['noteDetails']));
+        $saveNotes = update("UPDATE consultation SET docNotes='$noteDetails' WHERE patientID='$patientID' AND consultID='$conid'");
+        if($saveNotes){
+                echo "<script>window.location='".$_SESSION['current_page']."'</script>";
+        }else{
+                $error = "<script>document.write('NOTES UNABLE TO SAVE, TRY AGAIN');</script>";
+        }
+    }
+
 //Request Laboratory.....
 if(isset($_POST['reqLab'])){
     $labNumber = count($_POST['labName']);
 	    $paymode = filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
-
+        $confirm = trim('UNCONFIRMED');
 if($labNumber > 0) {
     for($i=0; $i<$labNumber; $i++){
         if(trim($_POST["labName"][$i] != '')){
@@ -113,7 +113,7 @@ if($labNumber > 0) {
             $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
             foreach($getLp as $labPrice){}
 
-$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
+$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,confirm,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$confirm','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
 
     if($insertLabReq){
          $success =  "LAB REQUEST SENT SUCCESSFULLY";
@@ -194,8 +194,8 @@ if(isset($_POST['adWard'])){
                             $medprice = trim($unitPrice);
                         }
                     }
-
-$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,paymode,paystatus,charge,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$diagnoses','$symptoms','$paymode','$paystatus','$medprice','".$consultrow['dateInsert']."')");
+$confirm = trim('UNCONFIRMED');
+$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,paymode,confirm,paystatus,charge,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$diagnoses','$symptoms','$paymode','$confirm','$paystatus','$medprice','".$consultrow['dateInsert']."')");
 
     if($insertWardMeds){
         $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,consultID,bedID,patientID,staffID,admitDate,admitDetails,centerID,consultingroom,paymode,paystatus,dateInsert) VALUES('$assignID','$wardID','$conid','$bedID','$patientID','$staffID','$admitDate','$admitDetails','$centerID','$roomID','$paymode','$paystatus','".$consultrow['dateInsert']."')");
@@ -353,7 +353,8 @@ if(isset($_POST['presMeds'])){
                         }
                     }
 //		$insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode','$dateToday')");
-		$insertMedsz = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode', '".$consultrow['dateInsert']."')");
+        $confirm = trim('UNCONFIRMED');
+		$insertMedsz = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,confirm,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode','$confirm', '".$consultrow['dateInsert']."')");
 					}
 		}
 
@@ -458,6 +459,7 @@ if(isset($_POST['presMeds'])){
                     <div class="widget-title">
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#tab1">PATIENT HEALTH DETAILS</a></li>
+                            <li><a data-toggle="tab" href="#tab6">DOCTOR'S NOTES</a></li>
                             <li><a data-toggle="tab" href="#tab2"> REQUEST LAB</a></li>
                             <li><a data-toggle="tab" href="#tab3"> ADMIT TO WARD</a></li>
                             <li><a data-toggle="tab" href="#tab4"> PRESCRIBE MEDICATION</a></li>
@@ -567,60 +569,90 @@ if(isset($_POST['presMeds'])){
 								</div>
                             </form>
                         </div>
-                        <div id="tab2" class="tab-pane">
-                             <form action="" method="post" class="form-horizontal">
-								 <div class="span6">
-									 <div class="widget-content nopadding">
-									 	<div class="control-group">
-                                        <label class="control-label"> CONSULTING ROOM</label>
-                                          <div class="controls">
-                                            <input type="text" name="consultroom" class="span11" value="<?php echo $roomID?>" readonly>
-                                          </div>
-                                      	</div>
-								    <?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
-                                      <div class="control-group">
-                                        <label class="control-label">PAYMENT MODE :</label>
-                                        <div class="controls">
-                                          <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
-                                        </div>
-                                      </div>
-                                      <?php } ?>
-									 </div>
-								 </div>
-								 <div class="span6">
-									 <div class="widget-content nopadding">
-									 	<div class="control-group">
-                                        <label class="control-label"> STAFF ID</label>
-                                          <div class="controls">
-                                            <input type="text" name="staffid" class="span11" value="<?php echo $staffID;?>" readonly>
-                                          </div>
-                                      </div>
-									 </div>
-										 <div class="control-group">
-                                        <label class="control-label">REQUEST LAB TEST</label>
-                                        <div class="controls">
-                                          <select multiple name="labName[]">
-                                               <?php
-                                            $lablist = select("SELECT * from lablist WHERE centerID='".$_SESSION['centerID']."'");
-                                            foreach($lablist as $labrow){
-                                            ?>
-                                            <option value="<?php echo $labrow['labID'];?>"><?php echo $labrow['labName'];?></option>
-                                              <?php }?>
-                                          </select>
-                                        </div>
-                                      </div>
-									 <div class="form-actions">
-                                          <i class="span1"></i>
-                                        <button type="submit" name="reqLab" class="btn btn-primary btn-block span10"> Request Lab</button>
-                                      </div>
-								 </div>
-                            </form>
-                        </div>
+
+<!-- ============================== START DOCTORS NOTE TAB =============================================      -->
+<div id="tab6" class="tab-pane">
+     <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+         <div class="span12">
+             <div class="widget-content nopadding">
+                <div class="control-group">
+                <label class="control-label"> KEYWORD</label>
+                  <div class="controls">
+                    <input type="text" name="keyword" class="span11" onchange="">
+                  </div>
+                </div>
+
+                <div class="control-group">
+                <label class="control-label"> NOTE DETAILS</label>
+                  <div class="controls">
+                      <textarea class="span11" name="noteDetails" rows="6" ><?php echo @$consultrow['docNotes'];?></textarea>
+                  </div>
+              </div>
+             </div>
+             <div class="form-actions">
+                  <i class="span7"></i>
+                <button type="submit" name="SaveNote" class="btn btn-primary btn-block labell span4"> SAVE NOTE</button>
+              </div>
+         </div>
+    </form>
+</div>
+<!-- ============================== END OF DOCTORS NOTE TAB =============================================      -->
+
+<!-- ============================== START OF LAB REQUEST TAB =============================================      -->
+<div id="tab2" class="tab-pane">
+     <form action="" method="post" class="form-horizontal">
+         <div class="span6">
+             <div class="widget-content nopadding">
+                <div class="control-group">
+                <label class="control-label"> CONSULTING ROOM</label>
+                  <div class="controls">
+                    <input type="text" name="consultroom" class="span11" value="<?php echo $roomID?>" readonly>
+                  </div>
+                </div>
+            <?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
+              <div class="control-group">
+                <label class="control-label">PAYMENT MODE :</label>
+                <div class="controls">
+                  <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
+                </div>
+              </div>
+              <?php } ?>
+             </div>
+         </div>
+         <div class="span6">
+             <div class="widget-content nopadding">
+                <div class="control-group">
+                <label class="control-label"> STAFF ID</label>
+                  <div class="controls">
+                    <input type="text" name="staffid" class="span11" value="<?php echo $staffID;?>" readonly>
+                  </div>
+              </div>
+             </div>
+                 <div class="control-group">
+                <label class="control-label">REQUEST LAB TEST</label>
+                <div class="controls">
+                  <select multiple name="labName[]">
+                       <?php
+                    $lablist = select("SELECT * from lablist WHERE centerID='".$_SESSION['centerID']."'");
+                    foreach($lablist as $labrow){
+                    ?>
+                    <option value="<?php echo $labrow['labID'];?>"><?php echo $labrow['labName'];?></option>
+                      <?php }?>
+                  </select>
+                </div>
+              </div>
+             <div class="form-actions">
+                  <i class="span1"></i>
+                <button type="submit" name="reqLab" class="btn btn-primary btn-block labell span10"> Request Lab</button>
+              </div>
+         </div>
+    </form>
+</div>
 
 <!-- ======================== START ADMIT TO WARD TAB ===================-->
 <div id="tab3" class="tab-pane">
      <form action="" method="post" class="form-horizontal">
-         <div class="span6">
+         <div class="span5">
             <div class="widget-content nopadding">
                 <?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
 				  <div class="control-group">
@@ -658,28 +690,12 @@ if(isset($_POST['presMeds'])){
                 </div>
               </div>
                <div class="control-group" id="reasonDet"></div>
-<!--
-              <div class="control-group">
-                <label class="control-label"> DATE ADMITTED</label>
-                  <div class="controls">
-                    <input type="date" class="span11" name="admitDate" required/>
-                  </div>
-              </div>
--->
-<!--
-              <div class="control-group">
-                <label class="control-label"> DISCHARGE DATE</label>
-                  <div class="controls">
-                    <input type="date" class="span11" name="dischargeDate"/>
-                  </div>
-              </div>
--->
           </div>
          </div>
-         <div class="span6">
+         <div class="span7">
               <table class="table table-bordered" id="dynamic_field2">
                   <tr>
-                    <td colspan="4"><textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea></td>
+                    <td colspan="4"><textarea class="span12" name="symptoms" placeholder="Symptoms" required><?php echo @$consultrow['docNotes'];?></textarea></td>
                   </tr>
                   <tr>
                     <td colspan="4"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea></td>
@@ -737,7 +753,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
             </table>
               <div class="form-actions">
                   <i class="span1"></i>
-                <button type="submit" name="adWard" class="btn btn-primary btn-block span10"> Admit To Ward</button>
+                <button type="submit" name="adWard" class="btn btn-primary btn-block labell span10"> Admit To Ward</button>
               </div>
          </div>
     </form>
@@ -750,12 +766,12 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 		 <div class="span6">
 			<table class="table table-bordered" style="margin-top:-80px;">
 				  <tr>
-					  <td> Presciption Code</td>
+					  <td class="labell"> PRESCRIPTION CODE</td>
 					  <td colspan="2">
 			<input type="text" name="prescribeCode" value="<?php echo $prescribeCode;?>" readonly class="span12" /></td>
 				  </tr>
 				  <tr>
-					<td> Pharmacy</td>
+					<td class="labell"> PHARMACY</td>
 					<td colspan="2">
 					  <select name="pharmacyID" class="span12" required>
 
@@ -772,39 +788,40 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 					  </td>
 				  </tr>
 				  <tr>
-					<td colspan="3">Patient's Symptoms<textarea class="span12" name="symptoms" placeholder="Symptoms" required></textarea>  </td>
+					<td colspan="3"><textarea class="span12" placeholder="SYMPTOMS" name="symptoms" placeholder="Symptoms" required><?php echo @$consultrow['docNotes'];?></textarea>  </td>
 				  </tr>
 				  <tr>
 					  <td>
 <!--					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>-->
-					   <table border="0" class="" id="diagnosis" style="margin-top:20px;">
+					   <table border="0" class="table table-bordered" id="diagnosis" style="margin-top:20px;">
                                 <tr>
 
                                     <td>
-										<label>Diagnosis</label>
-                                        <input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control">
+										<label class="labell">Diagnosis</label>
+                                        <input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12">
                                     </td>
 
                                     <td><br>
-                                        <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success">+</button>
+                                        <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success labell">+</button>
                                     </td>
                                 </tr>
                             </table>
 					  </td>
-					  <br><br>
+					  <br>
+                      <br>
 
 					  <td>
 <!--					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>-->
-					   <table border="0" class="" id="investigation" style="margin-top:20px;">
+					   <table border="0" class="table table-bordered" id="investigation" style="margin-top:20px;">
                                 <tr>
 
                                     <td>
-										<label>Investigation</label>
-                                        <input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control">
+										<label class="labell">Investigation</label>
+                                        <input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12">
                                     </td>
 
                                     <td><br>
-                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success">+</button>
+                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success labell">+</button>
                                     </td>
                                 </tr>
                             </table>
@@ -826,7 +843,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 					</div>
 				  </div>
 				  <?php } ?>
-					<thead>
+					<thead class="labell">
 						<th style="width:40%;"> Medicine Name</th>
 						<th> No of intakes / Pieces</th>
 						<th> Intakes Per Day</th>
@@ -880,7 +897,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                 </table>
                   <div class="form-actions">
                       <i class="span7"></i>
-                    <button onclick="return confirm('Confirm Action.');" type="submit" name="presMeds" class="btn btn-primary btn-block span5"> Save Prescription</button>
+                    <button onclick="return confirm('Confirm Action.');" type="submit" name="presMeds" class="btn btn-primary btn-block labell span5"> Save Prescription</button>
                   </div>
              </div>
         </form>
@@ -1102,6 +1119,10 @@ function reason(val){
 		$('#loader').html("");
        });
 }
+
+$(".alert").delay(7000).slideUp(1000, function() {
+    $(this).alert('close');
+});
 </script>
 
 <script type="text/javascript">
@@ -1160,40 +1181,30 @@ function resetMenu() {
 
 <!--Beginning of Diagnosis-->
 <script>
-    //    $(document).ready(function(){
     var i = 1;
     $('#add_diagnosis').click(function() {
         i++;
-        $('#diagnosis').append('<tr id="row' + i + '"> <td><input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control"></td><td><button type="button" name="remove_diagnosis" id="' + i + '" class="btn btn-danger btn_remove_diagnosis">X</button></td></tr>');
+        $('#diagnosis').append('<tr id="row' + i + '"> <td><input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12"></td><td><button type="button" name="remove_diagnosis" id="' + i + '" class="btn btn-danger btn_remove_diagnosis">X</button></td></tr>');
     });
-
     $(document).on('click', '.btn_remove_diagnosis', function() {
         var button_id = $(this).attr("id");
         $('#row' + button_id + '').remove();
     });
-
-    //    });
-
-</script>
 <!--End of Diagnosis-->
-
 <!--Beginning of Investigation-->
-<script>
-    //    $(document).ready(function(){
+
     var i = 1;
     $('#add_investigation').click(function() {
         i++;
-        $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control"></td><td><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
+        $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12"></td><td><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
     });
-
     $(document).on('click', '.btn_remove_investigation', function() {
         var button_id = $(this).attr("id");
         $('#row' + button_id + '').remove();
     });
 
-    //    });
 </script>
-<!--End of Diagnosis-->
+<!--End of Investigation-->
 
 <script>
 function medtype(val){
@@ -1206,16 +1217,4 @@ function medtype(val){
 </script>
 </body>
 </html>
-<!--
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("#search-box").autocomplete(
-
-			{
-				source: 'loads/search-meds.php',
-				minLength: 1
-			});
-	});
-</script>
--->
 <?php }else{echo "<script>window.location='404'</script>";}?>

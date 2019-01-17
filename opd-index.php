@@ -107,7 +107,7 @@
         <a href="opd-index.php" title="" class="tip-bottom"><i class="icon-plus"></i> OPD</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">OUT PATIENT DEPARTMENT</h3>
                 <?php
                       if($success){
@@ -126,8 +126,8 @@
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Patient List</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Patient</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">PATIENT LIST</a></li>
+                    <li><a data-toggle="tab" href="#tab2">ADD NEW PATIENT</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -135,38 +135,20 @@
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Patients table</h5>
+                        <h5>PATIENT TABLE</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                           <thead>
                             <tr>
-                              <th>Photo</th>
-                              <th>Patient Number</th>
-                              <th>Patient Name</th>
-                              <th>Mobile Number</th>
-                              <th>Action</th>
+                              <th>PHOTO</th>
+                              <th>ID</th>
+                              <th>FULL NAME</th>
+                              <th>MOBILE NUMBER</th>
+                              <th>ACTION</th>
                             </tr>
                           </thead>
-                          <tbody id="newpatient">
-
-<!--
-                            <tr>
-                              <td class="span2">
-                                <a class="thumbnail lightbox_trigger" href="images/gallery/imgbox2.jpg">
-                                    <img src="images/gallery/imgbox2.jpg" alt="" >
-                                </a>
-                              </td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;">
-                                   <a href="opd-patientinfo.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
--->
-
-                          </tbody>
+                          <tbody id="newpatient"></tbody>
                         </table>
                       </div>
                     </div>
@@ -175,7 +157,7 @@
 
                 <div id="tab2" class="tab-pane">
                     <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
-                    <div class="span5">
+                    <div class="span6">
                           <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                             <h5>Personal-info</h5>
                           </div>
@@ -233,14 +215,14 @@
                               </div>
                           </div>
                       </div>
-                    <div class="span5">
+                    <div class="span6">
                           <div class="widget-title">
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
                                 <label class="control-label">First Name :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="First name" name="firstName" />
+                                  <input type="text" class="span11" placeholder="First name" name="firstName" required/>
                                 </div>
                               </div>
                               <div class="control-group">
@@ -267,18 +249,16 @@
                               <div class="control-group">
                                 <label class="control-label">Mobile Number:</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Mobile Number" name="mobileNumber" />
+                                  <input type="text" class="span11" placeholder="Mobile Number" name="mobileNumber"/>
                                 </div>
                               </div>
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                  <a data-toggle="tab" href="#tab3" class="btn btn-primary btn-block" > Next Step >></a>
+                                  <a data-toggle="tab" href="#tab3" class="btn btn-primary btn-block labell" > Next Step >></a>
                               </div>
                           </div>
                       </div>
-
-
                 </div>
 
                 <div id="tab3" class="tab-pane">
@@ -335,13 +315,13 @@
                               <div class="control-group">
                                 <label class="control-label">TIN Number :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Home Address" name="tin" />
+                                  <input type="text" class="span11" placeholder="TAX ID NUMBER" name="tin" />
                                 </div>
                               </div>
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10" name="btnSave">Save Patient</button>
+                                <button type="submit" class="btn btn-primary btn-block labell span10" name="btnSave">Save Patient</button>
                               </div>
                           </div>
                       </div>

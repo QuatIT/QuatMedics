@@ -153,4 +153,12 @@ $('textarea').val (function () {
         font-weight: bolder;
         text-transform: uppercase;
     }
+    .labell{
+        font-weight: bolder;
+        text-transform: uppercase;
+    }
+    #sidebar ul li{
+/*        font-weight: bolder;*/
+        text-transform: uppercase;
+    }
 </style>

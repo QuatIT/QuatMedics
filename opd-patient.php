@@ -15,8 +15,8 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<!--<link rel="stylesheet" href="assets/css/font-awesome.css" />-->
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
 
         <style>
         .active{
@@ -229,7 +229,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,sevice
         <a title="Old Patients" class="tip-bottom"><i class="icon-user"></i> OPD OLD PATIENTS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">OUT PATIENT DEPARTMENT</h3>
        <?php
                       if($success){
@@ -248,9 +248,9 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,sevice
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="<?php echo $active; ?>"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>
+                    <li class="<?php echo $active; ?>"><a data-toggle="tab" href="#tab1">OUT PATIENT LIST</a></li>
 <!--                    <li class="active"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>-->
-                    <li class="<?php echo $active2; ?>"><a data-toggle="tab" href="#tab2">Add Vitals </a></li>
+                    <li class="<?php echo $active2; ?>"><a data-toggle="tab" href="#tab2">ADD VITALS </a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -259,11 +259,11 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,sevice
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Patients</h5>
+                        <h5>LIST OF PATIENTS</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
-                          <thead>
+                          <thead class="labell">
                             <tr>
                               <th>Patient ID</th>
                               <th>Patient Name</th>
@@ -288,7 +288,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,sevice
                               <td style="text-align: center;"> <?php echo $patient['dob']; ?></td>
                               <td style="text-align: center;">
                                    <a href="#" data-toggle="modal" data-target="#squarespaceModal<?php echo $patient['patientID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
-                                   <a href="id-card?pid=<?php echo $patient['patientID'];?>" title="Patient Card"> <span class="btn btn-success fa fa-vcard"></span></a>
+                                   <a href="id-card?pid=<?php echo $patient['patientID'];?>" title="Patient Card"> <span class="btn btn-success fa fa-user"></span></a>
                               </td>
                             </tr>
 

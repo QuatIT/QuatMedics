@@ -74,7 +74,7 @@
         <a title="Doctor's Appointment" class="tip-bottom"><i class="icon-calendar"></i> DOCTOR APPOINTMENTS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">DOCTOR'S APPOINTMENTS</h3>
  <?php
                       if($success){
@@ -92,7 +92,7 @@
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab1">Appointment List</a></li>
                     <li><a data-toggle="tab" href="#tab2">Add New Appointment</a></li>
                 </ul>
