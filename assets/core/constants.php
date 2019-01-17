@@ -9,9 +9,9 @@ define("DB_USER" , "root");
 define("DB_PASSWORD" , "");
 //define("DB_NAME" , "quatmedics_presentation");
 
-define("DB_NAME" , "quat_medic");
+//define("DB_NAME" , "quat_medic");
 
-//define("DB_NAME" , "quatmedics");
+define("DB_NAME" , "quatmedics");
 
 
 //backup server

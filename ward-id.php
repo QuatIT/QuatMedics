@@ -22,8 +22,8 @@ if(count($sql) > 0){
 }else{ ?>
     	<label class="control-label">Bed Number</label>
 		<div class="controls">
-			<input type="text" class="span11" name="bedID" value="All Beds Occupied" readonly/>
+			<input type="text" class="span11" name="bedID" value="NO BED AVAILABLE" readonly/>
 	</div>
-<?php
+    <?php
 }
 ?>

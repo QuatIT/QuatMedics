@@ -48,27 +48,27 @@
 <body>
 <?php
 
-    include 'layout/head.php';
+include 'layout/head.php';
 
-    if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
+if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
 
-    $roomID = $_GET['roomID'];
+$roomID = $_GET['roomID'];
 
-        $rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
-        foreach($rm as $r){}
+$rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
+foreach($rm as $r){}
 
-        $consultation = new Consultation;
-        $roomByID = $consultation->find_by_room_id($roomID);
-        foreach($roomByID as $room_id){}
+$consultation = new Consultation;
+$roomByID = $consultation->find_by_room_id($roomID);
+foreach($roomByID as $room_id){}
 
-        if(!empty($roomID)){
-            $update_room=update("UPDATE consultingroom SET status='".OCCUPIED."' WHERE roomID='$roomID' ");
-        }
+if(!empty($roomID)){
+    $update_room=update("UPDATE consultingroom SET status='".OCCUPIED."' WHERE roomID='$roomID' ");
+}
 
-//        $room = Consultation::find_consultingroom();
-        $room = select("SELECT * FROM consultingroom WHERE centerID='".$_SESSION['centerID']."' && status='".FREE."' || status=''&& centerID='".$_SESSION['centerID']."'  || status='null' && centerID='".$_SESSION['centerID']."'  ");
+//$room = Consultation::find_consultingroom();
+$room = select("SELECT * FROM consultingroom WHERE centerID='".$_SESSION['centerID']."' && status='".FREE."' || status=''&& centerID='".$_SESSION['centerID']."'  || status='null' && centerID='".$_SESSION['centerID']."'  ");
 
-    ?>
+?>
 
 <?php if(empty($_GET['roomID'])){ ?>
     <div id="modal">
@@ -77,7 +77,6 @@
         <?php foreach($room as $roomno){ ?>
             <a href="consult-index?roomID=<?php echo $roomno['roomID'];?>" class="btn btn-warning"><?php echo $roomno['roomName'];?></a>
         <?php } ?>
-
     </div>
 </div>
 
@@ -116,12 +115,12 @@
                     <table class="table table-bordered data-table">
                       <thead>
                         <tr>
-                          <th>Patient Number</th>
-                          <th>Patient Name</th>
-                          <th>Patient Age</th>
-                          <th>Nurse Name</th>
-                          <th>Status</th>
-                          <th>Action</th>
+                          <th>PATIENT ID</th>
+                          <th>PATIENT NAME</th>
+                          <th>OPD NURSE</th>
+<!--                          <th>PAYMENT STATUS</th>-->
+                          <th>STATUS</th>
+                          <th>ACTION</th>
                         </tr>
                       </thead>
                       <tbody id="consultindex">

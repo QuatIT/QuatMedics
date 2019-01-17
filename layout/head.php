@@ -151,5 +151,6 @@ $('textarea').val (function () {
 <style>
     .control-label{
         font-weight: bolder;
+        text-transform: uppercase;
     }
 </style>

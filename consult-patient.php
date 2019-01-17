@@ -133,7 +133,10 @@ $insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,cent
 if(isset($_POST['adWard'])){
     $wardID = filter_input(INPUT_POST, "wardID", FILTER_SANITIZE_STRING);
     $admitDetails = filter_input(INPUT_POST, "admitDetails", FILTER_SANITIZE_STRING);
-    $admitDate = filter_input(INPUT_POST, "admitDate", FILTER_SANITIZE_STRING);
+    $rnDetails = filter_input(INPUT_POST, "rnDetails", FILTER_SANITIZE_STRING);
+    if($admitDetails == "Other"){
+        $admitDetails = $rnDetails;
+    }
     $dischargeDate = filter_input(INPUT_POST, "dischargeDate", FILTER_SANITIZE_STRING);
     $symptoms = filter_input(INPUT_POST, "symptoms", FILTER_SANITIZE_STRING);
     $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
@@ -146,7 +149,7 @@ if(isset($_POST['adWard'])){
     $totalDaysNum = count( $_POST['totalDays']);
     $paystatus = "Not Paid";
     $paymode =  filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
-
+    $admitDate = date("Y-m-d, H:i:s");
     //generate wardassign IDs
     $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
     if(count($wardasignsql) >=1){
@@ -160,7 +163,10 @@ if(isset($_POST['adWard'])){
         $assignID = "ASSIGN.".$centerID."-1";
     }
 
-    //INSERT MEDICINE AS PATIENT IS ADMITTED..
+    if($bedID == 'NO BED AVAILABLE'){
+        $error = "<script>document.write('NO BED SELECTED, TRY AGAIN.');</script>";
+    }else{
+          //INSERT MEDICINE AS PATIENT IS ADMITTED..
 		for($m=0, $p=0, $a=0, $t=0; $m<$medsNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
 				if(trim($_POST['medicine'][$m] != '') && trim($_POST['pieces'][$p] != '') && trim($_POST['aday'][$a] != '') && trim($_POST['totalDays'][$t] != '') ) {
 					$medicineID = trim( $_POST['medicine'][$m]);
@@ -190,25 +196,34 @@ if(isset($_POST['adWard'])){
                     }
 
 $insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,paymode,paystatus,charge,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$diagnoses','$symptoms','$paymode','$paystatus','$medprice','".$consultrow['dateInsert']."')");
-        }
 
-}
-
-$insertassign = insert("INSERT INTO wardassigns(assignID,wardID,consultID,bedID,patientID,staffID,admitDate,dischargeDate,admitDetails,centerID,consultingroom,paymode,paystatus,dateInsert) VALUES('$assignID','$wardID','$conid','$bedID','$patientID','$staffID','$admitDate','$dischargeDate','$admitDetails','$centerID','$roomID','$paymode','$paystatus','".$consultrow['dateInsert']."')");
+    if($insertWardMeds){
+        $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,consultID,bedID,patientID,staffID,admitDate,admitDetails,centerID,consultingroom,paymode,paystatus,dateInsert) VALUES('$assignID','$wardID','$conid','$bedID','$patientID','$staffID','$admitDate','$admitDetails','$centerID','$roomID','$paymode','$paystatus','".$consultrow['dateInsert']."')");
 
 //update bed status to occupied..
 $updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$bedID'");
-
 
     if($insertassign && $updateBedStatus){
         $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
         if($updatePatient){
             $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
-        echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
+                echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
+                }
+            }else{
+                $error =  "ERROR: PATIENT ADMITTION NOT SAVED";
+            }
+            }else{
+            $error = "<script>document.write('WARD PRESCRIPTION FAILED TO SAVE, TRY AGAIN.');</script>";
         }
-    }else{
-        $error =  "ERROR: PATIENT ADMITTION NOT SAVED";
+
+        }
+
     }
+}
+
+
+
+
 }
 
 
@@ -629,20 +644,20 @@ if(isset($_POST['presMeds'])){
                   </select>
                 </div>
               </div>
-               <div class="control-group" id="bedlist">
+               <div class="control-group" id="bedlist"></div>
 
-                </div>
                <div class="control-group">
                 <label class="control-label">ADMISSION DETAILS</label>
                 <div class="controls">
-                  <select name="admitDetails">
+                  <select name="admitDetails" onchange="reason(this.value);">
                     <option value=""> </option>
                     <option value="Treatment And Observation"> Treatment And Observation </option>
                     <option value="Operation"> Operation</option>
-                    <option value="Other Reasons"> Other Reasons</option>
+                    <option value="Other"> Other Reasons</option>
                   </select>
                 </div>
               </div>
+               <div class="control-group" id="reasonDet"></div>
 <!--
               <div class="control-group">
                 <label class="control-label"> DATE ADMITTED</label>
@@ -1071,12 +1086,19 @@ function icd(val){
 		$('#loader').html("");
        });
 }
-</script>
-<script>
+
 function ward_id(val){
 	// load the select option data into a div
         $('#loader').html("Please Wait...");
         $('#bedlist').load('ward-id.php?wid='+val, function(){
+		$('#loader').html("");
+       });
+}
+
+function reason(val){
+	// load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#reasonDet').load('admitreason.php?rn='+val, function(){
 		$('#loader').html("");
        });
 }

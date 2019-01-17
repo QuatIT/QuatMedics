@@ -20,32 +20,30 @@ if($q == 'NHIS'){
 
 ?>
 
-                              <div class="control-group">
-                                <label class="control-label">CC Number:</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="CC Number" name="ccNumber" required />
-                                </div>
-                              </div>
+          <div class="control-group">
+            <label class="control-label">CC Number:</label>
+            <div class="controls">
+              <input type="text" class="span11" placeholder="CC Number" name="ccNumber" required />
+            </div>
+          </div>
 
-                              <div class="control-group">
-                                <label class="control-label">Insurance Number:</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Insurance Number" value="<?php echo $_SESSION['exp_date']; ?>" name="insuranceNumber" required />
-                                </div>
-                              </div>
+          <div class="control-group">
+            <label class="control-label">Insurance Number:</label>
+            <div class="controls">
+              <input type="text" class="span11" placeholder="Insurance Number" value="<?php echo $_SESSION['exp_date']; ?>" name="insuranceNumber" required />
+            </div>
+          </div>
 <?php
-                     }else{
+ }else{
 
 ?>
 
-
-
-                              <div class="control-group">
-                                <label class="control-label">Insurance Number:</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Insurance Number" name="insuranceNumber" value="<?php echo $_SESSION['exp_date']; ?>" required />
-                                </div>
-                              </div>
+  <div class="control-group">
+    <label class="control-label">Insurance Number:</label>
+    <div class="controls">
+      <input type="text" class="span11" placeholder="Insurance Number" name="insuranceNumber" value="<?php echo @$_SESSION['exp_date']; ?>" required />
+    </div>
+  </div>
 
 <?php
 }

@@ -122,50 +122,47 @@ if($assign_lab == "sent_to_lab"){
         $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$ccNumber,$company,$status,$centerID,$dateToday);
 }
 
-        if($consultAssignPatient1){
+    if($consultAssignPatient1){
             $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."', insurance_number='$insuranceNumber',insurance_exp='$insurance_exp' WHERE patientID='$patientID' ");
 
 		//select opd price..
 //		$opdPrice = select("SELECT * FROM prices WHERE serviceName='OPD' AND centerID='".$_SESSION['centerID']."'");
 //		foreach($opdPrice as $priceRow){}
 
+            $labNumber = count($_POST['labName']);
+            // echo "<script>alert('{$labNumber}')</script>";exit;
 
+            $labReq_ID = count(select("select * from labresults")) + 1;
+            $labReqID = "LABREQ.".$_SESSION['centerID']."-".$labReq_ID;
+            // echo "<script>alert('{$labReqID}')</script>";exit;
 
+            if($labNumber > 0) {
+                for($i=0; $i<$labNumber; $i++){
+                        if(trim($_POST["labName"][$i] != '')){
+                            $labID = trim($_POST["labName"][$i]);
+                            $status = SENT_TO_LAB;
+                  $paystatus = trim("Not Paid");
+                  //get labName from lablist table...
+                  $getLabName = select("SELECT labName FROM lablist where labID='$labID'");
+                  foreach($getLabName as $labName){}
+                  //get lab price from prices table using the name...
+                  $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
+                  foreach($getLp as $labPrice){}
 
-$labNumber = count($_POST['labName']);
-// echo "<script>alert('{$labNumber}')</script>";exit;
+            $insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$consultID."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$assign_lab','$mode','$paystatus','".$labPrice['servicePrice']."',CURDATE())");
 
-$labReq_ID = count(select("select * from labresults")) + 1;
-$labReqID = "LABREQ.".$_SESSION['centerID']."-".$labReq_ID;
-// echo "<script>alert('{$labReqID}')</script>";exit;
-
-if($labNumber > 0) {
-    for($i=0; $i<$labNumber; $i++){
-            if(trim($_POST["labName"][$i] != '')){
-                $labID = trim($_POST["labName"][$i]);
-                $status = SENT_TO_LAB;
-      $paystatus = trim("Not Paid");
-      //get labName from lablist table...
-      $getLabName = select("SELECT labName FROM lablist where labID='$labID'");
-      foreach($getLabName as $labName){}
-      //get lab price from prices table using the name...
-      $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
-      foreach($getLp as $labPrice){}
-
-$insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,paystatus,labprice,dateInsert) VALUES('$labReqID','".$consultID."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$assign_lab','$mode','$paystatus','".$labPrice['servicePrice']."',CURDATE())");
-
-                    if($insertLabReq){
-                         $success =  "LAB REQUEST SENT SUCCESSFULLY";
-    $updatePatient = update("UPDATE consultation set status='$assign_lab' where patientID='$patientID' AND consultID='$consultID'");
-                        #echo "<script>window.location='opd-patient?tab=opd-patient';</script>";
-                    }else{
-                        $error =  "ERROR: LAB REQUEST NOT SENT";
-                    }
+                                if($insertLabReq){
+                                     $success =  "LAB REQUEST SENT SUCCESSFULLY";
+                $updatePatient = update("UPDATE consultation set status='$assign_lab' where patientID='$patientID' AND consultID='$consultID'");
+                                    #echo "<script>window.location='opd-patient?tab=opd-patient';</script>";
+                                }else{
+                                    $error =  "ERROR: LAB REQUEST NOT SENT";
+                                }
+                            }
                 }
-    }
-}else{
-   $error =  "ERROR: NO LAB REQUEST MADE";
-}
+            }else{
+               $error =  "ERROR: NO LAB REQUEST MADE";
+            }
 
 
 //select consultaion price..
@@ -187,7 +184,7 @@ $insert_claimNumber = update("update consultation set claimNumber='$claim_number
 //$insertOPD = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','".$priceRow['serviceName']."','".$priceRow['servicePrice']."','".$priceRow['serviceType']."','Not Paid','$dateToday')");
 
 //insert consultation.. price....
-$insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','".$conRow['serviceName']."','".$conRow['servicePrice']."','".$conRow['serviceType']."','Not Paid','$dateToday')");
+$insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,seviceID,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','$consultID','".$conRow['serviceName']."','".$conRow['servicePrice']."','".$conRow['serviceType']."','Not Paid','$dateToday')");
 			 if($insertCON){
 				if($update_patient_status){
 					$success = "<script>document.write('PATIENT ASSIGNED TO CONSULTING ROOM')
