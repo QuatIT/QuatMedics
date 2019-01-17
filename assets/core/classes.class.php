@@ -297,6 +297,13 @@
 
 
 
+class B_Request{
+    function Request_blood(){
+        $result = query("SELECT * FROM bloodrequest");
+        $num = count($result);
+        return $num;
+    }
+}
 
   class Lab{
 
@@ -305,11 +312,11 @@
       return $result;
     }
 
-
     public function find_by_patient_id($patientID){
       $result=query("SELECT * FROM patient WHERE patientID='".$patientID."' ");
       return $result;
     }
+
 
 
     public function find_num_Lab($centerID){

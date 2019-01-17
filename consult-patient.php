@@ -643,18 +643,22 @@ if(isset($_POST['presMeds'])){
                   </select>
                 </div>
               </div>
+<!--
               <div class="control-group">
                 <label class="control-label"> DATE ADMITTED</label>
                   <div class="controls">
                     <input type="date" class="span11" name="admitDate" required/>
                   </div>
               </div>
+-->
+<!--
               <div class="control-group">
                 <label class="control-label"> DISCHARGE DATE</label>
                   <div class="controls">
                     <input type="date" class="span11" name="dischargeDate"/>
                   </div>
               </div>
+-->
           </div>
          </div>
          <div class="span6">

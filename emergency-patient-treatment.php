@@ -2,12 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUAT MEDICS</title>
 <meta charset="UTF-8" />
-<meta http-equiv="refresh" content="30">
+<!--<meta http-equiv="refresh" content="30">-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="css/font-awesome.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -16,7 +15,7 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/font-awesome.min.css" />
 <!--highcharts-->
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/series-label.js"></script>
@@ -29,25 +28,22 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-
-
-        <style>
-        .active{
-            background-color: #209fbf;
-        }
-        @media print{
-          #printable{
-            display:block;
-          }
-        }
-    </style>
+<style>
+.active{
+    background-color: #209fbf;
+}
+@media print{
+  #printable{
+    display:block;
+  }
+}
+</style>
 </head>
 <body>
 
 <?php
     include 'layout/head.php';
-    error_reporting(0);
+//    error_reporting(0);
 
     $success = '';
     $error = '';
@@ -78,18 +74,16 @@ if (isset($_POST['sub_mit'])){
     //creating sequence number
 //    $sq_no = @$s_row['sq_no'] + $sq;
 
-    if($medicine > 0 && $dosage > 0 ) {
-        for( $i=0 , $n=0; $i<$medicine , $n<$dosage; $i++ , $n++) {
-                if(trim(htmlspecialchars($_POST['medicine'][$i] != ''))  && trim(htmlspecialchars($_POST['dosage'][$n] != '')) ) {
+if($medicine > 0 && $dosage > 0 ) {
+    for( $i=0 , $n=0; $i<$medicine , $n<$dosage; $i++ , $n++) {
+            if(trim(htmlspecialchars($_POST['medicine'][$i] != ''))  && trim(htmlspecialchars($_POST['dosage'][$n] != '')) ) {
 
-                    $medicine1 = trim(htmlspecialchars($_POST['medicine'][$i]));
-                    $dosage1 = trim(htmlspecialchars($_POST['dosage'][$n]));
+                $medicine1 = trim(htmlspecialchars($_POST['medicine'][$i]));
+                $dosage1 = trim(htmlspecialchars($_POST['dosage'][$n]));
 
+            $crtgal = insert("INSERT INTO eme_ward(eme_medID,dateRegistered,prescrib_med,dosage,prescribed_by,patientID,emeID,med_status,today_status,centerID) VALUES('$eme_medID',CURDATE(),'$medicine1','$dosage1','".$_SESSION['username']."','".$_GET['pid']."','".$_GET['emeid']."','$medical_status','$today_status','".$_SESSION['centerID']."') ");
 
-
-                $crtgal = insert("INSERT INTO eme_ward(eme_medID,dateRegistered,prescrib_med,dosage,prescribed_by,patientID,emeID,med_status,today_status,centerID) VALUES('$eme_medID',CURDATE(),'$medicine1','$dosage1','".$_SESSION['username']."','".$_GET['pid']."','".$_GET['emeid']."','$medical_status','$today_status','".$_SESSION['centerID']."') ");
-
-           }
+       }
 }
 
 }
@@ -182,7 +176,7 @@ foreach($bl_id as $bl_ids){}
 
 
     //request ID
-  $request_blood = new B_Request;
+  $request_blood = new B_Request();
     $r_blood = $request_blood->Request_blood()+1;
     $Request_id = 'REQ-EME-'.substr($centerName['centerName'], 0, 3)."-".sprintf('%06s', $r_blood);
 
@@ -209,8 +203,11 @@ $quantity = filter_input(INPUT_POST,'quantity',FILTER_SANITIZE_STRING);
 }
 
 $req_stat = select("SELECT * FROM bloodrequest WHERE patientID='".$get_PID."' && flag=1 && confirm='' && dateInsert=CURDATE() ORDER BY id ASC LIMIT 1");
+    if($req_stat){
+
   foreach($req_stat as $req_status){}
     //$req_status['bloodID'];
+    }
 
 
 
@@ -273,32 +270,32 @@ $get_count = select("SELECT * FROM bloodgroup_tb WHERE bloodID ='".$blood_chks['
         <a href="opd-index.php" title="" class="tip-bottom"><i class="icon-plus"></i> EMERGENCY</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
 <!--      <h3 class="quick-actions">EMERGENCY</h3>-->
-                <?php
-                      if($success){
-                      ?>
-                      <div class="alert alert-success">
-                  <strong>Success!</strong> <?php echo $success; ?>
-                </div>
-                      <?php } if($error){
-                          ?>
-                      <div class="alert alert-danger">
-                  <strong>Error!</strong> <?php echo $error; ?>
-                </div>
-                      <?php
-                      } ?>
+        <?php
+              if($success){
+              ?>
+              <div class="alert alert-success">
+          <strong>Success!</strong> <?php echo $success; ?>
+        </div>
+              <?php } if($error){
+                  ?>
+              <div class="alert alert-danger">
+          <strong>Error!</strong> <?php echo $error; ?>
+        </div>
+              <?php
+              } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Patient Vitals</a></li>
-                    <li><a data-toggle="tab" href="#tab5">Vitals (Graphical)</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Doctor's Prescription</a></li>
-                    <li><a data-toggle="tab" href="#tabRequest">Blood Request</a></li>
-                    <li><a data-toggle="tab" href="#tabAction">Blood Request Action - &nbsp;<?php echo $req_cnts['request_co'];?></a></li>
-                    <li><a data-toggle="tab" href="#tab3">Nurse's Checklist</a></li>
-                    <li><a data-toggle="tab" href="#tab4">Patient's Ward History</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">PATIENT VITALAS</a></li>
+                    <li><a data-toggle="tab" href="#tab5">VITALS (GRAPHICAL)</a></li>
+                    <li><a data-toggle="tab" href="#tab2">DOCTOR'S PRESCRIPTION</a></li>
+                    <li><a data-toggle="tab" href="#tabRequest">BLOOD REQUEST</a></li>
+                    <li><a data-toggle="tab" href="#tabAction">BLOOD REQUEST ACTION - &nbsp;<?php echo $req_cnts['request_co'];?></a></li>
+                    <li><a data-toggle="tab" href="#tab3">NURSE'S CHECKLIST</a></li>
+                    <li><a data-toggle="tab" href="#tab4">PATIENT'S WARD HISTORY</a></li>
 
                 </ul>
             </div>
@@ -581,27 +578,17 @@ Plotly.newPlot('myDivPressure', num);
                       <div class="widget-content nopadding">
                     <form action="" method="post">
 <!--                            <h3 class="text-primary">Create Cheque Schedule</h3>-->
-                            <table border="0" class="" id="dynamic_field" style="margin-top:20px;">
+                            <table border="0" class="table table-stripped" id="dynamic_field" style="margin-top:20px;">
                                 <tr>
 
                                     <td>
                     <label>Medicine / Prescription</label>
-                                        <input type="text" name="medicine[]" placeholder="Medicine / Prescription" class="form-control">
+                                        <input type="text" class="span6" name="medicine[]" placeholder="Medicine / Prescription" class="form-control">
                                     </td>
                                     <td>
                     <label>Dosage</label>
                                         <input type="text" name="dosage[]" placeholder="Dosage" class="form-control">
                                     </td>
-<!--
-                                    <td>
-                                        Repayment Amount
-                                        <input type="text" name="amount[]" placeholder="Amount" class="form-control">
-                                    </td>
-                                    <td>
-                                        Due Date
-                                        <input type="date" name="chq_rdate[]" placeholder="Repayment Date" class="form-control" required>
-                                    </td>
--->
                                     <td><br>
                                         <button type="button" name="add" id="add" class="btn btn-success">+</button>
                                     </td>
@@ -627,7 +614,7 @@ Plotly.newPlot('myDivPressure', num);
                        <div class="control-group" style='text-align:center';>
                                 <label class="control-label">Request ID </label>
                                 <div class="controls">
-                                  <input type="text" style='text-align:center;' class="span4" value='<?php echo $req_status['requestID'];  ?>' name="req_id" id="req_id"  readonly>
+        <input type="text" style='text-align:center;' class="span4" value='<?php echo @$req_status['requestID'];  ?>' name="req_id" id="req_id"  readonly>
                                 </div>
                               </div>
 
@@ -641,21 +628,21 @@ Plotly.newPlot('myDivPressure', num);
                                <div class="control-group" style='text-align:center';>
                                 <label class="control-label">Action By </label>
                                 <div class="controls">
-                                  <input type="text" class="span4" style='text-align:center;' value='<?php echo $req_status['approved_by'];  ?>' name="act_by" id="act_by" readonly>
+                                  <input type="text" class="span4" style='text-align:center;' value='<?php echo @$req_status['approved_by'];  ?>' name="act_by" id="act_by" readonly>
                                 </div>
                               </div>
 
                                 <div class="control-group" style='text-align:center;'>
                                 <label class="control-label">Time Of Action </label>
                                 <div class="controls">
-                                  <input type="text" class="span4" style='text-align:center;' value='<?php echo $req_status['request_time']; ?>' name="time_act" id="time_act" readonly>
+                                  <input type="text" class="span4" style='text-align:center;' value='<?php echo @$req_status['request_time']; ?>' name="time_act" id="time_act" readonly>
                                 </div>
                               </div>
 
                                 <div class="control-group" style='text-align:center';>
                                 <label class="control-label">Status</label>
                                 <div class="controls">
-                                  <input type="text" style='text-align:center;' class="span4" value='<?php echo $req_status['status']; ?>' name="stat" id="stat" readonly>
+                                  <input type="text" style='text-align:center;' class="span4" value='<?php echo @$req_status['status']; ?>' name="stat" id="stat" readonly>
                                     <!-- <p class="text-left" style="margin-top: 20px;margin-left: 400px;"><input type="reset" class="btn btn-primary" style='width:340px;' name="accept" id="accept" value="ACCEPT STATUS"></p>  -->
 
                                 </div>
@@ -836,7 +823,7 @@ foreach($load_newpatient as $newpatient){
   <td>
 	<?php
 	  $em_vn = select("select * from eme_vitals where dateRegistered='".$newpatient['dateRegistered']."' ");
-		foreach($em_vn as $emv_row){}
+		foreach($em_vn as $emv_row){
 	  ?>
 	<ol>
 	  <li><b>Body Temperature: </b> <?php echo $emv_row['bodyTemp']; ?></li>
@@ -845,7 +832,7 @@ foreach($load_newpatient as $newpatient){
 	  <li><b>Respiration Rate : </b> <?php echo $emv_row['respirationRate']; ?></li>
 	  <li><b>Blood Pressure : </b> <?php echo $emv_row['bloodPressure']; ?></li>
 	  </ol>
-
+<?php }?>
 	</td>
   <td>
 	  <?php
