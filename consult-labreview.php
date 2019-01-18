@@ -147,7 +147,7 @@ if(isset($_POST['adWard'])){
     $totalDaysNum = count( $_POST['totalDays']);
     $paystatus = "Not Paid";
     $paymode =  filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
-    $admitDate = date("Y-m-d, H:i:s");
+    $admitDate = date("Y-m-d");
     //generate wardassign IDs
     $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
     if(count($wardasignsql) >=1){

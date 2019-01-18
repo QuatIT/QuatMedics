@@ -184,7 +184,7 @@ $insert_claimNumber = update("update consultation set claimNumber='$claim_number
 //$insertOPD = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','".$priceRow['serviceName']."','".$priceRow['servicePrice']."','".$priceRow['serviceType']."','Not Paid','$dateToday')");
 
 //insert consultation.. price....
-$insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,seviceID,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','$consultID','".$conRow['serviceName']."','".$conRow['servicePrice']."','".$conRow['serviceType']."','Not Paid','$dateToday')");
+$insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,serviceID,serviceName,servicePrice,serviceType,status,dateInsert) VALUES('$patientID','".$_SESSION['centerID']."','$mode','$consultID','".$conRow['serviceName']."','".$conRow['servicePrice']."','".$conRow['serviceType']."','Not Paid','$dateToday')");
 			 if($insertCON){
 				if($update_patient_status){
 					$success = "<script>document.write('PATIENT ASSIGNED TO CONSULTING ROOM')

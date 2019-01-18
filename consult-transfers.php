@@ -163,7 +163,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab1">Transfer List</a></li>
                     <li><a data-toggle="tab" href="#tab2">New Transfer</a></li>
                 </ul>
@@ -177,14 +177,12 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
+                          <thead class="labell">
                               <th>Patient ID</th>
                               <th>Patient Name</th>
                               <th>New Center Name</th>
                               <th>Date Tranferred</th>
 <!--                              <th>Action</th>-->
-                            </tr>
                           </thead>
                           <tbody>
                               <?php

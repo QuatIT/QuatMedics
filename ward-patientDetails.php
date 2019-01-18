@@ -95,6 +95,7 @@ if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' 
 //get ward details..
     $wardDet = select("SELECT * FROM wardlist where wardID='$wardID'");
     foreach($wardDet as $wardRw){}
+
 //patient treatment
 if(isset($_POST['saveTreatment'])){
     $comments= filter_input(INPUT_POST,"comment",FILTER_SANITIZE_STRING);
@@ -154,7 +155,9 @@ if(isset($_POST['moveToAcc'])){
     $patientName = trim(htmlentities($_POST['patientName']));
     $admitDate = trim(htmlentities($_POST['admitDate']));
     $NoOfDays = trim(htmlentities($_POST['NoOfDays']));
-
+    if($NoOfDays == '0'){
+        $NoOfDays = 1;
+    }
     //Get price for ward..
     $WardPricing = select("SELECT * FROM prices WHERE serviceType='Ward' AND centerID='$centerID' AND serviceName='".$wardRw['wardName']."'");
     foreach($WardPricing as $priceRow){
@@ -234,7 +237,7 @@ if(isset($_POST['moveToAcc'])){
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs lae=bell">
                     <li class="active"><a data-toggle="tab" href="#tab1">ADMISSION DETAILS</a></li>
                  <?php if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){ ?>
                     <li><a data-toggle="tab" href="#tab6">PATIENT VITALS</a></li>
@@ -273,14 +276,6 @@ if(isset($_POST['moveToAcc'])){
     <div class="span6">
 
           <div class="widget-content nopadding">
-<!--
-              <div class="control-group">
-                <label class="control-label">Discharge Date :</label>
-                <div class="controls">
-                  <input type="text" value="<?php // echo $pat['dischargeDate']; ?>"  class="span11" name="dischargeDate" readonly />
-                </div>
-              </div>
--->
                <div class="control-group">
                     <label class="control-label">ADMITTED BY: </label>
                     <div class="controls">
@@ -377,7 +372,7 @@ if(isset($_POST['moveToAcc'])){
 
               <div class="form-actions">
                   <i class="span1"></i>
-                <a href="ward-vitals?patientID=<?php echo $patientID; ?>&tab=vitals" class="btn btn-primary btn-block span10">Register New Vitals</a>
+                <a href="ward-vitals?patientID=<?php echo $patientID; ?>&tab=vitals" class="btn btn-primary btn-block labell span10">Register New Vitals</a>
               </div>
           </div>
         </div>
@@ -430,13 +425,22 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							<?php }else{
                             $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
 							?>
-                            <select name="medName[]" class="span11">
+                              <select name="medicine[]" class="span11">
                                 <option></option>
                                 <?php
                                 if($medsx){
                             foreach($medsx as $medrowx){
                                 ?>
-                    <option value="<?php echo $medrowx['medicine_id']; ?>"> <?php echo $medrowx['medicine_name']; ?></option>
+                            <option value="<?php echo $medrowx['medicine_id']; ?>">
+                        <?php
+                                if($medrowx['Type']=='solid'){
+                                    $stockleft = $medrowx['no_of_piece'];
+                                }
+                                if($medrowx['Type']=='liquid'){
+                                    $stockleft = $medrowx['no_of_bottles'];
+                                }
+                                echo $medrowx['medicine_name'].' -- '.$stockleft.' Left'; ?>
+                                </option>
                                 <?php }}?>
                             </select>
 							<?php }?>

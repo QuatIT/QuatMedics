@@ -62,7 +62,7 @@
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab1">Admitted Patient List</a></li>
 <!--                    <li><a data-toggle="tab" href="#tab2">Admit New Patient</a></li>-->
                 </ul>
@@ -74,48 +74,14 @@
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
+                          <thead class="labell">
                               <th>WardID</th>
                               <th>Bed Number</th>
                               <th>Patient</th>
-                              <th>Nurse</th>
                               <th>Admitted</th>
                               <th>Discharged</th>
                               <th>Action</th>
-                            </tr>
                           </thead>
-<!--
-                         <tbody>
-                            <?php
-//                              $consult_det=select("SELECT * FROM consultation");
-//        $bed_det=select("SELECT * FROM bedlist ");
-//        if(is_array($bed_det)){
-//          foreach($bed_det as $bed_dets){
-//            $ward_det =select("SELECT * FROM wardassigns");
-//            if(is_array($ward_det)){
-//              foreach($ward_det as $ward_dets){}
-//				$pat_sql = select("SELECT * FROM patient WHERE patientID='".$ward_dets['patientID']."' ");
-//							 foreach($pat_sql as $pt){}
-
-
-?>
-              <tr>
-                              <td><?php// echo $bed_dets['wardID'];?></td>
-                              <td><?php //echo $bed_dets['bedNumber'];?></td>
-                              <td><?php //echo $pt['firstName']." ".$pt['otherName']." ".$pt['lastName'];?></td>
-                              <td><?php //echo $ward_dets['staffID'];?></td>
-                              <td><?php //echo $ward_dets['admitDate'];?></td>
-                              <td><?php //echo $ward_dets['dischargeDate'];?></td>
-                              <td style="text-align: center;">
-
-                                   <a href="ward-patientAssign?wrdno=<?php //echo $bed_dets['wardID'];?>&patid=<?php //echo $ward_dets['patientID']; ?>&assign=<?php// echo $ward_dets['assignID'];?>"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>&nbsp;
-                                    <a href="ward-patientDetails?patid=<?php// echo urlencode($ward_dets['patientID'])?>&Admitted=<?php // echo urlencode($ward_dets['admitDate'])?>&bedNumber=<?php// echo urlencode($bed_dets['bedNumber'])?>&wrdno=<?php // echo urlencode($bed_dets['wardID'])?>"> <span class="btn btn-info fa fa-link"></span></a>
-                              </tr>
-                            </td>
-                             <?php// }}}?>
-                          </tbody>
--->
                             <tbody>
                                 <?php
                                 $inwards = select("SELECT * FROM wardassigns WHERE staffID='$staffID'");
@@ -125,9 +91,27 @@
                                         $wardnm = select("SELECT * From wardlist where wardID='".$inwardrow['wardID']."'");
                                         foreach($wardnm as $warddet){}
 
+                                        //get bed details
+                                        $bednm = select("SELECT * From bedlist where bedID='".$inwardrow['bedID']."'");
+                                        foreach($bednm as $beddet){}
+
+                                        //get patient details
+                                        $patient = select("SELECT * From patient where patientID='".$inwardrow['patientID']."'");
+                                        foreach($patient as $pdet){}
+
                                 ?>
                                 <tr>
                                     <td><?php echo $warddet['wardName']; ?></td>
+                                    <td><?php echo $beddet['bedNumber']; ?></td>
+                                    <td><?php echo $pdet['lastName'].' '.$pdet['firstName'].' '.$pdet['otherName']; ?></td>
+                                    <td><?php echo $inwardrow['admitDate'];?></td>
+                                    <td><?php echo $inwardrow['dischargeDate'];?></td>
+                                    <td>
+                                        <a href="ward-patientAssign?wrdno=<?php echo $inwardrow['wardID'];?>&patid=<?php echo $inwardrow['patientID']; ?>&assign=<?php echo $inwardrow['assignID'];?>"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>
+
+                                        <a href="ward-patientDetails?patid=<?php echo urlencode($inwardrow['patientID'])?>&wrdno=<?php echo urlencode($inwardrow['wardID'])?>&assign=<?php echo urlencode($inwardrow['assignID'])?>"> <span class="btn btn-info fa fa-link"></span></a>
+
+                                    </td>
                                 </tr>
                                 <?php }}?>
                             </tbody>
