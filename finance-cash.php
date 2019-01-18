@@ -54,12 +54,12 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
         <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-briefcase"></i> CASH PAYMENT</a>
     </div>
   </div>
-  <div class="container-fluid">
+  <div class="container">
       <h3 class="quick-actions">CASH PAYMENT</h3>
 
-      <div class="row-fluid">
+      <div class="row">
 
-		  <div class="span6">
+		  <div class="span12">
 <!--        <div class="widget-box">-->
 <!--            <div class="widget-content tab-content">-->
 <!--                <div id="tab1" class="tab-pane active">-->
@@ -102,10 +102,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 <!--        </div>		  -->
 		  </div>
 
-		  <div class="span6">
-<!--        <div class="widget-box">-->
-<!--            <div class="widget-content tab-content">-->
-<!--                <div id="tab1" class="tab-pane active">-->
+		  <div class="span12">
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
@@ -124,7 +121,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							   <?php
-	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND paystatus='Not Paid'");
+	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND paystatus='Not Paid' AND confirm='CONFIRMED'");
 							  if($fetchlab){
 								  foreach($fetchlab as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -161,7 +158,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
       </div>
 
       <div class="row-fluid">
-      		  <div class="span6">
+      		  <div class="span12">
 <!--        <div class="widget-box">-->
 <!--            <div class="widget-content tab-content">-->
 <!--                <div id="tab1" class="tab-pane active">-->

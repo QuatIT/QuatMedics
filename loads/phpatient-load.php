@@ -6,7 +6,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
     echo "<script>window.location.href='index'</script>";
 }
 
-$load_newpatient = select("SELECT * FROM prescriptions WHERE dateInsert=CURDATE() ORDER BY patientID ASC");
+$load_newpatient = select("SELECT * FROM prescriptions WHERE prescribeStatus='Prescribed' ORDER BY patientID ASC");
 //$load_newpatient = select("SELECT * FROM prescriptions WHERE DATE(datePrescribe)=CURRENT_DATE ORDER BY patientID ASC");
 
 foreach($load_newpatient as $newpatient){
@@ -19,8 +19,6 @@ $sqlll = select("SELECT * FROM patient WHERE patientID='".$newpatient['patientID
 
 	if($slz['paystatus']=='Not Paid'){
 ?>
-
-
 <tr>
 
   <td><?php echo $newpatient['patientID']; ?></td>

@@ -26,6 +26,7 @@
 
 <?php
 include 'layout/head.php';
+$_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 
 	if(isset($_GET['id']) && isset($_GET['pid'])){
 		$patid = $_GET['pid'];
@@ -41,6 +42,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 	//GET CONSULTATION CHARGE..
 	$concharge = select("SELECT * FROM paymentfixed WHERE patientID='$patid' AND serviceName='CONSULTATION' AND id='$id'");
 	foreach($concharge as $conRow){
+		$serviceID = $conRow['serviceID'];
 		$consultPrice = $conRow['servicePrice'];
 		$consultDate = $conRow['dateinsert'];
 	}
@@ -48,15 +50,15 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 
 	//get lab details...
 	$labTotal = 0;
-	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='Private' AND dateInsert='$consultDate'");
+	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='PRIVATE' AND consultID='$serviceID' AND confirm='CONFIRMED'");
 	foreach($fetchlab as $labRow){
 					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
 						  foreach($getlabName as $labNmRow){}
-		$labTotal += $labRow['labprice'];
+		              $labTotal += $labRow['labprice'];
 	}
 
 	//get medicine charges...
-	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$consultDate'");
+	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND consultID='$serviceID'");
 					  if($getPresciptionID){
 						  foreach($getPresciptionID as $presRow){
 							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
@@ -185,8 +187,9 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
               <table class="table table-bordered">
 				  <thead>
 				  		<th> LAB TEST </th>
-				  		<th colspan="2"> PRICE</th>
-				  		<th colspan="2"> STATUS</th>
+				  		<th> PRICE</th>
+				  		<th> STATUS</th>
+				  		<th> ACTION</th>
 				  </thead>
 				  <tbody>
 					  <?php
@@ -197,7 +200,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 					  ?>
 				  		<tr>
 						<td> <?php echo $labNmRow['labName'];?></td>
-						<td colspan="2"><?php echo $labRow['labprice'];?></td>
+						<td><?php echo $labRow['labprice'];?></td>
 						<td style="text-align:center;">
 							<?php if($labRow['paystatus'] == 'Not Paid'){?>
 							<span style="background-color:#c92929;" class="label label-danger text-center"><?php  echo $labRow['paystatus'];?></span>
@@ -207,6 +210,15 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 							<span class="label label-success text-center"><?php  echo $labRow['paystatus'];?></span>
 						   <?php }?>
 						</td>
+                        <td style="text-align:center;">
+                            <?php if($labRow['paystatus'] == 'Not Paid'){?>
+                            <a onclick="return confirm('Confirm Payment');" href="finance-cash-labpay?id=<?php echo $labRow['id'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+                           <?php }?>
+
+                            <?php if($labRow['paystatus'] == 'Paid'){?>
+                            <span class="label label-success text-center"><i class="fa fa-check-circle"></i></span>
+                           <?php }?>
+                        </td>
 					  </tr>
 					  <?php }?>
 				  </tbody>
@@ -232,7 +244,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 					  	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$consultDate'");
 					  if($getPresciptionID){
 						  foreach($getPresciptionID as $presRow){
-							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
+							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."' AND confirm='CONFIRMED'");
 							  foreach($getMeds as $medrow){
 
 					  ?>

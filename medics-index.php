@@ -325,6 +325,13 @@ $dataPoints = array(
         <li> <a href="ward-patient?wrdno=<?php echo $wardID;?>"><i class="icon icon-user"></i> <span>Patient Management</span></a></li>
         <?php } ?>
 
+        <?php if($_SESSION['accessLevel'] == 'PHARMACY'){ ?>
+        <li class=""> <a href="pharmacy-index"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
+        <li> <a href="pharmacy-index2"><i class="icon icon-briefcase"></i> <span>Pharmacy2</span></a> </li>
+        <li> <a href="dispensary?tab=admed"><span>Dispensary</span></a> </li>
+        <li> <a href="pharmacy-inventory?tab=tab2"> <span>Inventory (Pharmacy)</span></a> </li>
+        <?php } ?>
+
     </ul>
 </div>
 
@@ -417,10 +424,10 @@ foreach($consult_discharge as $consult_discharges){$discharged = $consult_discha
 
 // consultation calculation
 //waiting patients
-$wait_pat =($waiting)/($consult_total)*100;
+@$wait_pat =($waiting)/($consult_total)*100;
 
 //discharged patients
-$disch_pat =($discharged)/($consult_total)*100;
+@$disch_pat =($discharged)/($consult_total)*100;
 
 
 

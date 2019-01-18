@@ -93,6 +93,7 @@ input:checked + .slider:before {
 
 <?php
     include 'layout/head.php';
+    $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 
     if($_SESSION['accessLevel']=='PHARMACY' || $_SESSION['username']=='rik'){
 
@@ -105,7 +106,12 @@ input:checked + .slider:before {
             $prescode = $scode['prescribeCode'];
             $pid = $scode['patientID'];
             $pharmid = $scode['pharmacyID'];
+            $presdate = $scode['dateInsert'];
         }
+
+        //search prescription doctor/staff
+        $staff = select("SELECT * FROM staff WHERE staffID='".$scode['staffID']."'");
+        foreach($staff as $staffrow){}
 
 
         //search medicine
@@ -137,8 +143,11 @@ input:checked + .slider:before {
 
 <div id="sidebar">
     <ul>
-<!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li class="active"> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
+    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
+    <li class="active"> <a href="pharmacy-index2"><i class="icon icon-briefcase"></i> <span>Pharmacy2</span></a> </li>
+    <li> <a href="dispensary?tab=admed"><span>Dispensary</span></a> </li>
+    <li> <a href="pharmacy-inventory?tab=tab2"> <span>Inventory (Pharmacy)</span></a> </li>
     </ul>
 </div>
 
@@ -154,8 +163,8 @@ input:checked + .slider:before {
   <div class="container">
       <h3 class="quick-actions">PATIENT PRESCRIPTION</h3>
 
-      <div class="row-fluid">
-          <div class="span5">
+      <div class="row-fluid" style="margin:0px; padding:0px;">
+          <div class="span12">
 <!--                <div class="widget-box">-->
 <!--
                     <div class="widget-title">
@@ -164,63 +173,85 @@ input:checked + .slider:before {
                         </ul>
                     </div>
 -->
-<!--                    <div class="widget-content tab-content">-->
+                    <div class="widget-content tab-content">
 <!--                        <div id="tab1" class="tab-pane active">-->
                             <form action="#" method="post" class="form-horizontal">
-                                <div class="span12">
+                                <div class="span6">
                                     <div class="widget-box">
 
                                     <div class="widget-title">
                                          <span class="icon"><i class="icon-th"></i></span>
-                                        <h5>Prescription Details</h5>
+                                        <h5 class="labell">Patient Details</h5>
                                       </div>
+
                                     <div class="widget-content nopadding">
                                     <div class="control-group">
-                                        <label class="control-label"> Medical Center :</label>
+                                        <label class="control-label"> Medical Center </label>
                                         <div class="controls">
                                             <input type="text" name="consultingRoom" class="span11" value="<?php echo $center['centerName']; ?>" readonly/>
                                         </div>
                                       </div>
                                       <div class="control-group">
-                                        <label class="control-label">Patient ID :</label>
+                                        <label class="control-label">Patient ID </label>
                                         <div class="controls">
                                           <input type="text" class="span11" name="patientID" value="<?php echo $pat['patientID']; ?>" readonly/>
                                         </div>
                                       </div>
                                         <div class="control-group">
-                                        <label class="control-label">Patient Name :</label>
+                                        <label class="control-label">Patient Name </label>
                                         <div class="controls">
                                           <input type="text" class="span11" name="patientName" value="<?php echo $pat['firstName'].' '.$pat['otherName'].' '.$pat['lastName']; ?>" readonly/>
                                         </div>
                                       </div>
-<!--
-                                        <div class="control-group">
-                                        <label class="control-label"> Doctor Name :</label>
+                                  </div>
+                                </div>
+                                </div>
+                                <div class="span6">
+                                    <div class="widget-box">
+
+                                    <div class="widget-title">
+                                         <span class="icon"><i class="icon-th"></i></span>
+                                        <h5 class="labell">Prescription Details</h5>
+                                      </div>
+
+                                    <div class="widget-content nopadding">
+                                    <div class="control-group">
+                                        <label class="control-label"> Prescription Code </label>
                                         <div class="controls">
-                                            <input type="text" name="doctorName" class="span11" value="Mr Doctor" readonly/>
+                                            <input type="text" name="consultingRoom" class="span11" value="<?php echo $patcode; ?>" readonly/>
                                         </div>
                                       </div>
--->
+                                      <div class="control-group">
+                                        <label class="control-label">PRESCRIPTION DATE </label>
+                                        <div class="controls">
+                                          <input type="text" class="span11" name="patientID" value="<?php echo $presdate; ?>" readonly/>
+                                        </div>
+                                      </div>
+                                        <div class="control-group">
+                                        <label class="control-label">PRESCRIBED BY </label>
+                                        <div class="controls">
+                                          <input type="text" class="span11" name="patientName" value="<?php echo $staffrow['firstName'].' '.$staffrow['otherName'].' '.$staffrow['lastName']; ?>" readonly/>
+                                        </div>
+                                      </div>
                                   </div>
                                 </div>
                                 </div>
                             </form>
 <!--                        </div>-->
 <!--                    </div>-->
-<!--                </div>-->
+                </div>
           </div>
 
-          <div class="span7">
+          <div class="span12" style="margin:0px;">
               <div class="widget-content">
                   <form action="" method="post">
                     <table class="table table-bordered">
-                      <thead>
-                        <tr>
+                      <thead class="labell">
                           <th>Number</th>
                           <th>Medicine</th>
                           <th>Dosage</th>
                           <th>Action</th>
-                        </tr>
+                          <th>comment</th>
                       </thead>
                       <tbody>
 
@@ -230,8 +261,15 @@ input:checked + .slider:before {
                                   <td><?php echo $counter++; ?></td>
                                   <td><?php echo $med['medicine']; ?></td>
                                   <td><?php echo $med['dosage']; ?></td>
+
+                                 <?php if($med['confirm']=='UNCONFIRMED'){ ?>
+                                    <td colspan="2" style="text-align:center;">
+                                    <a onclick="return confirm('CONFIRM PURCHASE.');" href="pharmacy-confirmmed?id=<?php echo $med['prescribeid'];?>" class="btn btn-primary btn-sm" title="Confirm Purchase"><i class="fa fa-check"></i></a>
+                                    </td>
+                                 <?php }
+                                 if($med['confirm']=='CONFIRMED'){
+                                 ?>
                                   <td style='text-align:center;'>
-<!--                                      <label for="medstat1"><input id="medstat1" type='radio' name='medstat1' value='YES'> <i class='fa fa-check-circle fa-lg text-success'></i></label>-->
 
                                       <?php
                                         if($med['prescribeStatus']!="served"){
@@ -241,8 +279,6 @@ input:checked + .slider:before {
   <label for="switch-id<?php echo $med['prescribeid']; ?>"><input type="checkbox"  value="served" name="prescribe<?php echo $med['prescribeid']; ?>" class="switch" id="switch-id<?php echo $med['prescribeid']; ?>">Serve</label>
 </span>
 
-
-
                                         <td><input type="text" <?php if($med['comment']){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php if($med['comment']!='NULL'){echo $med['comment'];}else{echo "";} ?>" placeholder="ENTER COMMENT / NOTE"></td>
 
 
@@ -250,7 +286,7 @@ input:checked + .slider:before {
                                                 <span class="label label-success">Served</span>
                                              <td><input type="text" <?php if(!empty($med['comment']) || $med['comment']='null'){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php if($med['comment']!='NULL'){echo $med['comment'];}else{echo "";} ?>" placeholder="ENTER COMMENT / NOTE"></td>
 
-                                     <?php   }
+                                     <?php  }
 
 
                                             if(isset($_POST['prescribe'.$med['prescribeid']])){
@@ -298,36 +334,20 @@ input:checked + .slider:before {
 
 
                                       ?>
-
-
-<!--
-<label class="switch">
-  <input type="checkbox" checked>
-  <span class="slider round"></span>
-</label>
--->
-
-
                                   </td>
+                                <?php } ?>
+
                                 </tr>
                  <?php   }?>
                       </tbody>
                     </table>
-<!--
-                      <div class="control-group">
-                        <div class="controls">
-                            <textarea class="span12" rows="5" placeholder="Notes On Prescription"></textarea>
-                        </div>
-                      </div>
--->
-
                       <div class="form-actions">
-                          <i class="span6"></i>
+                          <i class="span9"></i>
                           <?php
                             $pres_btn = select("SELECT * FROM prescribedmeds WHERE prescribeCode='$prescode' AND prescribeStatus='served' ");
                             if(count($pres_btn)<= count(select("SELECT * FROM prescribedmeds WHERE prescribeCode='$prescode'"))){
                           ?>
-                        <button type="submit" class="btn btn-primary btn-block span6">Serve</button>
+                        <button type="submit" class="btn btn-primary btn-block labell span3">Serve</button>
                           <?php } ?>
                       </div>
                   </form>

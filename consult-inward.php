@@ -29,6 +29,8 @@
     if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
 
         $roomID = $_GET['roomID'];
+        $rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
+        foreach($rm as $r){}
 ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -54,8 +56,8 @@
         <a title="Inward Patients" class="tip-bottom"><i class="icon-home"></i> INWARD</a>
     </div>
   </div>
-  <div class="container">
-      <h3 class="quick-actions">INWARD FROM CONSULTING ROOM - <?php echo $roomID;?></h3>
+  <div class="container-fluid">
+      <h3 class="quick-actions">INWARD FROM CONSULTING ROOM - <?php echo $r['roomName'];?></h3>
 
       <div class="row-fluid">
         <div class="widget-box">
@@ -83,132 +85,55 @@
                               <th>Action</th>
                             </tr>
                           </thead>
+<!--
                          <tbody>
                             <?php
-                              $consult_det=select("SELECT * FROM consultation");
-        $bed_det=select("SELECT * FROM bedlist ");
-        if(is_array($bed_det)){
-          foreach($bed_det as $bed_dets){
-            $ward_det =select("SELECT * FROM wardassigns");
-            if(is_array($ward_det)){
-              foreach($ward_det as $ward_dets){}
-
-							 $pat_sql = select("SELECT * FROM patient WHERE patientID='".$ward_dets['patientID']."' ");
-							 foreach($pat_sql as $pt){}
+//                              $consult_det=select("SELECT * FROM consultation");
+//        $bed_det=select("SELECT * FROM bedlist ");
+//        if(is_array($bed_det)){
+//          foreach($bed_det as $bed_dets){
+//            $ward_det =select("SELECT * FROM wardassigns");
+//            if(is_array($ward_det)){
+//              foreach($ward_det as $ward_dets){}
+//				$pat_sql = select("SELECT * FROM patient WHERE patientID='".$ward_dets['patientID']."' ");
+//							 foreach($pat_sql as $pt){}
 
 
 ?>
               <tr>
-                              <td><?php echo $bed_dets['wardID'];?></td>
-                              <td><?php echo $bed_dets['bedNumber'];?></td>
-                              <td><?php echo $pt['firstName']." ".$pt['otherName']." ".$pt['lastName'];?></td>
-                              <td><?php echo $ward_dets['staffID'];?></td>
-                              <td><?php echo $ward_dets['admitDate'];?></td>
-                              <td><?php echo $ward_dets['dischargeDate'];?></td>
+                              <td><?php// echo $bed_dets['wardID'];?></td>
+                              <td><?php //echo $bed_dets['bedNumber'];?></td>
+                              <td><?php //echo $pt['firstName']." ".$pt['otherName']." ".$pt['lastName'];?></td>
+                              <td><?php //echo $ward_dets['staffID'];?></td>
+                              <td><?php //echo $ward_dets['admitDate'];?></td>
+                              <td><?php //echo $ward_dets['dischargeDate'];?></td>
                               <td style="text-align: center;">
 
-                                   <a href="ward-patientAssign?wrdno=<?php echo $bed_dets['wardID'];?>&patid=<?php echo $ward_dets['patientID']; ?>&assign=<?php echo $ward_dets['assignID'];?>"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>&nbsp;
-                                    <a href="ward-patientDetails?patid=<?php echo urlencode($ward_dets['patientID'])?>&Admitted=<?php echo urlencode($ward_dets['admitDate'])?>&bedNumber=<?php echo urlencode($bed_dets['bedNumber'])?>&wrdno=<?php echo urlencode($bed_dets['wardID'])?>"> <span class="btn btn-info fa fa-link"></span></a>
-<!--                              </tr>-->
+                                   <a href="ward-patientAssign?wrdno=<?php //echo $bed_dets['wardID'];?>&patid=<?php //echo $ward_dets['patientID']; ?>&assign=<?php// echo $ward_dets['assignID'];?>"> <span class="btn btn-danger fa fa-file-text" title="Assign"></span></a>&nbsp;
+                                    <a href="ward-patientDetails?patid=<?php// echo urlencode($ward_dets['patientID'])?>&Admitted=<?php // echo urlencode($ward_dets['admitDate'])?>&bedNumber=<?php// echo urlencode($bed_dets['bedNumber'])?>&wrdno=<?php // echo urlencode($bed_dets['wardID'])?>"> <span class="btn btn-info fa fa-link"></span></a>
+                              </tr>
                             </td>
-                             <?php }}}?>
+                             <?php// }}}?>
                           </tbody>
+-->
+                            <tbody>
+                                <?php
+                                $inwards = select("SELECT * FROM wardassigns WHERE staffID='$staffID'");
+                                if($inwards){
+                                    foreach($inwards as $inwardrow){
+                                        //get ward Name
+                                        $wardnm = select("SELECT * From wardlist where wardID='".$inwardrow['wardID']."'");
+                                        foreach($wardnm as $warddet){}
+
+                                ?>
+                                <tr>
+                                    <td><?php echo $warddet['wardName']; ?></td>
+                                </tr>
+                                <?php }}?>
+                            </tbody>
                         </table>
                       </div>
                     </div>
-                </div>
-                <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
-                    <div class="span6">
-<!--                        <div class="widget-box">-->
-                          <div class="widget-title">
-                              <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Admission Details</h5>
-                          </div>
-                          <div class="widget-content nopadding">
-                               <div class="control-group">
-                                <label class="control-label">Patient : </label>
-                                <div class="controls">
-                                  <select name="patientID" >
-                                    <option value="default"> -- Select Patient --</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                    <option value="patientID"> Patient Name</option>
-                                  </select>
-                                </div>
-                              </div>
-                               <div class="control-group">
-                                <label class="control-label">Bed Number : </label>
-                                <div class="controls">
-                                  <select name="bedNumber" >
-                                    <option value="default"> -- Select Bed --</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                    <option value="bedNumber"> Bed Number</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Admission Date :</label>
-                                <div class="controls">
-                                    <input name="admitDate" class="span11" type="datetime-local" />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Description :</label>
-                                <div class="controls">
-                                    <textarea class="span11" name="description"></textarea>
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-title">
-                          </div>
-                          <div class="widget-content nopadding">
-                               <div class="control-group">
-                                <label class="control-label">Patient Status: </label>
-                                <div class="controls">
-                                  <select name="patientStatus" >
-                                    <option value="default"> -- Select Status --</option>
-                                    <option > Admit</option>
-                                    <option > Under Treatment</option>
-                                    <option > Operation</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Bed Type :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Bed Type" name="bedType" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Discharge Date :</label>
-                                <div class="controls">
-                                  <input type="datetime-local" class="span11" name="dischargeDate" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Assign Nurse : </label>
-                                <div class="controls">
-                                  <select name="nurseID" >
-                                    <option value="default"> -- Select Nurse --</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                    <option value="nurseID"> Nurse Name</option>
-                                  </select>
-                                    <br/>
-                                    <br/>
-                                </div>
-                              </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10">Admit Patient</button>
-                              </div>
-                          </div>
-                      </div>
-                    </form>
                 </div>
             </div>
         </div>

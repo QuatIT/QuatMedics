@@ -144,14 +144,8 @@ $room = select("SELECT * FROM consultingroom WHERE centerID='".$_SESSION['center
                         <i class="icon-warning-sign"></i>
                         <div class="update-done">
  <a href="consult-labreview?patientID=<?php echo $labupdate['patientID'];?>&roomID=<?php echo $roomID;?>&conid=<?php echo $labupdate['consultID'];?>&lbr=<?php echo $labupdate['labRequestID']; ?>" target="popup"  >
-                                <strong>Lab Result For <?php echo $labupdate['patientID']; ?> Available</strong>
+                                <strong>LAB RESULT FOR <?php echo $labupdate['patientID']; ?> AVAILABLE.</strong>
                             </a>
-
-<!--
-onclick="window.open('consult-labreview?patientID=<?php //echo $labupdate['patientID'];?>&roomID=<?php /// echo $roomID;?>&centerID=<?php // echo $_SESSION['centerID'];?>&labrslt=<?php // echo $labupdate['patientID']; ?>');"
-
--->
-
                         </div>
                       <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
                     </div>

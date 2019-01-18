@@ -64,11 +64,11 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
           <div class="widget-content nopadding">
             <table class="table table-bordered data-table">
               <thead>
-                <tr>
+                <tr class="labell">
                   <th>ID</th>
                   <th>DATE</th>
-                  <th>CREDIT ACCOUNT</th>
-                  <th>DEBIT ACCOUNT(s)</th>
+                  <th>CREDIT ACCOUNTS</th>
+                  <th>DEBIT ACCOUNT</th>
                   <th>AMOUNT</th>
                   <th>TRANSACTION</th>
                 </tr>

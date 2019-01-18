@@ -27,6 +27,7 @@
 
 <?php
     include 'layout/head.php';
+$_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 //require_once 'assets/core/connection.php';
     if($_SESSION['accessLevel']=='LABORATORY' || $_SESSION['username']=='rik'){
 
@@ -171,34 +172,50 @@ if(empty($labresult) && empty($file)){
                     <div class="widget-content tab-content">
                         <div id="tab1" class="tab-pane active">
                             <form action="#" method="post" class="form-horizontal" enctype="multipart/form-data">
-                                <div class="span5">
+<!--
+                                <div class="span4">
                                     <div class="widget-content nopadding">
                                       <div class="control-group">
                                         <label class="control-label">PATIENT ID :</label>
                                         <div class="controls">
-                                          <input type="text" class="span11" name="patientID" id="patientID" value="<?php echo $patientID;?>" readonly/>
+                                          <input type="text" class="span11" name="patientID" id="patientID" value="<?php// echo $patientID;?>" readonly/>
                                         </div>
                                       </div>
 									<div class="control-group">
                                         <label class="control-label">PATIENT NAME :</label>
                                         <div class="controls">
-                                          <input type="text" class="span11" name="patientName" value="<?php echo $patname['firstName'].' '.$patname['otherName'].' '.$patname['lastName']; ?>" readonly/>
+                                          <input type="text" class="span11" name="patientName" value="<?php //echo $patname['firstName'].' '.$patname['otherName'].' '.$patname['lastName']; ?>" readonly/>
                                         </div>
                                       </div>
                                   </div>
                                 </div>
-                                <div class="span7">
+-->
+                                <div class="span12">
                                     <div class="widget-content nopadding">
-
-										<table class="table table-stripped">
-											<thead>
+										<table class="table table-bordered">
+                                            <tr>
+                                                <th class="labell" style="text-align:center;"> PATIENT ID</th>
+                                                <th>
+                                                    <input type="text" style="border-style:none;" class="span11" name="patientID" id="patientID" value="<?php echo $patientID;?>" readonly/>
+                                                </th>
+                                                <th class="labell" style="text-align:center;">PATIENT NAME</th>
+                                                <th colspan="2">
+                                                    <input style="border-style:none;" type="text" class="span11" name="patientName" value="<?php echo $patname['firstName'].' '.$patname['otherName'].' '.$patname['lastName']; ?>" readonly/>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5"></td>
+                                            </tr>
+											<tr class="labell">
 												<th>LAB NAME</th>
 												<th>LAB UPLOAD</th>
 												<th>LAB RESULTS</th>
-											</thead>
+												<th style="width:10%">PAY STATUS</th>
+												<th style="width:10%">CONFIRM</th>
+											</tr>
 											<tbody>
 												<?php
-												$ltest = select("SELECT * FROM labresults WHERE labRequestID='".$labRequestID."' ");
+				$ltest = select("SELECT * FROM labresults WHERE labRequestID='".$labRequestID."' AND labResult=''");
 									foreach($ltest as $labtxt){
 												?>
 												<tr>
@@ -211,16 +228,61 @@ if(empty($labresult) && empty($file)){
 														<?php }?>
 													</select>
 												</td>
-												<td><input type="file" class="span11" name="file[]" accept="application/pdf"/></td>
-												<td><input type="text" class="span11" name="txtresult[]"/></td>
+												<td>
+                                                    <?php if($labtxt['type']=='0'){?>
+                                                    <input type="file" class="span11" name="file[]" accept="application/pdf" <?php if($labtxt['confirm']=='UNCONFIRMED'){ echo 'readonly';}?>/>
+                                                    <?php }
+                                                     if($labtxt['type']=='1'){
+                                                    ?>
+                                                    <a><?php echo $labtxt['labResult']; ?></a>
+                                                    <?php } ?>
+                                                </td>
+
+												<td>
+                                                    <?php if($labtxt['type']=='0'){?>
+                                                    <textarea class="span11" rows="2" cols="25" name="txtresult[]" <?php if($labtxt['confirm']=='UNCONFIRMED'){ echo 'readonly';}?>></textarea>
+                                                    <?php }
+                                                     if($labtxt['type']=='2'){
+                                                    ?>
+                                                    <textarea class="span11" rows="2" cols="25" name="txtresult[]" readonly><?php echo $labtxt['labResult']; ?></textarea>
+                                                    <?php } ?>
+                                                </td>
+
+                                                <td style="text-align:center;">
+                                                    <?php
+                                                        if($labtxt['paymode'] == 'Private'){
+                                                            if($labtxt['paystatus'] == 'Not Paid'){?>
+                                                                    <span style="background-color:#c92929;" class="label label-danger labell text-center"><?php  echo $labtxt['paystatus'];?></span>
+                                                                <?php }
+                                                        }else{ ?>
+                                                            <span style="background-color:#c92929;" class="label btn-warning text-center labell"><?php  echo $labtxt['paymode'];?></span>
+                                                        <?php }
+                                                    ?>
+
+                                                    <?php if($labtxt['paystatus'] == 'Paid'){?>
+                                                        <span class="label label-success text-center"><?php  echo $labtxt['paystatus'];?></span>
+                                                    <?php }?>
+                                                </td>
+
+                                                <td style="text-align:center;">
+                                                    <?php if($labtxt['confirm']=='UNCONFIRMED'){ ?>
+                                                    <a href="lab-confirm?id=<?php echo $labtxt['id']; ?>" onclick="return confirm('CONFIRM LAB');" class="btn btn-primary btn-sm"><i class="fa fa-check fa-sm"></i></a>
+                                                    <?php } ?>
+                                                    <?php if($labtxt['confirm']=='CONFIRMED'){ ?>
+                                                    <label class="btn btn-success btn-sm"><i class="fa fa-check-circle fa-sm"></i></label>
+                                                    <?php } ?>
+                                                </td>
+
 												</tr>
 												<?php }?>
+                                                <tr><td colspan="5"></td></tr>
+                                                <tr>
+                                                    <td colspan="3"></td>
+                                                    <td colspan="2">
+                            <button type="submit" class="btn btn-primary btn-block labell span5" name="lab_result" style="width:100%;">SEND RESULTS</button></td>
+                                                </tr>
 											</tbody>
 										</table>
-                                      <div class="form-actions" style="padding-right:0px;">
-                                          <i class="span6"></i>
-                            <button type="submit" class="btn btn-primary btn-block span5" name="lab_result" >SEND RESULTS</button>
-                                      </div>
                                   </div>
                                 </div>
 

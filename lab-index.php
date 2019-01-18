@@ -29,7 +29,7 @@
 
     if($_SESSION['accessLevel']=='LABORATORY' || $_SESSION['username']=='rik'){
 
-    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."' GROUP BY patientID");
+    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."' GROUP BY consultID");
 
     ?>
 <div id="search">
@@ -55,7 +55,7 @@
         <a title="Laboratory" class="tip-bottom"><i class="icon-warning-sign"></i> LABORATORY</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">LAB REQUEST LIST</h3>
 
           <div class="row-fluid">
@@ -69,7 +69,7 @@
                           <th>PATIENT ID</th>
                           <th>PATIENT NAME</th>
                           <th>DOCTOR</th>
-                          <th>LAB TYPE</th>
+<!--                          <th>LAB TYPE</th>-->
                           <th>PAYMENT STATUS</th>
                           <th>ACTION</th>
                         </tr>
@@ -91,13 +91,15 @@
                                     echo $staffRow['lastName'].' '.$staffRow['firstName'].' '.$staffRow['otherName'];
                               ?>
                             </td>
+<!--
                           <td>
 							  <?php
-								$LabNm = select("SELECT * FROM lablist WHERE labID='".$fet_pats['labID']."' ");
-								foreach($LabNm as $labRow){
-									echo $labRow['labName'];
-								}?>
+//								$LabNm = select("SELECT * FROM lablist WHERE labID='".$fet_pats['labID']."' ");
+//								foreach($LabNm as $labRow){
+//									echo $labRow['labName'];
+								//}?>
                          </td>
+-->
 						<td style="text-align:center;">
 							<?php
 								if($fet_pats['paymode'] == 'Private'){

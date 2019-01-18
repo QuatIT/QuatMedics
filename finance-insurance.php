@@ -56,19 +56,19 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
         <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT</a>
     </div>
   </div>
-  <div class="container-fluid">
+  <div class="container">
       <h3 class="quick-actions">INSURANCE PAYMENT</h3>
 
-      <div class="row-fluid">
+      <div class="row">
 
-		  <div class="span6">
+		  <div class="span12">
 <!--        <div class="widget-box">-->
 <!--            <div class="widget-content tab-content">-->
 <!--                <div id="tab1" class="tab-pane active">-->
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                         <h5>Fixed Prices</h5>
+                         <h5>CONSULTATION AND MEDICATION CHARGES</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
@@ -103,14 +103,14 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 <!--            </div>-->
 <!--        </div>		  -->
 		  </div>
-		  <div class="span6">
+		  <div class="span12">
 <!--        <div class="widget-box">-->
 <!--            <div class="widget-content tab-content">-->
 <!--                <div id="tab1" class="tab-pane active">-->
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                         <h5>LAB and Other Prices</h5>
+                         <h5>LABORATORY CHARGES</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">

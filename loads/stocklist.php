@@ -14,7 +14,6 @@ foreach($load_newpatient as $newpatient){
 
 
 <tr>
-
   <td><?php echo $newpatient['medicine_id']; ?></td>
   <td> <?php echo $newpatient['medicine_name']; ?></td>
   <td> <?php echo $newpatient['no_of_boxes']; ?></td>

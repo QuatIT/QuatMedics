@@ -95,6 +95,7 @@ if(count($codesql) >=1){
         }
     }
 
+
 //Request Laboratory.....
 if(isset($_POST['reqLab'])){
     $labNumber = count($_POST['labName']);
@@ -216,14 +217,10 @@ $updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$be
             $error = "<script>document.write('WARD PRESCRIPTION FAILED TO SAVE, TRY AGAIN.');</script>";
         }
 
+            }
+
         }
-
     }
-}
-
-
-
-
 }
 
 
@@ -235,7 +232,7 @@ if(isset($_POST['presMeds'])){
         $paymode =  filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
 		$paystatus = trim( "Not Paid");
         $status = SENT_TO_PHARMACY;
-        $prescribeStatus = trim( "Prescibed");
+        $prescribeStatus = trim( "Prescribed");
         $datePrescribe = trim(date("Y-m-d"));
         $prescriptionCode = randomString('4');
 
@@ -316,7 +313,7 @@ if(isset($_POST['presMeds'])){
         if($medIDNum > 0 && $piecesNum > 0) {
 			//saving prescription..
 //        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
-        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','".$consultrow['dateInsert']."','$prescriptionCode','$invest1','".$consultrow['dateInsert']."')");
+        $insertpresciption = insert("INSERT INTO prescriptions(consultID,patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$conid','$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','".$consultrow['dateInsert']."','$prescriptionCode','$invest1','".$consultrow['dateInsert']."')");
 
 		//saving the prescribed medications....
 		for($m=0, $p=0, $a=0, $t=0; $m<$medIDNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
@@ -432,7 +429,7 @@ if(isset($_POST['presMeds'])){
         <a title="Consultation" class="tip-bottom"><i class="icon-user"></i> CONSULTATION ROOM</a>
     </div>
   </div>
-  <div class="container-fluid">
+  <div class="container">
       <h3 class="quick-actions">CONSULTATION ROOM <?php echo $r['roomName'];?></h3>
 	  <?php if($success || $error){?>
 			<div class="row-fluid">
@@ -648,8 +645,9 @@ if(isset($_POST['presMeds'])){
          </div>
     </form>
 </div>
+<!-- ============================== END OF LAB REQUEST TAB =============================================      -->
 
-<!-- ======================== START ADMIT TO WARD TAB ===================-->
+<!-- ============================== START ADMIT TO WARD TAB =============================================-->
 <div id="tab3" class="tab-pane">
      <form action="" method="post" class="form-horizontal">
          <div class="span5">
@@ -733,13 +731,22 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							<?php }else{
                             $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
 							?>
-                            <select name="medicine[]" class="span11">
-                                <option>--  SELECT MEDICATION --</option>
+                         <select name="medicine[]" class="span11">
+                                <option></option>
                                 <?php
                                 if($medsx){
                             foreach($medsx as $medrowx){
                                 ?>
-                    <option value="<?php echo $medrowx['medicine_id']; ?>"> <?php echo $medrowx['medicine_name']; ?></option>
+                            <option value="<?php echo $medrowx['medicine_id']; ?>">
+                        <?php
+                                if($medrowx['Type']=='solid'){
+                                    $stockleft = $medrowx['no_of_piece'];
+                                }
+                                if($medrowx['Type']=='liquid'){
+                                    $stockleft = $medrowx['no_of_bottles'];
+                                }
+                                echo $medrowx['medicine_name'].' -- '.$stockleft.' Left'; ?>
+                                </option>
                                 <?php }}?>
                             </select>
 							<?php }?>
@@ -761,18 +768,18 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 <!-- ======================== END ADMIT TO WARD TAB ===================-->
 
 <!-- ======================== START MEDICATION PRESCRIPTION TAB ===================-->
-<div id="tab4" class="tab-pane">
+<div id="tab4" class="tab-pane"  style="margin:0px; padding:0px;">
 	 <form action="" method="POST" id="add_name" class="form-horizontal">
-		 <div class="span6">
-			<table class="table table-bordered" style="margin-top:-80px;">
+		 <div class="span12" style="margin:0px; padding:0px;">
+			<table class="table table-bordered" style="margin-top:-50px;">
 				  <tr>
-					  <td class="labell"> PRESCRIPTION CODE</td>
-					  <td colspan="2">
-			<input type="text" name="prescribeCode" value="<?php echo $prescribeCode;?>" readonly class="span12" /></td>
-				  </tr>
-				  <tr>
+					  <td class="labell"> PRESCRIPTION ID</td>
+					  <td>
+			<input type="text" name="prescribeCode" value="<?php echo $prescribeCode;?>" readonly class="span12" />
+                      </td>
+
 					<td class="labell"> PHARMACY</td>
-					<td colspan="2">
+					<td>
 					  <select name="pharmacyID" class="span12" required>
 
 						  <?php
@@ -782,45 +789,44 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 						  ?>
 				<option value="<?php echo $pharmow['pharmacyID'];?>" ><?php echo $pharmow['pharmacyName'];?></option>
 						  <?php }}else{ ?>
-						  <option value=""> No Pharmacy Available </option>
+						  <option value=""> NO PHARMACY AVAILABLE </option>
 						  <?php }?>
 						</select>
 					  </td>
 				  </tr>
 				  <tr>
-					<td colspan="3"><textarea class="span12" placeholder="SYMPTOMS" name="symptoms" placeholder="Symptoms" required><?php echo @$consultrow['docNotes'];?></textarea>  </td>
+					<td colspan="4"><textarea class="span12" placeholder="SYMPTOMS" name="symptoms" placeholder="Symptoms" required><?php echo @$consultrow['docNotes'];?></textarea>  </td>
 				  </tr>
 				  <tr>
-					  <td>
-<!--					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>-->
-					   <table border="0" class="table table-bordered" id="diagnosis" style="margin-top:20px;">
+					  <td colspan="2">
+					       <table border="0" class="table table-bordered" id="diagnosis" style="margin-top:20px;">
+                            <thead>
+                            <th colspan="2" class="labell">Diagnosis</th>
+                           </thead>
                                 <tr>
-
                                     <td>
-										<label class="labell">Diagnosis</label>
                                         <input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12">
                                     </td>
-
-                                    <td><br>
+                                    <td>
                                         <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success labell">+</button>
                                     </td>
                                 </tr>
-                            </table>
+                        </table>
 					  </td>
 					  <br>
                       <br>
 
-					  <td>
+					  <td colspan="2">
 <!--					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>-->
 					   <table border="0" class="table table-bordered" id="investigation" style="margin-top:20px;">
+                           <thead>
+                            <th colspan="2" class="labell">Investigation</th>
+                           </thead>
                                 <tr>
-
                                     <td>
-										<label class="labell">Investigation</label>
                                         <input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12">
                                     </td>
-
-                                    <td><br>
+                                    <td>
                                         <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success labell">+</button>
                                     </td>
                                 </tr>
@@ -833,7 +839,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 			</table>
 		 </div>
 
-         <div class="span6">
+         <div class="span12" style="margin:0px;">
 			  <table class="table table-bordered" id="dynamic_field">
 				<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
 				  <div class="control-group" style="display:none;">
@@ -883,7 +889,16 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                                 if($medsx){
                             foreach($medsx as $medrowx){
                                 ?>
-                    <option value="<?php echo $medrowx['medicine_id']; ?>"> <?php echo $medrowx['medicine_name']; ?></option>
+                            <option value="<?php echo $medrowx['medicine_id']; ?>">
+                        <?php
+                                if($medrowx['Type']=='solid'){
+                                    $stockleft = $medrowx['no_of_piece'];
+                                }
+                                if($medrowx['Type']=='liquid'){
+                                    $stockleft = $medrowx['no_of_bottles'];
+                                }
+                                echo $medrowx['medicine_name'].' -- '.$stockleft.' Left'; ?>
+                                </option>
                                 <?php }}?>
                             </select>
 							<?php }?>
@@ -919,6 +934,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
     </div>
 </div>
 
+<!-- ======================== START OF PATIENT RECORD TAB ====================================-->
 		  <div class="span12" style="margin-left:0px;">
 		  		<div class="widget-box">
 			  			<div class="widget-content">
@@ -1006,7 +1022,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 								<?php
 $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassigns,doctorappointment WHERE consultation.patientID='$patientID'
 AND labresults.patientID='$patientID' AND prescriptions.patientID='$patientID' AND wardassigns.patientID='$patientID' AND
-doctorappointment.patientID='$patientID'");
+doctorappointment.patientID='$patientID' GROUP BY consultID");
 
 											if($record){
 									foreach($record as $recordRow){
@@ -1125,30 +1141,6 @@ $(".alert").delay(7000).slideUp(1000, function() {
 });
 </script>
 
-<script type="text/javascript">
-  // This function is called from the pop-up menus to transfer to
-  // a different page. Ignore if the value returned is a null string:
-  function goPage (newURL) {
-
-      // if url is empty, skip the menu dividers and reset the menu selection to default
-      if (newURL != "") {
-
-          // if url is "-", it is this page -- reset the menu:
-          if (newURL == "-" ) {
-              resetMenu();
-          }
-          // else, send page to designated URL
-          else {
-            document.location.href = newURL;
-          }
-      }
-  }
-
-// resets the menu selection upon entry to this page:
-function resetMenu() {
-   document.gomenu.selector.selectedIndex = 2;
-}
-</script>
 <script>
 //    $(document).ready(function(){
         var i=1;

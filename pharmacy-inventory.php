@@ -164,14 +164,13 @@
 <!--close-top-Header-menu-->
 
 <div id="sidebar">
-<!--
     <ul>
-    <li> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
-    <li class="active"> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
-    <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
-    <li><a href="consult-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li class=""> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
+    <li> <a href="pharmacy-index2"><i class="icon icon-briefcase"></i> <span>Pharmacy2</span></a> </li>
+    <li> <a href="dispensary?tab=admed"><span>Dispensary</span></a> </li>
+    <li class="active"> <a href="pharmacy-inventory?tab=tab2"> <span>Inventory (Pharmacy)</span></a> </li>
     </ul>
--->
 </div>
 
 
@@ -204,9 +203,9 @@
                 <ul class="nav nav-tabs">
 <!--                    <li class="<?php #echo $active; ?>"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>-->
 
-                    <li class="<?php echo $active2; ?>"><a data-toggle="tab" href="#tab2">Add Stock </a></li>
-                    <li class="<?php echo $active; ?>"><a data-toggle="tab" href="#tab1">Stock List</a></li>
-                    <li class="<?php echo $active3; ?>"><a data-toggle="tab" href="#srequests">Stock Requests <span class="badge"><?php echo count(select("SELECT * FROM dispensary_tb WHERE request_status='pending' ")); ?></span></a></li>
+                    <li class="<?php echo $active2; ?>"><a data-toggle="tab" href="#tab2">ADD STOCK </a></li>
+                    <li class="<?php echo $active; ?>"><a data-toggle="tab" href="#tab1">STOCK LIST</a></li>
+                    <li class="<?php echo $active3; ?>"><a data-toggle="tab" href="#srequests">STOCK REQUEST <span class="badge"><?php echo count(select("SELECT * FROM dispensary_tb WHERE request_status='pending' ")); ?></span></a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -269,34 +268,25 @@
 
 							  <span id="pharm"></span>
 
-							   <table border="0" class="" id="diagnosis" style="margin-top:20px;">
+							   <table border="0" class="table table-bordered" id="diagnosis" style="margin-top:20px;">
+                                   <thead class="labell">
+                                        <th>MODE OF PAYMENT</th>
+                                        <th>UNIT PRICE</th>
+                                        <th>ACTION</th>
+                                   </thead>
                                 <tr>
 
-                                    <td>
-
-										     <div class="control-group">
-                                <label class="control-label">&nbsp;</label>
-                               <div class="controls">
-								   <label class="form-control">Mode of Payment: </label>
-												  <select name="mode[]" class="span12" >
-
-														<option value=""></option>
-														<option value="PRIVATE">PRIVATE</option>
-														<option value="NHIS">NHIS</option>
-
-												   </select>
-												 </div>
-												 </div>
+                                    <td style="width:40%;">
+                                        <select name="mode[]" class="span12" >
+                                            <option value=""></option>
+                                            <option value="PRIVATE">PRIVATE</option>
+                                            <option value="NHIS">NHIS</option>
+                                        </select>
                                     </td>
-
-
                                     <td>
-										<label class="control-label">Unit Price</label>
                                         <input type="text" name="px[]" placeholder="Price" class="form-control">
                                     </td>
-
-
-                                    <td><br>
+                                    <td>
                                         <button type="button" name="add" id="add" class="btn btn-success">+</button>
                                     </td>
                                 </tr>
@@ -464,12 +454,13 @@
 <script src="js/maruti.dashboard.js"></script>
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
-<!--<script src="js/maruti.js"></script> -->
 
 
-          <script type="text/javascript" src="assets/js1/jquery.min.js"></script>
+<!--
+<script type="text/javascript" src="assets/js1/jquery.min.js"></script>
 <script type="text/javascript" src="assets/js1/jquery-ui.min.js"></script>
 <link rel="stylesheet" type="text/css"  href="assets/js1/jquery-ui.css" />
+-->
 
 <script>
 window.onload = function () {
@@ -486,7 +477,7 @@ window.onload = function () {
             var i = 1;
             $('#add').click(function() {
                 i++;
-                $('#diagnosis').append('<tr id="row' + i + '"> <td><div class="control-group"><label class="control-label">&nbsp;</label><div class="controls"><select name="mode[]" class="span12" ><option value=""></option><option value="PRIVATE">PRIVATE</option><option value="NHIS">NHIS</option></select></div></div></td><td><input type="text" name="px[]" placeholder="Price" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove">X</button></td></tr>');
+                $('#diagnosis').append('<tr id="row' + i + '"> <td><div class="control-group"><select name="mode[]" class="span12" ><option value=""></option><option value="PRIVATE">PRIVATE</option><option value="NHIS">NHIS</option></select></div></td><td><input type="text" name="px[]" placeholder="Price" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove">X</button></td></tr>');
             });
 
             $(document).on('click', '.btn_remove', function() {
@@ -512,9 +503,7 @@ window.onload = function () {
 
         setInterval(function(){
             dis();
-        },1000);
-
-
+        },10000);
     </script>
 
 

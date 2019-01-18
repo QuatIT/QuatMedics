@@ -9,7 +9,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="css/font-awesome.min.css" />
+<link rel="stylesheet" href="assets/css/font-awesome.css"/>
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -217,9 +217,9 @@ if($req_count > 0){
 
 <div id="sidebar">
     <ul>
-<!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-    <li> <a href="lab-index.php"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
-    <li class="active"><a href="lab-bloodbank.php"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
+    <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li> <a href="lab-index"><i class="icon icon-warning-sign"></i> <span>Laboratory</span></a></li>
+    <li class="active"><a href="lab-bloodbank"><i class="icon icon-tint"></i> <span>Blood Bank</span></a> </li>
     </ul>
 </div>
 
@@ -232,25 +232,25 @@ if($req_count > 0){
         <a title="Blood Bank" class="tip-bottom"><i class="icon-tint"></i> BLOOD BANK</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">LAB BLOOD BANK INFORMATION</h3>
- <?php
-                      if($success){
-                      ?>
-                      <div class="alert alert-success">
-                  <strong>Success!</strong> <?php echo $success; ?>
-                </div>
-                      <?php } if($error){
-                          ?>
-                      <div class="alert alert-danger">
-                  <strong>Error!</strong> <?php echo $error; ?>
-                </div>
-                      <?php
-                      } ?>
+    <?php
+    if($success){
+    ?>
+    <div class="alert alert-success">
+    <strong>Success!</strong> <?php echo $success; ?>
+    </div>
+    <?php } if($error){
+      ?>
+    <div class="alert alert-danger">
+    <strong>Error!</strong> <?php echo $error; ?>
+    </div>
+    <?php
+    } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab1">Blood Group List</a></li>
 
                     <li><a data-toggle="tab" href="#tab2">Add New Blood Group</a></li>
@@ -258,9 +258,6 @@ if($req_count > 0){
 
                 </ul>
             </div>
-
-
-
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
                     <div class="widget-box">
@@ -269,13 +266,12 @@ if($req_count > 0){
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                           <thead>
-                            <tr>
+                            <tr class="labell">
                               <th>Blood ID</th>
                               <th>Blood Group</th>
                               <th>Charge</th>
                               <th>Amount Available</th>
                               <th>Action</th>
-<!--                              <th>Action</th>-->
                             </tr>
                           </thead>
                           <tbody>
@@ -284,42 +280,36 @@ if($req_count > 0){
                               $blood_grp=select("SELECT * FROM bloodgroup_tb");
                               foreach($blood_grp as $blood_grpx){
                                 ?>
-
-
                             <tr>
                               <td><?php echo $blood_grpx['bloodID']; ?></td>
                               <td><?php echo $blood_grpx['bloodGroup']; ?></td>
                               <td><?php echo $blood_grpx['charge']; ?></td>
                               <td><?php echo $blood_grpx['bloodBags']; ?></td>
                             <td style='text-align: center;'>
-                                <a data-toggle="modal" data-target="#myModal<?php echo $blood_grpx['id']; ?>"><i class="btn btn-primary fa fa-usd"></i></a>
+                                <a data-toggle="modal" data-target="#myModal<?php echo $blood_grpx['id']; ?>"><i class="btn btn-primary fa fa-money"></i></a>
                                <!--  <a href='lab-bloodbank.php'><span class='btn btn-primary fa fa-eye' data-toggle='modal' data-target=''></span></a> -->
                             </td>
 
-                                    <?php
- //modal codes
+                        <?php
+                             //modal codes
+                            if(isset($_POST['ch_sub'.$blood_grpx['id']])){
 
-if(isset($_POST['ch_sub'.$blood_grpx['id']])){
+                                $eff_chng = filter_input(INPUT_POST,'eff_chng',FILTER_SANITIZE_STRING);
+                            //    $eff_chng = $_POST['eff_chng'];
 
-    $eff_chng = filter_input(INPUT_POST,'eff_chng',FILTER_SANITIZE_STRING);
-//    $eff_chng = $_POST['eff_chng'];
+                                $all_chng = select("SELECT * FROM bloodgroup_tb");
+                                foreach($all_chng as $all_chngs){}
 
-    $all_chng = select("SELECT * FROM bloodgroup_tb");
-    foreach($all_chng as $all_chngs){}
+                                 $eff_chngx= update("UPDATE bloodgroup_tb SET charge ='$eff_chng' WHERE bloodID ='".$blood_grpx['bloodID']."'");
 
-     $eff_chngx= update("UPDATE bloodgroup_tb SET charge ='$eff_chng' WHERE bloodID ='".$blood_grpx['bloodID']."'");
+                                  if($eff_chngx){
 
-      if($eff_chngx){
-
-         echo "<script>alert('Update Is Effected {$blood_grpx['bloodID']}');
-                window.location.href='lab-bloodbank.php';</script>";
-//        exit();
-
-
-     }
-
-    }
-        ?>
+                                     echo "<script>alert('Update Is Effected {$blood_grpx['bloodID']}');
+                                            window.location.href='lab-bloodbank.php';</script>";
+                            //        exit();
+                                 }
+                                }
+                            ?>
 
 <!-- Modal -->
 <div id="myModal<?php echo $blood_grpx['id']; ?>" class="modal fade" role="dialog">
@@ -329,34 +319,32 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">QuatMedics <?php echo $blood_grpx['bloodID']; ?></h4>
+        <h4 class="modal-title">BLOOD GROUP - <?php echo $blood_grpx['bloodGroup']; ?></h4>
       </div>
       <div class="modal-body">
+      <form action="" method="post">
+     <center>
+         <p><b>RESET CHARGE</b>&nbsp;&nbsp;&nbsp;&nbsp;<input type='number' name='eff_chng' id='eff_chng' class='form-control'></p>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='ch_sub<?php echo $blood_grpx['id']; ?>' id='ch_sub' class='btn btn-info' value='CHANGE'></center>
 
-          <form action="" method="post">
-
-                                         <center><p><b>RESET CHARGE</b>&nbsp;&nbsp;&nbsp;&nbsp;<input type='number' name='eff_chng' id='eff_chng' class='form-control'></p>
-                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='ch_sub<?php echo $blood_grpx['id']; ?>' id='ch_sub' class='btn btn-info' value='CHANGE'></center>
-
-          </form>
-                                     </div>
+      </form>
+    </div>
 
     </div>
 
   </div>
 </div>
 
-                                </tr>
-                           <?php   }?>
-                                </tbody>
-
-                              </table>
-</div>
-</div>
-</div>
+                            </tr>
+                       <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+                </div>
 
                 <div id="tab2" class="tab-pane">
-                   <!-- <form action="#" method="post" class="form-horizontal">-->
+<!--                    <form action="#" method="post" class="form-horizontal">-->
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
@@ -436,43 +424,25 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
                                     <td><?php echo $bl_requests['doe']; ?></td>
                                     <td><?php echo $b_counts['bloodBags'];?></td>
                                     <td><?php echo $bl_requests['patientID'];?></td>
-                                    <td><select name='selxr' id='selxr' class='form-control' style='width:120px;' >
+                                    <td>
+                                        <select name='selxr' id='selxr' class='form-control' style='width:120px;' >
                                       <option></option>
                                       <option value='APPROVED'>APPROVE
 
                                       </option>
                                       <option value='DENIED'>DENY</option>
                                        <option value='Not Enough Available'>NOT ENOUGH</option>
-                                    </select></td>
+                                    </select>
+                                    </td>
 
-                                     <!-- <button type='submit' class='btn-sm btn-info' name='selxr1' id='selxr1' value='APPROVED <?php $reqID; ?>'>Approve</button> -->
+    <!-- <button type='submit' class='btn-sm btn-info' name='selxr1' id='selxr1' value='APPROVED <?php $reqID; ?>'>Approve</button> -->
 
-
-
-                                      <?php
-                                     // $reqID = filter_input(INPUT_POST,'reqID',FILTER_SANITIZE_STRING);
-//                                       if(isset($_POST['selxr1'.$bl_requests['requestID']])){
-//     $reqID = filter_input(INPUT_POST,'reqID',FILTER_SANITIZE_STRING);
-
-//    $selxr1 = filter_input(INPUT_POST,'selxr1',FILTER_SANITIZE_STRING);
-//     // $selxr2 = filter_input(INPUT_POST,'selxr2',FILTER_SANITIZE_STRING);
-
-//      $bl_request = select("SELECT * FROM bloodrequest ");
-//  foreach($bl_request as $bl_requests){}
-//  $bl_count = select("SELECT COUNT(*) as request_count FROM bloodrequest");
-// foreach($bl_count as $bl_counts){ $req_count=$bl_counts['request_count'];}
-
-// $approve = update("UPDATE bloodrequest SET status='".$selxr1."', approved_by ='".$_SESSION['username']."' ,request_time = NOW() WHERE requestID = '".$bl_requests['requestID']."' ");
-  // echo "<script>alert('{$bl_requests['requestID']}')</script>";
-  }
-
-
-  ?>
+                                      <?php } ?>
 <!--  </button> -->
 
 
 
-                                    <!--   &nbsp;&nbsp;<button type='submit' class='btn-sm btn-warning' name='selxr2<?php $reqID; ?>' id='selxr2<?php $reqID; ?>' value='Denied<?php $reqID;?>'>Deny -->
+    <!--   &nbsp;&nbsp;<button type='submit' class='btn-sm btn-warning' name='selxr2<?php $reqID; ?>' id='selxr2<?php $reqID; ?>' value='Denied<?php $reqID;?>'>Deny -->
 
                                         <?php
 
@@ -497,7 +467,7 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
 
 
 
-                                    </td>
+<!--                                    </td>-->
                                  <!--  <?php #} ?> -->
                                   </tr>
 
@@ -534,7 +504,7 @@ if(isset($_POST['ch_sub'.$blood_grpx['id']])){
            <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab3">Blood Donor List</a></li>
                     <li><a data-toggle="tab" href="#tab4">Add New Blood Donor</a></li>
                 </ul>

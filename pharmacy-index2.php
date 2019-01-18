@@ -57,6 +57,7 @@
     <li class=""> <a href="pharmacy-index.php"><i class="icon icon-briefcase"></i> <span>Pharmacy</span></a> </li>
     <li class="active"> <a href="pharmacy-index2"><i class="icon icon-briefcase"></i> <span>Pharmacy2</span></a> </li>
     <li> <a href="dispensary?tab=admed"><span>Dispensary</span></a> </li>
+    <li> <a href="pharmacy-inventory?tab=tab2"> <span>Inventory (Pharmacy)</span></a> </li>
     </ul>
 </div>
 

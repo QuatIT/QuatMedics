@@ -98,7 +98,7 @@ if(isset($_POST['addApptmnt'])){
         <a title="Consultation" class="tip-bottom"><i class="icon-calendar"></i> APPOINTMENTS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">CONSULTATION APPOINTMENTS</h3>
 
       <div class="row-fluid">

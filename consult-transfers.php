@@ -145,7 +145,7 @@ $center = select("SELECT * FROM medicalcenter WHERE centerID !='".$_SESSION['cen
         <a title="Transfers" class="tip-bottom"><i class="icon-resize-horizontal"></i> TRANSFERS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">PATIENT TRANSFERS</h3>
  <?php
                       if($success){
