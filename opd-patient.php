@@ -65,6 +65,7 @@
     $active='';
     $success = '';
     $error = '';
+    @$_REQUEST['exp_date'];
 
     $tab = $_GET['tab'];
 
@@ -123,7 +124,7 @@ if($assign_lab == "sent_to_lab"){
 }
 
     if($consultAssignPatient1){
-            $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."', insurance_number='$insuranceNumber',insurance_exp='$insurance_exp' WHERE patientID='$patientID' ");
+            $update_patient_status = update("UPDATE patient SET patient_status = '$patient_busy',lock_center='".$_SESSION['centerID']."', insurance_number='$insuranceNumber',insurance_exp='".$_REQUEST['exp_date']."' WHERE patientID='$patientID' ");
 
 		//select opd price..
 //		$opdPrice = select("SELECT * FROM prices WHERE serviceName='OPD' AND centerID='".$_SESSION['centerID']."'");

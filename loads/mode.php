@@ -7,6 +7,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
     echo "<script>window.location.href='index'</script>";
 }
 
+@$_SESSION['exp_date'];
 //$q = "PNT-0001";
 $q = $_REQUEST['id'];
 $pid = $_REQUEST['pid'];
