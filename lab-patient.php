@@ -199,19 +199,20 @@ if(empty($labresult) && empty($file)){
                                                     <input type="text" style="border-style:none;" class="span11" name="patientID" id="patientID" value="<?php echo $patientID;?>" readonly/>
                                                 </th>
                                                 <th class="labell" style="text-align:center;">PATIENT NAME</th>
-                                                <th colspan="2">
+                                                <th colspan="3">
                                                     <input style="border-style:none;" type="text" class="span11" name="patientName" value="<?php echo $patname['firstName'].' '.$patname['otherName'].' '.$patname['lastName']; ?>" readonly/>
                                                 </th>
                                             </tr>
                                             <tr>
-                                                <td colspan="5"></td>
+                                                <td colspan="6"></td>
                                             </tr>
 											<tr class="labell">
 												<th>LAB NAME</th>
 												<th>LAB UPLOAD</th>
 												<th>LAB RESULTS</th>
-												<th style="width:10%">PAY STATUS</th>
-												<th style="width:10%">CONFIRM</th>
+												<th>LAB PRICE</th>
+												<th>PAY STATUS</th>
+												<th>CONFIRM</th>
 											</tr>
 											<tbody>
 												<?php
@@ -247,6 +248,9 @@ if(empty($labresult) && empty($file)){
                                                     <textarea class="span11" rows="2" cols="25" name="txtresult[]" readonly><?php echo $labtxt['labResult']; ?></textarea>
                                                     <?php } ?>
                                                 </td>
+                                                <td style="text-align:center;">
+                                                    <?php echo $labtxt['labprice']; ?>
+                                                </td>
 
                                                 <td style="text-align:center;">
                                                     <?php
@@ -275,9 +279,9 @@ if(empty($labresult) && empty($file)){
 
 												</tr>
 												<?php }?>
-                                                <tr><td colspan="5"></td></tr>
+                                                <tr><td colspan="6"></td></tr>
                                                 <tr>
-                                                    <td colspan="3"></td>
+                                                    <td colspan="4"></td>
                                                     <td colspan="2">
                             <button type="submit" class="btn btn-primary btn-block labell span5" name="lab_result" style="width:100%;">SEND RESULTS</button></td>
                                                 </tr>

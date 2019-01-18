@@ -61,7 +61,7 @@ if(isset($_POST['addApptmnt'])){
         $sms =  filter_input(INPUT_POST, "sms", FILTER_SANITIZE_STRING);
 		$status = trim( "PENDIND");
 	$centerID = $_SESSION['centerID'];
-    $addapointment = $consultation->createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime,$status,$reason,$sms,$centerID);
+    $addapointment = $consultation->createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime,$status,$reason,$sms,$centerID,$dateToday);
     if($addapointment){
         $success =  "APPOINTMENT SAVED SUCCESSFULLY";
     }else{

@@ -60,8 +60,8 @@
           return $result;
     }
 
-      public function createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime,$status,$reason,$sms,$centerID){
-          $result= insert("INSERT INTO doctorappointment(appointNumber,staffID,patientID,appointmentDate,appointmentTime,status,reason,sms,centerID,dateInsert) VALUES('$appointNumber','$staffID','$patientID','$appointDate','$appointTime','$status','$reason','$sms','$centerID') ");
+      public function createAppointment($appointNumber,$staffID,$patientID,$appointDate,$appointTime,$status,$reason,$sms,$centerID,$dateToday){
+          $result= insert("INSERT INTO doctorappointment(appointNumber,staffID,patientID,appointmentDate,appointmentTime,status,reason,sms,centerID,dateInsert) VALUES('$appointNumber','$staffID','$patientID','$appointDate','$appointTime','$status','$reason','$sms','$centerID','$dateToday') ");
           return $result;
     }
 
