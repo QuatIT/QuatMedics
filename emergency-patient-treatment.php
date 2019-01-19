@@ -60,19 +60,15 @@
 //codes for the gallary creation..
 if (isset($_POST['sub_mit'])){
     $medicine = count($_POST["medicine"]);
+    $piecesNum = count( $_POST['pieces']);
+    $adayNum = count( $_POST['aday']);
+    $totalDaysNum = count( $_POST['totalDays']);
     $dosage = count($_POST["dosage"]);
 	$medical_status = 'not attended to';
 	$today_status = '0';
 
 	$eme_medIDs = count(select("SELECT * FROM eme_ward GROUP BY eme_medID ")) + 1;
 	$eme_medID = "EME-PRES-".sprintf('%06s',$eme_medIDs);
-
-//    $search_sq = select("SELECT * FROM schedule_loan_detail_old WHERE loan_no='".$loan_no."' && branch_code='".$_SESSION['branch_code']."' ");
-//    foreach($search_sq as $s_row){}
-
-
-    //creating sequence number
-//    $sq_no = @$s_row['sq_no'] + $sq;
 
 if($medicine > 0 && $dosage > 0 ) {
     for( $i=0 , $n=0; $i<$medicine , $n<$dosage; $i++ , $n++) {
@@ -316,21 +312,6 @@ $get_count = select("SELECT * FROM bloodgroup_tb WHERE bloodID ='".$blood_chks['
                                    </select>
                                 </div>
                               </div>
-
-<!--
-                              <div class="control-group">
-                                <label class="control-label">Mode of Payment:</label>
-                                <div class="controls">
-                                  <select class="span11" name="mode" onchange="modey(this.value);">
-                                        <option value=""></option>
-                                        <option value="Private">Private</option>
-                                        <option value="Insurance">Health Insurance</option>
-                                        <option value="Company">Company</option>
-                                    </select>
-                                </div>
-                              </div>
-                             <span id="modeload"></span>
--->
                               <div class="control-group">
                                 <label class="control-label">Body Temperature:</label>
                                 <div class="controls">
@@ -351,15 +332,6 @@ $get_count = select("SELECT * FROM bloodgroup_tb WHERE bloodID ='".$blood_chks['
                                   <input type="text"  class="span11" name="weight" placeholder="Weight" value="<?php echo @$vitrow['weight']; ?>"  readonly />
                                 </div>
                               </div>
-
-<!--
-                              <div class="control-group">
-                                <label class="control-label">Other Health Details :</label>
-                                <div class="controls">
-                                    <textarea class="span11" name="otherHealth"></textarea>
-                                </div>
-                              </div>
--->
                           </div>
                       </div>
                     <div class="span6">
@@ -392,25 +364,6 @@ $get_count = select("SELECT * FROM bloodgroup_tb WHERE bloodID ='".$blood_chks['
                                   <input type="text"  class="span11" name="" placeholder="AS AT TODAY" value="<?php echo @$vitrow['doe']; ?>" readonly />
                                 </div>
                               </div>
-
-<!--
-                               <div class="control-group">
-                                <label class="control-label">Assign Consulting Room</label>
-                                <div class="controls">
-                                  <select name="consultRoom">
-                                    <option value="default"> -- Select Consulting Room --</option>
-                                      <?php
-//                                        $consultingroom = Consultation::find_consultingroom();
-//                                        foreach($consultingroom as $roomRow){
-                                      ?>
-                                    <option value="<?php #echo $roomRow['roomID'];?>"> <?php #echo $roomRow['roomName'];?></option>
-                                      <?php #}?>
-                                  </select>
-                                </div>
-                                  <div class="controls"></div>
-                              </div>
--->
-
                               <div class="form-actions">
                                   <i class="span1"></i>
                                 <a href="emergency-vitals?emeid=<?php echo $_GET['emeid']; ?>&pid=<?php echo $_GET['pid']; ?>&tab=vitals" class="btn btn-primary btn-block span10">Register New Vitals</a>
@@ -564,42 +517,108 @@ Plotly.newPlot('myDivPressure', num);
 
   </script>
 
-                      </div>
-                      </div>
-                      </div>
+        </div>
+    </div>
+</div>
 
 
-                <div id="tab2" class="tab-pane">
-          <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                        <h5>Patient's Name</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                    <form action="" method="post">
-<!--                            <h3 class="text-primary">Create Cheque Schedule</h3>-->
-                            <table border="0" class="table table-stripped" id="dynamic_field" style="margin-top:20px;">
-                                <tr>
+<div id="tab2" class="tab-pane">
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>DOCTOR' PRESCRIPTION</h5>
+        </div>
+        <div class="widget-content nopadding">
+            <form action="" method="post">
+<!--
+            <table border="0" class="table table-bordered" id="dynamic_field">
+                <thead class="labell">
+                    <th> MEDICINE</th>
+                    <th> NO. OF INTAKE/PIECES</th>
+                </thead>
+                <tr>
+                    <td>
+                        <label>Medicine / Prescription</label>
+                        <input type="text" class="span6" name="medicine[]" placeholder="Medicine / Prescription" class="form-control">
+                    </td>
+                    <td>
+                        <label>Dosage</label>
+                        <input type="text" name="dosage[]" placeholder="Dosage" class="form-control">
+                    </td>
+                    <td>
+                    <button type="button" name="add" id="add" class="btn btn-success">+</button>
+                    </td>
+                </tr>
+            </table>
+-->
 
-                                    <td>
-                    <label>Medicine / Prescription</label>
-                                        <input type="text" class="span6" name="medicine[]" placeholder="Medicine / Prescription" class="form-control">
-                                    </td>
-                                    <td>
-                    <label>Dosage</label>
-                                        <input type="text" name="dosage[]" placeholder="Dosage" class="form-control">
-                                    </td>
-                                    <td><br>
-                                        <button type="button" name="add" id="add" class="btn btn-success">+</button>
-                                    </td>
-                                </tr>
-                            </table>
+<!--                <hr/>-->
+            <table class="table table-bordered" id="dynamic_field2">
+                <tr>
+                    <th style="width:60%;"> MEDICINE NAME</th>
+                    <th> INTAKES</th>
+                    <th> / DAY</th>
+                    <th> No.OF DAYS</th>
+                </tr>
+                  <?php
+                  $total = 5;
+                    for($i=0;$i<$total;$i++){
+                  ?>
 
-                            <p class="text-left" style="margin-top: 20px;margin-left: 60px;"><input type="submit" class="btn btn-primary" name="sub_mit" id="sub_mit" value="Submit"></p>
-                        </form>
-                      </div>
-                      </div>
-                      </div>
+                <tr>
+                    <td>
+				        <?php
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
+							?>
+                         <select name="medicine[]" class="span11">
+                                <option></option>
+                                <?php
+                                if($medsx){
+                            foreach($medsx as $medrowx){
+                                ?>
+                            <option value="<?php echo $medrowx['medicine_id']; ?>">
+                        <?php
+                                if($medrowx['Type']=='solid'){
+                                    $stockleft = $medrowx['no_of_piece'];
+                                }
+                                if($medrowx['Type']=='liquid'){
+                                    $stockleft = $medrowx['no_of_bottles'];
+                                }
+                                echo $medrowx['medicine_name'].' -- '.$stockleft.' Left'; ?>
+                                </option>
+                                <?php }?>
+                            </select>
+							<?php }?>
+
+                    </td>
+                        <td><input type="number" min="1" name="pieces[]" placeholder="e.g. 2" class="span11" /></td>
+						<td><input type="number" min="1" name="aday[]" placeholder="e.g. 3" class="span11" /></td>
+						<td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" /></td>
+                </tr>
+                  <?php }?>
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="2">
+                    <button type="submit" name="sub_mit" style="width:100%;" id="sub_mit" class="btn btn-primary btn-block labell span10"> SUBMIT</button>
+                    </td>
+                </tr>
+                </table>
+<!--
+              <div class="form-actions">
+                  <i class="span1"></i>
+                <button type="submit" name="sub_mit" id="sub_mit" class="btn btn-primary btn-block labell span10"> Admit To Ward</button>
+              </div>
+-->
+
+<!--
+                <p class="text-left" style="margin-top: 20px;margin-left: 60px;">
+                    <input type="submit" class="btn btn-primary" name="sub_mit" id="sub_mit" value="Submit">
+                </p>
+-->
+            </form>
+        </div>
+    </div>
+</div>
 
                 <div id="tabAction" class="tab-pane">
                   <form action='' method='post'>
@@ -973,6 +992,7 @@ foreach($load_newpatient as $newpatient){
     </script>
 
 
+<!--
 
         <script>
             //    $(document).ready(function(){
@@ -990,6 +1010,7 @@ foreach($load_newpatient as $newpatient){
             //    });
 
         </script>
+-->
 
 
 <script type="text/javascript">
