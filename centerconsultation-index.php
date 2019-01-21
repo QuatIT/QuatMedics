@@ -68,8 +68,14 @@
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"><a href="centerconsultation-index.php"><i class="icon icon-tasks"></i> <span>Consultation Management</span></a> </li>
+        <li><a href="medics-index"><i class="icon icon-home"></i> <span>DASHBOARD</span></a> </li>
+        <li class="active"> <a href="centerconsultation-index"><i class="icon-th-list"></i> <span>CONSULTATION</span></a> </li>
+        <li class=""> <a href="centerward-index"><i class="icon-folder-close"></i> <span>WARD</span></a> </li>
+        <li class=""> <a href="centerlab-index"> <i class="icon-search"></i> <span>LABORATORY</span></a> </li>
+        <li class=""> <a href="centeruser-index"> <i class="icon-user"></i> <span>STAFF</span></a> </li>
+        <li class=""> <a href="centerpharmacy-index"> <i class="icon-plus-sign"></i> <span>PHARMACY</span></a> </li>
+        <li class=""> <a href="center-account"> <i class="icon-list-alt"></i> <span>ACCOUNTS</span></a> </li>
+        <li class=""> <a href="smsrequest-index"> <i class="icon-envelope"></i> <span>ACCOUNTS</span></a> </li>
     </ul>
 </div>
 <div id="content">
@@ -79,7 +85,7 @@
         <a title="Department Management" class="tip-bottom"><i class="icon-tasks"></i> CONSULTATION</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">CONSULTATION MANAGEMENT</h3>
                     <?php
                       if($success){
@@ -97,7 +103,7 @@
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab1">Consultation Rooms</a></li>
                     <li><a data-toggle="tab" href="#tab2">Add New Consulting Room</a></li>
                 </ul>
@@ -107,12 +113,12 @@
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Consulting Rooms</h5>
+                        <h5 class="labell">List Of Consulting Rooms</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                           <thead>
-                            <tr>
+                            <tr class="labell">
                               <th>Consulting Room ID</th>
                               <th>Consulting Room Name</th>
                               <th>Action</th>
@@ -138,14 +144,14 @@
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Consultation Room Name :</label>
+                                <label class="control-label">Room Name :</label>
                                <div class="controls">
                                   <input type="text" class="span11" name="departmentName" placeholder="Consultation Room Name" required/>
                                 </div>
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Consulting Room</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span10">Save Consulting Room</button>
                               </div>
                           </div>
                       </div>

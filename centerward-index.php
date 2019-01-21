@@ -63,8 +63,14 @@
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"><a href="centerward-index.php"><i class="icon icon-folder-open"></i> <span>Ward Management</span></a> </li>
+        <li><a href="medics-index"><i class="icon icon-home"></i> <span>DASHBOARD</span></a> </li>
+        <li class=""> <a href="centerconsultation-index"><i class="icon-th-list"></i> <span>CONSULTATION</span></a> </li>
+        <li class="active"> <a href="centerward-index"><i class="icon-folder-close"></i> <span>WARD</span></a> </li>
+        <li class=""> <a href="centerlab-index"> <i class="icon-search"></i> <span>LABORATORY</span></a> </li>
+        <li class=""> <a href="centeruser-index"> <i class="icon-user"></i> <span>STAFF</span></a> </li>
+        <li class=""> <a href="centerpharmacy-index"> <i class="icon-plus-sign"></i> <span>PHARMACY</span></a> </li>
+        <li class=""> <a href="center-account"> <i class="icon-list-alt"></i> <span>ACCOUNTS</span></a> </li>
+        <li class=""> <a href="smsrequest-index"> <i class="icon-envelope"></i> <span>ACCOUNTS</span></a> </li>
     </ul>
 </div>
 <div id="content">
@@ -74,7 +80,7 @@
         <a title="Ward Management" class="tip-bottom"><i class="icon-folder-open"></i> Ward</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">WARD MANAGEMENT</h3>
   <?php
                       if($success){
@@ -92,7 +98,7 @@
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab1">MedCenter Ward</a></li>
                     <li><a data-toggle="tab" href="#tab2">Add New Ward</a></li>
                 </ul>
@@ -102,12 +108,12 @@
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Ward</h5>
+                        <h5 class="labell">List Of Ward</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
                           <thead>
-                            <tr>
+                            <tr class="labell">
                               <th>Ward ID</th>
                               <th>Ward Name</th>
                               <th>Action</th>
@@ -147,7 +153,7 @@
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Ward</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span10">Save Ward</button>
                               </div>
                           </div>
                       </div>

@@ -26,10 +26,10 @@ session_start();
 
 
 
-        <style>
-        .active{
-            background-color: #209fbf;
-        }
+<style>
+.active{
+    background-color: #209fbf;
+}
 
 
 #modal {
@@ -107,29 +107,25 @@ thead th {
 
 <?php include 'layout/head.php';
 
-	if($_SESSION['username'] ==''){
-		echo "<script>window.location.href='logout'</script>";
-	}
+if($_SESSION['username'] ==''){
+    echo "<script>window.location.href='logout'</script>";
+}
 
-    $centerID=$_SESSION['centerID'];
-    @$roomID = $_GET['roomID'];
+$centerID=$_SESSION['centerID'];
+@$roomID = $_GET['roomID'];
 $update_consulting = update("UPDATE consultingroom SET status='free' WHERE roomID='$roomID'");
-    $dashboard = new Dashboard;
-
-
-
-
+$dashboard = new Dashboard;
 
  ?>
 
 
 
-    <?php
-    if($_SESSION['accessLevel']=='LABORATORY'){
-     //totalLabRequest
-        $labRequest = $dashboard->numLabRequests($centerID);
-    //totalBloodDonor
-        $BloodDonor = $dashboard->numBloodDonor($centerID);
+<?php
+if($_SESSION['accessLevel']=='LABORATORY'){
+ //totalLabRequest
+    $labRequest = $dashboard->numLabRequests($centerID);
+//totalBloodDonor
+    $BloodDonor = $dashboard->numBloodDonor($centerID);
 
 $dataPoints = array(
 	array("label"=>"No. of Lab Request", "y"=>$labRequest),
@@ -141,18 +137,12 @@ $dataPoints = array(
 )
  ?>
 
-   <?php }
+<?php } ?>
 
 
-?>
 
 <?php
-
 $date = date('Y-m-d');
-
-
-
-
 
 //consultation
  $get_pat = select("SELECT COUNT(*) as allx FROM consultation WHERE dateInsert = CURDATE()");
@@ -180,8 +170,8 @@ foreach($get_pat as $get_pats){
     $private = $get_privates['priva'];
   }
 
-   //consultation calculation
-   $percentile=100;
+//consultation calculation
+$percentile=100;
 
 // nhis percentage
   @$cal_nhis = ($nhis)/($all_consult)* ($percentile);
@@ -200,7 +190,6 @@ foreach($get_pat as $get_pats){
 $room_ward = select("SELECT * FROM wardlist");
 foreach($room_ward as $room_wards){}
 
-
 ?>
 
 
@@ -213,32 +202,30 @@ foreach($room_ward as $room_wards){}
 
 
 
-    <?php
-    if($_SESSION['accessLevel']=='CONSULTATION'){
-     //totalAwaiting
-        $totalAwaiting = $dashboard->awaitingPatient($centerID,$roomID);
-    //private patient
-        $LabResults = $dashboard->numLabResults($centerID,$roomID);
-    //insurance patient
-        $wardPatient = $dashboard->numWardPatient($centerID,$roomID);
+<?php
+if($_SESSION['accessLevel']=='CONSULTATION'){
+ //totalAwaiting
+    $totalAwaiting = $dashboard->awaitingPatient($centerID,$roomID);
+//private patient
+    $LabResults = $dashboard->numLabResults($centerID,$roomID);
+//insurance patient
+    $wardPatient = $dashboard->numWardPatient($centerID,$roomID);
 
 $dataPoints = array(
-	array("label"=>"No. of Awaiting Patients", "y"=>$totalAwaiting),
-	array("label"=>"No. of Lab Results", "y"=>$LabResults),
-	array("label"=>"No. of Patients in Ward", "y"=>$wardPatient)
+array("label"=>"No. of Awaiting Patients", "y"=>$totalAwaiting),
+array("label"=>"No. of Lab Results", "y"=>$LabResults),
+array("label"=>"No. of Patients in Ward", "y"=>$wardPatient)
 //	array("label"=>"No. of Compay Patient", "y"=>$companyPatient),
 //	array("label"=>"No. of Free Consulting Room", "y"=>$availableConsultingRoom),
 //	array("label"=>"No. of Free Consulting Room", "y"=>$occupiedConsultingRoom)
 )
- ?>
-
-   <?php }
-
 ?>
+
+<?php } ?>
 
 
 <!--    CONSULTATION DASHBOARD-->
-  <?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
+<?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
 <script>
 
 
@@ -250,20 +237,20 @@ $dataPoints = array(
 
 
 <!--    OPD DASHBOARD-->
-    <?php
-    if($_SESSION['accessLevel']=='OPD'){
-     //totalPatient
-        $totalPatient = $dashboard->totalPatient($centerID);
-    //private patient
-        $privatePatient = $dashboard->privatePatient($centerID);
-    //insurance patient
-        $insurancePatient = $dashboard->insurancePatient($centerID);
-    //company patient
-        $companyPatient = $dashboard->companyPatient($centerID);
-    //free consultingRoom
-        $availableConsultingRoom = $dashboard->availableConsultingRoom($centerID);
-    //occupied consultingRoom
-        $occupiedConsultingRoom = $dashboard->occupiedConsultingRoom($centerID);
+<?php
+if($_SESSION['accessLevel']=='OPD'){
+ //totalPatient
+    $totalPatient = $dashboard->totalPatient($centerID);
+//private patient
+    $privatePatient = $dashboard->privatePatient($centerID);
+//insurance patient
+    $insurancePatient = $dashboard->insurancePatient($centerID);
+//company patient
+    $companyPatient = $dashboard->companyPatient($centerID);
+//free consultingRoom
+    $availableConsultingRoom = $dashboard->availableConsultingRoom($centerID);
+//occupied consultingRoom
+    $occupiedConsultingRoom = $dashboard->occupiedConsultingRoom($centerID);
 
 $dataPoints = array(
 	array("label"=>"No. of Patient", "y"=>$totalPatient),
@@ -275,10 +262,7 @@ $dataPoints = array(
 )
 
  ?>
-
-   <?php }
-
-?>
+<?php } ?>
 
 
 
@@ -332,6 +316,17 @@ $dataPoints = array(
         <li> <a href="pharmacy-inventory?tab=tab2"> <span>Inventory (Pharmacy)</span></a> </li>
         <?php } ?>
 
+
+        <?php if($_SESSION['accessLevel']=='center_admin'){ ?>
+        <li class=""> <a href="centerconsultation-index"><i class="icon-th-list"></i> <span>CONSULTATION</span></a> </li>
+        <li class=""> <a href="centerward-index"><i class="icon-folder-close"></i> <span>WARD</span></a> </li>
+        <li class=""> <a href="centerlab-index"> <i class="icon-search"></i> <span>LABORATORY</span></a> </li>
+        <li class=""> <a href="centeruser-index"> <i class="icon-user"></i> <span>STAFF</span></a> </li>
+        <li class=""> <a href="centerpharmacy-index"> <i class="icon-plus-sign"></i> <span>PHARMACY</span></a> </li>
+        <li class=""> <a href="center-account"> <i class="icon-list-alt"></i> <span>ACCOUNTS</span></a> </li>
+        <li class=""> <a href="smsrequest-index"> <i class="icon-envelope"></i> <span>ACCOUNTS</span></a> </li>
+        <?php } ?>
+
     </ul>
 </div>
 
@@ -352,13 +347,13 @@ $dataPoints = array(
 <?php if($_SESSION['accessLevel']=='center_admin'){ ?>
    	<div class="quick-actions_homepage">
     <ul class="quick-actions">
-          <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> CONSULTATION</a></li>
-          <li> <a href="centeruser-index"> <i class="icon-people"></i> STAFF </a> </li>
-          <li> <a href="centerward-index"> <i class="fa fa-folder-open fa-3x"></i> <br/> WARD </a> </li>
-          <li> <a href="centerpharmacy-index"> <i class="fa fa-plus-square fa-3x"></i> <br/> PHARMACY</a> </li>
-          <li> <a href="centerlab-index"> <i class="icon-search"></i> LABORATORY </a> </li>
-          <li> <a href="smsrequest-index"> <i class="fa fa-envelope fa-3x"></i><br> SMS REQUEST </a> </li>
-          <li> <a href="center-account"> <i class="icon-survey"></i>ACCOUNTS </a> </li>
+<!--          <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> CONSULTATION</a></li>-->
+<!--          <li> <a href="centeruser-index"> <i class="icon-people"></i> STAFF </a> </li>-->
+<!--          <li> <a href="centerward-index"> <i class="fa fa-folder-open fa-3x"></i> <br/> WARD </a> </li>-->
+<!--          <li> <a href="centerpharmacy-index"> <i class="fa fa-plus-square fa-3x"></i> <br/> PHARMACY</a> </li>-->
+<!--          <li> <a href="centerlab-index"> <i class="icon-search"></i> LABORATORY </a> </li>-->
+<!--          <li> <a href="smsrequest-index"> <i class="fa fa-envelope fa-3x"></i><br> SMS REQUEST </a> </li>-->
+<!--          <li> <a href="center-account"> <i class="icon-survey"></i>ACCOUNTS </a> </li>-->
         </ul>
    </div>
 <?php }
