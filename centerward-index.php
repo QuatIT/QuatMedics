@@ -70,7 +70,7 @@
         <li class=""> <a href="centeruser-index"> <i class="icon-user"></i> <span>STAFF</span></a> </li>
         <li class=""> <a href="centerpharmacy-index"> <i class="icon-plus-sign"></i> <span>PHARMACY</span></a> </li>
         <li class=""> <a href="center-account"> <i class="icon-list-alt"></i> <span>ACCOUNTS</span></a> </li>
-        <li class=""> <a href="smsrequest-index"> <i class="icon-envelope"></i> <span>ACCOUNTS</span></a> </li>
+        <li class=""> <a href="smsrequest-index"> <i class="icon-envelope"></i> <span>SMS REQUEST</span></a> </li>
     </ul>
 </div>
 <div id="content">
