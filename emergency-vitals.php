@@ -444,7 +444,7 @@
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Out Patient</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span10">SAVE VITALS</button>
                               </div>
                           </div>
                       </div>
