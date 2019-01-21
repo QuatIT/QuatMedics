@@ -14,7 +14,8 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="assets/css/font-awesome2.css" />
+<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <!--
     <style>
         .active{

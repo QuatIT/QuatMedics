@@ -140,6 +140,7 @@ clearstatcache();
 		<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
         <link rel="stylesheet" href="css/maruti-login.css" />
 	<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <!--	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
 	<style>
 	       body{background: #eee url(light_honeycomb.png);}

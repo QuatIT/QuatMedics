@@ -25,6 +25,7 @@ session_start();
 <script src="chart/export-data.js"></script>
 <!--<script src="https://code.highcharts.com/highcharts-3d.js"></script>-->
 <script src="chart/highcharts-3d.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
 <script src="chart/jquery-3.1.1.min.js"></script>
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
