@@ -15,12 +15,17 @@ session_start();
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/series-label.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/highcharts-3d.js"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!--<script src="https://code.highcharts.com/highcharts.js"></script>-->
+<script src="chart/highcharts.js"></script>
+<!--<script src="https://code.highcharts.com/modules/series-label.js"></script>-->
+<script src="chart/series-label.js"></script>
+<!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
+<script src="chart/exporting.js"></script>
+<!--<script src="https://code.highcharts.com/modules/export-data.js"></script>-->
+<script src="chart/export-data.js"></script>
+<!--<script src="https://code.highcharts.com/highcharts-3d.js"></script>-->
+<script src="chart/highcharts-3d.js"></script>
+<script src="chart/jquery-3.1.1.min.js"></script>
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 
@@ -345,8 +350,8 @@ $dataPoints = array(
   </div>
   <div class="container-fluid">
 <?php if($_SESSION['accessLevel']=='center_admin'){ ?>
-   	<div class="quick-actions_homepage">
-    <ul class="quick-actions">
+<!--   	<div class="quick-actions_homepage">-->
+<!--    <ul class="quick-actions">-->
 <!--          <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> CONSULTATION</a></li>-->
 <!--          <li> <a href="centeruser-index"> <i class="icon-people"></i> STAFF </a> </li>-->
 <!--          <li> <a href="centerward-index"> <i class="fa fa-folder-open fa-3x"></i> <br/> WARD </a> </li>-->
@@ -354,9 +359,10 @@ $dataPoints = array(
 <!--          <li> <a href="centerlab-index"> <i class="icon-search"></i> LABORATORY </a> </li>-->
 <!--          <li> <a href="smsrequest-index"> <i class="fa fa-envelope fa-3x"></i><br> SMS REQUEST </a> </li>-->
 <!--          <li> <a href="center-account"> <i class="icon-survey"></i>ACCOUNTS </a> </li>-->
-        </ul>
-   </div>
+<!--        </ul>-->
+<!--   </div>-->
 <?php }
+
       if($_SESSION['accessLevel']=='CONSULTATION'){
 //        $room = Consultation::find_consultingroom();
         $room = select("SELECT * FROM consultingroom WHERE centerID='$centerID' AND status='".FREE."' || status='' ");
@@ -843,7 +849,7 @@ Highcharts.chart('containerFIN', {
  //        $lab_count = select("SELECT COUNT(patientID) as lab_num FROM labresult WHERE labID='".$lab_types['labID']."'");
  // foreach($lab_count as $lab_counts){}
         ?>
-</tr>
+<!--</tr>-->
       <td><?php echo $lab_types['labName'];?></td>
       <td><?php echo $lab_types['labID'];?></td>
       <td><?php echo $centerID;?></td>
@@ -1044,7 +1050,7 @@ doChunk();
 <script src="js/jquery.peity.min.js"></script>
 <!-- <script src="js/canvasjs.min.js"></script> -->
 
-    <script>
+<script>
 window.onload = function () {
     document.getElementById('button').onclick = function () {
         document.getElementById('modal').style.display = "none"
@@ -1077,11 +1083,5 @@ function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
 </script>
-
-
-<script>
-
-</script>
-
 </body>
 </html>
