@@ -156,7 +156,7 @@
         <a title="Old Patients" class="tip-bottom"><i class="icon-user"></i> OPD OLD PATIENTS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">PATIENT VITALS</h3>
        <?php
                       if($success){
@@ -174,7 +174,7 @@
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs labell">
 <!--                    <li class="<?php #echo $active; ?>"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>-->
 <!--                    <li class="active"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>-->
                     <li class="<?php echo 'active'; ?>"><a data-toggle="tab" href="#tab2">Add Vitals </a></li>

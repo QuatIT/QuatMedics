@@ -293,17 +293,18 @@ $get_count = select("SELECT * FROM bloodgroup_tb WHERE bloodID ='".$blood_chks['
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">PATIENT VITALAS</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">VITALS</a></li>
                     <li><a data-toggle="tab" href="#tab5">VITALS (GRAPHICAL)</a></li>
-                    <li><a data-toggle="tab" href="#tab2">DOCTOR'S PRESCRIPTION</a></li>
+                    <li><a data-toggle="tab" href="#tab2">PRESCRIPTION</a></li>
                     <li><a data-toggle="tab" href="#tabRequest">BLOOD REQUEST</a></li>
                     <li><a data-toggle="tab" href="#tabAction">BLOOD REQUEST ACTION - &nbsp;<?php echo $req_cnts['request_co'];?></a></li>
                     <li><a data-toggle="tab" href="#tab3">NURSE'S CHECKLIST</a></li>
-                    <li><a data-toggle="tab" href="#tab4">PATIENT'S WARD HISTORY</a></li>
+                    <li><a data-toggle="tab" href="#tab4">WARD HISTORY</a></li>
 
                 </ul>
             </div>
             <div class="widget-content tab-content">
+    <!-- ========================= VITALS TAB ======================================= -->
                 <div id="tab1" class="tab-pane active">
                     <form action="" method="post" id="vitals" class="form-horizontal">
                     <div class="span6" id="vitals">
@@ -374,13 +375,16 @@ $get_count = select("SELECT * FROM bloodgroup_tb WHERE bloodID ='".$blood_chks['
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <a href="emergency-vitals?emeid=<?php echo $_GET['emeid']; ?>&pid=<?php echo $_GET['pid']; ?>&tab=vitals" class="btn btn-primary btn-block span10">Register New Vitals</a>
+                                <a href="emergency-vitals?emeid=<?php echo $_GET['emeid']; ?>&pid=<?php echo $_GET['pid']; ?>&tab=vitals" class="btn btn-primary btn-block labell span10">Register New Vitals</a>
                               </div>
                           </div>
                       </div>
                     </form>
                 </div>
+<!-- ============================== END OF VITALS TAB ==================================-->
 
+
+<!-- ============================== START OF VITALS GRAPH TAB ==================================-->
 
                 <div id="tab5" class="tab-pane">
 					<div class="widget-box">
@@ -388,9 +392,11 @@ $get_count = select("SELECT * FROM bloodgroup_tb WHERE bloodID ='".$blood_chks['
                          <span class="icon"><i class="icon-th"></i></span>
                         <h5>Patient's Vitals (Graphical)</h5>
                       </div>
-                      <div class="widget-content nopadding" id='printable'>
 
-             <span style="margin-left:300px;font-weight:bolder;">BODY TEMPERATURE HOURLY CHART</span><span><input type='button' class='btn btn-info' style='width:12px;height:12px;margin-left:280px;'>&nbsp;&nbsp;HOURS</span>
+            <div class="widget-content nopadding" id='printable'>
+
+             <span style="margin-left:300px;font-weight:bolder;">BODY TEMPERATURE HOURLY CHART</span>
+            <span><input type='button' class='btn btn-info' style='width:12px;height:12px;margin-left:280px;'>&nbsp;&nbsp;HOURS</span>
             <div id='myDiv' style="height:350px; min-width:100px;"></div>
            <!--  <div style='margin-to'>
             <table class = 'table table-bordered'style='margin-left:640px;margin-top:-800px;width:200px;'> -->
@@ -688,46 +694,41 @@ Plotly.newPlot('myDivPressure', num);
                          <span class="icon"><i class="icon-th"></i></span>
                         <h5>BLOOD REQUEST FORM</h5>
                       </div>
-                      <div class="widget-content nopadding">
-<div class='container' style='margin-left:50px;'>
-  <form action='' method='POST'>
 
-<div class="control-group">
+            <form action='' method='POST'>
+
+                      <div class="widget-content nopadding">
+                          <div class="span6">
+                            <div class="control-group">
                                 <label class="control-label">Blood Type</label>
                                 <div class="controls">
-                                  <label>
-
-                                    <select name="blood_type" id="blood_type" class="span4"/>
-                                    <option value=''></option>
+                                <select name="blood_type" id="blood_type" class="span11">
+                                    <option value=""></option>
                                     <?php foreach($fet_type as $fet_types){ ?>
-
-                                    <option value='<?php echo $fet_types['bloodID'];?>'><?php echo $fet_types['bloodGroup']; }?></option>
-                                  </label>
-
-                                </select><br>
-
+                                    <option value="<?php echo $fet_types['bloodID'];?>"><?php echo $fet_types['bloodGroup']; ?></option>
+                                    <?php }?>
+                                </select>
                                 </div>
                               </div>
 
                                <div class="control-group">
                                 <label class="control-label">Blood ID </label>
                                 <div class="controls">
-                                  <input type="text" class="span4" name="blood_id" id="blood_id" readonly>
+                                  <input type="text" class="span11" name="blood_id" id="blood_id" readonly>
                                 </div>
                               </div>
-
 
                               <div class="control-group">
                                 <label class="control-label">Request From </label>
                                 <div class="controls">
-                                  <input type="text" class="span4" value='<?php echo $user_creds['accessLevel']; ?>' name="request_from" readonly>
+                                  <input type="text" class="span11" value='<?php echo $user_creds['accessLevel']; ?>' name="request_from" readonly>
                                 </div>
                               </div>
 
                               <div class="control-group">
                                 <label class="control-label">Staff ID </label>
                                 <div class="controls">
-                                  <input type="text" class="span4" value='<?php echo $user_creds['staffID'];?>' name="staff_id" readonly>
+                                  <input type="text" class="span11" value='<?php echo $user_creds['staffID'];?>' name="staff_id" readonly>
                                 </div>
                               </div>
 
@@ -735,36 +736,41 @@ Plotly.newPlot('myDivPressure', num);
                              <div class="control-group">
                                 <label class="control-label">Patient ID </label>
                                 <div class="controls">
-                                  <input type="text" class="span4" name="patient_id" id="patient_id" value='<?php echo $get_PID;?>' readonly>
-                                </div><br>
-                              </div></div><br>
+                                  <input type="text" class="span11" name="patient_id" id="patient_id" value='<?php echo $get_PID;?>' readonly>
+                                </div>
+                              </div>
 
-                            <div class='container' style='margin-left:600px;margin-top:-390px;'>
+                              </div>
+<!--                        </div>-->
+
+                <div class="span6">
+<!--                      <div class="widget-content nopadding">-->
+
                               <div class="control-group" >
                                 <label class="control-label">Request ID</label>
                                 <div class="controls">
-                              <input type='text' class='span4' name='' id='' value='<?php  echo $Request_id; ?>' readonly>
-                               </div>
+                                    <input type='text' class='span11' name='' id='' value='<?php  echo $Request_id; ?>' readonly>
+                                </div>
                               </div>
 
                               <div class="control-group" >
                                 <label class="control-label">Patient Name</label>
                                 <div class="controls">
-                                  <input type="text" class="span4" name="patient_name" id="patient_name" value='<?php echo $pID['patientName'];?>' readonly>
+                                  <input type="text" class="span11" name="patient_name" id="patient_name" value='<?php echo $pID['patientName'];?>' readonly>
                                 </div>
                               </div>
 
                                 <div class="control-group">
                                 <label class="control-label">Blood Quantity</label>
                                 <div class="controls">
-                                  <input type="number" class="span4" name="quantity" id="quantity" >
+                                  <input type="number" class="span11" name="quantity" id="quantity" >
                                 </div>
                               </div>
 
                                 <div class="control-group">
                                 <label class="control-label">Date:</label>
                                 <div class="controls">
-                                  <input type="date" class="span4" value='<?php echo date('Y-m-d') ?>' name="dateInsert" readonly>
+                                  <input type="date" class="span11" value='<?php echo date('Y-m-d') ?>' name="dateInsert" readonly>
                                 </div>
                               </div><br>
 
@@ -772,7 +778,7 @@ Plotly.newPlot('myDivPressure', num);
                                <div class="control-group">
                                 <label class="control-label">Request Action:</label>
                                 <div class="controls">
-                              <input type="text" class="span4" value='<?php  echo $req_action; ?>' name="req_action" id="req_action" readonly>
+                              <input type="text" class="span11" value='<?php  echo $req_action; ?>' name="req_action" id="req_action" readonly>
                                 </div>
                               </div>
 
@@ -782,61 +788,58 @@ Plotly.newPlot('myDivPressure', num);
                                   <input type='submit' name="send" id='send' class="btn btn-primary span4" value='Send Request'>
                                 </div><br>
                               </div>
-
-                                <!-- <div class="controls">
-                                </div> -->
-
-                         </div>
-                      </div>
-                      </div>
-                    </form>
-                      </div>
-
-               <div id="tab3" class="tab-pane">
-                     <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                        <h5>Patient's Name</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>Date</th>
-                              <th>Prescription</th>
-                              <th>Dosage</th>
-                              <th>Prescibed By</th>
-                              <th>Status</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody id="emepatienttreat11"></tbody>
-                        </table>
-                      </div>
+                        </div>
                     </div>
+                </form>
+            </div>
+        </div>
+<!--                      </div>-->
 
-                      </div>
+<div id="tab3" class="tab-pane">
+     <div class="widget-box">
+      <div class="widget-title">
+         <span class="icon"><i class="icon-th"></i></span>
+        <h5 class="labell">Patient's Name</h5>
+      </div>
+      <div class="widget-content nopadding">
+        <table class="table table-bordered data-table">
+          <thead class="labell">
+            <tr>
+              <th>Date</th>
+              <th>Prescription</th>
+              <th>Dosage</th>
+              <th>Prescibed By</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="emepatienttreat11"></tbody>
+        </table>
+      </div>
+    </div>
+</div>
 
-                <div id="tab4" class="tab-pane">
-                     <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                        <h5>Patient's History</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>Date</th>
-                              <th>Vitals</th>
-                              <th>Prescription</th>
-                              <th>Dosage</th>
-                              <th>Prescibed By</th>
+
+<div id="tab4" class="tab-pane">
+     <div class="widget-box">
+      <div class="widget-title">
+         <span class="icon"><i class="icon-th"></i></span>
+        <h5>Patient's History</h5>
+      </div>
+      <div class="widget-content nopadding">
+        <table class="table table-bordered data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Vitals</th>
+              <th>Prescription</th>
+              <th>Dosage</th>
+              <th>Prescibed By</th>
 <!--                              <th>Status</th>-->
-                              <th>Doctor's Comment</th>
-                            </tr>
-                          </thead>
-                          <tbody id="emepatienttreathistory">
+              <th>Doctor's Comment</th>
+            </tr>
+          </thead>
+          <tbody id="emepatienttreathistory">
 
 <?php
 $load_newpatient = select("SELECT * FROM eme_ward WHERE centerID='".$_SESSION['centerID']."' && patientID='".$_GET['pid']."'  GROUP BY dateRegistered ORDER BY dateRegistered ASC");
@@ -919,10 +922,7 @@ foreach($load_newpatient as $newpatient){
                         </table>
                       </div>
                     </div>
-
-                      </div>
-
-<!--                </div>-->
+              </div>
             </div>
 
         </div>

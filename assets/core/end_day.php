@@ -518,7 +518,6 @@ foreach($rcat_nhiscolumn_sql as $rcat_nhiscolumn_row){}
 
 
 function centeruser(){
-
 //	check number of local bedlist columns
 $sql = "select count(*) as lcenteruser from information_schema.columns where table_schema='$dbname' and table_name='centeruser'";
 	$lcenterusercolumn_sql = select($sql);
@@ -547,7 +546,6 @@ foreach($rcenterusercolumn_sql as $rcenterusercolumn_row){}
 			//insert local_bedlist into remote_bedlist
 			$centeruser_insert = insert2("INSERT INTO quatitso_quatmedic.centeruser(userID,centerID,staffID,userName,password,accessLevel,dateRegistered,doe) VALUES('".$lcenteruser_row['userID']."','".$lcenteruser_row['centerID']."','".$lcenteruser_row['staffID']."','".$lcenteruser_row['userName']."','".$lcenteruser_row['password']."','".$lcenteruser_row['accessLevel']."','".$lcenteruser_row['dateRegistered']."') ");
 
-
 				if($blood_insert){
 					echo "R_CENTERUSER UPDATED";
 				}else{
@@ -558,10 +556,7 @@ foreach($rcenterusercolumn_sql as $rcenterusercolumn_row){}
 		}
 		}
 		}else{
-
-
 		//search local_bedlist
-
 		$local_centeruser_sql = select("SELECT * FROM centeruser WHERE centerID='".$_SESSION['centerID']."' ");
 		foreach($local_centeruser_sql as $lcenteruser_row){
 
@@ -573,19 +568,14 @@ foreach($rcenterusercolumn_sql as $rcenterusercolumn_row){}
 			//insert local_bedlist into remote_bedlist
 				$centeruser_insert = insert2("INSERT INTO quatitso_quatmedic.centeruser(userID,centerID,staffID,userName,password,accessLevel,dateRegistered,doe) VALUES('".$lcenteruser_row['userID']."','".$lcenteruser_row['centerID']."','".$lcenteruser_row['staffID']."','".$lcenteruser_row['userName']."','".$lcenteruser_row['password']."','".$lcenteruser_row['accessLevel']."','".$lcenteruser_row['dateRegistered']."') ");
 
-
 				if($centeruser_insert){
 					echo "R_CENTERUSER UPDATED";
 				}else{
 					echo "ERROR: R_CENTERUSER";
 				}
 		}
-
+}
 		}
-
-
-		}
-
 
 		//REMOTE_BEDLIST TO LOCAL_BEDLIST
 //		echo $_SESSION['centerID'];
@@ -596,28 +586,16 @@ foreach($rcenterusercolumn_sql as $rcenterusercolumn_row){}
 //echo $remote_bloodrow['donorID'];
 
 		$lo_centeruserinsert = insert("INSERT INTO centeruser(userID,centerID,staffID,userName,password,accessLevel,dateRegistered,doe) VALUES('".$lcenteruser_row['userID']."','".$lcenteruser_row['centerID']."','".$lcenteruser_row['staffID']."','".$lcenteruser_row['userName']."','".$lcenteruser_row['password']."','".$lcenteruser_row['accessLevel']."','".$lcenteruser_row['dateRegistered']."') ");
-
-
-
 			}
-
-
 //		}
-
-
-
-
-			}else{
-				echo "TABLE L_CENTERUSER is NOT EQUAL to TABLE R_CENTERUSER";
-			}
-
-
+    }else{
+        echo "TABLE L_CENTERUSER is NOT EQUAL to TABLE R_CENTERUSER";
+    }
 }
 
 
 
 function consultation(){
-
 //	check number of local bedlist columns
 $sql = "select count(*) as lconsultation from information_schema.columns where table_schema='$dbname' and table_name='consultation'";
 	$lconsultationcolumn_sql = select($sql);
@@ -631,7 +609,7 @@ foreach($rconsultationcolumn_sql as $rconsultationcolumn_row){}
 
 //check table remote_bedlist
 		$rconsultationlimit_sql = select2("SELECT * FROM consultation WHERE centerID='".$_SESSION['centerID']."' ORDER BY dateInsert ASC LIMIT 1");
-		if(count($rconsultationlimit_sql)>=1){
+if(count($rconsultationlimit_sql)>=1){
 	foreach($rconsultationlimit_sql as $rconsultationlimit_row){
 
 		//search where local_doe is greater than remote_doe
@@ -642,25 +620,19 @@ foreach($rconsultationcolumn_sql as $rconsultationcolumn_row){}
 			$rconsultation_duplicate_sql = select2("select * from quatitso_quatmedic.consultation where consultID='".$lconsultation_row['consultID']."' ");
 
 			if(count($rconsultation_duplicate_sql) < 1){
-
 			//insert local_bedlist into remote_bedlist
 			$consultation_insert = insert2("INSERT INTO quatitso_quatmedic.consultation(consultID,patientID,staffID,bodyTemperature,mode,insuranceType,insuranceNumber,company,pulseRate,respirationRate,bloodPressure,weight,otherHealth,roomID,centerID,status,dateInsert,doe) VALUES('".$lconsultation_row['consultID']."','".$lconsultation_row['patientID']."','".$lconsultation_row['staffID']."','".$lconsultation_row['bodyTemperature']."','".$lconsultation_row['mode']."','".$lconsultation_row['insuranceType']."','".$lconsultation_row['insuranceNumber']."','".$lconsultation_row['company']."','".$lconsultation_row['pulseRate']."','".$lconsultation_row['respirationRate']."','".$lconsultation_row['bloodPressure']."','".$lconsultation_row['weight']."','".$lconsultation_row['otherHealth']."','".$lconsultation_row['roomID']."','".$lconsultation_row['centerID']."','".$lconsultation_row['status']."','".$lconsultation_row['dateInsert']."','".$lconsultation_row['doe']."') ");
-
 
 				if($consultation_insert){
 					echo "R_CENTERUSER UPDATED";
 				}else{
 					echo "ERROR: R_CENTERUSER";
 				}
-		}
-
-		}
-		}
-		}else{
-
-
+		      }
+		  }
+        }
+}else{
 		//search local_bedlist
-
 		$local_consultation_sql = select("SELECT * FROM consultation WHERE centerID='".$_SESSION['centerID']."' ");
 		foreach($local_centeruser_sql as $lcenteruser_row){
 
@@ -672,19 +644,14 @@ foreach($rconsultationcolumn_sql as $rconsultationcolumn_row){}
 			//insert local_bedlist into remote_bedlist
 				$consultation_insert = insert2("INSERT INTO quatitso_quatmedic.consultation(consultID,patientID,staffID,bodyTemperature,mode,insuranceType,insuranceNumber,company,pulseRate,respirationRate,bloodPressure,weight,otherHealth,roomID,centerID,status,dateInsert,doe) VALUES('".$lconsultation_row['consultID']."','".$lconsultation_row['patientID']."','".$lconsultation_row['staffID']."','".$lconsultation_row['bodyTemperature']."','".$lconsultation_row['mode']."','".$lconsultation_row['insuranceType']."','".$lconsultation_row['insuranceNumber']."','".$lconsultation_row['company']."','".$lconsultation_row['pulseRate']."','".$lconsultation_row['respirationRate']."','".$lconsultation_row['bloodPressure']."','".$lconsultation_row['weight']."','".$lconsultation_row['otherHealth']."','".$lconsultation_row['roomID']."','".$lconsultation_row['centerID']."','".$lconsultation_row['status']."','".$lconsultation_row['dateInsert']."','".$lconsultation_row['doe']."') ");
 
-
 				if($consultation_insert){
 					echo "R_CONSULTATION UPDATED";
 				}else{
 					echo "ERROR: R_CONSULTATION";
 				}
 		}
-
 		}
-
-
 		}
-
 
 		//REMOTE_BEDLIST TO LOCAL_BEDLIST
 //		echo $_SESSION['centerID'];
@@ -695,22 +662,16 @@ foreach($rconsultationcolumn_sql as $rconsultationcolumn_row){}
 //echo $remote_bloodrow['donorID'];
 
 		$lo_consultationinsert = insert("INSERT INTO consultation(consultID,patientID,staffID,bodyTemperature,mode,insuranceType,insuranceNumber,company,pulseRate,respirationRate,bloodPressure,weight,otherHealth,roomID,centerID,status,dateInsert,doe) VALUES('".$lconsultation_row['consultID']."','".$lconsultation_row['patientID']."','".$lconsultation_row['staffID']."','".$lconsultation_row['bodyTemperature']."','".$lconsultation_row['mode']."','".$lconsultation_row['insuranceType']."','".$lconsultation_row['insuranceNumber']."','".$lconsultation_row['company']."','".$lconsultation_row['pulseRate']."','".$lconsultation_row['respirationRate']."','".$lconsultation_row['bloodPressure']."','".$lconsultation_row['weight']."','".$lconsultation_row['otherHealth']."','".$lconsultation_row['roomID']."','".$lconsultation_row['centerID']."','".$lconsultation_row['status']."','".$lconsultation_row['dateInsert']."','".$lconsultation_row['doe']."') ");
-
-
 			}
-
-
 //		}
-
-
-
-
-			}else{
-				echo "TABLE L_CONSULTATION is NOT EQUAL to TABLE R_CONSULTATION";
-			}
-
-
+    }else{
+        echo "TABLE L_CONSULTATION is NOT EQUAL to TABLE R_CONSULTATION";
+    }
 }
+
+
+
+
 
 
 

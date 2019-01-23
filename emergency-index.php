@@ -169,7 +169,7 @@
         <a href="opd-index.php" title="" class="tip-bottom"><i class="icon-plus"></i> EMERGENCY</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
 <!--      <h3 class="quick-actions">EMERGENCY</h3>-->
                 <?php
                       if($success){
@@ -187,7 +187,7 @@
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab1">Patient List</a></li>
                     <li><a data-toggle="tab" href="#tab2">Add New Patient</a></li>
                 </ul>
@@ -201,7 +201,7 @@
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
-                          <thead>
+                          <thead class="labell">
                             <tr>
                               <th>Patient Name</th>
                               <th>Guardian Name</th>
@@ -210,25 +210,7 @@
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody id="emepatient1">
-
-<!-- 0545448774
-                            <tr>
-                              <td class="span2">
-                                <a class="thumbnail lightbox_trigger" href="images/gallery/imgbox2.jpg">
-                                    <img src="images/gallery/imgbox2.jpg" alt="" >
-                                </a>
-                              </td>
-                              <td>PNT-HSP001</td>
-                              <td>Kofi Mensah Addo</td>
-                              <td>0541524233</td>
-                              <td style="text-align: center;">
-                                   <a href="opd-patientinfo.php"> <span class="btn btn-primary fa fa-eye"></span></a>
-                              </td>
-                            </tr>
--->
-
-                          </tbody>
+                          <tbody id="emepatient1"></tbody>
                         </table>
                       </div>
                     </div>
@@ -250,132 +232,12 @@
                               </div>
 
                               <span id="empatient"></span>
-<!--
-                              <div class="control-group">
-                                <label class="control-label">Patient aID :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" value="" name="patientId" />
-                                </div>
-                              </div>
--->
-
-
-<!--
-                              <div class="control-group">
-                                <label class="control-label">Patient Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Patient Name" name="patientName" required />
-                                </div>
-                              </div>
--->
-
-<!--
-                              <div class="control-group">
-                                <label class="control-label">Blood Group</label>
-                                <div class="controls">
-                                  <select name="bloodGroup" >
-                                    <option value="default"> -- Blood Group --</option>
-                                    <option value="O-positive">O-positive</option>
-                                    <option value="O-negative">O-negative</option>
-                                    <option value="A-positive">A-positive</option>
-                                    <option value="A-negative">A-negative</option>
-                                    <option value="B-positive">B-positive</option>
-                                    <option value="B-negative">B-negative</option>
-                                    <option value="AB-positive">AB-positive</option>
-                                    <option value="AB-negative">AB-negative</option>
-                                  </select>
-                                </div>
-                              </div>
--->
-
-
                           </div>
-
-                          </div>
-                      </div>
-<!--
-                    <div class="span5">
-                          <div class="widget-title">
-                          </div>
-                          <div class="widget-content nopadding">
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                  <a data-toggle="tab" href="#tab3" class="btn btn-primary btn-block" > Next Step >></a>
-                              </div>
 
                       </div>
--->
-
-
-<!--                </div>-->
-
-<!--
-                <div id="tab3" class="tab-pane">
-                    <div class="span6">
-                          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Guardian-info</h5>
-                          </div>
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Guardian Name :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Guardian Name" name="guardianName" required />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Gender:</label>
-                                <div class="controls">
-                                  <label>
-                                    <input type="radio" name="guardianGender" value="Male" /> Male
-                                    </label>
-                                  <label>
-                                    <input type="radio" name="guardianGender" value="Female" /> Female
-                                    </label>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Mobile Number :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Active Mobile Number" name="guardianPhone" />
-                                </div>
-                              </div>
-                          </div>
-                      </div>
--->
-<!--
-                    <div class="span6">
-                          <div class="widget-title">
-                          </div>
-                          <div class="widget-content nopadding">
-
-                              <div class="control-group">
-                                <label class="control-label">Relationship</label>
-                                <div class="controls">
-                                  <input type="text"  class="span11" name="guardianRelation" placeholder="Relationship with Guardian" required />
-                                </div>
-                                <div class="controls">
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Home Address :</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Home Address" name="guardianAddress" />
-                                </div>
-                              </div>
-
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block span10" name="btnSave">Save Patient</button>
-                              </div>
-                          </div>
-                      </div>
--->
-
-                </form>
-
-<!--                </div>-->
+                    </form>
+                  </div>
             </div>
-
         </div>
       </div>
   </div>

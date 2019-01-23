@@ -1021,9 +1021,8 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 										<th> WARD</th>
 									</thead>
 								<?php
-$record = select("SELECT * FROM consultation,labresults,prescriptions,wardassigns,doctorappointment WHERE consultation.patientID='$patientID'
-AND labresults.patientID='$patientID' AND prescriptions.patientID='$patientID' AND wardassigns.patientID='$patientID' AND
-doctorappointment.patientID='$patientID' GROUP BY consultID");
+$record = select("SELECT * FROM consultation,labresults,prescriptions,wardassigns WHERE consultation.patientID='$patientID'
+AND labresults.patientID='$patientID' AND prescriptions.patientID='$patientID' AND wardassigns.patientID='$patientID' GROUP BY consultID");
 
 											if($record){
 									foreach($record as $recordRow){
@@ -1065,7 +1064,7 @@ doctorappointment.patientID='$patientID' GROUP BY consultID");
 
 								<?php }}else{?>
 									<tbody>
-										<tr><td colspan="6"> No Patient Record Yet..</td></tr>
+										<tr class="labell"><td colspan="6"> No Patient Record Yet..</td></tr>
 									</tbody>
 									<?php }?>
 							</table>
