@@ -139,7 +139,8 @@ if($staff_ID){
 $get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER BY id DESC LIMIT 1");
 
 //NURSE CHECKLIST
-$checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
+//$checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
+$checklist=select("SELECT * FROM wardmeds WHERE patientID = '$patientID'");
 
 //GET ADMISSION STAFF DETAILS
 $staffDet = select("SELECT * FROM staff WHERE staffID='".$pat['staffID']."'");
@@ -393,7 +394,7 @@ if(isset($_POST['moveToAcc'])){
                       <td colspan="4"><textarea style="width:100%;" rows="3" placeholder="Comments" name="comment"></textarea></td>
                   </tr>
 
-                  <tr>
+                  <tr class="labell">
 						<th style="width:40%;"> Medicine Name</th>
 						<th> No of intakes / Pieces</th>
 						<th> Intakes Per Day</th>
@@ -451,11 +452,12 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 						<td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" /></td>
 					</tr>
 						  <?php }} ?>
+                  <tr><td colspan="4"></td></tr>
+                  <tr>
+                      <td colspan="3"></td>
+                      <td><button type="submit" name="saveTreatment" class="btn btn-primary btn-block labell"> SAVE TREATMENT</button></td>
+                  </tr>
             </table>
-              <div class="form-actions" style="padding-left:0px;padding-right:0px;">
-                  <i class="span10"></i>
-                <button type="submit" name="saveTreatment" class="btn btn-primary"> SAVE TREATMENT</button>
-              </div>
           </div>
     </form>
 </div>
@@ -484,7 +486,10 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
           <tbody >
           <?php if(is_array($checklist)){ foreach($checklist as $checklists){?>
             <tr>
-              <td><?php echo $checklists['dateInsert']; ?></td><td><?php echo $checklists['treatment']; ?><td><?php echo $checklists['dosage'];?></td>
+                <td><?php echo $checklists['dateInsert']; ?></td>
+<!--                <td><?php //echo $checklists['treatment']; ?></td>-->
+                <td><?php echo $checklists['medicine']; ?></td>
+                <td><?php echo $checklists['dosage'];?></td>
               <td><?php echo $pat['staffID'];?></td>
               <td><?php echo $checklists['status'];?></td>
               <td><?php if($checklists['status']!='Administered'){ ?><a href="status_administered?rid=<?php echo $checklists['reviewID'];?>&patid=<?php echo $patientID;?>&wardID=<?php echo $_REQUEST['wrdno'];?>" > Administered</a><?php } ?></td>
@@ -611,8 +616,11 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                 <div class="controls">
                     <?php
                        $days = (strtotime($dateToday) - strtotime($pat['admitDate'])) / (60 * 60 * 24);
+                        if($days == 0){
+                            $days = 1;
+                        }
                     ?>
-                    <input name="NoOfDays" value="<?php echo $days; ?>" class="span11" type="text" readonly/>
+                    <input name="NoOfDays" value="<?php echo $days.' day(s)'; ?>" class="span11" type="text" readonly/>
                 </div>
               </div>
 
@@ -621,10 +629,10 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                     <i class="span1"></i>
                 <?php
                 if($pat['paystatus'] =='Not Paid'){ ?>
-    <input type="submit" name="moveToAcc" value="MOVE TO ACCOUNT" onclick="return confirm('Move To Account For Payment.');"  class="btn btn-primary btn-block span10" />
+    <input type="submit" name="moveToAcc" value="MOVE TO ACCOUNT" onclick="return confirm('Move To Account For Payment.');"  class="btn btn-primary btn-block labell span10" />
 
                 <?php }else{ ?>
-    <input type="submit" name="DischargePatient" onclick="return confirm('CONFIRM DISCHARGE.');" value="DISCHARGE PATIENT" onclick="return confirm('Confirm Patient Discharge.');"  class="btn btn-primary btn-block span10" />
+    <input type="submit" name="DischargePatient" onclick="return confirm('CONFIRM DISCHARGE.');" value="DISCHARGE PATIENT" onclick="return confirm('Confirm Patient Discharge.');"  class="btn btn-primary btn-block labell span10" />
 
                 <?php }?>
                     </div>

@@ -291,7 +291,7 @@ if($investigation_new > 0){
 
 if($medIDNum > 0 && $piecesNum > 0) {
     //saving prescription..
-    $insertpresciption = insert("INSERT INTO prescriptions(consultID,patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$conid','$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','".$consultrow['dateInsert']."','$prescriptionCode','$invest1','".$consultrow['dateInsert']."')");
+    $insertpresciption = insert("INSERT INTO prescriptions(centerID,consultID,patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$centerID','$conid','$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','".$consultrow['dateInsert']."','$prescriptionCode','$invest1','".$consultrow['dateInsert']."')");
 
 		//saving the prescribed medications....
 		for($m=0, $p=0, $a=0, $t=0; $m<$medIDNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){

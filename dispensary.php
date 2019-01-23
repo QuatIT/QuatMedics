@@ -166,7 +166,7 @@
         <a title="Old Patients" class="tip-bottom"><i class="icon-user"></i> OPD OLD PATIENTS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">DISPENSARY</h3>
        <?php
                       if($success){
@@ -198,8 +198,6 @@
                     <form action="" method="post" id="admed" class="form-horizontal" class="frmSearch">
                     <div class="span6" id="vitals">
                           <div class="widget-content nopadding">
-
-
                               <div class="control-group">
                                 <label class="control-label">Medicine Name:</label>
                                 <div class="controls">
@@ -216,7 +214,6 @@
                               </div>
 
                               <span id="cat"></span>
-
                               <div class="control-group">
                                 <label class="control-label">Number of Pieces:</label>
                                 <div class="controls">
@@ -236,8 +233,7 @@
 
 
                 <div id="tab1" class="tab-pane <?php echo $active; ?>">
-
-					 <div class="widget-box">
+                    <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
                         <h5>Stock</h5>
@@ -253,16 +249,13 @@
                             </tr>
                           </thead>
                           <tbody id="stocklist"></tbody>
-
 						  </table>
 						 </div>
-						 </div>
-
+                    </div>
                 </div>
 
                 <div id="srequests" class="tab-pane <?php echo $active3; ?>">
-
-					 <div class="widget-box">
+                    <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
                         <h5>List Of Patients</h5>
@@ -282,8 +275,7 @@
 
 						  </table>
 						 </div>
-						 </div>
-
+				    </div>
                 </div>
 
 
@@ -316,9 +308,7 @@
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
-
-
-          <script type="text/javascript" src="assets/js1/jquery.min.js"></script>
+<script type="text/javascript" src="assets/js1/jquery.min.js"></script>
 <script type="text/javascript" src="assets/js1/jquery-ui.min.js"></script>
 <link rel="stylesheet" type="text/css"  href="assets/js1/jquery-ui.css" />
 
@@ -330,61 +320,37 @@ window.onload = function () {
 };
 </script>
 
-
-
-       <script>
-    function dis(){
-        xmlhttp=new XMLHttpRequest();
-        xmlhttp.open("GET","loads/dstocklist.php",false);
-        xmlhttp.send(null);
-        document.getElementById("stocklist").innerHTML=xmlhttp.responseText;
-    }
-        dis();
-
-        setInterval(function(){
-            dis();
-        },1000);
-
-
-    </script>
-
-
-
 <script>
+function dis(){
+    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","loads/dstocklist.php",false);
+    xmlhttp.send(null);
+    document.getElementById("stocklist").innerHTML=xmlhttp.responseText;
+}
+    dis();
 
-        function medcat(val){
-            // load the select option data into a div
-                $('#loader').html("Please Wait...");
-                $('#cat').load('med_cat.php?id='+val, function(){
-                $('#loader').html("");
-               });
-        }
-
-        function pharm_cat(val){
-            // load the select option data into a div
-                $('#loader').html("Please Wait...");
-                $('#pharm').load('loads/pharm-cat.php?id='+val, function(){
-                $('#loader').html("");
-               });
-        }
-
+    setInterval(function(){
+        dis();
+    },1000);
 </script>
 
-<!--
-       <script>
-    function out_patient_list(){
-        xmlhttp=new XMLHttpRequest();
-        xmlhttp.open("GET","loads/oldpatient-load.php",false);
-        xmlhttp.send(null);
-        document.getElementById("outpatientlist").innerHTML=xmlhttp.responseText;
-    }
-        out_patient_list();
+<script>
+function medcat(val){
+    // load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#cat').load('med_cat.php?id='+val, function(){
+        $('#loader').html("");
+       });
+}
 
-        setInterval(function(){
-            out_patient_list();
-        },1000);
-    </script>
--->
+function pharm_cat(val){
+    // load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#pharm').load('loads/pharm-cat.php?id='+val, function(){
+        $('#loader').html("");
+       });
+}
+</script>
 
 <script type="text/javascript">
     setInterval("my_function();",5000);
@@ -396,21 +362,17 @@ window.onload = function () {
 
 
 <!--Auto Complete-->
-     <script type="text/javascript">
-                 $(document).ready(function()
-				 		{
-                    $("#search-box").autocomplete(
+<script type="text/javascript">
+         $(document).ready(function()
+                {
+            $("#search-box").autocomplete(
 
-				{
-                        source:'autocomplete.php',
-                        minLength:1
-                    });
-                  });
-
-
-
-
-        </script>
+        {
+                source:'autocomplete.php',
+                minLength:1
+            });
+          });
+</script>
 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to

@@ -50,7 +50,7 @@
 <?php
 include 'layout/head.php';
 $WARD = new Ward();
-
+//error_reporting(0);
 if($_SESSION['accessLevel']=='WARD'){
 $success = '';
 $error = '';
@@ -148,7 +148,7 @@ $bedNumber = $WARD->get_bed_id()+1;
         <a title="" class="tip-bottom"><i class="icon-plus"></i> BED MANAGEMENT</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">WARD MANAGEMENT</h3>
  <?php
       if($success){
@@ -192,7 +192,7 @@ $bedNumber = $WARD->get_bed_id()+1;
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="saveBed" class="btn btn-primary btn-block span10">SAVE BED</button>
+                                <button type="submit" name="saveBed" class="btn btn-primary labell btn-block span10">SAVE BED</button>
                               </div>
                           </div>
                       </div>
@@ -209,7 +209,7 @@ $bedNumber = $WARD->get_bed_id()+1;
                               <thead>
                                 <tr>
                                   <th>Bed Number</th>
-                                  <th>Description</th>
+<!--                                  <th>Description</th>-->
 <!--                                  <th>Charge</th>-->
                                   <th>Status</th>
                                 </tr>
@@ -219,13 +219,7 @@ $bedNumber = $WARD->get_bed_id()+1;
                           </div>
                     </div>
                 </div>
-
             </div>
-<!--
-                <div id="tab2" class="tab-pane">
-
-                </div>
--->
             </div>
         </div>
       </div>

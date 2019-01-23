@@ -14,7 +14,7 @@ foreach($load_bed as $bed){
 ?>
 <tr>
   <td><?php echo $bed['bedNumber']; ?></td>
-  <td> <?php echo $bed['bedDescription']; ?></td>
+<!--  <td> <?php //echo $bed['bedDescription']; ?></td>-->
 <!--  <td> <?php // echo $bed['BedCharge']; ?></td>-->
   <td> <?php echo $bed['status']; ?></td>
 </tr>

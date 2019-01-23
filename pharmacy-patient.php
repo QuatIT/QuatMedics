@@ -157,11 +157,11 @@ input:checked + .slider:before {
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Pharmacy Home" class="tip-bottom"><i class="icon-briefcase"></i> PHARMACY</a>
+        <a title="Pharmacy Home" class="tip-bottom"><i class="icon-briefcase"></i> PHARMACY 2</a>
         <a title="Patient Prescriptions" class="tip-bottom"><i class="icon-briefcase"></i> PATIENT PRESCRIPTION</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">PATIENT PRESCRIPTION</h3>
 
       <div class="row-fluid" style="margin:0px; padding:0px;">
