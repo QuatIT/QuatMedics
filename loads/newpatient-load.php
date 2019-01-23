@@ -24,7 +24,7 @@ foreach($load_newpatient as $newpatient){
   <td> <?php echo $newpatient['firstName']." ".$newpatient['otherName']." ".$newpatient['lastName']; ?></td>
   <td> <?php echo $newpatient['phoneNumber']; ?></td>
   <td style="text-align: center;">
-        <a href="id-card?pid=<?php echo $newpatient['patientID'];?>" title="Patient Card"> <span class="btn btn-success fa fa-vcard"></span></a>
+        <a href="id-card?pid=<?php echo $newpatient['patientID'];?>" title="Patient Card"> <span class="btn btn-success fa fa-image"></span></a>
   </td>
 </tr>
 

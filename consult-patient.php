@@ -245,76 +245,55 @@ if(isset($_POST['presMeds'])){
         $investigation_new = count($_POST['investigation_new']);
         $investigation_new2 = $_POST['investigation_new'];
 
-	$diagnose1 = '';
-    $diagnosis_new2 = $_POST['diagnosis_new'];
+        $diagnose1 = '';
+        $diagnosis_new2 = $_POST['diagnosis_new'];
 
-	foreach($diagnosis_new2 as $diagnose_rowd){
-		$diagnose1 .= $diagnose_rowd."<br>";
-	}
+        foreach($diagnosis_new2 as $diagnose_rowd){
+            $diagnose1 .= $diagnose_rowd."<br>";
+        }
 
+        $invest1 = '';
+        $investigation2 = $_POST['investigation_new'];
 
-	$invest1 = '';
-    $investigation2 = $_POST['investigation_new'];
+        foreach($investigation2 as $investigate_rowd){
+            $invest1 .= $investigate_rowd."<br>";
+        }
 
-	foreach($investigation2 as $investigate_rowd){
-		$invest1 .= $investigate_rowd."<br>";
-	}
-//	echo "<script>alert('{$diagnose1}');</script>";
-//	exit();
+if($diagnosis_new > 0){
+    for($b=0; $b<$diagnosis_new; $b++){
+        if(trim($_POST['diagnosis_new'][$b] != '')){
+            $diagd = trim($_POST['diagnosis_new'][$b]);
 
+            //insert into diagnosis table
+            $diagd_id = "DIAG-".sprintf('%06s',count(select("select * from diagnose_tb")) + 1);
 
-	if($diagnosis_new > 0){
-		for($b=0; $b<$diagnosis_new; $b++){
-			if(trim($_POST['diagnosis_new'][$b] != '')){
-					$diagd = trim($_POST['diagnosis_new'][$b]);
+            $consql = select("select * from consultation where consultID='".$_GET['conid']."' ");
+            foreach($consql as $conrow){}
 
-					//insert into diagnosis table
+            $dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
+        }
+    }
+}
 
-					$diagd_id = "DIAG-".sprintf('%06s',count(select("select * from diagnose_tb")) + 1);
+if($investigation_new > 0){
+    for($j=0; $j<$investigation_new; $j++){
+        if(trim($_POST['investigation_new'][$j] != '')){
+                $investd = trim($_POST['investigation_new'][$j]);
 
-					$consql = select("select * from consultation where consultID='".$_GET['conid']."' ");
-					foreach($consql as $conrow){}
+                //insert into investigation table
+                $invest_id = "INVEST-".sprintf('%06s',count(select("select * from investigation_tb")) + 1);
 
-					$dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
+                $invsql = select("select * from consultation where consultID='".$_GET['conid']."' ");
+                foreach($invsql as $invrow){}
 
-//				if($dia){
-//					echo "<script>alert('Guud');</script>";
-//				}
+                $dia = insert("INSERT INTO investigation_tb(patientID,consultID,examination,dateRegistered,investigated_by,centerID,investigationID) VALUES('".$invrow['patientID']."','".$_GET['conid']."','$investd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$invest_id')");
+        }
+    }
+}
 
-		}
-	}
-	}
-
-
-	if($investigation_new > 0){
-		for($j=0; $j<$investigation_new; $j++){
-			if(trim($_POST['investigation_new'][$j] != '')){
-					$investd = trim($_POST['investigation_new'][$j]);
-
-					//insert into investigation table
-
-					$invest_id = "INVEST-".sprintf('%06s',count(select("select * from investigation_tb")) + 1);
-
-					$invsql = select("select * from consultation where consultID='".$_GET['conid']."' ");
-					foreach($invsql as $invrow){}
-
-					$dia = insert("INSERT INTO investigation_tb(patientID,consultID,examination,dateRegistered,investigated_by,centerID,investigationID) VALUES('".$invrow['patientID']."','".$_GET['conid']."','$investd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$invest_id')");
-
-//				if($dia){
-//					echo "<script>alert('Guud');</script>";
-//				}
-
-		}
-	}
-	}
-
-//exit();
-
-
-        if($medIDNum > 0 && $piecesNum > 0) {
-			//saving prescription..
-//        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
-        $insertpresciption = insert("INSERT INTO prescriptions(consultID,patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$conid','$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','".$consultrow['dateInsert']."','$prescriptionCode','$invest1','".$consultrow['dateInsert']."')");
+if($medIDNum > 0 && $piecesNum > 0) {
+    //saving prescription..
+    $insertpresciption = insert("INSERT INTO prescriptions(consultID,patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$conid','$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','".$consultrow['dateInsert']."','$prescriptionCode','$invest1','".$consultrow['dateInsert']."')");
 
 		//saving the prescribed medications....
 		for($m=0, $p=0, $a=0, $t=0; $m<$medIDNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
@@ -330,16 +309,10 @@ if(isset($_POST['presMeds'])){
 						$medicine = $nameRow['medicine_name'];
 						$medFrom = $nameRow['medFrom'];
 						$medicinetype = $nameRow['Type'];
-
-//						if($medFrom == 'NHIS'){
 				        $unitPrice = $nameRow['price'];
-//						}
-//						if($medFrom == 'PRIVATE'){
-//							$unitPrice = $nameRow['center_unit_price'];
-//						}
-//					   }
-                            //set dosage..
-                            $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
+
+                        //set dosage..
+                        $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
                         if($medicinetype=='solid'){
                             //medicine price calculation..
                             $totalMeds = ($pieces*$aday)*$totalDays;
@@ -350,7 +323,7 @@ if(isset($_POST['presMeds'])){
                             $medprice = trim($unitPrice);
                         }
                     }
-//		$insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode','$dateToday')");
+
         $confirm = trim('UNCONFIRMED');
 		$insertMedsz = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,confirm,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode','$confirm', '".$consultrow['dateInsert']."')");
 					}
@@ -365,41 +338,33 @@ if(isset($_POST['presMeds'])){
             foreach($medcen as $medi_sms){}
 
             if($medi_sms['creditArr'] >=1){
-
                 $patnum = select("SELECT * FROM patient WHERE patientID='$patientID' ");
-            foreach($patnum as $ptn){}
-
-//                $phone_number= $ptn['phoneNumber'];
+                foreach($patnum as $ptn){}
+//              $phone_number= $ptn['phoneNumber'];
                 $tel= $ptn['phoneNumber'];
                 $body = "Hello, Kindly use this code ".$prescriptionCode." to collect your medicine from the pharmacist. Thank you.";
-            $frm = "QUATMEDIC";
-
-//            $sms= sendsms($bdy,$phone_number);
-               $sms_send= sendsmsme($tel,$body,$frm);
+                $frm = "QUATMEDIC";
+//              $sms= sendsms($bdy,$phone_number);
+                $sms_send= sendsmsme($tel,$body,$frm);
 
                 if($sms_send){
                     $newCreditArr = $medi_sms['creditArr'] - 1;
                     $updatesms = update("UPDATE medicalcenter SET creditArr='$newCreditArr' WHERE centerID='".$_SESSION['centerID']."' ");
                 }
 
-
             }else{
-                $error= 'couldnt send code to patient';
+                $error= "<script>document.write('CODE UNABLE TO SEND')</script>";
             }
-
                     echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
                 }else{
-                    $error =  "ERROR: PRESCRIPTION NOT SENT";
+                    $error =  "<script>document.write('PRESCRIPTION NOT SENT')</script>";
                 }
-
-
         }else{
-            $error =  "ERROR: NO PRESCRIPTION RECORED";
+            $error =  "<script>document.write('NO PRESCRIPTION RECORED')</script>";
         }
+}
 
-    }
 
-//echo $patientID;
 
 ?>
 
@@ -1022,9 +987,9 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 									</thead>
 								<?php
 $record = select("SELECT * FROM consultation,labresults,prescriptions,wardassigns WHERE consultation.patientID='$patientID'
-AND labresults.patientID='$patientID' AND prescriptions.patientID='$patientID' AND wardassigns.patientID='$patientID' GROUP BY consultID");
+AND labresults.patientID='$patientID' AND prescriptions.patientID='$patientID' AND wardassigns.patientID='$patientID' ");
 
-											if($record){
+                                    if($record){
 									foreach($record as $recordRow){
 								?>
 									<tbody>
@@ -1205,6 +1170,31 @@ function medtype(val){
         $('#modeload').load('loads/medtype.php?tp='+val, function(){
         $('#loader').html("");
        });
+}
+</script>
+
+<script type="text/javascript">
+  // This function is called from the pop-up menus to transfer to
+  // a different page. Ignore if the value returned is a null string:
+  function goPage (newURL) {
+
+      // if url is empty, skip the menu dividers and reset the menu selection to default
+      if (newURL != "") {
+
+          // if url is "-", it is this page -- reset the menu:
+          if (newURL == "-" ) {
+              resetMenu();
+          }
+          // else, send page to designated URL
+          else {
+            document.location.href = newURL;
+          }
+      }
+  }
+
+// resets the menu selection upon entry to this page:
+function resetMenu() {
+   document.gomenu.selector.selectedIndex = 2;
 }
 </script>
 </body>

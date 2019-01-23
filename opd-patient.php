@@ -121,7 +121,7 @@ if($assign_lab == "sent_to_lab"){
 }else{
 
 //        $consultAssignPatient1 = Consultation::consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID);
-        $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$ccNumber,$company,$status,$centerID,$dateToday);
+$consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID,$bodyTemperature,$pulseRate,$respirationRate,$bloodPressure,$weight,$otherHealth,$roomID,$patientID,$mode,$insuranceType,$insuranceNumber,$ccNumber,$company,$status,$centerID,$dateToday);
 }
 
     if($consultAssignPatient1){
@@ -425,7 +425,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                                         <?php
                                         if(!empty($_GET['pid'])){
                                         ?>
-                                        <option value="<?php echo $get_PID; ?>"><?php echo $get_PID; ?></option>
+                                        <option class="span11" value="<?php echo $get_PID; ?>"><?php echo $get_PID; ?></option>
                                         <?php } ?>
                                    </select>
                                 </div>
@@ -546,7 +546,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Out Patient</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span10">Save Out Patient</button>
                               </div>
                           </div>
                       </div>

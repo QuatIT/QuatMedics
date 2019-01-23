@@ -30,6 +30,7 @@
 
 <?php
 include 'layout/head.php';
+$_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 
     if($_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){
 
@@ -80,16 +81,16 @@ if(count($codesql) >=1){
 
 
 //SAVE CONSULTATION NOTES
-    if(isset($_POST['SaveNote'])){
-        $keyword = filter_input(INPUT_POST, "keyword", FILTER_SANITIZE_STRING);
-        $noteDetails = trim(htmlentities($_POST['noteDetails']));
-        $saveNotes = update("UPDATE consultation SET docNotes='$noteDetails' WHERE patientID='$patientID' AND consultID='$conid'");
-        if($saveNotes){
-                echo "<script>window.location='".$_SESSION['current_page']."'</script>";
-        }else{
-                $error = "<script>document.write('NOTES UNABLE TO SAVE, TRY AGAIN');</script>";
-        }
+if(isset($_POST['SaveNote'])){
+    $keyword = filter_input(INPUT_POST, "keyword", FILTER_SANITIZE_STRING);
+    $noteDetails = trim(htmlentities($_POST['noteDetails']));
+    $saveNotes = update("UPDATE consultation SET docNotes='$noteDetails' WHERE patientID='$patientID' AND consultID='$conid'");
+    if($saveNotes){
+            echo "<script>window.location='".$_SESSION['current_page']."'</script>";
+    }else{
+            $error = "<script>document.write('NOTES UNABLE TO SAVE, TRY AGAIN');</script>";
     }
+}
 
 
 
@@ -219,6 +220,7 @@ $updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$be
 
     }
 }
+}
 
 
 //prescribe medication to patient...
@@ -241,76 +243,55 @@ if(isset($_POST['presMeds'])){
         $investigation_new = count($_POST['investigation_new']);
         $investigation_new2 = $_POST['investigation_new'];
 
-	$diagnose1 = '';
-    $diagnosis_new2 = $_POST['diagnosis_new'];
+        $diagnose1 = '';
+        $diagnosis_new2 = $_POST['diagnosis_new'];
 
-	foreach($diagnosis_new2 as $diagnose_rowd){
-		$diagnose1 .= $diagnose_rowd."<br>";
-	}
+        foreach($diagnosis_new2 as $diagnose_rowd){
+            $diagnose1 .= $diagnose_rowd."<br>";
+        }
 
+        $invest1 = '';
+        $investigation2 = $_POST['investigation_new'];
 
-	$invest1 = '';
-    $investigation2 = $_POST['investigation_new'];
+        foreach($investigation2 as $investigate_rowd){
+            $invest1 .= $investigate_rowd."<br>";
+        }
 
-	foreach($investigation2 as $investigate_rowd){
-		$invest1 .= $investigate_rowd."<br>";
-	}
-//	echo "<script>alert('{$diagnose1}');</script>";
-//	exit();
+if($diagnosis_new > 0){
+    for($b=0; $b<$diagnosis_new; $b++){
+        if(trim($_POST['diagnosis_new'][$b] != '')){
+            $diagd = trim($_POST['diagnosis_new'][$b]);
 
+            //insert into diagnosis table
+            $diagd_id = "DIAG-".sprintf('%06s',count(select("select * from diagnose_tb")) + 1);
 
-	if($diagnosis_new > 0){
-		for($b=0; $b<$diagnosis_new; $b++){
-			if(trim($_POST['diagnosis_new'][$b] != '')){
-					$diagd = trim($_POST['diagnosis_new'][$b]);
+            $consql = select("select * from consultation where consultID='".$_GET['conid']."' ");
+            foreach($consql as $conrow){}
 
-					//insert into diagnosis table
+            $dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
+        }
+    }
+}
 
-					$diagd_id = "DIAG-".sprintf('%06s',count(select("select * from diagnose_tb")) + 1);
+if($investigation_new > 0){
+    for($j=0; $j<$investigation_new; $j++){
+        if(trim($_POST['investigation_new'][$j] != '')){
+                $investd = trim($_POST['investigation_new'][$j]);
 
-					$consql = select("select * from consultation where consultID='".$_GET['conid']."' ");
-					foreach($consql as $conrow){}
+                //insert into investigation table
+                $invest_id = "INVEST-".sprintf('%06s',count(select("select * from investigation_tb")) + 1);
 
-					$dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
+                $invsql = select("select * from consultation where consultID='".$_GET['conid']."' ");
+                foreach($invsql as $invrow){}
 
-//				if($dia){
-//					echo "<script>alert('Guud');</script>";
-//				}
+                $dia = insert("INSERT INTO investigation_tb(patientID,consultID,examination,dateRegistered,investigated_by,centerID,investigationID) VALUES('".$invrow['patientID']."','".$_GET['conid']."','$investd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$invest_id')");
+        }
+    }
+}
 
-		}
-	}
-	}
-
-
-	if($investigation_new > 0){
-		for($j=0; $j<$investigation_new; $j++){
-			if(trim($_POST['investigation_new'][$j] != '')){
-					$investd = trim($_POST['investigation_new'][$j]);
-
-					//insert into investigation table
-
-					$invest_id = "INVEST-".sprintf('%06s',count(select("select * from investigation_tb")) + 1);
-
-					$invsql = select("select * from consultation where consultID='".$_GET['conid']."' ");
-					foreach($invsql as $invrow){}
-
-					$dia = insert("INSERT INTO investigation_tb(patientID,consultID,examination,dateRegistered,investigated_by,centerID,investigationID) VALUES('".$invrow['patientID']."','".$_GET['conid']."','$investd','".$consultrow['dateInsert']."','".$_SESSION['username']."','".$_SESSION['centerID']."','$invest_id')");
-
-//				if($dia){
-//					echo "<script>alert('Guud');</script>";
-//				}
-
-		}
-	}
-	}
-
-//exit();
-
-
-        if($medIDNum > 0 && $piecesNum > 0) {
-			//saving prescription..
-//        $insertpresciption = insert("INSERT INTO prescriptions(patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,dateInsert) VALUES('$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnoses','$prescribeStatus','$datePrescribe','$prescriptionCode','$dateToday')");
-        $insertpresciption = insert("INSERT INTO prescriptions(consultID,patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$conid','$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','".$consultrow['dateInsert']."','$prescriptionCode','$invest1','".$consultrow['dateInsert']."')");
+if($medIDNum > 0 && $piecesNum > 0) {
+    //saving prescription..
+    $insertpresciption = insert("INSERT INTO prescriptions(consultID,patientID,prescribeCode,staffID,pharmacyID,symptoms,diagnose,prescribeStatus,datePrescribe,perscriptionCode,investigation,dateInsert) VALUES('$conid','$patientID','$prescribeCode','$staffID','$pharmacyID','$symptoms','$diagnose1','$prescribeStatus','".$consultrow['dateInsert']."','$prescriptionCode','$invest1','".$consultrow['dateInsert']."')");
 
 		//saving the prescribed medications....
 		for($m=0, $p=0, $a=0, $t=0; $m<$medIDNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
@@ -326,16 +307,10 @@ if(isset($_POST['presMeds'])){
 						$medicine = $nameRow['medicine_name'];
 						$medFrom = $nameRow['medFrom'];
 						$medicinetype = $nameRow['Type'];
-
-//						if($medFrom == 'NHIS'){
 				        $unitPrice = $nameRow['price'];
-//						}
-//						if($medFrom == 'PRIVATE'){
-//							$unitPrice = $nameRow['center_unit_price'];
-//						}
-//					   }
-                            //set dosage..
-                            $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
+
+                        //set dosage..
+                        $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
                         if($medicinetype=='solid'){
                             //medicine price calculation..
                             $totalMeds = ($pieces*$aday)*$totalDays;
@@ -346,7 +321,7 @@ if(isset($_POST['presMeds'])){
                             $medprice = trim($unitPrice);
                         }
                     }
-//		$insertMeds = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,prescribeStatus,paystatus,medprice,paymode,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$prescribeStatus','$paystatus','$medprice','$paymode','$dateToday')");
+
         $confirm = trim('UNCONFIRMED');
 		$insertMedsz = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,confirm,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode','$confirm', '".$consultrow['dateInsert']."')");
 					}
@@ -361,39 +336,30 @@ if(isset($_POST['presMeds'])){
             foreach($medcen as $medi_sms){}
 
             if($medi_sms['creditArr'] >=1){
-
                 $patnum = select("SELECT * FROM patient WHERE patientID='$patientID' ");
-            foreach($patnum as $ptn){}
-
-//                $phone_number= $ptn['phoneNumber'];
+                foreach($patnum as $ptn){}
+//              $phone_number= $ptn['phoneNumber'];
                 $tel= $ptn['phoneNumber'];
                 $body = "Hello, Kindly use this code ".$prescriptionCode." to collect your medicine from the pharmacist. Thank you.";
-            $frm = "QUATMEDIC";
-
-//            $sms= sendsms($bdy,$phone_number);
-               $sms_send= sendsmsme($tel,$body,$frm);
+                $frm = "QUATMEDIC";
+//              $sms= sendsms($bdy,$phone_number);
+                $sms_send= sendsmsme($tel,$body,$frm);
 
                 if($sms_send){
                     $newCreditArr = $medi_sms['creditArr'] - 1;
                     $updatesms = update("UPDATE medicalcenter SET creditArr='$newCreditArr' WHERE centerID='".$_SESSION['centerID']."' ");
                 }
 
-
             }else{
-                $error= 'couldnt send code to patient';
+                $error= "<script>document.write('CODE UNABLE TO SEND')</script>";
             }
-
                     echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
                 }else{
-                    $error =  "ERROR: PRESCRIPTION NOT SENT";
+                    $error =  "<script>document.write('PRESCRIPTION NOT SENT')</script>";
                 }
-
-
         }else{
-            $error =  "ERROR: NO PRESCRIPTION RECORED";
+            $error =  "<script>document.write('NO PRESCRIPTION RECORED')</script>";
         }
-
-    }
 }
 ?>
 <div id="search">
@@ -981,33 +947,6 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 
 <!--<script src="js/maruti.js"></script> -->
 <script>
-//    $(document).ready(function(){
-        var i=1;
-        $('#add').click(function(){
-            i++;
-            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
-        });
-
-        $(document).on('click', '.btn_remove', function(){
-            var button_id = $(this).attr("id");
-            $('#row'+button_id+'').remove();
-        });
-//    });
-
-//    $(document).ready(function(){
-        var i=1;
-        $('#add2').click(function(){
-            i++;
-            $('#dynamic_field2').append('<tr id="row'+i+'"><td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
-        });
-
-        $(document).on('click', '.btn_remove', function(){
-            var button_id = $(this).attr("id");
-            $('#row'+button_id+'').remove();
-        });
-//    });
-</script>
-<script>
 function icd(val){
 	// load the select option data into a div
         $('#loader').html("Please Wait...");
@@ -1035,6 +974,70 @@ function reason(val){
 $(".alert").delay(7000).slideUp(1000, function() {
     $(this).alert('close');
 });
+</script>
+<script>
+//    $(document).ready(function(){
+        var i=1;
+        $('#add').click(function(){
+            i++;
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+//    });
+
+//    $(document).ready(function(){
+        var i=1;
+        $('#add2').click(function(){
+            i++;
+            $('#dynamic_field2').append('<tr id="row'+i+'"><td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+//    });
+</script>
+
+
+<!--Beginning of Diagnosis-->
+<script>
+    var i = 1;
+    $('#add_diagnosis').click(function() {
+        i++;
+        $('#diagnosis').append('<tr id="row' + i + '"> <td><input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12"></td><td><button type="button" name="remove_diagnosis" id="' + i + '" class="btn btn-danger btn_remove_diagnosis">X</button></td></tr>');
+    });
+    $(document).on('click', '.btn_remove_diagnosis', function() {
+        var button_id = $(this).attr("id");
+        $('#row' + button_id + '').remove();
+    });
+<!--End of Diagnosis-->
+<!--Beginning of Investigation-->
+
+    var i = 1;
+    $('#add_investigation').click(function() {
+        i++;
+        $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12"></td><td><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
+    });
+    $(document).on('click', '.btn_remove_investigation', function() {
+        var button_id = $(this).attr("id");
+        $('#row' + button_id + '').remove();
+    });
+
+</script>
+<!--End of Investigation-->
+<script>
+function medtype(val){
+    // load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#modeload').load('loads/medtype.php?tp='+val, function(){
+        $('#loader').html("");
+       });
+}
 </script>
 </body>
 </html>

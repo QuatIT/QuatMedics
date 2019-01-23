@@ -158,7 +158,7 @@ $room = select("SELECT * FROM consultingroom WHERE centerID='".$_SESSION['center
   </div>
 </div>
 <div class="row-fluid">
-  <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
+  <div id="footer" class="span12"> 2018 &copy; QUATMEDIC BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
 <script src="js/excanvas.min.js"></script>
 <script src="js/jquery.min.js"></script>
@@ -192,57 +192,27 @@ window.onload = function () {
 
 
 <script>
-function dis(){
-    xmlhttp=new XMLHttpRequest();
-    xmlhttp.open("GET","loads/consultindex-load?roomID=<?php echo $roomID;?>",false);
-    xmlhttp.send(null);
-    document.getElementById("consultindex").innerHTML=xmlhttp.responseText;
-}
-    dis();
-
-    setInterval(function(){
+    function dis(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/consultindex-load?roomID=<?php echo $roomID;?>",false);
+        xmlhttp.send(null);
+        document.getElementById("consultindex").innerHTML=xmlhttp.responseText;
+    }
         dis();
-    },1000);
-</script>
 
+        setInterval(function(){
+            dis();
+        },1000);
+</script>
 
 <script language="javascript" type="text/javascript">
-
-function popitup(url) {
-newwindow=window.open(url,'name','height=500,width=550');
-if (window.focus) {newwindow.focus()}
-return false;
-}
-
-
+    function popitup(url) {
+    newwindow=window.open(url,'name','height=500,width=550');
+    if (window.focus) {newwindow.focus()}
+    return false;
+    }
 </script>
 
-
-
-<script type="text/javascript">
-  // This function is called from the pop-up menus to transfer to
-  // a different page. Ignore if the value returned is a null string:
-  function goPage (newURL) {
-
-      // if url is empty, skip the menu dividers and reset the menu selection to default
-      if (newURL != "") {
-
-          // if url is "-", it is this page -- reset the menu:
-          if (newURL == "-" ) {
-              resetMenu();
-          }
-          // else, send page to designated URL
-          else {
-            document.location.href = newURL;
-          }
-      }
-  }
-
-// resets the menu selection upon entry to this page:
-function resetMenu() {
-   document.gomenu.selector.selectedIndex = 2;
-}
-</script>
 </body>
 </html>
 <?php }else{echo "<script>window.location='404'</script>";}?>

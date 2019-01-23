@@ -51,7 +51,7 @@ foreach($centerName_sql as $centerName){}
                         </tr>
                         <tr>
                             <td style="width:35%; text-align:center;" rowspan="5">
-								<?php if(empty($patientrow['patient_image']) || $patientrow['patient_image']=''){?>
+								<?php if($patientrow['patient_image']== '' || $patientrow['patient_image']=='null'){?>
 								<span class="text-center"> No Photo</span>
 								<?php }else{?>
 								<img src="<?php echo $patientrow['patient_image'];?>" style="width:320px; height:200px;" />

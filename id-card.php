@@ -6,7 +6,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="css/font-awesome.min.css" />
+<!--<link rel="stylesheet" href="css/font-awesome.min.css" />-->
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="assets/css/font-awesome2.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 </head>
 <body>
@@ -51,7 +51,7 @@
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
         <a title="Out Patient Department" class="tip-bottom"><i class="icon-plus"></i> OPD</a>
-        <a title="Old Patients" class="tip-bottom"><i class="icon-user"></i> OPD OLD PATIENTS</a>
+        <a title="Patient Card" class="tip-bottom"><i class="fa fa-image"></i> PATIENT CARD</a>
     </div>
   </div>
   <div class="container">
@@ -78,7 +78,7 @@
                         </tr>
                         <tr>
                             <td style="width:20%; text-align:center;" rowspan="5">
-								<?php if(empty($patientrow['patient_image']) || $patientrow['patient_image']='null'){?>
+								<?php if($patientrow['patient_image']== '' || $patientrow['patient_image']=='null'){?>
 								<span class="text-center"> NO IMAGE UPLOADED</span>
 								<?php }else{?>
 								<img src="<?php echo $patientrow['patient_image'];?>" style="width:320px; height:200px;" />
