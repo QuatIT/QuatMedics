@@ -196,7 +196,7 @@ if(isset($_POST['adWard'])){
                             $medprice = trim($unitPrice);
                         }
                     }
-$confirm = trim('UNCONFIRMED');
+$confirm = trim('CONFIRMED');
 $insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,paymode,confirm,paystatus,charge,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$diagnoses','$symptoms','$paymode','$confirm','$paystatus','$medprice','".$consultrow['dateInsert']."')");
 
     if($insertWardMeds){

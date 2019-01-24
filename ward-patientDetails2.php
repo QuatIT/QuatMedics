@@ -24,8 +24,57 @@
 </head>
 <body>
 <?php
-include 'layout/head.php';
-$_SESSION['current_page']=$_SERVER['REQUEST_URI'];
+//    include 'layout/head.php';
+//    if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION'){
+//    $patientID = $_GET['patid'];
+//    $wardID = $_REQUEST['wrdno'];
+//    $patient = Ward::find_by_wardPatient_id($patientID);
+//    foreach($patient as $pat){}
+////    echo "<script>alert('{$pat['patientID']}')</script>";
+//    $pat_fxn = Patient::find_by_patient_id($patientID);
+//    foreach($pat_fxn as $patDetails){}
+//
+//
+////patient treatment
+//
+//    if(isset($_POST['saveTreatment'])){
+//    $comments= filter_input(INPUT_POST,"comment",FILTER_SANITIZE_STRING);
+//
+//    // filter_input method is not helpful when it comes to textbox arrays
+//    $dosage1="";
+//    $dosage=($_POST['dosage']);
+//    $treatment1 ="";
+//    $treatment=($_POST['treatment']);
+//
+//    foreach($dosage as $dosages){
+//      $dosage1.="$dosages.<br>";
+//    }
+//
+//    foreach( $treatment as  $treatments){
+//      $treatment1.="$treatments.<br>";
+//    }
+//        $p_treatment= insert("INSERT INTO review_tb(patientID,wardID,comments,treatment,dosage)VALUES('$patientID','$wardID','".$comments."','".$treatment1."','".$dosage1."')");
+//
+//
+//
+//    }
+//
+//
+//    if(isset($_POST['saveReview'])){
+//      $review = filter_input(INPUT_POST,"review",FILTER_SANITIZE_STRING);
+//        $staff_ID = select("SELECT * FROM centeruser");
+//        if($staff_ID){
+//            foreach($staff_ID as $staff_IDs){}
+//            $rev_iew = insert("INSERT INTO docreview_tb(WardID,PatientID,staffID,DocReview)VALUES('".$wardID."','".$patientID."','".$staff_IDs['staffID']."','".$review."')");
+////            header('location:ward-index.php');
+////            echo "<script>window.location.href='ward-patientDetails.php'</script>";
+//}
+//
+//
+//    }
+
+
+ include 'layout/head.php';
  //include 'status_administered.php';
     $success = '';
     $error = '';
@@ -48,57 +97,24 @@ if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' 
     $wardDet = select("SELECT * FROM wardlist where wardID='$wardID'");
     foreach($wardDet as $wardRw){}
 
-
 //patient treatment
 if(isset($_POST['saveTreatment'])){
     $comments= filter_input(INPUT_POST,"comment",FILTER_SANITIZE_STRING);
-	$medsNum = count($_POST['medicine']);
-//	$dosagesNum = count($_POST['dosage']);
-    $piecesNum = count( $_POST['pieces']);
-    $adayNum = count( $_POST['aday']);
-    $totalDaysNum = count( $_POST['totalDays']);
-    $paystatus = "Not Paid";
-//    $paymode =  filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
 
-    //INSERT MEDICINE AS PATIENT IS ADMITTED..
-		for($m=0, $p=0, $a=0, $t=0; $m<$medsNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
-				if(trim($_POST['medicine'][$m] != '') && trim($_POST['pieces'][$p] != '') && trim($_POST['aday'][$a] != '') && trim($_POST['totalDays'][$t] != '') ) {
-					$medicineID = trim( $_POST['medicine'][$m]);
-					$pieces = trim( $_POST['pieces'][$p]);
-					$aday = trim( $_POST['aday'][$a]);
-					$totalDays = trim( $_POST['totalDays'][$t]);
+    // filter_input method is not helpful when it comes to textbox arrays
+    $dosage1="";
+    $dosage=($_POST['dosage']);
+    $treatment1 ="";
+    $treatment=($_POST['treatment']);
 
-        //get medicine name for insert qeury...
-		$findmedname = select("SELECT * FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
-					foreach($findmedname as $nameRow){
-						$medicine = $nameRow['medicine_name'];
-						$medFrom = $nameRow['medFrom'];
-						$medicinetype = $nameRow['Type'];
-				        $unitPrice = $nameRow['price'];
+    foreach($dosage as $dosages){
+      $dosage1.="$dosages.<br>";
+    }
 
-                    //set dosage..
-                    $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
-                        if($medicinetype=='solid'){
-                            //medicine price calculation..
-                            $totalMeds = ($pieces*$aday)*$totalDays;
-                            $medprice = trim($unitPrice*$totalMeds);
-                        }else{
-                            //medicine price calculation..
-                            $totalMeds = 1;
-                            $medprice = trim($unitPrice);
-                        }
-                    }
-
-$confirm = trim('CONFIRMED');
-$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,comment,paymode,confirm,paystatus,charge,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$comments','".$pat['paymode']."','$confirm','$paystatus','$medprice','$dateToday')");
-
-                    if($insertWardMeds){
-                        echo "<script>window.location='".$_SESSION['current_page']."';</script>";
-                    }else{
-                        $error = "<script>document.write('MEDICATION PRESCRIPTION FAILED.');</script>";
-                    }
-                }
-        }
+    foreach( $treatment as  $treatments){
+      $treatment1.="$treatments.<br>";
+    }
+    $p_treatment= insert("INSERT INTO review_tb(patientID,wardID,comments,treatment,dosage,dateInsert,status)VALUES('$patientID','$wardID','".$comments."','".$treatment1."','".$dosage1."',CURDATE(),'$status')");
 }
 
 
@@ -107,7 +123,8 @@ if(isset($_POST['saveReview'])){
 $staff_ID = select("SELECT * FROM centeruser");
 if($staff_ID){
     foreach($staff_ID as $staff_IDs){}
-$rev_iew= insert("INSERT INTO docreview_tb(assignID,WardID,PatientID,staffID,DocReview,dateInsert)VALUES('$assignID','$wardID','$patientID','".$staff_IDs['staffID']."','$review','$dateToday')");
+
+      $rev_iew= insert("INSERT INTO docreview_tb(WardID,PatientID,staffID,DocReview)VALUES('".$wardID."','".$patientID."','".$staff_IDs['staffID']."','".$review."')");
 //          header('location:ward-index.php');
   }
 }
@@ -122,8 +139,7 @@ $rev_iew= insert("INSERT INTO docreview_tb(assignID,WardID,PatientID,staffID,Doc
 $get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER BY id DESC LIMIT 1");
 
 //NURSE CHECKLIST
-//$checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
-$checklist=select("SELECT * FROM wardmeds WHERE patientID = '$patientID' AND assignID='$assignID'");
+$checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
 
 //GET ADMISSION STAFF DETAILS
 $staffDet = select("SELECT * FROM staff WHERE staffID='".$pat['staffID']."'");
@@ -377,7 +393,7 @@ if(isset($_POST['moveToAcc'])){
                       <td colspan="4"><textarea style="width:100%;" rows="3" placeholder="Comments" name="comment"></textarea></td>
                   </tr>
 
-                  <tr class="labell">
+                  <tr>
 						<th style="width:40%;"> Medicine Name</th>
 						<th> No of intakes / Pieces</th>
 						<th> Intakes Per Day</th>
@@ -400,7 +416,7 @@ if(isset($_POST['moveToAcc'])){
 
 						  	$centerNHISLevel = $centerName['centerNhisLevel'];
 //						  	$level = explode(" ",$centerNHISLevel);
-$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='$insuranceType' OR  medFrom='Private'");
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='Private'");
 								if($meds){
 									foreach($meds as $medrow){
 							?>
@@ -435,12 +451,11 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 						<td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" /></td>
 					</tr>
 						  <?php }} ?>
-                  <tr><td colspan="4"></td></tr>
-                  <tr>
-                      <td colspan="3"></td>
-                      <td><button type="submit" name="saveTreatment" class="btn btn-primary btn-block labell"> SAVE TREATMENT</button></td>
-                  </tr>
             </table>
+              <div class="form-actions" style="padding-left:0px;padding-right:0px;">
+                  <i class="span10"></i>
+                <button type="submit" name="saveTreatment" class="btn btn-primary"> SAVE TREATMENT</button>
+              </div>
           </div>
     </form>
 </div>
@@ -469,25 +484,10 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
           <tbody >
           <?php if(is_array($checklist)){ foreach($checklist as $checklists){?>
             <tr>
-                <td><?php echo $checklists['dateInsert']; ?></td>
-<!--                <td><?php //echo $checklists['treatment']; ?></td>-->
-                <td><?php echo $checklists['medicine']; ?></td>
-                <td><?php echo $checklists['dosage'];?></td>
+              <td><?php echo $checklists['dateInsert']; ?></td><td><?php echo $checklists['treatment']; ?><td><?php echo $checklists['dosage'];?></td>
               <td><?php echo $pat['staffID'];?></td>
-                <td style="text-align:center;">
-                    <?php if($checklists['status'] == '' || $checklists['status']=='null'){?>
-                    <span class="label btn-danger label-sm">NOT ADMINISTERED</span>
-                    <?php }?>
-
-                    <?php if($checklists['status'] == 'Administered'){?>
-                    <span class="label btn-success label-sm">ADMINISTERED</span>
-                    <?php }?>
-                </td>
-              <td style="text-align:center;">
-                  <?php if($checklists['status']!='Administered'){ ?>
-                  <a title="Administered" class="btn btn-primary btn-sm" onclick="return confirm('CONFIRM ADMINISTER.');" href="status_administered?rid=<?php echo $checklists['medID'];?>&patid=<?php echo $patientID;?>&wardID=<?php echo $wardID;?>" ><i class="fa fa-check"></i></a>
-                  <?php } ?>
-                </td>
+              <td><?php echo $checklists['status'];?></td>
+              <td><?php if($checklists['status']!='Administered'){ ?><a href="status_administered?rid=<?php echo $checklists['reviewID'];?>&patid=<?php echo $patientID;?>&wardID=<?php echo $_REQUEST['wrdno'];?>" > Administered</a><?php } ?></td>
               <!-- hide administered link after click-->
             </tr>
           <?php }} ?>
@@ -511,7 +511,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                <div class="control-group">
                 <label class="control-label">DOCTOR'S REMARKS : </label>
                 <div class="controls">
-<!--                    <input type='text' class="form-control span5"  name="review" id="review"required/>&nbsp;<button type="submit" name="saveReview" class="btn btn-primary labell">SAVE REMARKS</button>-->
+                    <input type='text' class="form-control span5"  name="review" id="review"required/>&nbsp;<button type="submit" name="saveReview" class="btn btn-primary ">SAVE REMARKS</button>
                 </div>
               </div>
              <!-- <div class="form-actions">
@@ -531,7 +531,6 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
           <div class="widget-title">
           </div>
           <div class="widget-content nopadding">
-              <form class="form" method="post" enctype="multipart/form-data">
             <table class="table table-bordered data-table">
               <thead>
                 <tr>
@@ -546,35 +545,22 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
               <tbody>
                 <?php
                 // $report = select("SELECT * FROM review_tb WHERE patientID='$patDetails'");
-                $report = select("SELECT * FROM wardmeds WHERE patientID='$patientID' AND assignID='$assignID'");
+                $report = select("SELECT * FROM review_tb WHERE patientID='$patientID'");
                     foreach($report as $reports){
                       $rev_iew = select("SELECT * FROM docreview_tb");
                     foreach($rev_iew as $rev_iews){}?>
                 <tr>
                     <td><?php echo $reports['doe'];?></td>
-                    <td><?php echo $reports['medicine'];?></td>
+                    <td><?php echo $reports['treatment'];?></td>
                     <td><?php echo $reports['dosage'];?></td>
-                    <td><?php echo $reports['staffID'];?></td>
-
-                    <td style="text-align:center;">
-                    <?php if($reports['status'] == '' || $reports['status']=='null'){?>
-                    <span class="label btn-danger label-sm">NOT ADMINISTERED</span>
-                    <?php }?>
-
-                    <?php if($reports['status'] == 'Administered'){?>
-                    <span class="label btn-success label-sm">ADMINISTERED</span>
-                    <?php }?>
-                    </td>
-                    <td>
-                        <input type='text' class="form-control span6"  name="review" id="review"required/>&nbsp;
-                        <button type="submit" name="saveReview" class="btn btn-primary labell" style="margin-top:-10px;">Save Remarks</button>
-                    </td>
+                    <td><?php echo $pat['staffID'];?></td>
+                    <td><?php echo $checklists['status'];?></td>
+                    <td><input type='text' class="form-control span5"  name="review" id="review"required/>&nbsp;<button type="submit" name="saveReview" class="btn btn-primary " style="margin-top:-10px;">Save Remarks</button></td>
                   </tr>
                  <?php }?>
 
            </tbody>
             </table>
-              </form>
             </div>
         </div>
     </div>
@@ -625,11 +611,8 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                 <div class="controls">
                     <?php
                        $days = (strtotime($dateToday) - strtotime($pat['admitDate'])) / (60 * 60 * 24);
-                        if($days == 0){
-                            $days = 1;
-                        }
                     ?>
-                    <input name="NoOfDays" value="<?php echo $days.' day(s)'; ?>" class="span11" type="text" readonly/>
+                    <input name="NoOfDays" value="<?php echo $days; ?>" class="span11" type="text" readonly/>
                 </div>
               </div>
 
@@ -638,10 +621,10 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                     <i class="span1"></i>
                 <?php
                 if($pat['paystatus'] =='Not Paid'){ ?>
-    <input type="submit" name="moveToAcc" value="MOVE TO ACCOUNT" onclick="return confirm('Move To Account For Payment.');"  class="btn btn-primary btn-block labell span10" />
+    <input type="submit" name="moveToAcc" value="MOVE TO ACCOUNT" onclick="return confirm('Move To Account For Payment.');"  class="btn btn-primary btn-block span10" />
 
                 <?php }else{ ?>
-    <input type="submit" name="DischargePatient" onclick="return confirm('CONFIRM DISCHARGE.');" value="DISCHARGE PATIENT" onclick="return confirm('Confirm Patient Discharge.');"  class="btn btn-primary btn-block labell span10" />
+    <input type="submit" name="DischargePatient" onclick="return confirm('CONFIRM DISCHARGE.');" value="DISCHARGE PATIENT" onclick="return confirm('Confirm Patient Discharge.');"  class="btn btn-primary btn-block span10" />
 
                 <?php }?>
                     </div>
