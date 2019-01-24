@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
-<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
     <style>
         .active{
             background-color: #209fbf;
@@ -111,7 +110,7 @@ input:checked + .slider:before {
         }
 
         //search prescription doctor/staff
-        $staff = select("SELECT * FROM staff WHERE staffID='".$scode['staffID']."'");
+        $staff = select("SELECT * FROM staff WHERE staffID='".$scode['staffID']."' && centerID='".$_SESSION['centerID']."'");
         foreach($staff as $staffrow){}
 
 

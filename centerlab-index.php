@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
-<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <style>
 .active{
     background-color: #209fbf;
@@ -64,14 +63,8 @@
 
 <div id="sidebar">
     <ul>
-        <li><a href="medics-index"><i class="icon icon-home"></i> <span>DASHBOARD</span></a> </li>
-        <li class=""> <a href="centerconsultation-index"><i class="icon-th-list"></i> <span>CONSULTATION</span></a> </li>
-        <li class=""> <a href="centerward-index"><i class="icon-folder-close"></i> <span>WARD</span></a> </li>
-        <li class="active"> <a href="centerlab-index"> <i class="icon-search"></i> <span>LABORATORY</span></a> </li>
-        <li class=""> <a href="centeruser-index"> <i class="icon-user"></i> <span>STAFF</span></a> </li>
-        <li class=""> <a href="centerpharmacy-index"> <i class="icon-plus-sign"></i> <span>PHARMACY</span></a> </li>
-        <li class=""> <a href="center-account"> <i class="icon-list-alt"></i> <span>ACCOUNTS</span></a> </li>
-        <li class=""> <a href="smsrequest-index"> <i class="icon-envelope"></i> <span>SMS REQUEST</span></a> </li>
+    <li><a href="medics-index.php"><i class="icon-home"></i> <span>Dashboard</span></a> </li>
+    <li class="active"><a href="centerlab-index.php"><i class="icon icon-search"></i> <span>Lab Management</span></a> </li>
     </ul>
 </div>
 <div id="content">
@@ -81,7 +74,7 @@
         <a title="Lab Management" class="tip-bottom"><i class="icon-search"></i> LABORATORY</a>
     </div>
   </div>
-  <div class="container-fluid">
+  <div class="container">
       <h3 class="quick-actions">LAB MANAGEMENT</h3>
            <?php
                               if($success){
@@ -99,7 +92,7 @@
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs labell">
+                <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab1">MedCenter Lab</a></li>
                     <li><a data-toggle="tab" href="#tab2">Add New Lab</a></li>
                 </ul>
@@ -109,7 +102,7 @@
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5 class="labell">List Of Lab</h5>
+                        <h5>List Of Lab</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">

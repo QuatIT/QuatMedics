@@ -2,10 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS</title>
+<title>QUAT MEDICS ADMIN</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/font-awesome.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -15,14 +16,11 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
-<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
-<!--
 <style>
 .active{
     background-color: #209fbf;
 }
 </style>
--->
 </head>
 <body>
 <?php
@@ -88,16 +86,8 @@
 
 <div id="sidebar">
     <ul>
-        <li> <a href="medics-index"><i class="icon icon-home"></i> <span>DASHBOARD</span></a> </li>
-        <li> <a href="centerconsultation-index"><i class="icon-th-list"></i> <span>CONSULTATION</span></a> </li>
-        <li> <a href="centerward-index"><i class="icon-folder-close"></i> <span>WARD</span></a> </li>
-        <li> <a href="centerlab-index"> <i class="icon-search"></i> <span>LABORATORY</span></a> </li>
-        <li> <a href="centeruser-index"> <i class="icon-user"></i> <span>STAFF</span></a> </li>
-        <li> <a href="centerpharmacy-index"> <i class="icon-plus-sign"></i> <span>PHARMACY</span></a> </li>
-        <li> <a href="center-account"> <i class="icon-list-alt"></i> <span>ACCOUNTS</span></a> </li>
-        <li class="active" style="background-color: #209fbf;">
-            <a href="smsrequest-index"> <i class="icon-envelope"></i> <span>SMS REQUEST</span></a>
-        </li>
+    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+    <li class="active"><a href="smsrequest-index.php"><i class="icon-envelope"></i> <span>SMS Request</span></a> </li>
     </ul>
 </div>
 <div id="content">
@@ -107,13 +97,13 @@
         <a title="Staff Management" class="tip-bottom"><i class="icon-envelope"></i> SMS REQUEST</a>
     </div>
   </div>
-  <div class="container-fluid">
+  <div class="container">
       <h3 class="quick-actions">SMS REQUEST</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs labell">
+                <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab1">SMS CREDITS</a></li>
                     <li><a data-toggle="tab" href="#tab2">REQUESTED SMS</a></li>
                 </ul>
@@ -123,7 +113,7 @@
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5 class="labell">SMS CREDITS</h5>
+                        <h5>SMS CREDITS</h5>
                           <?php
                               if($success){
                               ?>
@@ -184,40 +174,40 @@
                                     ?>
 
 
-                    <!-- Modal -->
-                    <div id="myModal<?php echo $cred['id']; ?>" class="modal fade" role="dialog">
-                      <div class="modal-dialog">
+<!-- Modal -->
+<div id="myModal<?php echo $cred['id']; ?>" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">REQUEST SMS CREDIT</h4>
-                          </div>
-                          <div class="modal-body">
-                    <!--        <p>Some text in the modal.</p>-->
-                              <form action="" method="post">
-                                  <div class="span6">
-                                Request ID <input type="text" class="span12" value="<?php echo $reqID; ?>" readonly name="requestID">
-                                  </div>
-                                      <div class="span6">
-                                Sender Name <input type="text" class="span12" name="senderName">
-                                  </div>
-                                  <div class="span6">
-                                Transaction Number <input type="number" class="span12" name="transactionID">
-                                  </div>
-                                  <div class="span6">
-                                                    <input type="submit" class="btn btn-xs btn-primary" name="btnRequest<?php echo $cred['id']; ?>">
-                                      </div>
-                              </form>
-                          </div>
-                          <div class="modal-footer">
-                    <!--        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                          </div>
-                        </div>
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">REQUEST SMS CREDIT</h4>
+      </div>
+      <div class="modal-body">
+<!--        <p>Some text in the modal.</p>-->
+          <form action="" method="post">
+              <div class="span6">
+            Request ID <input type="text" class="span12" value="<?php echo $reqID; ?>" readonly name="requestID">
+              </div>
+                  <div class="span6">
+            Sender Name <input type="text" class="span12" name="senderName">
+              </div>
+              <div class="span6">
+            Transaction Number <input type="number" class="span12" name="transactionID">
+              </div>
+              <div class="span6">
+                                <input type="submit" class="btn btn-xs btn-primary" name="btnRequest<?php echo $cred['id']; ?>">
+                  </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+<!--        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+      </div>
+    </div>
 
-                      </div>
-                    </div>
+  </div>
+</div>
 
 
                               </tr>
@@ -287,5 +277,42 @@
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
+<script>
+  function newpatient(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/centeruser-load.php",false);
+        xmlhttp.send(null);
+        document.getElementById("centeruser").innerHTML=xmlhttp.responseText;
+    }
+        newpatient();
+
+        setInterval(function(){
+            newpatient();
+        },3000);
+    </script>
+
+<script type="text/javascript">
+  // This function is called from the pop-up menus to transfer to
+  // a different page. Ignore if the value returned is a null string:
+  function goPage (newURL) {
+
+      // if url is empty, skip the menu dividers and reset the menu selection to default
+      if (newURL != "") {
+
+          // if url is "-", it is this page -- reset the menu:
+          if (newURL == "-" ) {
+              resetMenu();
+          }
+          // else, send page to designated URL
+          else {
+            document.location.href = newURL;
+          }
+      }
+  }
+// resets the menu selection upon entry to this page:
+function resetMenu() {
+   document.gomenu.selector.selectedIndex = 2;
+}
+</script>
 </body>
 </html>
