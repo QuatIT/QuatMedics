@@ -51,41 +51,63 @@
 
 <?php
     include 'layout/head.php';
-//    error_reporting(0);
+    //    error_reporting(0);
 
     $success = '';
     $error = '';
     $req_action='';
 
+    $get_PID = $_GET['pid'];
+    $emeid = $_GET['emeid'];
+    $patient = select("SELECT * FROM emergency_patient WHERE patientID='$get_PID' AND emeid='$emeid' ORDER BY patientID ASC");
+    foreach($patient as $pID){}
 
-	$get_PID = $_GET['pid'];
-	 $patient = select("SELECT * FROM emergency_patient WHERE patientID='".$_GET['pid']."' ORDER BY patientID ASC");
-        foreach($patient as $pID){}
+    $vit_sq = select("SELECT * FROM eme_vitals WHERE patientID='$get_PID' && emeID='".$_GET['emeid']."' ORDER BY id DESC LIMIT 1");
+    foreach($vit_sq as $vitrow){}
 
-	$vit_sq = select("SELECT * FROM eme_vitals WHERE patientID='$get_PID' && emeID='".$_GET['emeid']."' ORDER BY id DESC LIMIT 1");
-	foreach($vit_sq as $vitrow){}
-
-//codes for the gallary creation..
+//codes emergency medicine prescription..
 if (isset($_POST['sub_mit'])){
-    $medicine = count($_POST["medicine"]);
+	$medsNum = count($_POST['medicine']);
     $piecesNum = count( $_POST['pieces']);
     $adayNum = count( $_POST['aday']);
     $totalDaysNum = count( $_POST['totalDays']);
-    $dosage = count($_POST["dosage"]);
+    $paystatus = "Not Paid";
 	$medical_status = 'not attended to';
 	$today_status = '0';
 
-	$eme_medIDs = count(select("SELECT * FROM eme_ward GROUP BY eme_medID ")) + 1;
-	$eme_medID = "EME-PRES-".sprintf('%06s',$eme_medIDs);
+//	$eme_medIDs = count(select("SELECT * FROM eme_ward GROUP BY eme_medID ")) + 1;
+//	$eme_medID = "EME-PRES-".sprintf('%06s',$eme_medIDs);
 
-if($medicine > 0 && $dosage > 0 ) {
-    for( $i=0 , $n=0; $i<$medicine , $n<$dosage; $i++ , $n++) {
-            if(trim(htmlspecialchars($_POST['medicine'][$i] != ''))  && trim(htmlspecialchars($_POST['dosage'][$n] != '')) ) {
+if($medsNum > 0 && $totalDaysNum > 0 ) {
+    for($m=0, $p=0, $a=0, $t=0; $m<$medsNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
+        if(trim($_POST['medicine'][$m] != '') && trim($_POST['pieces'][$p] != '') && trim($_POST['aday'][$a] != '') && trim($_POST['totalDays'][$t] != '') ) {
+                $medicineID = trim( $_POST['medicine'][$m]);
+                $pieces = trim( $_POST['pieces'][$p]);
+                $aday = trim( $_POST['aday'][$a]);
+                $totalDays = trim( $_POST['totalDays'][$t]);
 
-                $medicine1 = trim(htmlspecialchars($_POST['medicine'][$i]));
-                $dosage1 = trim(htmlspecialchars($_POST['dosage'][$n]));
+            //get medicine name for insert qeury...
+            $findmedname = select("SELECT * FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
+            foreach($findmedname as $nameRow){
+            $medicine = $nameRow['medicine_name'];
+            $medFrom = $nameRow['medFrom'];
+            $medicinetype = $nameRow['Type'];
+            $unitPrice = $nameRow['price'];
 
-            $crtgal = insert("INSERT INTO eme_ward(eme_medID,dateRegistered,prescrib_med,dosage,prescribed_by,patientID,emeID,med_status,today_status,centerID) VALUES('$eme_medID',CURDATE(),'$medicine1','$dosage1','".$_SESSION['username']."','".$_GET['pid']."','".$_GET['emeid']."','$medical_status','$today_status','".$_SESSION['centerID']."') ");
+            //set dosage..
+            $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
+            if($medicinetype=='solid'){
+                //medicine price calculation..
+                $totalMeds = ($pieces*$aday)*$totalDays;
+                $medprice = trim($unitPrice*$totalMeds);
+            }else{
+                //medicine price calculation..
+                $totalMeds = 1;
+                $medprice = trim($unitPrice);
+            }
+            }
+
+            $crtgal = insert("INSERT INTO eme_ward(eme_medID,dateRegistered,prescrib_med,dosage,prescribed_by,patientID,emeID,med_status,today_status,centerID) VALUES('$eme_medID',CURDATE(),'$medicine','$dosage','".$_SESSION['username']."','".$_GET['pid']."','".$_GET['emeid']."','$medical_status','$today_status','".$_SESSION['centerID']."') ");
 
        }
 }
@@ -188,7 +210,6 @@ foreach($bl_id as $bl_ids){}
 
 
 if(isset($_POST['send'])){
-
 $request_id = filter_input(INPUT_POST,'request_id',FILTER_SANITIZE_STRING);
 $blood_type= filter_input(INPUT_POST,'blood_type',FILTER_SANITIZE_STRING);
 $blood_id= filter_input(INPUT_POST,'blood_id',FILTER_SANITIZE_STRING);
@@ -200,22 +221,19 @@ $quantity = filter_input(INPUT_POST,'quantity',FILTER_SANITIZE_STRING);
 
   $capture_request = insert("INSERT INTO bloodrequest(bloodID,requestID,request,patientID,quantity,staffID,status,approved_by,request_time,dateInsert,date_approved)VALUES('$blood_id','$Request_id','$request_from','$patient_id','$quantity','$staff_id','','','' ,CURDATE(),'')");
   if($capture_request){
-    echo "<script>alert('Request Has Been Sent');
-    window.location='emergency-index.php'</script>";
-
-}
+    echo "<script>alert('Request Has Been Sent');window.location='emergency-index.php'</script>";
+  }
 }
 
 $req_stat = select("SELECT * FROM bloodrequest WHERE patientID='".$get_PID."' && flag=1 && confirm='' && dateInsert=CURDATE() ORDER BY id ASC LIMIT 1");
-    if($req_stat){
-
-  foreach($req_stat as $req_status){}
+if($req_stat){
+    foreach($req_stat as $req_status){}
     //$req_status['bloodID'];
-    }
+}
 
 
 
-  $req_cnt = select("SELECT COUNT(*) as request_co FROM bloodrequest WHERE patientID='".$get_PID."' && flag= 1 && confirm='' && dateInsert = CURDATE() ");
+$req_cnt = select("SELECT COUNT(*) as request_co FROM bloodrequest WHERE patientID='".$get_PID."' && flag= 1 && confirm='' && dateInsert = CURDATE() ");
 foreach($req_cnt as $req_cnts){$req_cnts['request_co'];}
 
 
@@ -498,7 +516,7 @@ $get_count = select("SELECT * FROM bloodgroup_tb WHERE bloodID ='".$blood_chks['
 
             </table>
 <br><br>
-<input type='submit' class='btn btn-primary' name='printer' id='printer' style='margin-left:740px;width:240px;' onclick='printer()' value="PRINT DOCUMENT">
+<!--<input type='submit' class='btn btn-primary' name='printer' id='printer' style='margin-left:740px;width:240px;' onclick='printer()' value="PRINT DOCUMENT">-->
 
 
   <script>
@@ -535,6 +553,8 @@ Plotly.newPlot('myDivPressure', num);
     </div>
 </div>
 
+<!-- ============================== END OF VITALS GRAPH TAB ==================================-->
+
 
 <div id="tab2" class="tab-pane">
     <div class="widget-box">
@@ -543,30 +563,7 @@ Plotly.newPlot('myDivPressure', num);
             <h5>DOCTOR' PRESCRIPTION</h5>
         </div>
         <div class="widget-content nopadding">
-            <form action="" method="post">
-<!--
-            <table border="0" class="table table-bordered" id="dynamic_field">
-                <thead class="labell">
-                    <th> MEDICINE</th>
-                    <th> NO. OF INTAKE/PIECES</th>
-                </thead>
-                <tr>
-                    <td>
-                        <label>Medicine / Prescription</label>
-                        <input type="text" class="span6" name="medicine[]" placeholder="Medicine / Prescription" class="form-control">
-                    </td>
-                    <td>
-                        <label>Dosage</label>
-                        <input type="text" name="dosage[]" placeholder="Dosage" class="form-control">
-                    </td>
-                    <td>
-                    <button type="button" name="add" id="add" class="btn btn-success">+</button>
-                    </td>
-                </tr>
-            </table>
--->
-
-<!--                <hr/>-->
+            <form action="" method="post" enctype="multipart/form-data">
             <table class="table table-bordered" id="dynamic_field2">
                 <tr>
                     <th style="width:60%;"> MEDICINE NAME</th>
@@ -617,18 +614,6 @@ Plotly.newPlot('myDivPressure', num);
                     </td>
                 </tr>
                 </table>
-<!--
-              <div class="form-actions">
-                  <i class="span1"></i>
-                <button type="submit" name="sub_mit" id="sub_mit" class="btn btn-primary btn-block labell span10"> Admit To Ward</button>
-              </div>
--->
-
-<!--
-                <p class="text-left" style="margin-top: 20px;margin-left: 60px;">
-                    <input type="submit" class="btn btn-primary" name="sub_mit" id="sub_mit" value="Submit">
-                </p>
--->
             </form>
         </div>
     </div>
@@ -636,7 +621,7 @@ Plotly.newPlot('myDivPressure', num);
 
                 <div id="tabAction" class="tab-pane">
                   <form action='' method='post'>
-          <div class="widget-box">
+                    <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
                         <h5>BLOOD REQUEST ACTION</h5>
@@ -650,13 +635,6 @@ Plotly.newPlot('myDivPressure', num);
         <input type="text" style='text-align:center;' class="span4" value='<?php echo @$req_status['requestID'];  ?>' name="req_id" id="req_id"  readonly>
                                 </div>
                               </div>
-
-                                 <!-- <div class="control-group" style='text-align:center';>
-                                <label class="control-label">Quantity </label>
-                                <div class="controls">
-                                  <input type="text" class="span4" style='text-align:center;' value='<?php #echo $req_status['quantity'];  ?>' name="quant" id="quant" readonly>
-                                </div>
-                              </div> -->
 
                                <div class="control-group" style='text-align:center';>
                                 <label class="control-label">Action By </label>
@@ -688,15 +666,14 @@ Plotly.newPlot('myDivPressure', num);
                         </form>
                       </div>
 
-                <div id="tabRequest" class="tab-pane">
-					<div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                        <h5>BLOOD REQUEST FORM</h5>
-                      </div>
+        <div id="tabRequest" class="tab-pane">
+            <div class="widget-box">
+              <div class="widget-title">
+                 <span class="icon"><i class="icon-th"></i></span>
+                <h5>BLOOD REQUEST FORM</h5>
+              </div>
 
-            <form action='' method='POST'>
-
+                    <form action='' method='POST'>
                       <div class="widget-content nopadding">
                           <div class="span6">
                             <div class="control-group">
@@ -799,7 +776,7 @@ Plotly.newPlot('myDivPressure', num);
      <div class="widget-box">
       <div class="widget-title">
          <span class="icon"><i class="icon-th"></i></span>
-        <h5 class="labell">Patient's Name</h5>
+<!--        <h5 class="labell">Patient's Name</h5>-->
       </div>
       <div class="widget-content nopadding">
         <table class="table table-bordered data-table">
@@ -840,14 +817,10 @@ Plotly.newPlot('myDivPressure', num);
             </tr>
           </thead>
           <tbody id="emepatienttreathistory">
-
 <?php
 $load_newpatient = select("SELECT * FROM eme_ward WHERE centerID='".$_SESSION['centerID']."' && patientID='".$_GET['pid']."'  GROUP BY dateRegistered ORDER BY dateRegistered ASC");
-
-foreach($load_newpatient as $newpatient){
-
+              foreach($load_newpatient as $newpatient){
 ?>
-
 <tr>
   <td> <?php echo $newpatient['dateRegistered']; ?></td>
   <td>
@@ -867,52 +840,38 @@ foreach($load_newpatient as $newpatient){
   <td>
 	  <?php
 		  $sql = select("SELECT * FROM eme_ward WHERE eme_medID='".$newpatient['eme_medID']."' ORDER BY dateRegistered ASC");
-
 	  ?>
 	  <ol>
 		  <?php  foreach($sql as $srow){ ?>
 		  <li><?php echo $srow['prescrib_med']; ?></li>
 		  <?php } ?>
 	  </ol>
-
 	</td>
   <td>
-
 	  <?php
 		  $sqls = select("SELECT * FROM eme_ward WHERE eme_medID='".$newpatient['eme_medID']."' ORDER BY dateRegistered ASC");
-
 	  ?>
 	  <ol>
 		  <?php  foreach($sqls as $srows){ ?>
 		  <li>
 			  <?php echo $srows['dosage']; ?> ( <?php if($srows['med_status']=="administered"){ ?> <span class='' style='color:green;'>administered</span> <?php }else{ ?><span class='' style='color:red;'>not administered</span> <?php } ?> )
-
 		  </li>
-
 		  <?php } ?>
 	  </ol>
-
-
-
 	</td>
 <!--  <td> <?php #echo $newpatient['med_status']; ?></td>-->
   <td> <?php echo $newpatient['prescribed_by']; ?></td>
   <td> <?php if(empty($newpatient['doc_comment']) || $newpatient['doc_comment'] == 'NULL'){
 		  echo "<form action='' method='post'><input type='text' name='comment".$newpatient['eme_medID']."' ><input type='submit' name='btncomment".$newpatient['eme_medID']."' class='btn btn-primary'></form> "; ?>
-
 	  <?php
-
 		  if(isset($_POST['btncomment'.$newpatient['eme_medID']])){
 			  $cm = $_POST['comment'.$newpatient['eme_medID']];
-
 			  $sqq = update("UPDATE eme_ward SET doc_comment='$cm' WHERE eme_medID='".$newpatient['eme_medID']."' ");
 			  echo "<script>window.location.href='{$_SERVER['REQUEST_URI']}'</script>";
 		  }
-
 	  ?>
-
-
-	  <?php }else{ echo $newpatient['doc_comment']; } ?></td>
+	  <?php }else{ echo $newpatient['doc_comment']; } ?>
+    </td>
 </tr>
 
 <?php } ?>
@@ -924,7 +883,6 @@ foreach($load_newpatient as $newpatient){
                     </div>
               </div>
             </div>
-
         </div>
       </div>
   </div>

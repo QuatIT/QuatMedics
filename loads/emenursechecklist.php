@@ -5,8 +5,9 @@ session_start();
 if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel'] && !$_SESSION['centerID'] ){
     echo "<script>window.location.href='index'</script>";
 }
-
-$load_newpatient = select("SELECT * FROM eme_ward WHERE centerID='".$_SESSION['centerID']."'  ORDER BY dateRegistered ASC");
+$emeid = $_GET['emeid'];
+$pid = $_GET['pid'];
+$load_newpatient = select("SELECT * FROM eme_ward WHERE eme_medID='$emeid' AND patientID='$pid'  ORDER BY dateRegistered ASC");
 
 foreach($load_newpatient as $newpatient){
 

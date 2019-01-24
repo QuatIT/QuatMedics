@@ -70,24 +70,24 @@ if(isset($_POST['saveTreatment'])){
 
         //get medicine name for insert qeury...
 		$findmedname = select("SELECT * FROM pharmacy_inventory WHERE medicine_id='$medicineID'");
-					foreach($findmedname as $nameRow){
-						$medicine = $nameRow['medicine_name'];
-						$medFrom = $nameRow['medFrom'];
-						$medicinetype = $nameRow['Type'];
-				        $unitPrice = $nameRow['price'];
+        foreach($findmedname as $nameRow){
+            $medicine = $nameRow['medicine_name'];
+            $medFrom = $nameRow['medFrom'];
+            $medicinetype = $nameRow['Type'];
+            $unitPrice = $nameRow['price'];
 
-                    //set dosage..
-                    $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
-                        if($medicinetype=='solid'){
-                            //medicine price calculation..
-                            $totalMeds = ($pieces*$aday)*$totalDays;
-                            $medprice = trim($unitPrice*$totalMeds);
-                        }else{
-                            //medicine price calculation..
-                            $totalMeds = 1;
-                            $medprice = trim($unitPrice);
-                        }
-                    }
+        //set dosage..
+        $dosage = $pieces." X ".$aday." For ".$totalDays." Day(s)";
+            if($medicinetype=='solid'){
+                //medicine price calculation..
+                $totalMeds = ($pieces*$aday)*$totalDays;
+                $medprice = trim($unitPrice*$totalMeds);
+            }else{
+                //medicine price calculation..
+                $totalMeds = 1;
+                $medprice = trim($unitPrice);
+            }
+        }
 
 $confirm = trim('CONFIRMED');
 $insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,comment,paymode,confirm,paystatus,charge,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$comments','".$pat['paymode']."','$confirm','$paystatus','$medprice','$dateToday')");
