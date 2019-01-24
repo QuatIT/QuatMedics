@@ -26,7 +26,9 @@ foreach($load_newpatient as $newpatient){
   <td> <?php echo $newpatient['gMobile']; ?></td>
   <td> <?php echo $newpatient['dateAdmitted']; ?></td>
   <td style="text-align: center;">
-       <a href="emergency-vitals?emeid=<?php echo $newpatient['emeID'];?>&tab=vitals&pid=<?php echo $newpatient['patientID']; ?>"> Vitals</a> |  <a href="emergency-patient-treatment?emeid=<?php echo $newpatient['emeID'];?>&pid=<?php echo $newpatient['patientID']; ?>"> Patient&nbsp;Management</a>
+       <a class="btn btn-primary labell btn-sm" href="emergency-vitals?emeid=<?php echo $newpatient['emeID'];?>&tab=vitals&pid=<?php echo $newpatient['patientID']; ?>"> <i class="fa fa-stethoscope"></i> Vitals</a> ||
+
+    <a class="btn btn-primary btn-sm labell" href="emergency-patient-treatment?emeid=<?php echo $newpatient['emeID'];?>&pid=<?php echo $newpatient['patientID']; ?>"> <i class="fa fa-user"></i> Patient</a>
   </td>
 </tr>
 

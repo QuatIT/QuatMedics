@@ -165,25 +165,24 @@
 <div id="content">
   <div id="content-header">
     <div id="breadcrumb">
-        <a href="medics-index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a href="opd-index.php" title="" class="tip-bottom"><i class="icon-plus"></i> EMERGENCY</a>
+        <a href="medics-index" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
+        <a href="emergency-index" title="" class="tip-bottom"><i class="icon icon-exclamation-sign"></i> EMERGENCY</a>
     </div>
   </div>
   <div class="container-fluid">
-<!--      <h3 class="quick-actions">EMERGENCY</h3>-->
-                <?php
-                      if($success){
-                      ?>
-                      <div class="alert alert-success">
-                  <strong>Success!</strong> <?php echo $success; ?>
-                </div>
-                      <?php } if($error){
-                          ?>
-                      <div class="alert alert-danger">
-                  <strong>Error!</strong> <?php echo $error; ?>
-                </div>
-                      <?php
-                      } ?>
+      <h3 class="quick-actions">EMERGENCY WARD</h3>
+<?php
+  if($success){
+  ?>
+  <div class="alert alert-success">
+<strong>Success!</strong> <?php echo $success; ?>
+</div>
+  <?php } if($error){
+      ?>
+  <div class="alert alert-danger">
+<strong>Error!</strong> <?php echo $error; ?>
+</div>
+<?php } ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
@@ -197,7 +196,7 @@
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List of Patients in Emergency Ward</h5>
+                        <h5 class="labell">List of Patients in Emergency Ward</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">

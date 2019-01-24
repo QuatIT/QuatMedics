@@ -99,14 +99,14 @@
         <a href="ward-patient?wrdno=<?php echo $wardID;?>" title="" class="tip-bottom"><i class="icon-user"></i> WARD PATIENTS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">WARD PATIENT MANAGEMENT</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Assign Patient To Staff</a></li>
+                <ul class="nav nav-tabs labell">
+                    <li class="active"><a data-toggle="tab" href="#tab1">Assign Patient</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -115,7 +115,7 @@
                     <div class="span6">
                           <div class="widget-title">
                               <span class="icon"> <i class="icon-align-justify"></i> </span>
-                                <h5>Patient Details</h5>
+                                <h5 class="labell">Patient Details</h5>
                           </div>
                           <div class="widget-content nopadding">
                              <div class="control-group">
@@ -136,7 +136,7 @@
                     <div class="span6">
                           <div class="widget-title">
                               <span class="icon"> <i class="icon-align-justify"></i> </span>
-                                <h5>Assignment Details</h5>
+                                <h5 class="labell">Assignment Details</h5>
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
@@ -162,7 +162,7 @@
                               </div>
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Assign Patient</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span10">Assign Patient</button>
                               </div>
                           </div>
                       </div>

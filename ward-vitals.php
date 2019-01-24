@@ -142,12 +142,12 @@ if($sql_vitals){
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Out Patient Department" class="tip-bottom"><i class="icon-plus"></i> OPD</a>
-        <a title="Old Patients" class="tip-bottom"><i class="icon-user"></i> OPD OLD PATIENTS</a>
+        <a title="WARD" class="tip-bottom"><i class="icon-time"></i> WARD</a>
+        <a title="WARD PATIENT VITALS" class="tip-bottom"><i class="icon-user"></i> PATIENT VITALS</a>
     </div>
   </div>
-  <div class="container">
-      <h3 class="quick-actions">PATIENT VITALS</h3>
+  <div class="container-fluid">
+      <h3 class="quick-actions"> WARD PATIENT VITALS</h3>
        <?php
                       if($success){
                       ?>
@@ -167,167 +167,10 @@ if($sql_vitals){
                 <ul class="nav nav-tabs">
 <!--                    <li class="<?php #echo $active; ?>"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>-->
 <!--                    <li class="active"><a data-toggle="tab" href="#tab1">Out Patient List</a></li>-->
-                    <li class="<?php echo 'active'; ?>"><a data-toggle="tab" href="#tab2">Add Vitals </a></li>
+                    <li class="<?php echo 'active'; ?> labell"><a data-toggle="tab" href="#tab2">Add Vitals </a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
-                <div id="tab1" class="tab-pane <?php echo $active; ?>">
-<!--                <div id="tab1" class="tab-pane active">-->
-                    <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Patients</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr>
-                              <th>Patient ID</th>
-                              <th>Patient Name</th>
-                              <th>Mobile Number</th>
-                              <th>Date of Birth</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody id="outpatientlist11">
-                  <?php
-                        $load_patient = select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."' && patient_status !='".PATIENT_BUSY."' && status != 'dead' ORDER BY patientID ASC");
-
-                            foreach($load_patient as $patient){
-
-                            ?>
-
-                            <tr>
-                              <td><?php echo $patient['patientID']; ?></td>
-                              <td> <?php echo $patient['firstName']." ".$patient['otherName']." ".$patient['lastName']; ?></td>
-                              <td> <?php echo $patient['phoneNumber']; ?></td>
-                              <td style="text-align: center;"> <?php echo $patient['dob']; ?></td>
-                              <td style="text-align: center;">
-                                   <a href="#" data-toggle="modal" data-target="#squarespaceModal<?php echo $patient['patientID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
-                                   <a href="id-card?pid=<?php echo $patient['patientID'];?>" title="Patient Card"> <span class="btn btn-success fa fa-image"></span></a>
-                              </td>
-                            </tr>
-
-
-
-
-
-                            <!-- line modal -->
-                            <div class="modal fade" id="squarespaceModal<?php echo $patient['patientID']; ?>" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                                        <h3 class="modal-title" id="lineModalLabel"><?php echo $patient['firstName']." ".$patient['otherName']." ".$patient['lastName']; ?> (<?php echo $patient['patientID']; ?>)</h3>
-                                    </div>
-                                    <div class="modal-body">
-
-                                        <!-- content goes here -->
-                                        <form>
-                                            <div class="span6">
-
-                                                  <div class="form-group">
-                                                    <label for="exampleInputEmail1">Date of Brith</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['dob']; ?>" id="exampleInputEmail1" readonly >
-                                                  </div>
-                                                  <div class="form-group">
-                                                    <label for="exampleInputPassword1">Blood Group</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['bloodGroup']?>" id="exampleInputPassword1" readonly >
-                                                  </div>
-
-                                                  <div class="form-group">
-                                                    <label for="exampleInputEmail1">Phone Number</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['phoneNumber']; ?>" id="exampleInputEmail1" readonly >
-                                                  </div>
-                                                  <div class="form-group">
-                                                    <label for="exampleInputPassword1">Guardian Name</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianName']?>" id="exampleInputPassword1" readonly >
-                                                  </div>
-
-                                                  <div class="form-group">
-                                                    <label for="exampleInputPassword1">Guardian Phone Number</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianPhone']?>" id="exampleInputPassword1" readonly >
-                                                  </div>
-
-                                                  <div class="form-group">
-                                                    <label for="exampleInputEmail1">Guardian Address</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianAddress']; ?>" id="exampleInputEmail1" readonly >
-                                                  </div>
-
-                                            </div>
-
-
-                                                  <div class="form-group">
-                                                    <label for="exampleInputEmail1">Gender</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['gender']; ?>" id="exampleInputEmail1" readonly >
-                                                  </div>
-                                                  <div class="form-group">
-                                                    <label for="exampleInputPassword1">Home Address</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['homeAddress']?>" id="exampleInputPassword1" readonly >
-                                                  </div>
-
-                                                  <div class="form-group">
-                                                    <label for="exampleInputEmail1">Home Town</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['hometown']; ?>" id="exampleInputEmail1" readonly >
-                                                  </div>
-                                                  <div class="form-group">
-                                                    <label for="exampleInputPassword1">Guardian Gender</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianGender']?>" id="exampleInputPassword1" readonly >
-                                                  </div>
-
-                                                  <div class="form-group">
-                                                    <label for="exampleInputPassword1">Guardian Relation</label>
-                                                    <input type="text" class="form-control" value="<?php echo $patient['guardianRelation']?>" id="exampleInputPassword1" readonly >
-                                                  </div>
-
-
-<!--
-                                                  <div class="form-group">
-                                                    <label for="exampleInputPassword1">&nbsp;</label>
-                                                    <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php //echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
-                                                  </div>
--->
-
-<!--                                        <hr/>-->
-
-                                                <img src='<?php echo $patient['patient_image']; ?>' width=120 height=350 ><br><br>
-
-                                                         <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
-                                                    </div>
-<!--                                                </div>-->
-<!--                                                <div class="span6">-->
-<!--
-                                                   <div class="form-group">
-                                                    <label for="exampleInputPassword1">&nbsp;</label>
-                                                    <a class="btn btn-primary" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php #echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
-                                                  </div>
--->
-<!--                                                </div>-->
-                                            </div>
-                                        </form>
-
-                                    </div>
-
-                                </div>
-                              </div>
-                            </div>
-
-
-
-                               <?php } ?>
-
-
-                            </tbody>
-                        </table>
-
-
-
-
-
-
-                      </div>
-                    </div>
-                </div>
                 <div id="tab2" class="tab-pane <?php echo 'active'; ?>">
                     <form action="" method="post" id="vitals" class="form-horizontal">
                     <div class="span6" id="vitals">
@@ -336,30 +179,16 @@ if($sql_vitals){
                                 <label class="control-label">Patient :</label>
                                <div class="controls">
                                   <input name="patientID" id="patientId" class="span11" value="<?php echo $patientID; ?>" readonly/>
-
                                 </div>
                               </div>
 
-<!--
-                              <div class="control-group">
-                                <label class="control-label">Mode of Payment:</label>
-                                <div class="controls">
-                                  <select class="span11" name="mode" onchange="modey(this.value);">
-                                        <option value=""></option>
-                                        <option value="Private">Private</option>
-                                        <option value="Insurance">Health Insurance</option>
-                                        <option value="Company">Company</option>
-                                    </select>
-                                </div>
-                              </div>
-                             <span id="modeload"></span>
--->
                               <div class="control-group">
                                 <label class="control-label">Body Temperature:</label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Body Temperature" name="bodytemp" required />
                                 </div>
                               </div>
+
 							   <div class="control-group">
                                 <label class="control-label">Pulse Rate :</label>
                                 <div class="controls">
@@ -367,22 +196,12 @@ if($sql_vitals){
                                 </div>
                               </div>
 
-
                               <div class="control-group">
                                 <label class="control-label">Weight</label>
                                 <div class="controls">
                                   <input type="text"  class="span11" name="weight" placeholder="Weight" required />
                                 </div>
                               </div>
-
-<!--
-                              <div class="control-group">
-                                <label class="control-label">Other Health Details :</label>
-                                <div class="controls">
-                                    <textarea class="span11" name="otherHealth"></textarea>
-                                </div>
-                              </div>
--->
                           </div>
                       </div>
                     <div class="span6">
@@ -410,27 +229,9 @@ if($sql_vitals){
                                 </div>
                               </div>
 
-<!--
-                               <div class="control-group">
-                                <label class="control-label">Assign Consulting Room</label>
-                                <div class="controls">
-                                  <select name="consultRoom">
-                                    <option value="default"> -- Select Consulting Room --</option>
-                                      <?php
-//                                        $consultingroom = Consultation::find_consultingroom();
-//                                        foreach($consultingroom as $roomRow){
-                                      ?>
-                                    <option value="<?php #echo $roomRow['roomID'];?>"> <?php #echo $roomRow['roomName'];?></option>
-                                      <?php #}?>
-                                  </select>
-                                </div>
-                                  <div class="controls"></div>
-                              </div>
--->
-
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Out Patient</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span10">Save Vitals</button>
                               </div>
                           </div>
                       </div>
