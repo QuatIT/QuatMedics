@@ -77,20 +77,3 @@ create table `accountTransaction`(
 	`doe` timestamp
 )engine = InnoDB;
 
-
-
-/*
-
-Hi,
-
-I've created a league in Fantasy Premier League called QUAT.
-
-Joining the league couldn't be easier. Simply use this link and you'll be added automatically after you've entered the game:
-
-https://fantasy.premierleague.com/?autojoin-code=5519295-1292594
-
-You shouldn't need the league code, but just in case here it is: 5519295-1292594
-
-Enjoy the game!
-
-*/

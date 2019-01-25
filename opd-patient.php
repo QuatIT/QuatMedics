@@ -6,7 +6,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="css/font-awesome.min.css" />
+<!--<link rel="stylesheet" href="css/font-awesome.min.css" />-->
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="assets/css/font-awesome2.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
 
@@ -289,8 +289,16 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                               <td> <?php echo $patient['phoneNumber']; ?></td>
                               <td style="text-align: center;"> <?php echo $patient['dob']; ?></td>
                               <td style="text-align: center;">
-                                   <a href="#" data-toggle="modal" data-target="#squarespaceModal<?php echo $patient['patientID']; ?>"> <span class="btn btn-primary fa fa-eye"></span></a>
-                                   <a href="id-card?pid=<?php echo $patient['patientID'];?>" title="Patient Card"> <span class="btn btn-success fa fa-user"></span></a>
+                                   <a href="#" data-toggle="modal" data-target="#squarespaceModal<?php echo $patient['patientID']; ?>">
+                                       <span class="btn btn-primary fa fa-eye"></span>
+                                  </a> ||
+                                  <a href="id-card?pid=<?php echo $patient['patientID'];?>" title="Patient Card">
+                                    <span class="btn btn-success fa fa-image"></span>
+                                  </a> ||
+                                  <a href="#?pid=<?php echo $patient['patientID'];?>" title="Update Patient Details">
+                                    <span class="btn btn-primary fa fa-edit"></span>
+                                  </a>
+
                               </td>
                             </tr>
 
