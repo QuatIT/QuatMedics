@@ -2940,4 +2940,83 @@ foreach($rlablistcolumn_sql as $rlablistcolumn_row){}
 }
 
 
+
+
+
+
+function wardmeds(){
+
+//	check number of local bedlist columns
+$sql = "select count(*) as lwardmeds from information_schema.columns where table_schema='$dbname' and table_name='wardmeds'";
+	$llablistcolumn_sql = select($sql);
+foreach($llablistcolumn_sql as $llablistcolumn_row){}
+
+//	check number of remote bedlist columns
+	$rlablistcolumn_sql = select2("select count(*) as rwardmeds from information_schema.columns where table_schema='$dbname2' and table_name='wardmeds'");
+foreach($rlablistcolumn_sql as $rlablistcolumn_row){}
+
+	if($llablistcolumn_row['lwardmeds'] == $rlablistcolumn_row['rwardmeds']){
+
+//check table remote_bedlist
+		$rlablistlimit_sql = select2("SELECT * FROM wardmeds WHERE centerID='".$_SESSION['centerID']."' ORDER BY doe ASC LIMIT 1");
+		if(count($rlablistlimit_sql)>=1){
+	foreach($rlablistlimit_sql as $rlablistlimit_row){
+
+		//search where local_doe is greater than remote_doe
+		$local_lablist_sql = select("SELECT * FROM wardmeds WHERE centerID='".$_SESSION['centerID']."' && dateInsert >= '".$rlablistlimit_row['dateInsert']."' ");
+		foreach($local_lablist_sql as $llablist_row){
+
+        //check duplication in remote
+        $rlablist_duplicate_sql = select2("select * from quatitso_quatmedic.wardmeds WHERE centerID='".$llablist_row['centerID']."' ");
+
+			if(count($rlablist_duplicate_sql) < 1){
+
+			//insert local_bedlist into remote_bedlist
+			$labresult_insert = insert2("INSERT INTO quatitso_quatmedic.wardmeds(centerID,assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,comment,status,paymode,confirm,paystatus,charge,dateInsert,doe) VALUES('".$llablist_row['centerID']."','".$llablist_row['assignID']."','".$llablist_row['patientID']."','".$llablist_row['staffID']."','".$llablist_row['wardID']."','".$llablist_row['medicine']."','".$llablist_row['dosage']."','".$llablist_row['diagnoses']."','".$llablist_row['symptoms']."','".$llablist_row['comment']."','".$llablist_row['status']."','".$llablist_row['paymode']."','".$llablist_row['confirm']."','".$llablist_row['paystatus']."','".$llablist_row['charge']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+				if($labresult_insert){
+					echo "L_wardmeds UPDATED";
+				}else{
+					echo "ERROR: L_wardmeds";
+				}
+		}
+
+		}
+		}
+		}else{
+		//search local_mode_of_payment
+		$local_lablist_sql = select("SELECT * FROM wardmeds WHERE centerID='".$_SESSION['centerID']."' ");
+		foreach($local_lablist_sql as $llablist_row){
+
+			//check duplication in remote
+			$rlablist_duplicate_sql = select2("select * from wardmeds where doe='".$llablist_row['doe']."' ");
+
+			if(count($rlablist_duplicate_sql) < 1){
+
+			//insert local_bedlist into remote_bedlist
+				$labpayment_insert = insert2("INSERT INTO quatitso_quatmedic.wardmeds(centerID,assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,comment,status,paymode,confirm,paystatus,charge,dateInsert,doe) VALUES('".$llablist_row['centerID']."','".$llablist_row['assignID']."','".$llablist_row['patientID']."','".$llablist_row['staffID']."','".$llablist_row['wardID']."','".$llablist_row['medicine']."','".$llablist_row['dosage']."','".$llablist_row['diagnoses']."','".$llablist_row['symptoms']."','".$llablist_row['comment']."','".$llablist_row['status']."','".$llablist_row['paymode']."','".$llablist_row['confirm']."','".$llablist_row['paystatus']."','".$llablist_row['charge']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+				if($labpayment_insert){
+					echo "R_wardmeds UPDATED";
+				}else{
+					echo "ERROR: R_wardmeds";
+				}
+		}
+		}
+		}
+
+		//REMOTE_BEDLIST TO LOCAL_BEDLIST
+		//fetch all from remote_bedlist
+		$remote_lablistsql = select2("select * from quatitso_quatmedic.wardmeds WHERE centerID !='".$_SESSION['centerID']."' ");
+
+		foreach($remote_lablistsql as $remote_lablistrow){
+		$lo_lablistinsert = insert("INSERT INTO wardmeds(centerID,assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,comment,status,paymode,confirm,paystatus,charge,dateInsert,doe) VALUES('".$llablist_row['centerID']."','".$llablist_row['assignID']."','".$llablist_row['patientID']."','".$llablist_row['staffID']."','".$llablist_row['wardID']."','".$llablist_row['medicine']."','".$llablist_row['dosage']."','".$llablist_row['diagnoses']."','".$llablist_row['symptoms']."','".$llablist_row['comment']."','".$llablist_row['status']."','".$llablist_row['paymode']."','".$llablist_row['confirm']."','".$llablist_row['paystatus']."','".$llablist_row['charge']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+        }
+        }else{
+            echo "TABLE L_wardmeds is NOT EQUAL to TABLE R_wardmeds";
+        }
+}
+
+
 ?>
