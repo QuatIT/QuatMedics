@@ -15,8 +15,12 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
+<<<<<<< HEAD
 <link rel="stylesheet" href="assets/css/font-awesome2.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
+=======
+<link rel="stylesheet" href="assets/css/font-awesome.css" />
+>>>>>>> QuatMedics/master
         <style>
         .active{
             background-color: #209fbf;

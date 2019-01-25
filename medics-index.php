@@ -15,18 +15,12 @@ session_start();
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
-<!--<script src="https://code.highcharts.com/highcharts.js"></script>-->
-<script src="chart/highcharts.js"></script>
-<!--<script src="https://code.highcharts.com/modules/series-label.js"></script>-->
-<script src="chart/series-label.js"></script>
-<!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
-<script src="chart/exporting.js"></script>
-<!--<script src="https://code.highcharts.com/modules/export-data.js"></script>-->
-<script src="chart/export-data.js"></script>
-<!--<script src="https://code.highcharts.com/highcharts-3d.js"></script>-->
-<script src="chart/highcharts-3d.js"></script>
-<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
-<script src="chart/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 
@@ -151,27 +145,29 @@ $dataPoints = array(
 $date = date('Y-m-d');
 
 //consultation
- $get_pat = select("SELECT COUNT(*) as allx FROM consultation WHERE dateInsert = CURDATE()");
+ $get_pat = select("SELECT COUNT(consultID) as allx FROM consultation WHERE centerID='".$_SESSION['centerID']."' && dateInsert = CURDATE()");
 foreach($get_pat as $get_pats){
   $all_consult=$get_pats['allx'];
 }
 
-  $get_insurance = select("SELECT COUNT(mode) as insurance FROM consultation WHERE mode ='Insurance'&& dateInsert=CURDATE() && insuranceType='NHIS'");
+
+
+  $get_insurance = select("SELECT COUNT(mode) as insurance FROM consultation WHERE centerID='".$_SESSION['centerID']."'&& mode ='Insurance'&& dateInsert=CURDATE() && insuranceType='NHIS'");
   foreach($get_insurance as $get_insurances){
     $nhis = $get_insurances['insurance'];
   }
 
-    $get_insurance2 = select("SELECT COUNT(mode) as insurances FROM consultation WHERE mode ='Insurance'&& dateInsert=CURDATE() && insuranceType='Acacia'");
+    $get_insurance2 = select("SELECT COUNT(mode) as insurances FROM consultation WHERE centerID='".$_SESSION['centerID']."'&& mode ='Insurance'&& dateInsert=CURDATE() && insuranceType='Acacia'");
   foreach($get_insurance2 as $get_insurances2){
     $acaia=$get_insurances2['insurances'];
   }
 
-     $get_company = select("SELECT COUNT(mode) as comp FROM consultation WHERE mode ='Company' && dateInsert=CURDATE() ");
+     $get_company = select("SELECT COUNT(mode) as comp FROM consultation WHERE centerID='".$_SESSION['centerID']."' && mode ='Company' && dateInsert=CURDATE() ");
   foreach($get_company as $get_companyx){
     $company = $get_companyx['comp'];
   }
 
-     $get_private = select("SELECT COUNT(mode) as priva FROM consultation WHERE mode ='Private' && dateInsert=CURDATE()");
+     $get_private = select("SELECT COUNT(mode) as priva FROM consultation WHERE centerID='".$_SESSION['centerID']."'&& mode ='Private' && dateInsert=CURDATE()");
   foreach( $get_private as $get_privates){
     $private = $get_privates['priva'];
   }
@@ -193,7 +189,7 @@ $percentile=100;
 @$cal_private = ($private)/($all_consult)*($percentile);
 
 //WARD
-$room_ward = select("SELECT * FROM wardlist");
+$room_ward = select("SELECT * FROM wardlist WHERE centerID='".$_SESSION['centerID']."'");
 foreach($room_ward as $room_wards){}
 
 ?>
@@ -351,8 +347,8 @@ $dataPoints = array(
   </div>
   <div class="container-fluid">
 <?php if($_SESSION['accessLevel']=='center_admin'){ ?>
-<!--   	<div class="quick-actions_homepage">-->
-<!--    <ul class="quick-actions">-->
+   	<div class="quick-actions_homepage">
+    <ul class="quick-actions">
 <!--          <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> CONSULTATION</a></li>-->
 <!--          <li> <a href="centeruser-index"> <i class="icon-people"></i> STAFF </a> </li>-->
 <!--          <li> <a href="centerward-index"> <i class="fa fa-folder-open fa-3x"></i> <br/> WARD </a> </li>-->
@@ -360,10 +356,9 @@ $dataPoints = array(
 <!--          <li> <a href="centerlab-index"> <i class="icon-search"></i> LABORATORY </a> </li>-->
 <!--          <li> <a href="smsrequest-index"> <i class="fa fa-envelope fa-3x"></i><br> SMS REQUEST </a> </li>-->
 <!--          <li> <a href="center-account"> <i class="icon-survey"></i>ACCOUNTS </a> </li>-->
-<!--        </ul>-->
-<!--   </div>-->
+        </ul>
+   </div>
 <?php }
-
       if($_SESSION['accessLevel']=='CONSULTATION'){
 //        $room = Consultation::find_consultingroom();
         $room = select("SELECT * FROM consultingroom WHERE centerID='$centerID' AND status='".FREE."' || status='' ");
@@ -413,23 +408,26 @@ $dataPoints = array(
 
 
 
+
 <?php if($_SESSION['accessLevel']=='CONSULTATION'){
 
-  $consult_all = select("SELECT COUNT(*) as c_all FROM consultation WHERE dateInsert = CURDATE()");
+  $consult_all = select("SELECT COUNT(*) as c_all FROM consultation WHERE centerID='".$_SESSION['centerID']."'&& dateInsert = CURDATE()");
   foreach($consult_all as $consult_allx){$consult_total= $consult_allx['c_all'];}
 
-$consult_wait = select("SELECT COUNT(*) as con1 FROM consultation WHERE status !='sent_to_pharmacy' && dateInsert = CURDATE() ");
+$consult_wait = select("SELECT COUNT(*) as con1 FROM consultation WHERE centerID='".$_SESSION['centerID']."'&& status !='sent_to_pharmacy' && dateInsert = CURDATE() ");
 foreach($consult_wait as $consult_waitx){$waiting = $consult_waitx['con1'];}
 
-$consult_discharge = select("SELECT COUNT(*) con2 FROM consultation WHERE status = 'sent_to_pharmacy' && dateInsert = CURDATE()");
+$consult_discharge = select("SELECT COUNT(*) con2 FROM consultation WHERE centerID='".$_SESSION['centerID']."' && status = 'sent_to_pharmacy' && dateInsert = CURDATE()");
 foreach($consult_discharge as $consult_discharges){$discharged = $consult_discharges['con2'];}
+
+//echo "<script>alert('{$discharged}')</script>";
 
 // consultation calculation
 //waiting patients
-@$wait_pat =($waiting)/($consult_total)*100;
+// $wait_pat =($waiting)/($consult_total)*100;
 
 //discharged patients
-@$disch_pat =($discharged)/($consult_total)*100;
+// $disch_pat =($discharged)/($consult_total)*100;
 
 
 
@@ -437,7 +435,7 @@ foreach($consult_discharge as $consult_discharges){$discharged = $consult_discha
 // echo "<script>alert({$disch_pat})</script>";
 
   ?>
-<?php $Nome = $_SESSION['username']; echo 'Welcome'.' '. strtoupper($Nome); ?>
+
 <br>
   <div id="containerCON" style="min-width: 310px; height: 320px; margin: 0 auto;" ></div>
 
@@ -459,6 +457,15 @@ Highcharts.setOptions({
     };
   })
 });
+
+<?php
+
+$w_pat = select("SELECT COUNT(*) as wait_pat FROM consultation WHERE centerID='".$_SESSION['centerID']."' && status='sent_to_pharmacy'||status='sent_to_ward'||status='sent_to_consulting' && dateInsert=CURDATE()");
+foreach($w_pat as $w_patx){$waiting = $w_patx['wait_pat'];}
+$pat_all = select("SELECT COUNT(*) as p_all FROM consultation WHERE centerID='".$_SESSION['centerID']."' && dateInsert=CURDATE() ");
+foreach($pat_all as $pat_allx){$all_patients=$pat_allx['p_all'];};
+$dis = select("SELECT COUNT(*) as dis_pat FROM consultation WHERE centerID='".$_SESSION['centerID']."' && status='DONE' && dateInsert=CURDATE()");
+foreach($dis as $disx){?>
 
 // Build the chart
 Highcharts.chart('containerCON', {
@@ -491,8 +498,9 @@ Highcharts.chart('containerCON', {
   series: [{
     name: 'Share',
     data: [
-      { name: 'Waiting Patients', y:<?php echo $wait_pat;?> },
-      { name: 'Discharged Patients', y:<?php echo $disch_pat;?>}
+      { name: 'Waiting Patients', y:<?php $queue_pat =$waiting/$all_patients *100; echo $queue_pat; ?> },
+      { name: 'Discharged Patients', y:<?php $discharged = $disx['dis_pat']/$all_patients *100; echo $discharged;?>}
+
 
 
 
@@ -504,13 +512,37 @@ Highcharts.chart('containerCON', {
 
 </script>
 
-<?php } ?>
+<?php }} ?>
+
+<?php
+ $count=0;
+$get_count = select("SELECT COUNT(*) as g_count FROM mode_of_payment ");
+foreach($get_count as $get_countx){
+  // $get_countx['g_count'];
+
+
+$get_insure = select("SELECT * FROM mode_of_payment WHERE centerID = '".$_SESSION['centerID']."'");
+
+
+foreach($get_insure as $get_insurex){
+  $types[$count] = $get_insurex['type'];
+  $count++;
+  //echo "<script>alert('{$types[$count]}')</script>";
+}
+ $insure_ct = $get_countx['g_count'];
+
+  for($i=0;$i < $insure_ct;$i++){
+   $insure_types = $types[$i];
+
+}
+
+
+?>
 
 
 
              <?php if($_SESSION['accessLevel']=='OPD'){?>
 
-            <?php $Nome = $_SESSION['username']; echo 'Welcome'.' '. strtoupper($Nome); ?>
 
 <div id="containerOPD" style="min-width: 310px; height: 300px; margin: 0 auto;" ></div>
 <script>
@@ -543,7 +575,7 @@ Highcharts.chart('containerOPD', {
     text: 'OUT PATIENT DEPARTMENT INSURANCE'
   },
   tooltip: {
-    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    // pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
   },
   plotOptions: {
     pie: {
@@ -562,10 +594,10 @@ Highcharts.chart('containerOPD', {
   series: [{
     name: 'Share',
     data: [
-      { name: 'NHIS', y:<?php echo $cal_nhis;?> },
-      { name: 'ACACIA', y: <?php echo $cal_acacia;?> },
-      { name: 'COMPANY', y: <?php echo $cal_company;?> },
-      { name: 'PRIVATE', y: <?php echo $cal_private;?> }
+      { name: '<?php echo $insure_types;?>', y:<?php echo $cal_nhis;?> }
+      // { name: 'ACACIA', y: <?php #echo $cal_acacia;?> },
+      // { name: 'COMPANY', y: <?php #echo $cal_company;?> },
+      // { name: 'PRIVATE', y: <?php #echo $cal_private;?> }
 
 
     ]
@@ -576,7 +608,7 @@ Highcharts.chart('containerOPD', {
 
 </script>
 
-
+<?php }?>
 
 
 
@@ -585,31 +617,31 @@ Highcharts.chart('containerOPD', {
 
 
               <?php
-              $phar_count = select("SELECT COUNT(*) as phar_all FROM prescribedmeds");
+              //PHARMACY
+              $c_id = select("SELECT * FROM prescriptions WHERE centerID = '".$_SESSION['centerID']."'");
+              foreach($c_id as $c_idx){
+              $phar_count = select("SELECT COUNT(*) as phar_all FROM prescribedmeds WHERE dateInsert=CURDATE()");
               foreach($phar_count as $phar_counts){ $phar_all=$phar_counts['phar_all'];}
 
-              $pharma = select("SELECT COUNT(*) as pharma_served FROM prescribedmeds WHERE prescribeStatus='served'");
+              $pharma = select("SELECT COUNT(*) as pharma_served FROM prescribedmeds WHERE prescribeStatus='served' && dateInsert=CURDATE()");
               foreach($pharma as $pharmas){
                 $served = $pharmas['pharma_served'];}
 
-                 $pharma_not = select("SELECT COUNT(*) as pharma_non FROM prescribedmeds WHERE prescribeStatus !='served'");
+                 $pharma_not = select("SELECT COUNT(*) as pharma_non FROM prescribedmeds WHERE prescribeID='".$c_idx['prescribeID']."' && prescribeStatus !='served' && dateInsert=CURDATE()");
               foreach($pharma_not as $pharma_notx){
                 $unserved = $pharma_notx['pharma_non'];}
 
                 //PHARMACY CALCULATION
 
-                $cal_served = ($served/$phar_all) * $percentile;
+                $cal_served = $served;
 
 
-                $cal_unserved = ($unserved/$phar_all)*$percentile;
+                $cal_unserved = $unserved;
 
-
- // echo "<script>alert('{$cal_unserved}')</script>";
               ?>
 
               <?php if($_SESSION['accessLevel']=='PHARMACY'){?>
 
-<?php $Nome = $_SESSION['username']; echo 'Welcome'.' '. strtoupper($Nome); ?>
               <div id="containerPHARMA" style="min-width: 300px; height: 350px; margin: 0 auto"></div>
                 <script>
 
@@ -634,8 +666,8 @@ Highcharts.chart('containerPHARMA', {
         }
     },
     yAxis: {
-        min: 0,
-        max: 100,
+         min: 0,
+        // max: 100,
         title: {
             text: 'Quantity'
         }
@@ -644,10 +676,10 @@ Highcharts.chart('containerPHARMA', {
         enabled: false
     },
     tooltip: {
-        pointFormat: 'Drug Amount: <b>{point.y:.100f} %</b>'
+        // pointFormat: 'Drug Amount: <b>{point.y:.100f} %</b>'
     },
     series: [{
-        name: 'Population',
+        name: '<?php echo $_SESSION['centerID']; ?>',
         data: [
             ['Served Prescriptions', <?php echo $cal_served;?>],
             ['Unserved Prescriptions', <?php echo $cal_unserved;?>]
@@ -658,7 +690,7 @@ Highcharts.chart('containerPHARMA', {
             rotation: -90,
             color: 'red',
             align: 'right',
-            format: '{point.y:.100f}', // one decimal
+            // format: '{point.y:.100f}', // one decimal
             y: 10, // 10 pixels down from the top
             style: {
                 fontSize: '13px',
@@ -671,88 +703,19 @@ Highcharts.chart('containerPHARMA', {
 
                 </script>
 
-              <?php } ?>
+              <?php }} ?>
 
 
 <?php if($_SESSION['accessLevel']=='INVENTORY'){?>
-
-
-    <div id="containerINVENT" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-
-<table id="datatable">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Jane</th>
-            <th>John</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th>Apples</th>
-            <td>3</td>
-            <td>4</td>
-        </tr>
-        <tr>
-            <th>Pears</th>
-            <td>2</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <th>Plums</th>
-            <td>5</td>
-            <td>11</td>
-        </tr>
-        <tr>
-            <th>Bananas</th>
-            <td>1</td>
-            <td>1</td>
-        </tr>
-        <tr>
-            <th>Oranges</th>
-            <td>2</td>
-            <td>4</td>
-        </tr>
-    </tbody>
-</table>
-
-<script>
-
-
-Highcharts.chart('containerINVENT', {
-    data: {
-        table: 'datatable'
-    },
-    chart: {
-        type: 'column'
-    },
-    title: {
-        text: 'Data extracted from a HTML table in the page'
-    },
-    yAxis: {
-        allowDecimals: false,
-        title: {
-            text: 'Units'
-        }
-    },
-    tooltip: {
-        formatter: function () {
-            return '<b>' + this.series.name + '</b><br/>' +
-                this.point.y + ' ' + this.point.name.toLowerCase();
-        }
-    }
-});
-
-</script>
 
 
 <?php } ?>
 
 <?php if($_SESSION['accessLevel']=='WARD'){?>
 
-  <span style="margin-left:500px;font-size:22px;">WARD DEPARTMENT</span><br>
+  <span style="margin-left:750px;font-size:22px;">WARD DEPARTMENT</span><br>
 
- <?php $Nome = $_SESSION['username']; echo 'Welcome'.' '. strtoupper($Nome); ?>
+
 
   <div id="containerWARD" style="width:1000px;">
 <br>
@@ -760,19 +723,25 @@ Highcharts.chart('containerINVENT', {
       <thead>
         <tr>
         <th>WARD NAME</th>
-        <th>NUMBER OF BEDS</th>
+        <th>AVAILABLE BEDS</th>
+        <th>NUMBER OF PATIENTS</th>
       </tr>
       </thead>
       <tbody>
         <tr>
         <?php
-        $ward_detail = select("SELECT * FROM wardlist");
+        $ward_detail = select("SELECT * FROM wardlist WHERE centerID='".$_SESSION['centerID']."'");
         foreach($ward_detail as $ward_details){
+          $ward_bed = select("SELECT COUNT(*) as w_bed FROM bedlist WHERE centerID='".$_SESSION['centerID']."' && bedID='".$ward_details['wardID']."' && status !='occupied' && doe=CURDATE()");
+        foreach($ward_bed as $ward_bedx){$ward_bedx['w_bed'];}
+        $num_pat = select("SELECT COUNT(patientID) as n_pat FROM wardassigns WHERE centerID='".$_SESSION['centerID']."' && wardID='".$ward_details['wardID']."' && doe=CURDATE()");
+        foreach($num_pat as $num_patx){}
 
           ?>
 
-          <td style="background-color:lightblue;"><?php echo $ward_details['wardName']; ?></td>
-          <td style="background-color:lightyellow;"><?php echo $ward_details['numOfBeds']; ?></td>
+          <td style="background-color:lightblue;text-align:center;"><?php echo $ward_details['wardName']; ?></td>
+          <td style="background-color:lightyellow;text-align:center;"><?php echo $ward_bedx['w_bed']; ?></td>
+          <td style="background-color:lightyellow;text-align:center"><?php echo $num_patx['n_pat']; ?></td>
         </tr>
         <?php } ?>
       </tbody>
@@ -784,6 +753,14 @@ Highcharts.chart('containerINVENT', {
 
 
 <?php } ?>
+
+<?php
+$dept_name = select("SELECT * FROM  accounttransaction WHERE centerID ='".$_SESSION['centerID']."'");
+foreach($dept_name as $dept_names){$d_name= $dept_names['creditAcc'];}
+$dept_ct = select("SELECT COUNT(patientID) as dept_no FROM accounttransaction WHERE centerID ='".$_SESSION['centerID']."' && dateInsert=CURDATE()");
+foreach($dept_ct as $dept_ctx){$dept_ctx['dept_no'];}
+
+?>
 
 <?php if($_SESSION['accessLevel']=='FINANCE'){?>
 
@@ -815,45 +792,50 @@ Highcharts.chart('containerFIN', {
     series: [{
         name: 'Delivered amount',
         data: [
-            ['Bananas', 8],
-            ['Kiwi', 3],
-            ['Mixed nuts', 1]
+            ['<?php echo $dept_names['creditAcc']; ?>', <?php echo $dept_ctx['dept_no']; ?>]
+            // ['blood', <?php #echo $dept_ctx['dept_no']; ?>],
+            // ['meat', <?php #echo $dept_ctx['dept_no']; ?> ]
         ]
     }]
 });
 
   </script>
 
+
 <?php } ?>
 
 
               <?php if($_SESSION['accessLevel']=='LABORATORY'){ ?>
 
-                <?php $Nome = $_SESSION['username']; echo 'Welcome'.' '. strtoupper($Nome); ?>
+
                 <div id="result"></div>
-<table id="table-sparkline" style="width:1100px;">
-    <thead >
-        <tr style="background-color:skyblue;">
-            <th>LABORATORY TYPE</th>
-            <th>LABORATORY ID</th>
-            <th>FACILITY ID</th>
+<table id="table-sparkline" class='table table-bordered' style="width:1100px;">
+    <thead>
+        <tr>
+            <th style='font-weight:bolder;font-size:22px;background-color:lightblue;'>LABORATORY TYPE</th>
+            <th style='font-weight:bolder;font-size:22px;background-color:lightblue;'>RESULT COUNT</th>
+            <th style='font-weight:bolder;font-size:22px;background-color:lightblue;'>NUMBER OF PATIENTS</th>
 
         </tr>
     </thead>
     <tbody id="tbody-sparkline">
   <tr>
       <?php
-      $lab_type = select("SELECT * FROM lablist");
+      $lab_type = select("SELECT * FROM lablist WHERE centerID='".$_SESSION['centerID']."'");
       foreach($lab_type as $lab_types){
+        $REZ= select("SELECT COUNT(*) as REZ_COUNT FROM labresults WHERE centerID='".$_SESSION['centerID']."' && labID='".$lab_types['labID']."' && dateInsert=CURDATE() ");
+        foreach($REZ as $REZX){}
+          $p_count = select("SELECT COUNT(patientID) as pat_count FROM labresults WHERE centerID='".$_SESSION['centerID']."' && labID='".$lab_types['labID']."' && dateInsert=CURDATE()");
+        foreach($p_count as $p_counts){}
 
 
  //        $lab_count = select("SELECT COUNT(patientID) as lab_num FROM labresult WHERE labID='".$lab_types['labID']."'");
  // foreach($lab_count as $lab_counts){}
         ?>
-<!--</tr>-->
-      <td><?php echo $lab_types['labName'];?></td>
-      <td><?php echo $lab_types['labID'];?></td>
-      <td><?php echo $centerID;?></td>
+</tr>
+      <td style='text-align:center;'><?php echo $lab_types['labName'];?></td>
+      <td style='text-align:center;'><?php echo $REZX['REZ_COUNT'];?></td>
+      <td style='text-align:center;'><?php echo $p_counts['pat_count'];?></td>
 
 
 
@@ -1051,7 +1033,7 @@ doChunk();
 <script src="js/jquery.peity.min.js"></script>
 <!-- <script src="js/canvasjs.min.js"></script> -->
 
-<script>
+    <script>
 window.onload = function () {
     document.getElementById('button').onclick = function () {
         document.getElementById('modal').style.display = "none"
@@ -1084,5 +1066,11 @@ function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
 </script>
+
+
+<script>
+
+</script>
+
 </body>
 </html>

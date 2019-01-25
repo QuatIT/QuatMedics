@@ -16,19 +16,23 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="css/font-awesome.min.css" />
-<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <!--highcharts-->
-<!--<script src="https://code.highcharts.com/highcharts.js"></script>-->
-<script src="chart/highcharts.js"></script>
-<!--<script src="https://code.highcharts.com/modules/series-label.js"></script>-->
-<script src="chart/series-label.js"></script>
-<!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
-<script src="chart/exporting.js"></script>
-<!--<script src="https://code.highcharts.com/modules/export-data.js"></script>-->
-<script src="chart/export-data.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
 
+<<<<<<< HEAD
 <!--<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
 <script src="chart/plotly-latest.min.js"></script>
+=======
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+>>>>>>> QuatMedics/master
 <style>
 .active{
 /*    background-color: #209fbf;*/
@@ -929,20 +933,25 @@ $load_newpatient = select("SELECT * FROM eme_ward WHERE centerID='".$_SESSION['c
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
 <script src="js/highcharts.js"></script>
-<script src="chart/jquery-3.1.1.min.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
 <script>
-function newpatient(){
-    xmlhttp=new XMLHttpRequest();
-    xmlhttp.open("GET","loads/emenursechecklist.php?emeid=<?php echo $_GET['emeid']; ?>&&pid=<?php echo $_GET['pid']; ?>",false);
-    xmlhttp.send(null);
-    document.getElementById("emepatienttreat11").innerHTML=xmlhttp.responseText;
-}
-    newpatient();
-
-    setInterval(function(){
+<!--<script src="js/maruti.js"></script> -->
+<script>
+  function newpatient(){
+        xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","loads/emenursechecklist.php?emeid=<?php echo $_GET['emeid']; ?>&&pid=<?php echo $_GET['pid']; ?>",false);
+        xmlhttp.send(null);
+        document.getElementById("emepatienttreat11").innerHTML=xmlhttp.responseText;
+    }
         newpatient();
-    },3000);
-</script>
+
+        setInterval(function(){
+            newpatient();
+        },3000);
+    </script>
 
 <!--
 <script>
@@ -960,15 +969,15 @@ function newpatient(){
     </script>
 -->
 
-<script>
-function emPat(val){
-// load the select option data into a div
-    $('#loader').html("Please Wait...");
-    $('#empatient').load('emepatient.php?id='+val, function(){
-    $('#loader').html("");
-   });
+    <script>
+    function emPat(val){
+	// load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#empatient').load('emepatient.php?id='+val, function(){
+		$('#loader').html("");
+       });
 }
-</script>
+    </script>
 
 
 <!--
@@ -990,6 +999,32 @@ function emPat(val){
 
         </script>
 -->
+
+
+<script type="text/javascript">
+  // This function is called from the pop-up menus to transfer to
+  // a different page. Ignore if the value returned is a null string:
+  function goPage (newURL) {
+
+      // if url is empty, skip the menu dividers and reset the menu selection to default
+      if (newURL != "") {
+
+          // if url is "-", it is this page -- reset the menu:
+          if (newURL == "-" ) {
+              resetMenu();
+          }
+          // else, send page to designated URL
+        else {
+            document.location.href = newURL;
+          }
+      }
+  }
+
+// resets the menu selection upon entry to this page:
+function resetMenu() {
+   document.gomenu.selector.selectedIndex = 2;
+}
+</script>
 
 <script>
 
@@ -1060,6 +1095,20 @@ function emPat(val){
 
 
 </script>
+
+
+
+
+</body>
+</html>
+
+
+<script>
+function printer() {
+    window.print();
+}
+</script>
+
 <script>
   //select list
   $(document).ready(function(){
@@ -1073,12 +1122,3 @@ function emPat(val){
 
 
 </script>
-
-<script>
-function printer() {
-    window.print();
-}
-</script>
-
-</body>
-</html>

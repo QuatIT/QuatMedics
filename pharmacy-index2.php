@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
-<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
     <style>
         .active{
             background-color: #209fbf;
@@ -43,7 +42,7 @@
 
     if($_SESSION['accessLevel']=='PHARMACY' || $_SESSION['username']=='rik'){
 
-        $get_pharm= select("SELECT * FROM patient");
+        $get_pharm= select("SELECT * FROM patient WHERE centerID='".$_SESSION['centerID']."'");
 
     ?>
 <div id="search">
