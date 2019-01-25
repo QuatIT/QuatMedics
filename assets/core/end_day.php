@@ -517,6 +517,160 @@ foreach($rcat_nhiscolumn_sql as $rcat_nhiscolumn_row){}
 
 
 
+
+function accounts(){
+
+//	check number of local bedlist columns
+$sql = "select count(*) as laccounts from information_schema.columns where table_schema='$dbname' and table_name='accounts'";
+	$llablistcolumn_sql = select($sql);
+foreach($llablistcolumn_sql as $llablistcolumn_row){}
+
+//	check number of remote bedlist columns
+	$rlablistcolumn_sql = select2("select count(*) as raccounts from information_schema.columns where table_schema='$dbname2' and table_name='accounts'");
+foreach($rlablistcolumn_sql as $rlablistcolumn_row){}
+
+	if($llablistcolumn_row['laccounts'] == $rlablistcolumn_row['raccounts']){
+
+//check table remote_bedlist
+		$rlablistlimit_sql = select2("SELECT * FROM accounts WHERE centerID='".$_SESSION['centerID']."' ORDER BY doe ASC LIMIT 1");
+		if(count($rlablistlimit_sql)>=1){
+	foreach($rlablistlimit_sql as $rlablistlimit_row){
+
+		//search where local_doe is greater than remote_doe
+		$local_lablist_sql = select("SELECT * FROM accounts WHERE centerID='".$_SESSION['centerID']."' && dateRegistered >= '".$rlablistlimit_row['dateRegistered']."' ");
+		foreach($local_lablist_sql as $llablist_row){
+
+        //check duplication in remote
+        $rlablist_duplicate_sql = select2("select * from quatitso_quatmedic.accounts WHERE centerID='".$llablist_row['centerID']."' ");
+
+			if(count($rlablist_duplicate_sql) < 1){
+
+			//insert local_bedlist into remote_bedlist
+			$labresult_insert = insert2("INSERT INTO quatitso_quatmedic.accounts(accountID,centerID,accountName,accountType,accBalance,dateInsert,doe) VALUES('".$llablist_row['accountID']."','".$llablist_row['centerID']."','".$llablist_row['accountName']."','".$llablist_row['accountType']."','".$llablist_row['accBalance']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+				if($labresult_insert){
+					echo "L_accounts UPDATED";
+				}else{
+					echo "ERROR: L_accounts";
+				}
+		}
+
+		}
+		}
+		}else{
+		//search local_mode_of_payment
+		$local_lablist_sql = select("SELECT * FROM accounts WHERE centerID='".$_SESSION['centerID']."' ");
+		foreach($local_lablist_sql as $llablist_row){
+
+			//check duplication in remote
+			$rlablist_duplicate_sql = select2("select * from accounts where doe='".$llablist_row['doe']."' ");
+
+			if(count($rlablist_duplicate_sql) < 1){
+
+			//insert local_bedlist into remote_bedlist
+				$labpayment_insert = insert2("INSERT INTO quatitso_quatmedic.accounts(accountID,centerID,accountName,accountType,accBalance,dateInsert,doe) VALUES('".$llablist_row['accountID']."','".$llablist_row['centerID']."','".$llablist_row['accountName']."','".$llablist_row['accountType']."','".$llablist_row['accBalance']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+				if($labpayment_insert){
+					echo "R_accounts UPDATED";
+				}else{
+					echo "ERROR: R_accounts";
+				}
+		}
+		}
+		}
+
+		//REMOTE_BEDLIST TO LOCAL_BEDLIST
+		//fetch all from remote_bedlist
+		$remote_lablistsql = select2("select * from quatitso_quatmedic.accounts WHERE centerID !='".$_SESSION['centerID']."' ");
+
+		foreach($remote_lablistsql as $remote_lablistrow){
+		$lo_lablistinsert = insert("INSERT INTO accounts(accountID,centerID,accountName,accountType,accBalance,dateInsert,doe) VALUES('".$llablist_row['accountID']."','".$llablist_row['centerID']."','".$llablist_row['accountName']."','".$llablist_row['accountType']."','".$llablist_row['accBalance']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+        }
+            }else{
+                echo "TABLE L_accounts is NOT EQUAL to TABLE R_accounts";
+            }
+}
+
+
+function accounttransaction(){
+
+//	check number of local bedlist columns
+$sql = "select count(*) as laccounttransaction from information_schema.columns where table_schema='$dbname' and table_name='accounttransaction'";
+	$llablistcolumn_sql = select($sql);
+foreach($llablistcolumn_sql as $llablistcolumn_row){}
+
+//	check number of remote bedlist columns
+	$rlablistcolumn_sql = select2("select count(*) as raccounttransaction from information_schema.columns where table_schema='$dbname2' and table_name='accounttransaction'");
+foreach($rlablistcolumn_sql as $rlablistcolumn_row){}
+
+	if($llablistcolumn_row['laccounttransaction'] == $rlablistcolumn_row['raccounttransaction']){
+
+//check table remote_bedlist
+		$rlablistlimit_sql = select2("SELECT * FROM accounttransaction WHERE centerID='".$_SESSION['centerID']."' ORDER BY doe ASC LIMIT 1");
+		if(count($rlablistlimit_sql)>=1){
+	foreach($rlablistlimit_sql as $rlablistlimit_row){
+
+		//search where local_doe is greater than remote_doe
+		$local_lablist_sql = select("SELECT * FROM accounttransaction WHERE centerID='".$_SESSION['centerID']."' && dateRegistered >= '".$rlablistlimit_row['dateRegistered']."' ");
+		foreach($local_lablist_sql as $llablist_row){
+
+        //check duplication in remote
+        $rlablist_duplicate_sql = select2("select * from quatitso_quatmedic.accounttransaction WHERE centerID='".$llablist_row['centerID']."' ");
+
+			if(count($rlablist_duplicate_sql) < 1){
+
+			//insert local_bedlist into remote_bedlist
+			$labresult_insert = insert2("INSERT INTO quatitso_quatmedic.accounttransaction(accountID,centerID,accountName,accountType,accBalance,dateInsert,doe) VALUES('".$llablist_row['accountID']."','".$llablist_row['centerID']."','".$llablist_row['accountName']."','".$llablist_row['accountType']."','".$llablist_row['accBalance']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+				if($labresult_insert){
+					echo "L_accounttransaction UPDATED";
+				}else{
+					echo "ERROR: L_accounttransaction";
+				}
+		}
+
+		}
+		}
+		}else{
+		//search local_mode_of_payment
+		$local_lablist_sql = select("SELECT * FROM accounttransaction WHERE centerID='".$_SESSION['centerID']."' ");
+		foreach($local_lablist_sql as $llablist_row){
+
+			//check duplication in remote
+			$rlablist_duplicate_sql = select2("select * from accounttransaction where doe='".$llablist_row['doe']."' ");
+
+			if(count($rlablist_duplicate_sql) < 1){
+
+			//insert local_bedlist into remote_bedlist
+				$labpayment_insert = insert2("INSERT INTO quatitso_quatmedic.accounttransaction(accountID,centerID,accountName,accountType,accBalance,dateInsert,doe) VALUES('".$llablist_row['accountID']."','".$llablist_row['centerID']."','".$llablist_row['accountName']."','".$llablist_row['accountType']."','".$llablist_row['accBalance']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+				if($labpayment_insert){
+					echo "R_accounttransaction UPDATED";
+				}else{
+					echo "ERROR: R_accounttransaction";
+				}
+		}
+		}
+		}
+
+		//REMOTE_BEDLIST TO LOCAL_BEDLIST
+		//fetch all from remote_bedlist
+		$remote_lablistsql = select2("select * from quatitso_quatmedic.accounttransaction WHERE centerID !='".$_SESSION['centerID']."' ");
+
+		foreach($remote_lablistsql as $remote_lablistrow){
+		$lo_lablistinsert = insert("INSERT INTO accounttransaction(accountID,centerID,accountName,accountType,accBalance,dateInsert,doe) VALUES('".$llablist_row['accountID']."','".$llablist_row['centerID']."','".$llablist_row['accountName']."','".$llablist_row['accountType']."','".$llablist_row['accBalance']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+        }
+            }else{
+                echo "TABLE L_accounttransaction is NOT EQUAL to TABLE R_accounttransaction";
+            }
+}
+
+
+
+
+
 function centeruser(){
 //	check number of local bedlist columns
 $sql = "select count(*) as lcenteruser from information_schema.columns where table_schema='$dbname' and table_name='centeruser'";
@@ -3017,6 +3171,165 @@ foreach($rlablistcolumn_sql as $rlablistcolumn_row){}
             echo "TABLE L_wardmeds is NOT EQUAL to TABLE R_wardmeds";
         }
 }
+
+
+
+
+
+function wardtreatmet(){
+
+//	check number of local bedlist columns
+$sql = "select count(*) as lwardtreatmet from information_schema.columns where table_schema='$dbname' and table_name='wardtreatmet'";
+	$llablistcolumn_sql = select($sql);
+foreach($llablistcolumn_sql as $llablistcolumn_row){}
+
+//	check number of remote bedlist columns
+	$rlablistcolumn_sql = select2("select count(*) as rwardtreatmet from information_schema.columns where table_schema='$dbname2' and table_name='wardtreatmet'");
+foreach($rlablistcolumn_sql as $rlablistcolumn_row){}
+
+	if($llablistcolumn_row['lwardtreatmet'] == $rlablistcolumn_row['rwardtreatmet']){
+
+//check table remote_bedlist
+		$rlablistlimit_sql = select2("SELECT * FROM wardtreatmet WHERE centerID='".$_SESSION['centerID']."' ORDER BY doe ASC LIMIT 1");
+		if(count($rlablistlimit_sql)>=1){
+	foreach($rlablistlimit_sql as $rlablistlimit_row){
+
+		//search where local_doe is greater than remote_doe
+		$local_lablist_sql = select("SELECT * FROM wardtreatmet WHERE centerID='".$_SESSION['centerID']."' && dateInsert >= '".$rlablistlimit_row['dateInsert']."' ");
+		foreach($local_lablist_sql as $llablist_row){
+
+        //check duplication in remote
+        $rlablist_duplicate_sql = select2("select * from quatitso_quatmedic.wardtreatmet WHERE centerID='".$llablist_row['centerID']."' ");
+
+			if(count($rlablist_duplicate_sql) < 1){
+
+			//insert local_bedlist into remote_bedlist
+			$labresult_insert = insert2("INSERT INTO quatitso_quatmedic.wardtreatmet(centerID,assignID,patientID,treatment,dateInsert,doe) VALUES('".$llablist_row['centerID']."','".$llablist_row['assignID']."','".$llablist_row['patientID']."','".$llablist_row['treatment']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+				if($labresult_insert){
+					echo "L_wardtreatmet UPDATED";
+				}else{
+					echo "ERROR: L_wardtreatmet";
+				}
+		}
+
+		}
+		}
+		}else{
+		//search local_mode_of_payment
+		$local_lablist_sql = select("SELECT * FROM wardtreatmet WHERE centerID='".$_SESSION['centerID']."' ");
+		foreach($local_lablist_sql as $llablist_row){
+
+			//check duplication in remote
+			$rlablist_duplicate_sql = select2("select * from wardtreatmet where doe='".$llablist_row['doe']."' ");
+
+			if(count($rlablist_duplicate_sql) < 1){
+
+			//insert local_bedlist into remote_bedlist
+				$labpayment_insert = insert2("INSERT INTO quatitso_quatmedic.wardtreatmet(centerID,assignID,patientID,treatment,dateInsert,doe) VALUES('".$llablist_row['centerID']."','".$llablist_row['assignID']."','".$llablist_row['patientID']."','".$llablist_row['treatment']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+				if($labpayment_insert){
+					echo "R_wardtreatmet UPDATED";
+				}else{
+					echo "ERROR: R_wardtreatmet";
+				}
+		}
+		}
+		}
+
+		//REMOTE_BEDLIST TO LOCAL_BEDLIST
+		//fetch all from remote_bedlist
+		$remote_lablistsql = select2("select * from quatitso_quatmedic.wardtreatmet WHERE centerID !='".$_SESSION['centerID']."' ");
+
+		foreach($remote_lablistsql as $remote_lablistrow){
+		$lo_lablistinsert = insert("INSERT INTO wardtreatmet(centerID,assignID,patientID,treatment,dateInsert,doe) VALUES('".$llablist_row['centerID']."','".$llablist_row['assignID']."','".$llablist_row['patientID']."','".$llablist_row['treatment']."','".$llablist_row['dateInsert']."','".$llablist_row['doe']."') ");
+
+        }
+        }else{
+            echo "TABLE L_wardtreatmet is NOT EQUAL to TABLE R_wardtreatmet";
+        }
+}
+
+
+
+
+
+
+function ward_vitals(){
+
+//	check number of local bedlist columns
+$sql = "select count(*) as lward_vitals from information_schema.columns where table_schema='$dbname' and table_name='ward_vitals'";
+	$llablistcolumn_sql = select($sql);
+foreach($llablistcolumn_sql as $llablistcolumn_row){}
+
+//	check number of remote bedlist columns
+	$rlablistcolumn_sql = select2("select count(*) as rward_vitals from information_schema.columns where table_schema='$dbname2' and table_name='ward_vitals'");
+foreach($rlablistcolumn_sql as $rlablistcolumn_row){}
+
+	if($llablistcolumn_row['lward_vitals'] == $rlablistcolumn_row['rward_vitals']){
+
+//check table remote_bedlist
+		$rlablistlimit_sql = select2("SELECT * FROM ward_vitals WHERE centerID='".$_SESSION['centerID']."' ORDER BY doe ASC LIMIT 1");
+		if(count($rlablistlimit_sql)>=1){
+	foreach($rlablistlimit_sql as $rlablistlimit_row){
+
+		//search where local_doe is greater than remote_doe
+		$local_lablist_sql = select("SELECT * FROM ward_vitals WHERE centerID='".$_SESSION['centerID']."' && dateRegistered >= '".$rlablistlimit_row['dateRegistered']."' ");
+		foreach($local_lablist_sql as $llablist_row){
+
+        //check duplication in remote
+        $rlablist_duplicate_sql = select2("select * from quatitso_quatmedic.ward_vitals WHERE centerID='".$llablist_row['centerID']."' ");
+
+			if(count($rlablist_duplicate_sql) < 1){
+
+			//insert local_bedlist into remote_bedlist
+			$labresult_insert = insert2("INSERT INTO quatitso_quatmedic.ward_vitals(centerID,patientID,bodyTemp,pulseRate,respirationRate,bloodPressure,weight,dateRegistered,doe) VALUES('".$llablist_row['centerID']."','".$llablist_row['patientID']."','".$llablist_row['bodyTemp']."','".$llablist_row['pulseRate']."','".$llablist_row['respirationRate']."','".$llablist_row['bloodPressure']."','".$llablist_row['weight']."','".$llablist_row['dateRegistered']."','".$llablist_row['doe']."') ");
+
+				if($labresult_insert){
+					echo "L_ward_vitals UPDATED";
+				}else{
+					echo "ERROR: L_ward_vitals";
+				}
+		}
+
+		}
+		}
+		}else{
+		//search local_mode_of_payment
+		$local_lablist_sql = select("SELECT * FROM ward_vitals WHERE centerID='".$_SESSION['centerID']."' ");
+		foreach($local_lablist_sql as $llablist_row){
+
+			//check duplication in remote
+			$rlablist_duplicate_sql = select2("select * from ward_vitals where doe='".$llablist_row['doe']."' ");
+
+			if(count($rlablist_duplicate_sql) < 1){
+
+			//insert local_bedlist into remote_bedlist
+				$labpayment_insert = insert2("INSERT INTO quatitso_quatmedic.ward_vitals(centerID,patientID,bodyTemp,pulseRate,respirationRate,bloodPressure,weight,dateRegistered,doe) VALUES('".$llablist_row['centerID']."','".$llablist_row['patientID']."','".$llablist_row['bodyTemp']."','".$llablist_row['pulseRate']."','".$llablist_row['respirationRate']."','".$llablist_row['bloodPressure']."','".$llablist_row['weight']."','".$llablist_row['dateRegistered']."','".$llablist_row['doe']."') ");
+
+				if($labpayment_insert){
+					echo "R_ward_vitals UPDATED";
+				}else{
+					echo "ERROR: R_ward_vitals";
+				}
+		}
+		}
+		}
+
+		//REMOTE_BEDLIST TO LOCAL_BEDLIST
+		//fetch all from remote_bedlist
+		$remote_lablistsql = select2("select * from quatitso_quatmedic.ward_vitals WHERE centerID !='".$_SESSION['centerID']."' ");
+
+		foreach($remote_lablistsql as $remote_lablistrow){
+		$lo_lablistinsert = insert("INSERT INTO ward_vitals(centerID,patientID,bodyTemp,pulseRate,respirationRate,bloodPressure,weight,dateRegistered,doe) VALUES('".$llablist_row['centerID']."','".$llablist_row['patientID']."','".$llablist_row['bodyTemp']."','".$llablist_row['pulseRate']."','".$llablist_row['respirationRate']."','".$llablist_row['bloodPressure']."','".$llablist_row['weight']."','".$llablist_row['dateRegistered']."','".$llablist_row['doe']."') ");
+
+        }
+            }else{
+                echo "TABLE L_ward_vitals is NOT EQUAL to TABLE R_ward_vitals";
+            }
+}
+
+
 
 
 ?>
