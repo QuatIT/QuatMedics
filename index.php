@@ -1,6 +1,6 @@
 <?php
-include 'assets/core/connection.php';
 session_start();
+include 'assets/core/connection.php';
 error_reporting(0);
 $success = '';
 $error = '';
@@ -22,6 +22,8 @@ if(isset($_POST['btnSave'])){
                 $centerIDRow = $centerAdminRow['centerID'];
             }
 
+            if($centerAdminRow['activestatus'] !='INACTIVE'){
+
             if($accessLevelRow == 'center_admin'){
                 $_SESSION['username'] = $usernameRow;
                 $_SESSION['password'] = $passwordRow;
@@ -32,12 +34,15 @@ if(isset($_POST['btnSave'])){
                                     window.location.href='medics-index';</script>";
 
             }else{
-                $error = "<script>document.write('WRONG USERNAME AND PASSWORD');
-                                    window.location.href='index';</script>";
+                $error = "<script>document.write('WRONG USERNAME AND PASSWORD.');</script>";
             }
         }else{
-                $error = "<script>document.write('YOUR ACCOUNT CANNOT BE FOUND');
-                                    window.location.href='index';</script>";
+                $error = "<script>document.write('CENTER DEACTIVATED, CONTACT QUATMEDIC SUPPORT FOR ACTIVATION.');</script>";
+            }
+
+
+        }else{
+                $error = "<script>document.write('YOUR ACCOUNT CANNOT BE FOUND');</script>";
             }
     }else{
 
@@ -52,6 +57,10 @@ if(isset($_POST['btnSave'])){
                 $centerIDRow1 = $centerUserRow['centerID'];
             }
 
+        //CHECK CENTER ACTIVATION...
+            $slctcenter = select("SELECT * FROM medicalcenter WHERE centerID='".$centerUserRow['centerID']."'");
+            foreach($slctcenter as $centerrow){}
+            if($centerrow['activestatus'] != 'INACTIVE'){
             if($accessLevelRow1 == 'OPD'){
 
                 $_SESSION['username'] = $usernameRow1;
@@ -113,12 +122,14 @@ if(isset($_POST['btnSave'])){
                                     window.location.href='medics-index' </script>";
 
             }else{
-                $error = "<script>document.write('WRONG USERNAME AND PASSWORD');
-                                    window.location.href='index' </script>";
+                $error = "<script>document.write('WRONG USERNAME AND PASSWORD');</script>";
             }
+
         }else{
-                $error = "<script>document.write('YOUR ACCOUNT CANNOT BE FOUND');
-                                    window.location.href='index' </script>";
+    $error = "<script>document.write('CENTER DEACTIVATED, CONTACT QUATMEDIC SUPPORT FOR ACTIVATION.');</script>";
+        }
+        }else{
+                $error = "<script>document.write('YOUR ACCOUNT CANNOT BE FOUND');</script>";
             }
     }
 clearstatcache();
@@ -156,12 +167,12 @@ clearstatcache();
                       if($success){
                       ?>
                       <div class="alert alert-success text-center">
-                  <strong class="text-center">Success! <?php echo $success; ?></strong>
+                  <strong class="text-center"><?php echo $success; ?></strong>
                 </div>
                       <?php } if($error){
                           ?>
                       <div class="alert alert-danger text-center">
-                  <strong class="text-center">Error! <?php echo $error; ?></strong>
+                  <strong class="text-center"><?php echo $error; ?></strong>
                 </div>
                       <?php
                       } ?>

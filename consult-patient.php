@@ -89,6 +89,14 @@ if(count($codesql) >=1){
         $noteDetails = trim(htmlentities($_POST['noteDetails']));
         $saveNotes = update("UPDATE consultation SET docNotes='$noteDetails' WHERE patientID='$patientID' AND consultID='$conid'");
         if($saveNotes){
+            //check notes if it exist..
+            $nselect = select("SELECT * FROM notes WHERE centerID='$centerID' AND keyword='$keyword'");
+            if($nselect){
+                $updatenote = update("UPDATE notes SET note='$noteDetails' WHERE centerID='$centerID' AND keyword='$keyword'");
+            }else{
+                $insertnote = insert("INSERT INTO notes(centerID,staffID,keyword,note,dateInsert) VALUES('$centerID','$staffID','$keyword','$noteDetails','$dateToday')");
+            }
+
                 echo "<script>window.location='".$_SESSION['current_page']."'</script>";
         }else{
                 $error = "<script>document.write('NOTES UNABLE TO SAVE, TRY AGAIN');</script>";
@@ -394,7 +402,7 @@ if($medIDNum > 0 && $piecesNum > 0) {
         <a title="Consultation" class="tip-bottom"><i class="icon-user"></i> CONSULTATION ROOM</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">CONSULTATION ROOM <?php echo $r['roomName'];?></h3>
 	  <?php if($success || $error){?>
 			<div class="row-fluid">

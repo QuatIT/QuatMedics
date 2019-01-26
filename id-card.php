@@ -15,12 +15,10 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<<<<<<< HEAD
 <link rel="stylesheet" href="assets/css/font-awesome2.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
-=======
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
->>>>>>> QuatMedics/master
+
+<!--<link rel="stylesheet" href="assets/css/font-awesome.css" />-->
 </head>
 <body>
 
@@ -44,7 +42,7 @@
     <ul>
     <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
     <li> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
-    <li class="active"> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
+    <li class="active" style="background-color:#2198b5"> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
     <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
     </ul>
 </div>
@@ -107,8 +105,7 @@
                           <div class="widget-content nopadding">
                               <div class="form-actions">
                                   <i class="span8"></i>
-                                  <a href="id-card-print?pid=<?php echo $patientrow['patientID'];?>" target="_blank" class="btn btn-primary btn-block span4"><i class="fa fa-print"></i> PRINT CARD</a>
-<!--                                <button type="submit" class="btn btn-primary btn-block span4">  <i class="fa fa-print"></i></button>-->
+                                  <a href="id-card-print?pid=<?php echo $patientrow['patientID'];?>" target="_blank" class="btn btn-primary btn-block labell span4"><i class="fa fa-print"></i> PRINT CARD</a>
                               </div>
                           </div>
                       </div>

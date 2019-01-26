@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="../css/fullcalendar.css" />
 <link rel="stylesheet" href="../css/maruti-style.css" />
 <link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="../assets/css/font-awesome2.css" />
     <style>
         .active{
             background-color: #209fbf;
@@ -53,6 +53,7 @@
     <li class="active"><a href="quatadmin-index"><i class="icon icon-home"></i> <span>Dashboard</span></a></li>
     <li><a href="medcenter-index"><i class="icon icon-plus-sign"></i> <span>Medical Centers</span></a></li>
     <li><a href="#"><i class="icon icon-calendar"></i> <span>Subscriptions</span></a> </li>
+    <li><a href="sms_request"><i class="icon icon-envelope"></i> <span>SMS Request</span></a> </li>
     </ul>
 </div>
 
@@ -69,7 +70,7 @@
    	<div class="quick-actions_homepage">
     <ul class="quick-actions">
           <li> <a href="#"> <i class="icon-graph"></i> Site Views </a> </li>
-          <li> <a href="medcenter-index.html"> <i class="icon-home"></i> Medical Centers</a> </li>
+          <li> <a href="medcenter-index"> <i class="icon-home"></i> Medical Centers</a> </li>
           <li> <a href="#"> <i class="icon-people"></i> Doctors </a> </li>
           <li> <a href="#"> <i class="icon-user"></i> Nurses </a> </li>
           <li> <a href="#"> <i class="icon-client"></i> Patients </a> </li>

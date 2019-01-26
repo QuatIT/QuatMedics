@@ -113,7 +113,7 @@ if($registerCenterAdmin && $saveAccount){
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="../css/bootstrap.min.css" />
 <link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
-<link rel="stylesheet" href="../css/font-awesome.min.css" />
+<!--<link rel="stylesheet" href="../css/font-awesome.min.css" />-->
 <link rel="stylesheet" href="../css/fullcalendar.css" />
 <link rel="stylesheet" href="../css/colorpicker.css" />
 <link rel="stylesheet" href="../css/datepicker.css" />
@@ -121,7 +121,7 @@ if($registerCenterAdmin && $saveAccount){
 <link rel="stylesheet" href="../css/select2.css" />
 <link rel="stylesheet" href="../css/maruti-style.css" />
 <link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="../assets/css/font-awesome2.css" />
         <style>
         .active{
             background-color: #209fbf;
@@ -176,7 +176,7 @@ if($registerCenterAdmin && $saveAccount){
         <a title="Out Patient Department" class="tip-bottom"><i class="icon-plus-sign"></i> MEDICAL CENTERS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">MEDCENTERS MANAGEMENT</h3>
 <?php
       if($success){
@@ -195,8 +195,8 @@ if($registerCenterAdmin && $saveAccount){
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">MedCenter List</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New MedCenter</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">MEDCENTER LIST</a></li>
+                    <li><a data-toggle="tab" href="#tab2">ADD NEW CENTER</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
@@ -204,17 +204,18 @@ if($registerCenterAdmin && $saveAccount){
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Medical Centers</h5>
+                        <h5>LIST OF MEDICAL CENTERS</h5>
                       </div>
                     <div class="widget-content nopadding">
 
                         <table class="table table-bordered data-table">
-                          <thead>
+                          <thead style="font-weight:bolder;">
                             <tr>
-                              <th>Center ID</th>
-                              <th>Center Name</th>
-                              <th>Center Location</th>
-                              <th>Number of Branches</th>
+                              <th>CENTER ID</th>
+                              <th>CENTER NAME</th>
+                              <th>LOCATION</th>
+                              <th>BRANCHES</th>
+                              <th>STATUS</th>
                               <th>Action</th>
                             </tr>
                           </thead>

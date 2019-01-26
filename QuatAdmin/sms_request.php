@@ -114,7 +114,7 @@ if($registerCenterAdmin){
 <link rel="stylesheet" href="../css/select2.css" />
 <link rel="stylesheet" href="../css/maruti-style.css" />
 <link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="../assets/css/font-awesome2.css" />
         <style>
         .active{
             background-color: #209fbf;
@@ -125,7 +125,7 @@ if($registerCenterAdmin){
 
 <!--Header-part-->
 <div id="header">
-  <h1><a href="quatadmin-index.html"> QUAT MEDICS ADMIN</a></h1>
+  <h1><a href="quatadmin-index"> QUATMEDIC ADMIN</a></h1>
 </div>
 <!--close-Header-part-->
 
@@ -169,7 +169,7 @@ if($registerCenterAdmin){
         <a title="Out Patient Department" class="tip-bottom"><i class="icon-plus-sign"></i> MEDICAL CENTERS</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">SMS REQUEST</h3>
 <?php
       if($success){

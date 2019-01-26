@@ -6,7 +6,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="css/font-awesome.min.css" />
+<!--<link rel="stylesheet" href="css/font-awesome.min.css" />-->
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="assets/css/font-awesome2.css" />
 <style>
 .active{
     background-color: #209fbf;
@@ -101,8 +101,14 @@ $centerID = $_SESSION['centerID'];
 
 <div id="sidebar">
     <ul>
-    <li><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"><a href="centeruser-index.php"><i class="icon icon-user"></i> <span>Staff Management</span></a> </li>
+        <li><a href="medics-index"><i class="icon icon-home"></i> <span>DASHBOARD</span></a> </li>
+        <li class=""> <a href="centerconsultation-index"><i class="icon-th-list"></i> <span>CONSULTATION</span></a> </li>
+        <li class=""> <a href="centerward-index"><i class="icon-folder-close"></i> <span>WARD</span></a> </li>
+        <li class=""> <a href="centerlab-index"> <i class="icon-search"></i> <span>LABORATORY</span></a> </li>
+        <li class="active"> <a href="centeruser-index"> <i class="icon-user"></i> <span>STAFF</span></a> </li>
+        <li class=""> <a href="centerpharmacy-index"> <i class="icon-plus-sign"></i> <span>PHARMACY</span></a> </li>
+        <li class=""> <a href="center-account"> <i class="icon-list-alt"></i> <span>ACCOUNTS</span></a> </li>
+        <li class=""> <a href="smsrequest-index"> <i class="icon-envelope"></i> <span>SMS REQUEST</span></a> </li>
     </ul>
 </div>
 <div id="content">
@@ -112,7 +118,7 @@ $centerID = $_SESSION['centerID'];
         <a title="Staff Management" class="tip-bottom"><i class="icon-user"></i> STAFF</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">STAFF MANAGEMENT</h3>
 
       <div class="row-fluid">
@@ -133,7 +139,7 @@ $centerID = $_SESSION['centerID'];
           </div>
         <div class="widget-box">
             <div class="widget-title">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab1">MedCenter Staff</a></li>
                     <li><a data-toggle="tab" href="#tab2">Add New Staff</a></li>
                 </ul>
@@ -143,12 +149,12 @@ $centerID = $_SESSION['centerID'];
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5>List Of Patients</h5>
+                        <h5 class="labell">List Of Patients</h5>
 
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
-                          <thead>
+                          <thead class="labell">
                             <tr>
                               <th>Staff ID</th>
                               <th>Staff Name</th>
