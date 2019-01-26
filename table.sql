@@ -77,3 +77,12 @@ create table `accountTransaction`(
 	`doe` timestamp
 )engine = InnoDB;
 
+create table `notes`(
+    `noteID` int(255) not null primary key auto_increment,
+    `centerID` varchar(100) not null,
+    `staffID` varchar(100) not null,
+    `keyword` varchar(255) not null,
+    `note` longtext not null,
+    `dateInsert` date not null,
+    `doe` timestamp
+)engine = InnoDB;

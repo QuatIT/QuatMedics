@@ -90,7 +90,7 @@ if(isset($_POST['saveTreatment'])){
         }
 
 $confirm = trim('CONFIRMED');
-$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,comment,paymode,confirm,paystatus,charge,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$comments','".$pat['paymode']."','$confirm','$paystatus','$medprice','$dateToday')");
+$insertWardMeds = insert("INSERT INTO wardMeds(centerID,assignID,patientID,staffID,wardID,medicine,dosage,comment,paymode,confirm,paystatus,charge,dateInsert) VALUES('$centerID','$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$comments','".$pat['paymode']."','$confirm','$paystatus','$medprice','$dateToday')");
 
                     if($insertWardMeds){
                         echo "<script>window.location='".$_SESSION['current_page']."';</script>";
@@ -102,15 +102,15 @@ $insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID
 }
 
 
-if(isset($_POST['saveReview'])){
-      $review = filter_input(INPUT_POST,"review",FILTER_SANITIZE_STRING);
-$staff_ID = select("SELECT * FROM centeruser");
-if($staff_ID){
-    foreach($staff_ID as $staff_IDs){}
-$rev_iew= insert("INSERT INTO docreview_tb(assignID,WardID,PatientID,staffID,DocReview,dateInsert)VALUES('$assignID','$wardID','$patientID','".$staff_IDs['staffID']."','$review','$dateToday')");
-//          header('location:ward-index.php');
-  }
-}
+//if(isset($_POST['saveReview'])){
+//      $review = filter_input(INPUT_POST,"review",FILTER_SANITIZE_STRING);
+//$staff_ID = select("SELECT * FROM centeruser");
+//if($staff_ID){
+//    foreach($staff_ID as $staff_IDs){}
+//$rev_iew= insert("INSERT INTO docreview_tb(assignID,WardID,PatientID,staffID,DocReview,dateInsert)VALUES('$assignID','$wardID','$patientID','".$staff_IDs['staffID']."','$review','$dateToday')");
+////          header('location:ward-index.php');
+//  }
+//}
 
 //$_GET['patient'];
 //$_GET['bedNumber'];
@@ -566,8 +566,21 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                     <?php }?>
                     </td>
                     <td>
-                        <input type='text' class="form-control span6"  name="review" id="review"required/>&nbsp;
-                        <button type="submit" name="saveReview" class="btn btn-primary labell" style="margin-top:-10px;">Save Remarks</button>
+                        <?php
+                        if($reports['review'] == '' || $reports['review']=='NULL'){
+                            echo "<form method='post'><textarea class='span11' name='review".$reports['medID']."' rows='2' id='review' required></textarea><button type='submit' name='saveReview".$reports['medID']."' class='btn btn-primary labell' style='margin-top:-10px;'>Save Review</button></form>";
+                        ?>
+                          <?php
+                              if(isset($_POST['saveReview'.$reports['medID']])){
+                                  $revw = $_POST['review'.$reports['medID']];
+                                  $sqq = update("UPDATE wardmeds SET review='$revw' WHERE medID='".$reports['medID']."' ");
+                                  echo "<script>window.location.href='{$_SERVER['REQUEST_URI']}'</script>";
+                              }
+                          ?>
+
+                <?php }else{?>
+                <textarea class="span11" name="review" readonly><?php echo $reports['review'];?></textarea>
+                <?php }?>
                     </td>
                   </tr>
                  <?php }?>

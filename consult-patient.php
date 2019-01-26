@@ -324,7 +324,7 @@ if($medIDNum > 0 && $piecesNum > 0) {
                     }
 
         $confirm = trim('UNCONFIRMED');
-		$insertMedsz = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,confirm,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode','$confirm', '".$consultrow['dateInsert']."')");
+		$insertMedsz = insert("INSERT INTO prescribedmeds(centerID,prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,confirm,dateInsert) VALUES('$centerID','$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode','$confirm', '".$consultrow['dateInsert']."')");
 					}
 		}
 

@@ -194,7 +194,7 @@ if(isset($_POST['adWard'])){
                         }
                     }
 $confirm = trim('UNCONFIRMED');
-$insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,paymode,confirm,paystatus,charge,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$diagnoses','$symptoms','$paymode','$confirm','$paystatus','$medprice','".$consultrow['dateInsert']."')");
+$insertWardMeds = insert("INSERT INTO wardMeds(centerID,assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,paymode,confirm,paystatus,charge,dateInsert) VALUES('$centerID','$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$diagnoses','$symptoms','$paymode','$confirm','$paystatus','$medprice','".$consultrow['dateInsert']."')");
 
     if($insertWardMeds){
         $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,consultID,bedID,patientID,staffID,admitDate,admitDetails,centerID,consultingroom,paymode,paystatus,dateInsert) VALUES('$assignID','$wardID','$conid','$bedID','$patientID','$staffID','$admitDate','$admitDetails','$centerID','$roomID','$paymode','$paystatus','".$consultrow['dateInsert']."')");
@@ -322,7 +322,7 @@ if($medIDNum > 0 && $piecesNum > 0) {
                     }
 
         $confirm = trim('UNCONFIRMED');
-		$insertMedsz = insert("INSERT INTO prescribedmeds(prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,confirm,dateInsert) VALUES('$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode','$confirm', '".$consultrow['dateInsert']."')");
+		$insertMedsz = insert("INSERT INTO prescribedmeds(centerID,prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,confirm,dateInsert) VALUES('$centerID','$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode','$confirm', '".$consultrow['dateInsert']."')");
 					}
 		}
 

@@ -7,7 +7,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 }
 $emeid = $_GET['emeid'];
 $pid = $_GET['pid'];
-$load_newpatient = select("SELECT * FROM eme_ward WHERE eme_medID='$emeid' AND patientID='$pid'  ORDER BY dateRegistered ASC");
+$load_newpatient = select("SELECT * FROM eme_ward WHERE emeID='$emeid' AND patientID='$pid' ORDER BY dateRegistered ASC");
 
 foreach($load_newpatient as $newpatient){
 

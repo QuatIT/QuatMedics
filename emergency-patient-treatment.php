@@ -21,18 +21,10 @@
 <script src="https://code.highcharts.com/modules/series-label.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
-
-<<<<<<< HEAD
-<!--<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="chart/plotly-latest.min.js"></script>
-=======
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/series-label.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
 
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
->>>>>>> QuatMedics/master
+
 <style>
 .active{
 /*    background-color: #209fbf;*/
@@ -72,8 +64,8 @@ if (isset($_POST['sub_mit'])){
 	$medical_status = 'not attended to';
 	$today_status = '0';
 
-//	$eme_medIDs = count(select("SELECT * FROM eme_ward GROUP BY eme_medID ")) + 1;
-//	$eme_medID = "EME-PRES-".sprintf('%06s',$eme_medIDs);
+	$eme_medIDs = count(select("SELECT * FROM eme_ward GROUP BY eme_medID ")) + 1;
+	$eme_medID = "EME-PRES-".sprintf('%06s',$eme_medIDs);
 
 if($medsNum > 0 && $totalDaysNum > 0 ) {
     for($m=0, $p=0, $a=0, $t=0; $m<$medsNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
@@ -812,7 +804,32 @@ Plotly.newPlot('myDivPressure', num);
               <th>Action</th>
             </tr>
           </thead>
-          <tbody id="emepatienttreat11"></tbody>
+<!--          <tbody id="emepatienttreat11"></tbody>-->
+          <tbody id="emepatienttreat11">
+        <?php
+            $load_newpatient = select("SELECT * FROM eme_ward WHERE emeID='$emeid' AND patientID='$get_PID' ORDER BY dateRegistered ASC");
+
+foreach($load_newpatient as $newpatient){
+
+?>
+
+
+<tr>
+  <td> <?php echo $newpatient['dateRegistered']; ?></td>
+<!--  <td> <?php #echo $newpatient['patientID']; ?></td>-->
+  <td> <?php echo $newpatient['prescrib_med']; ?></td>
+  <td> <?php echo $newpatient['dosage']; ?></td>
+  <td> <?php echo $newpatient['prescribed_by']; ?></td>
+  <td> <?php echo $newpatient['med_status']; ?></td>
+  <td style="text-align: center;">
+	  <?php if($newpatient['med_status']=="administered"){echo '';}else{ ?>
+       <a href="nursecheck?emeid=<?php echo $_GET['emeid'];?>&pid=<?php echo $_GET['pid']; ?>&id=<?php echo $newpatient['id']; ?>"> Administered</a><?php } ?>
+  </td>
+</tr>
+
+
+<?php  } ?>
+            </tbody>
         </table>
       </div>
     </div>
@@ -840,7 +857,7 @@ Plotly.newPlot('myDivPressure', num);
           </thead>
           <tbody id="emepatienttreathistory">
 <?php
-$load_newpatient = select("SELECT * FROM eme_ward WHERE centerID='".$_SESSION['centerID']."' && patientID='".$_GET['pid']."'  GROUP BY dateRegistered ORDER BY dateRegistered ASC");
+$load_newpatient = select("SELECT * FROM eme_ward WHERE emeID='$emeid' && patientID='".$_GET['pid']."'  GROUP BY dateRegistered ORDER BY dateRegistered ASC");
               foreach($load_newpatient as $newpatient){
 ?>
 <tr>
