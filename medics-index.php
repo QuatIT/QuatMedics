@@ -1,7 +1,10 @@
 <?php
 session_start();
+
 // error_reporting(0);
-?>
+ ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,12 +18,17 @@ session_start();
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/series-label.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/highcharts-3d.js"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="chart/highcharts.js"></script>
+<script src="chart/series-label.js"></script>
+<script src="chart/exporting.js"></script>
+<script src="chart/export-data.js"></script>
+<script src="chart/highcharts-3d.js"></script>
+<script src="chart/jquery-3.1.1.min.js"></script>
+ <!--  <script type="text/javascript" src="chart/loader.js"></script> -->
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <!-- <script type="text/javascript" src="http://www.gstatic.com/charts/loader.js"></script> -->
+
+
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 
@@ -515,105 +523,97 @@ Highcharts.chart('containerCON', {
 <?php }} ?>
 
 <?php
- $count=0;
-$get_count = select("SELECT COUNT(*) as g_count FROM mode_of_payment ");
-foreach($get_count as $get_countx){
-  // $get_countx['g_count'];
 
 
-$get_insure = select("SELECT * FROM mode_of_payment WHERE centerID = '".$_SESSION['centerID']."'");
 
 
-foreach($get_insure as $get_insurex){
-  $types[$count] = $get_insurex['type'];
-  $count++;
-  //echo "<script>alert('{$types[$count]}')</script>";
-}
- $insure_ct = $get_countx['g_count'];
 
-  for($i=0;$i < $insure_ct;$i++){
-   $insure_types = $types[$i];
 
-}
+// foreach($get_insure as $get_insurex){
+//   $get_insurex['type'];
+
+//   //echo "<script>alert('{$types[$count]}')</script>";
+// }
+
 
 
 ?>
 
 
 
-             <?php if($_SESSION['accessLevel']=='OPD'){?>
+             <?php if($_SESSION['accessLevel']=='OPD'){
+// echo "<script>alert('{$_SESSION['centerID']}')</script>";
+              $op = select("SELECT * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."'");
 
+?>
 
-<div id="containerOPD" style="min-width: 310px; height: 300px; margin: 0 auto;" ></div>
+<div id="piechart_3d" style="min-width: 900px; height: 500px; margin: 0 auto;margin-left:400px;" ></div>
+
 <script>
-// Radialize the colors
-Highcharts.setOptions({
-  colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
-    return {
-      radialGradient: {
-        cx: 0.5,
-        cy: 0.3,
-        r: 0.7
-      },
-      stops: [
-        [0, color],
-        [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
-      ]
-    };
-  })
-});
 
-// Build the chart
-Highcharts.chart('containerOPD', {
-  chart: {
-    plotBackgroundColor: null,
-    plotBorderWidth: null,
-    plotShadow: false,
-    type: 'pie'
-  },
-  title: {
-    text: 'OUT PATIENT DEPARTMENT INSURANCE'
-  },
-  tooltip: {
-    // pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-  },
-  plotOptions: {
-    pie: {
-      allowPointSelect: true,
-      cursor: 'pointer',
-      dataLabels: {
-        enabled: true,
-        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-        style: {
-          color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-        },
-        connectorColor: 'silver'
+   google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Type', 'Number'],
+         <?php foreach($op as $ops){
+              echo "['".$ops['type']."',".$ops['id']."],";
+}
+
+    ?>
+
+        ]);
+
+        var options = {
+          title: '<?php echo $_SESSION['centerID'];?>--  OUT PATIENT DEPARTMENT',
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
       }
-    }
-  },
-  series: [{
-    name: 'Share',
-    data: [
-      { name: '<?php echo $insure_types;?>', y:<?php echo $cal_nhis;?> }
-      // { name: 'ACACIA', y: <?php #echo $cal_acacia;?> },
-      // { name: 'COMPANY', y: <?php #echo $cal_company;?> },
-      // { name: 'PRIVATE', y: <?php #echo $cal_private;?> }
+
+// google.charts.load("current", {packages:["corechart"]});
+//       google.charts.setOnLoadCallback(drawChart);
+//       function drawChart() {
+//         var data = google.visualization.arrayToDataTable([
+//           ['Task', 'Hours per Day'],
+//           <?php #foreach($op as $ops){
+//                echo "['".$ops['type']."',".$ops['nums']."],";
+// }
+
+//     ?>
+//           // ['Work',     11],
+//           // ['Eat',      2],
+//           // ['Commute',  2],
+//           // ['Watch TV', 2],
+//           // ['Sleep',    7]
+//         ]);
+
+//         var options = {
+//           title: 'Out Patient Department',
+//           pieHole: 0.2,
+//         };
+
+//         var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+//         chart.draw(data, options);
+//       }
+    </script>
 
 
-    ]
-  }]
-});
 
 
 
-</script>
+
+
+
 
 <?php }?>
 
 
 
 
-              <?php } ?>
+
 
 
               <?php
@@ -741,7 +741,7 @@ Highcharts.chart('containerPHARMA', {
 
           <td style="background-color:lightblue;text-align:center;"><?php echo $ward_details['wardName']; ?></td>
           <td style="background-color:lightyellow;text-align:center;"><?php echo $ward_bedx['w_bed']; ?></td>
-          <td style="background-color:lightyellow;text-align:center"><?php echo $num_patx['n_pat']; ?></td>
+          <td style="background-color:azure;text-align:center"><?php echo $num_patx['n_pat']; ?></td>
         </tr>
         <?php } ?>
       </tbody>
@@ -792,7 +792,8 @@ Highcharts.chart('containerFIN', {
     series: [{
         name: 'Delivered amount',
         data: [
-            ['<?php echo $dept_names['creditAcc']; ?>', <?php echo $dept_ctx['dept_no']; ?>]
+            // ['<?php #echo $dept_names['creditAcc']; ?>', <?php #echo $dept_ctx['dept_no']; ?>]
+            ['<?php echo $dept_names['creditAcc']; ?>', 10]
             // ['blood', <?php #echo $dept_ctx['dept_no']; ?>],
             // ['meat', <?php #echo $dept_ctx['dept_no']; ?> ]
         ]
