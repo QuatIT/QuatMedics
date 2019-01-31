@@ -17,15 +17,11 @@
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="css/font-awesome.min.css" />
 <!--highcharts-->
-<!--
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/series-label.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="chart/plotly-latest.min.js"></script>
--->
-
+<script src="chart/highcharts.js"></script>
+<script src="chart/series-label.js"></script>
+<script src="chart/exporting.js"></script>
+<script src="chart/export-data.js"></script>
 
 <style>
 .active{
