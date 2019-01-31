@@ -166,19 +166,19 @@
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Patient ID :</label>
+                                <label class="control-label"> <span style="color:red;">*</span> Patient ID :</label>
                                 <div class="controls">
                                   <input type="text" class="span11" value="<?php echo $PatientIDs; ?>" name="patientId" required readonly />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Last Name :</label>
+                                <label class="control-label"> <span style="color:red;">*</span> Last Name :</label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Last Name" name="lastName" required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Gender:</label>
+                                <label class="control-label"> <span style="color:red;">*</span> Gender:</label>
                                 <div class="controls">
                                   <label>
                                     <input type="radio" name="gender" value="Male" /> Male
@@ -223,7 +223,7 @@
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">First Name :</label>
+                                <label class="control-label"> <span style="color:red;">*</span> First Name :</label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="First name" name="firstName" required/>
                                 </div>
@@ -236,7 +236,7 @@
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label">Date Of Birth</label>
+                                <label class="control-label"> <span style="color:red;">*</span> Date Of Birth</label>
                                 <div class="controls">
                                   <input type="date"  class="span11" name="dob" required />
                                 </div>
@@ -250,9 +250,9 @@
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Mobile Number:</label>
+                                <label class="control-label"> <span style="color:red;">*</span> Mobile Number:</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Mobile Number" name="mobileNumber"/>
+                                  <input type="tel" class="span11" placeholder="Mobile Number" name="mobileNumber" required/>
                                 </div>
                               </div>
 
@@ -271,13 +271,13 @@
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Guardian Name :</label>
+                                <label class="control-label"><span style="color:red;">*</span> Guardian Name :</label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Guardian Name" name="guardianName" required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Gender:</label>
+                                <label class="control-label"> <span style="color:red;">*</span> Gender:</label>
                                 <div class="controls">
                                   <label>
                                     <input type="radio" name="guardianGender" value="Male" /> Male
@@ -288,9 +288,9 @@
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Mobile Number :</label>
+                                <label class="control-label"> <span style="color:red;">*</span> Mobile Number :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Active Mobile Number" name="guardianPhone" />
+                                  <input type="tel" class="span11" placeholder="Active Mobile Number" name="guardianPhone" required />
                                 </div>
                               </div>
                           </div>
@@ -301,7 +301,7 @@
                           <div class="widget-content nopadding">
 
                               <div class="control-group">
-                                <label class="control-label">Relationship</label>
+                                <label class="control-label"> <span style="color:red;">*</span> Relationship</label>
                                 <div class="controls">
                                   <input type="text"  class="span11" name="guardianRelation" placeholder="Relationship with Guardian" required />
                                 </div>

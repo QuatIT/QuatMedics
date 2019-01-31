@@ -86,3 +86,19 @@ create table `notes`(
     `dateInsert` date not null,
     `doe` timestamp
 )engine = InnoDB;
+
+
+create table `department`(
+    `departmentID` varchar(255) not null primary key,
+    `departmentName` varchar(255) not null,
+    `dateCreated` varchar(255) not null,
+    `doe` timestamp
+)engine =InnoDB;
+
+INSERT INTO `department` (`departmentID`, `departmentName`, `dateCreated`, `doe`) VALUES
+('CONSULTATION', 'CONSULTATION', '2018-10-23', '2018-10-23 03:24:36'),
+('FINANCE', 'FINANCE', '2018-12-24', '2018-12-24 11:50:14'),
+('LABORATORY', 'LABORATORY', '2018-10-23', '2018-10-23 04:11:08'),
+('OPD', 'OPD', '2018-10-23', '2018-10-23 02:13:17'),
+('PHARMACY', 'PHARMACY', '2018-10-23', '2018-10-23 04:11:11'),
+('WARD', 'WARD', '2018-10-23', '2018-10-23 16:49:03');

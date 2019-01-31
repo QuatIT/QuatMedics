@@ -20,6 +20,7 @@ if(isset($_POST['btnSave'])){
 $centerID = trim(substr($_POST['centerName'], 0, 5))."-".trim(sprintf('%06s',$centerIDs));
 $centerName = $_POST['centerName'];
 $centerCategory = $_POST['centerCategory'];
+$centerNhisLevel = $_POST['centerNhisLevel'];
 $centerLocation = $_POST['centerLocation'];
 $numOfStaff = $_POST['numOfStaff'];
 $aboutCenter = $_POST['aboutCenter'];
@@ -37,7 +38,7 @@ if(count(User::find_by_centerID($centerID)) >= 1){
 
 
 //create center admin
-$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
+$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerNhisLevel,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
 
 //create debit account...
 //creating account for finance of center..
@@ -70,7 +71,7 @@ echo make_dir($centerID);
 }else{
 
 //create center admin
-$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
+$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerNhisLevel,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
 
 //create debit account...
 //creating account for finance of center..
@@ -244,6 +245,7 @@ if($registerCenterAdmin && $saveAccount){
                                   <select name="centerCategory" >
                                     <option value=""> -- Select Category --</option>
                                     <option > Hospital</option>
+                                    <option > Clinic</option>
                                     <option > Healthcare Center</option>
                                     <option > Medical Nursing Home</option>
                                   </select>
@@ -276,6 +278,12 @@ if($registerCenterAdmin && $saveAccount){
                                 <label class="control-label">Center Name :</label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Center name" name="centerName" />
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">CENTER NHIS LEVEL :</label>
+                                <div class="controls">
+                                  <input type="text" class="span11" placeholder="Location" name="conterNhisLevel" />
                                 </div>
                               </div>
                               <div class="control-group">
