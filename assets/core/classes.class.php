@@ -2,8 +2,8 @@
 
   class User{
 
-    public function createCenterAdmin($centerID,$centerName,$centerCategory,$centerNhisLevel,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email) {
-      $result= insert("INSERT INTO medicalcenter(centerID,centerName,centerCategory,centerNhisLevel,centerLocation,numOfStaff,centerHistory,numOfBranches,userName,password,accessLevel,dateregistered,centerEmail) VALUES('$centerID','$centerName','$centerCategory','$centerNhisLevel','$centerLocation','$numOfStaff','$aboutCenter','$numOfBranches','$userName','$password','$accessLevel',CURDATE(),'$email' ) ");
+    public function createCenterAdmin($centerID,$centerName,$centerCategory,$centerNhisLevel,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email,$activestatus) {
+      $result= insert("INSERT INTO medicalcenter(centerID,centerName,centerCategory,centerNhisLevel,centerLocation,numOfStaff,centerHistory,numOfBranches,userName,password,accessLevel,dateregistered,centerEmail,activestatus) VALUES('$centerID','$centerName','$centerCategory','$centerNhisLevel','$centerLocation','$numOfStaff','$aboutCenter','$numOfBranches','$userName','$password','$accessLevel',CURDATE(),'$email','$activestatus') ");
       return $result;
     }
 

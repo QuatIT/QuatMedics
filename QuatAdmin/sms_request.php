@@ -125,7 +125,7 @@ if($registerCenterAdmin){
 
 <!--Header-part-->
 <div id="header">
-  <h1><a href="quatadmin-index"> QUATMEDIC ADMIN</a></h1>
+  <h1><a href="quatadmin-index"> QUATMEDIC</a></h1>
 </div>
 <!--close-Header-part-->
 
@@ -153,7 +153,7 @@ if($registerCenterAdmin){
 
 <div id="sidebar">
     <ul>
-    <li><a href="quatadmin-index"><i class="icon icon-home"></i> <span>Dashboard</span></a></li>
+    <li><a href="index"><i class="icon icon-home"></i> <span>Dashboard</span></a></li>
     <li><a href="medcenter-index"><i class="icon icon-plus-sign"></i> <span>Medical Centers</span></a></li>
     <li><a href="#"><i class="icon icon-calendar"></i> <span>Subscriptions</span></a> </li>
     <li class="active"><a href="sms_request.php"><i class="icon icon-envelope"></i> <span>SMS Request</span></a> </li>

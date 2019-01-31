@@ -29,16 +29,14 @@ $userName = $_POST['userName'];
 $password = $_POST['password'];
 $email = $_POST['email'];
 $accessLevel = CENTER_ADMIN;
+$activestatus = trim('ACTIVE');
 
-
-if(count(User::find_by_centerID($centerID)) >= 1){
+if(count($user->find_by_centerID($centerID)) >= 1){
 //    $centerID = randomString('10'); //regenerate centerID
-    $centerID = substr($_POST['centerName'], 0, 5)."-".sprintf('%06s',$centerIDs);//regenerate centerID
-
-
+$centerID = substr($_POST['centerName'], 0, 5)."-".sprintf('%06s',$centerIDs);//regenerate centerID
 
 //create center admin
-$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerNhisLevel,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
+$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerNhisLevel,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email,$activestatus);
 
 //create debit account...
 //creating account for finance of center..
@@ -52,15 +50,13 @@ if($registerCenterAdmin && $saveAccount){
 
 echo make_dir($centerID);
 
+$send_to = $email;
+$body = "Dear ".$centerName.", <br> Kindly find below your access to QUATMedic. <br><br> Username: ".$userName."<br>Password: ".$password."<br><br> Thank you.";
+$subj = "QUATMEDIC LOGIN ACCESS";
+$copy = "";
 
-            $send_to = $email;
-            $body = "Dear ".$centerName.", <br> Kindly find below your access to QUATMedic. <br><br> Username: ".$userName."<br>Password: ".$password."<br><br> Thank you.";
-            $subj = "QUATMEDIC LOGIN ACCESS";
-            $copy = "";
-
-            //send mail
-            echo send_mail($send_to,$copy,$body,$subj);
-
+//send mail
+echo send_mail($send_to,$copy,$body,$subj);
 
     $success =  "FACILITY ADMIN CREATED SUUCESSFULLY";
 }else{
@@ -71,7 +67,7 @@ echo make_dir($centerID);
 }else{
 
 //create center admin
-$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerNhisLevel,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email);
+$registerCenterAdmin = $user->createCenterAdmin($centerID,$centerName,$centerCategory,$centerNhisLevel,$centerLocation,$numOfStaff,$aboutCenter,$numOfBranches,$userName,$password,$accessLevel,$email,$activestatus);
 
 //create debit account...
 //creating account for finance of center..
@@ -85,14 +81,13 @@ $saveAccount = insert("INSERT INTO accounts(accountID,centerID,accountName,accou
 if($registerCenterAdmin && $saveAccount){
     echo make_dir($centerID);
 
-            $send_to = $email;
-            $body = "Dear ".$centerName.", <br> Kindly find below your access to QUATMedic. <br><br> Username: ".$userName."<br>Password: ".$password."<br><br> Thank you.";
-            $subj = "QUATMEDIC LOGIN ACCESS";
-            $copy = "";
+$send_to = $email;
+$body = "Dear ".$centerName.", <br> Kindly find below your access to QUATMedic. <br><br> Username: ".$userName."<br>Password: ".$password."<br><br> Thank you.";
+$subj = "QUATMEDIC LOGIN ACCESS";
+$copy = "";
 
-            //send mail
-            echo send_mail($send_to,$copy,$body,$subj);
-
+//send mail
+echo send_mail($send_to,$copy,$body,$subj);
 
     $success =  "FACILITY ADMIN CREATED SUUCESSFULLY";
 }else{
@@ -109,7 +104,7 @@ if($registerCenterAdmin && $saveAccount){
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC ADMIN</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="../css/bootstrap.min.css" />
@@ -175,7 +170,7 @@ if($registerCenterAdmin && $saveAccount){
 
 <div id="sidebar">
     <ul>
-    <li><a href="quatadmin-index"><i class="icon icon-home"></i> <span>Dashboard</span></a></li>
+    <li><a href="index"><i class="icon icon-home"></i> <span>Dashboard</span></a></li>
     <li class="active"><a href="medcenter-index"><i class="icon icon-plus-sign"></i> <span>Medical Centers</span></a></li>
     <li><a href="#"><i class="icon icon-calendar"></i> <span>Subscriptions</span></a> </li>
     <li><a href="sms_request.php"><i class="icon icon-envelope"></i> <span>SMS Request</span></a> </li>
@@ -297,7 +292,7 @@ if($registerCenterAdmin && $saveAccount){
                               <div class="control-group">
                                 <label class="control-label">CENTER NHIS LEVEL :</label>
                                 <div class="controls">
-                                  <input type="text" class="span11" placeholder="Location" name="conterNhisLevel" />
+                                  <input type="text" class="span11" placeholder="NHIS Level" name="centerNhisLevel" />
                                 </div>
                               </div>
                               <div class="control-group">
@@ -328,7 +323,7 @@ if($registerCenterAdmin && $saveAccount){
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Medical Center</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary btn-block labell span10">Save Medical Center</button>
                               </div>
                           </div>
                       </div>

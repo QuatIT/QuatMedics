@@ -24,9 +24,10 @@ session_start();
 <script src="chart/export-data.js"></script>
 <script src="chart/highcharts-3d.js"></script>
 <script src="chart/jquery-3.1.1.min.js"></script>
- <!--  <script type="text/javascript" src="chart/loader.js"></script> -->
-   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <!-- <script type="text/javascript" src="http://www.gstatic.com/charts/loader.js"></script> -->
+<script src="chart/loader.js"></script>
+<!--  <script type="text/javascript" src="chart/loader.js"></script> -->
+<!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+<!-- <script type="text/javascript" src="http://www.gstatic.com/charts/loader.js"></script> -->
 
 
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
