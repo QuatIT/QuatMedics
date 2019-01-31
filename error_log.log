@@ -1,0 +1,84 @@
+[27-Jan-2019 02:17:44 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 31
+[27-Jan-2019 02:17:44 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 32
+[27-Jan-2019 02:17:44 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 33
+[27-Jan-2019 02:22:03 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 31
+[27-Jan-2019 02:22:03 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 32
+[27-Jan-2019 02:22:03 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 33
+[27-Jan-2019 02:22:09 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 56
+[27-Jan-2019 02:22:09 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 57
+[27-Jan-2019 02:22:09 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 96
+[27-Jan-2019 02:22:09 Africa/Accra] PHP Warning:  Division by zero in X:\xammp\htdocs\quatmedic\medics-index.php on line 501
+[27-Jan-2019 02:22:09 Africa/Accra] PHP Warning:  Division by zero in X:\xammp\htdocs\quatmedic\medics-index.php on line 502
+[27-Jan-2019 02:22:11 Africa/Accra] PHP Warning:  Division by zero in X:\xammp\htdocs\quatmedic\medics-index.php on line 501
+[27-Jan-2019 02:22:11 Africa/Accra] PHP Warning:  Division by zero in X:\xammp\htdocs\quatmedic\medics-index.php on line 502
+[27-Jan-2019 02:22:14 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 56
+[27-Jan-2019 02:22:14 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 57
+[27-Jan-2019 02:22:14 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 96
+[27-Jan-2019 02:23:19 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 56
+[27-Jan-2019 02:23:19 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 57
+[27-Jan-2019 02:23:19 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 96
+[27-Jan-2019 02:23:19 Africa/Accra] PHP Notice:  Array to string conversion in X:\xammp\htdocs\quatmedic\emergency-patient-treatment.php on line 979
+[27-Jan-2019 02:23:19 Africa/Accra] PHP Notice:  Undefined variable: graph_temp in X:\xammp\htdocs\quatmedic\emergency-patient-treatment.php on line 1091
+[27-Jan-2019 02:23:19 Africa/Accra] PHP Notice:  Undefined variable: graph_pressure in X:\xammp\htdocs\quatmedic\emergency-patient-treatment.php on line 1111
+[27-Jan-2019 03:47:46 Africa/Accra] PHP Warning:  Division by zero in X:\xammp\htdocs\quatmedic\medics-index.php on line 501
+[27-Jan-2019 03:47:46 Africa/Accra] PHP Warning:  Division by zero in X:\xammp\htdocs\quatmedic\medics-index.php on line 502
+[27-Jan-2019 03:47:47 Africa/Accra] PHP Warning:  Division by zero in X:\xammp\htdocs\quatmedic\medics-index.php on line 501
+[27-Jan-2019 03:47:48 Africa/Accra] PHP Warning:  Division by zero in X:\xammp\htdocs\quatmedic\medics-index.php on line 502
+[27-Jan-2019 03:47:49 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 19
+[27-Jan-2019 03:47:49 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 20
+[27-Jan-2019 03:47:49 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 21
+[27-Jan-2019 04:11:17 Africa/Accra] PHP Notice:  Undefined index: centerNhisLevel in X:\xammp\htdocs\quatmedic\QuatAdmin\medcenter-index.php on line 23
+[27-Jan-2019 04:11:17 Africa/Accra] PHP Deprecated:  Non-static method User::find_by_centerID() should not be called statically in X:\xammp\htdocs\quatmedic\QuatAdmin\medcenter-index.php on line 34
+[30-Jan-2019 12:45:32 Africa/Accra] PHP Notice:  Undefined index: username in X:\xammp\htdocs\quatmedic\logout.php on line 10
+[30-Jan-2019 12:45:32 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 10
+[30-Jan-2019 12:45:32 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 10
+[30-Jan-2019 12:45:32 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 10
+[30-Jan-2019 12:45:32 Africa/Accra] PHP Notice:  Undefined index: username in X:\xammp\htdocs\quatmedic\logout.php on line 30
+[30-Jan-2019 12:45:32 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 31
+[30-Jan-2019 12:45:32 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 32
+[30-Jan-2019 12:45:32 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 33
+[31-Jan-2019 05:01:13 Africa/Accra] PHP Deprecated:  Non-static method Patient::find_num_PatientBYID() should not be called statically in X:\xammp\htdocs\quatmedic\opd-index.php on line 36
+[31-Jan-2019 05:01:14 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 633
+[31-Jan-2019 05:01:14 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 658
+[31-Jan-2019 05:01:41 Africa/Accra] PHP Notice:  Undefined index: radios in X:\xammp\htdocs\quatmedic\opd-appointment.php on line 37
+[31-Jan-2019 05:01:41 Africa/Accra] PHP Warning:  A non-numeric value encountered in X:\xammp\htdocs\quatmedic\opd-appointment.php on line 40
+[31-Jan-2019 05:02:16 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 31
+[31-Jan-2019 05:02:16 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 32
+[31-Jan-2019 05:02:16 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 33
+[31-Jan-2019 05:04:08 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 31
+[31-Jan-2019 05:04:08 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 32
+[31-Jan-2019 05:04:08 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 33
+[31-Jan-2019 05:04:14 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 79
+[31-Jan-2019 05:04:14 Africa/Accra] PHP Notice:  Undefined index: wrdno in X:\xammp\htdocs\quatmedic\ward-index.php on line 57
+[31-Jan-2019 05:04:14 Africa/Accra] PHP Notice:  Undefined index: wrdno in X:\xammp\htdocs\quatmedic\assets\core\classes.class.php on line 188
+[31-Jan-2019 05:04:16 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 79
+[31-Jan-2019 05:04:18 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 79
+[31-Jan-2019 05:04:35 Africa/Accra] PHP Notice:  Undefined index: roomID in X:\xammp\htdocs\quatmedic\layout\head.php on line 79
+[31-Jan-2019 05:06:05 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 31
+[31-Jan-2019 05:06:05 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 32
+[31-Jan-2019 05:06:05 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 33
+[31-Jan-2019 05:06:14 Africa/Accra] PHP Deprecated:  Non-static method Patient::find_num_PatientBYID() should not be called statically in X:\xammp\htdocs\quatmedic\opd-index.php on line 36
+[31-Jan-2019 05:06:42 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 633
+[31-Jan-2019 05:06:42 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 658
+[31-Jan-2019 05:06:52 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 633
+[31-Jan-2019 05:06:52 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 658
+[31-Jan-2019 05:07:07 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 633
+[31-Jan-2019 05:07:07 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 658
+[31-Jan-2019 05:07:08 Africa/Accra] PHP Deprecated:  Non-static method Patient::find_num_PatientBYID() should not be called statically in X:\xammp\htdocs\quatmedic\opd-index.php on line 36
+[31-Jan-2019 05:09:01 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 633
+[31-Jan-2019 05:09:02 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 658
+[31-Jan-2019 05:09:06 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 633
+[31-Jan-2019 05:09:06 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 658
+[31-Jan-2019 05:09:07 Africa/Accra] PHP Deprecated:  Non-static method Patient::find_num_PatientBYID() should not be called statically in X:\xammp\htdocs\quatmedic\opd-index.php on line 36
+[31-Jan-2019 05:09:13 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 633
+[31-Jan-2019 05:09:13 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 658
+[31-Jan-2019 05:09:20 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 633
+[31-Jan-2019 05:09:20 Africa/Accra] PHP Notice:  Undefined index: pid in X:\xammp\htdocs\quatmedic\opd-patient.php on line 658
+[31-Jan-2019 05:09:57 Africa/Accra] PHP Deprecated:  Non-static method Patient::find_num_PatientBYID() should not be called statically in X:\xammp\htdocs\quatmedic\opd-index.php on line 36
+[31-Jan-2019 05:11:03 Africa/Accra] PHP Deprecated:  Non-static method Patient::find_num_PatientBYID() should not be called statically in X:\xammp\htdocs\quatmedic\opd-index.php on line 36
+[31-Jan-2019 05:11:29 Africa/Accra] PHP Deprecated:  Non-static method Patient::find_num_PatientBYID() should not be called statically in X:\xammp\htdocs\quatmedic\opd-index.php on line 36
+[31-Jan-2019 05:11:37 Africa/Accra] PHP Deprecated:  Non-static method Patient::find_num_PatientBYID() should not be called statically in X:\xammp\htdocs\quatmedic\opd-index.php on line 36
+[31-Jan-2019 05:13:56 Africa/Accra] PHP Deprecated:  Non-static method Patient::find_num_PatientBYID() should not be called statically in X:\xammp\htdocs\quatmedic\opd-index.php on line 36
+[31-Jan-2019 05:21:15 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 31
+[31-Jan-2019 05:21:15 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 32
+[31-Jan-2019 05:21:15 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 33

@@ -128,6 +128,20 @@ if($registerCenterAdmin && $saveAccount){
             background-color: #209fbf;
         }
     </style>
+    <style>
+    .control-label{
+        font-weight: bolder;
+        text-transform: uppercase;
+    }
+    .labell{
+        font-weight: bolder;
+        text-transform: uppercase;
+    }
+    #sidebar ul li{
+/*        font-weight: bolder;*/
+        text-transform: uppercase;
+    }
+</style>
 </head>
 <body>
 
