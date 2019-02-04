@@ -17,7 +17,6 @@ session_start();
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
 <script src="chart/highcharts.js"></script>
 <script src="chart/series-label.js"></script>
 <script src="chart/exporting.js"></script>
@@ -25,11 +24,8 @@ session_start();
 <script src="chart/highcharts-3d.js"></script>
 <script src="chart/jquery-3.1.1.min.js"></script>
 <script src="chart/loader.js"></script>
-<!--  <script type="text/javascript" src="chart/loader.js"></script> -->
-<!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
-<!-- <script type="text/javascript" src="http://www.gstatic.com/charts/loader.js"></script> -->
-
-
+<script src="chart/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="chart/loader.js"></script>
 <link rel="stylesheet" href="assets/css/font-awesome2.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 
@@ -426,7 +422,7 @@ $dataPoints = array(
 $consult_wait = select("SELECT COUNT(*) as con1 FROM consultation WHERE centerID='".$_SESSION['centerID']."'&& status !='sent_to_pharmacy' && dateInsert = CURDATE() ");
 foreach($consult_wait as $consult_waitx){$waiting = $consult_waitx['con1'];}
 
-$consult_discharge = select("SELECT COUNT(*) con2 FROM consultation WHERE centerID='".$_SESSION['centerID']."' && status = 'sent_to_pharmacy' && dateInsert = CURDATE()");
+$consult_discharge = select("SELECT COUNT(*) as con2 FROM consultation WHERE centerID='".$_SESSION['centerID']."' && status = 'sent_to_pharmacy' || status = 'sent_to_ward' || status = 'sent_to_emergency' && dateInsert = CURDATE()");
 foreach($consult_discharge as $consult_discharges){$discharged = $consult_discharges['con2'];}
 
 //echo "<script>alert('{$discharged}')</script>";
@@ -488,7 +484,7 @@ Highcharts.chart('containerCON', {
     text: 'CONSULTATION DEPARTMENT '
   },
   tooltip: {
-    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+//    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
   },
   plotOptions: {
     pie: {
@@ -496,7 +492,7 @@ Highcharts.chart('containerCON', {
       cursor: 'pointer',
       dataLabels: {
         enabled: true,
-        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+//        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
         style: {
           color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
         },
@@ -507,8 +503,8 @@ Highcharts.chart('containerCON', {
   series: [{
     name: 'Share',
     data: [
-      { name: 'Waiting Patients', y:<?php $queue_pat =$waiting/$all_patients *100; echo $queue_pat; ?> },
-      { name: 'Discharged Patients', y:<?php $discharged = $disx['dis_pat']/$all_patients *100; echo $discharged;?>}
+      { name: 'Waiting Patients <?php echo $w_patx['wait_pat'];?>', y:<?php echo $w_patx['wait_pat'];?> },
+      { name: 'Discharged Patients <?php echo $disx['dis_pat'];?>', y:<?php echo $disx['dis_pat'];?>}
 
 
 
@@ -523,102 +519,100 @@ Highcharts.chart('containerCON', {
 
 <?php }} ?>
 
-<?php
 
-
-
-
-
-
-// foreach($get_insure as $get_insurex){
-//   $get_insurex['type'];
-
-//   //echo "<script>alert('{$types[$count]}')</script>";
-// }
-
-
-
-?>
 
 
 
              <?php if($_SESSION['accessLevel']=='OPD'){
 // echo "<script>alert('{$_SESSION['centerID']}')</script>";
-              $op = select("SELECT * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."'");
+
+
 
 ?>
+              <?php
 
-<div id="piechart_3d" style="min-width: 900px; height: 500px; margin: 0 auto;margin-left:400px;" ></div>
+    $op = select("SELECT COUNT(*) as op_value FROM patient WHERE centerID='".$_SESSION['centerID']."' && dateRegistered=CURDATE()");
+    foreach($op as $ops){$ops['op_value'];}
 
-<script>
-
-   google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Type', 'Number'],
-         <?php foreach($op as $ops){
-              echo "['".$ops['type']."',".$ops['id']."],";
-}
+    $opx = select("SELECT COUNT(*) as opx_value FROM patient WHERE centerID='".$_SESSION['centerID']."' ");
+    foreach($opx as $opxs){$opxs['opx_value'];}
 
     ?>
 
-        ]);
+<div id="containerOPD" style="width: 400px; height: 400px; max-width: 700px; margin: 0 auto"></div>
 
-        var options = {
-          title: '<?php echo $_SESSION['centerID'];?>--  OUT PATIENT DEPARTMENT',
-          is3D: true,
-        };
+<script>
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-        chart.draw(data, options);
+
+// Make monochrome colors
+var pieColors = (function () {
+  var colors = [],
+    base = Highcharts.getOptions().colors[0],
+    i;
+
+  for (i = 0; i < 10; i += 1) {
+    // Start out with a darkened base color (negative brighten), and end
+    // up with a much brighter color
+    colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+  }
+  return colors;
+}());
+
+// Build the chart
+Highcharts.chart('containerOPD', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'column'
+  },
+  title: {
+    text: 'QUATMEDIC OUT PATIENT DEPARTMENT'
+  },
+  tooltip: {
+//    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      colors: pieColors,
+      dataLabels: {
+        enabled: true,
+//        format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+        distance: -50,
+        filter: {
+//          property: 'percentage',
+          operator: '>',
+          value: 4
+        }
       }
+    }
+  },
+  series: [{
+    name: 'Number Of Patients',
+    data: [
+      { name: 'NEW PATIENTS <?php echo $ops['op_value']; ?>', y: <?php echo $ops['op_value']; ?>},
+      { name: 'OLD PATIENTS <?php echo $opxs['opx_value']; ?>', y: <?php echo $opxs['opx_value']; ?> }
 
-// google.charts.load("current", {packages:["corechart"]});
-//       google.charts.setOnLoadCallback(drawChart);
-//       function drawChart() {
-//         var data = google.visualization.arrayToDataTable([
-//           ['Task', 'Hours per Day'],
-//           <?php #foreach($op as $ops){
-//                echo "['".$ops['type']."',".$ops['nums']."],";
-// }
+    ]
+  }]
+});
 
-//     ?>
-//           // ['Work',     11],
-//           // ['Eat',      2],
-//           // ['Commute',  2],
-//           // ['Watch TV', 2],
-//           // ['Sleep',    7]
-//         ]);
 
-//         var options = {
-//           title: 'Out Patient Department',
-//           pieHole: 0.2,
-//         };
-
-//         var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-//         chart.draw(data, options);
-//       }
     </script>
-
-
-
-
-
-
-
-
 
 <?php }?>
 
 
 
-
-
-
-
               <?php
-              //PHARMACY
+
+
+              ?>
+
+              <?php if($_SESSION['accessLevel']=='PHARMACY'){
+                 //PHARMACY
               $c_id = select("SELECT * FROM prescriptions WHERE centerID = '".$_SESSION['centerID']."'");
               foreach($c_id as $c_idx){
               $phar_count = select("SELECT COUNT(*) as phar_all FROM prescribedmeds WHERE dateInsert=CURDATE()");
@@ -637,69 +631,67 @@ Highcharts.chart('containerCON', {
                 $cal_served = $served;
 
 
-                $cal_unserved = $unserved;
+                $cal_unserved = $unserved;?>
 
-              ?>
+                 <div id="containerPHARMA" style="min-width: 400px; height: 650px; margin: 0 auto">
 
-              <?php if($_SESSION['accessLevel']=='PHARMACY'){?>
-
-              <div id="containerPHARMA" style="min-width: 300px; height: 350px; margin: 0 auto"></div>
+              </div>
                 <script>
 
-Highcharts.chart('containerPHARMA', {
-    chart: {
-        type: 'column'
-    },
-    title: {
-        text: 'PHARMACY DEPARTMENT'
-    },
-    subtitle: {
-        text: 'Served and Unserved Drug Prescriptions'
-    },
-    xAxis: {
-        type: 'category',
-        labels: {
-            rotation: -45,
-            style: {
-                fontSize: '13px',
-                fontFamily: 'Verdana, sans-serif'
-            }
-        }
-    },
-    yAxis: {
-         min: 0,
-        // max: 100,
-        title: {
-            text: 'Quantity'
-        }
-    },
-    legend: {
-        enabled: false
-    },
-    tooltip: {
-        // pointFormat: 'Drug Amount: <b>{point.y:.100f} %</b>'
-    },
-    series: [{
-        name: '<?php echo $_SESSION['centerID']; ?>',
-        data: [
-            ['Served Prescriptions', <?php echo $cal_served;?>],
-            ['Unserved Prescriptions', <?php echo $cal_unserved;?>]
-
-        ],
-        dataLabels: {
-            enabled: true,
-            rotation: -90,
-            color: 'red',
-            align: 'right',
-            // format: '{point.y:.100f}', // one decimal
-            y: 10, // 10 pixels down from the top
-            style: {
-                fontSize: '13px',
-                fontFamily: 'Verdana, sans-serif'
-            }
-        }
-    }]
-});
+//Highcharts.chart('containerPHARMA', {
+//    chart: {
+//        type: 'column'
+//    },
+//    title: {
+//        text: 'PHARMACY DEPARTMENT'
+//    },
+//    subtitle: {
+//        text: 'Served and Unserved Drug Prescriptions'
+//    },
+//    xAxis: {
+//        type: 'category',
+//        labels: {
+//            rotation: -45,
+//            style: {
+//                fontSize: '13px',
+//                fontFamily: 'Verdana, sans-serif'
+//            }
+//        }
+//    },
+//    yAxis: {
+//         min: 0,
+//        // max: 100,
+//        title: {
+//            text: 'Quantity'
+//        }
+//    },
+//    legend: {
+//        enabled: false
+//    },
+//    tooltip: {
+//        // pointFormat: 'Drug Amount: <b>{point.y:.100f} %</b>'
+//    },
+//    series: [{
+//        name: '<?php echo $_SESSION['centerID']; ?>',
+//        data: [
+//            ['Served Prescriptions', <?php echo $cal_served;?>],
+//            ['Unserved Prescriptions', <?php echo $cal_unserved;?>]
+//
+//        ],
+//        dataLabels: {
+//            enabled: true,
+//            rotation: -90,
+//            color: 'red',
+//            align: 'right',
+//            // format: '{point.y:.100f}', // one decimal
+//            y: 10, // 10 pixels down from the top
+//            style: {
+//                fontSize: '13px',
+//                fontFamily: 'Verdana, sans-serif'
+//            }
+//        }
+//    }]
+//});
 
 
                 </script>
@@ -756,10 +748,30 @@ Highcharts.chart('containerPHARMA', {
 <?php } ?>
 
 <?php
-$dept_name = select("SELECT * FROM  accounttransaction WHERE centerID ='".$_SESSION['centerID']."'");
-foreach($dept_name as $dept_names){$d_name= $dept_names['creditAcc'];}
-$dept_ct = select("SELECT COUNT(patientID) as dept_no FROM accounttransaction WHERE centerID ='".$_SESSION['centerID']."' && dateInsert=CURDATE()");
-foreach($dept_ct as $dept_ctx){$dept_ctx['dept_no'];}
+
+//OPD
+ $fins = select("SELECT COUNT(creditAcc) as fins_value FROM accounttransaction WHERE creditAcc='OPD' && dateInsert=CURDATE() ");
+              foreach($fins as $finsx){ $finsx['fins_value'];}
+
+//CONSULTATION
+ $cons = select("SELECT COUNT(creditAcc) as cons_value FROM accounttransaction WHERE creditAcc='CONSULTATION' && dateInsert=CURDATE() ");
+              foreach($cons as $consx){ $consx['cons_value'];}
+
+//WARD
+     $wards = select("SELECT COUNT(creditAcc) as wards_value FROM accounttransaction WHERE creditAcc='WARD' && dateInsert=CURDATE() ");
+              foreach($wards as $wardsx){ $wardsx['wards_value'];}
+
+//LABORATORY
+                $labs = select("SELECT COUNT(creditAcc) as wards_value FROM accounttransaction WHERE creditAcc='LABORATORY' && dateInsert=CURDATE() ");
+              foreach($labs  as $labsx){ $labsx['wards_value'];}
+
+//PHARMACY
+                $phars = select("SELECT COUNT(creditAcc) as phars_value FROM accounttransaction WHERE creditAcc='PHARMACY' && dateInsert=CURDATE() ");
+              foreach($phars as $pharsx){ $pharsx['phars_value'];}
+
+//EMERGENCY
+                $emergs = select("SELECT COUNT(creditAcc) as emergs_value FROM accounttransaction WHERE creditAcc='EMERGENCY' && dateInsert=CURDATE() ");
+              foreach($emergs as $emergsx){ $emergsx['emergs_value'];}
 
 ?>
 
@@ -782,7 +794,7 @@ Highcharts.chart('containerFIN', {
         text: 'FINANCE DEPARTMENT'
     },
     subtitle: {
-        text: '3D donut in Highcharts'
+        text: 'QUATMEDIC FINANCE CHART'
     },
     plotOptions: {
         pie: {
@@ -794,9 +806,13 @@ Highcharts.chart('containerFIN', {
         name: 'Delivered amount',
         data: [
             // ['<?php #echo $dept_names['creditAcc']; ?>', <?php #echo $dept_ctx['dept_no']; ?>]
-            ['<?php echo $dept_names['creditAcc']; ?>', 10]
-            // ['blood', <?php #echo $dept_ctx['dept_no']; ?>],
-            // ['meat', <?php #echo $dept_ctx['dept_no']; ?> ]
+            ['OPD <?php echo $finsx['fins_value']; ?>', <?php echo $finsx['fins_value']; ?>],
+            ['CONSULTATION <?php echo $consx['cons_value']; ?>', <?php echo $consx['cons_value']; ?>],
+            ['WARD <?php echo $wardsx['wards_value']; ?>', <?php echo $wardsx['wards_value']; ?>],
+            ['LABORATORY <?php echo $labsx['wards_value']; ?>', <?php echo $labsx['wards_value']; ?>],
+            ['PHARMACY <?php echo $pharsx['phars_value']; ?>', <?php echo $pharsx['phars_value']; ?>],
+            ['EMERGENCY <?php echo $emergsx['emergs_value']; ?>', <?php echo $emergsx['emergs_value']; ?>]
+
         ]
     }]
 });
@@ -1068,11 +1084,5 @@ function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
 </script>
-
-
-<script>
-
-</script>
-
 </body>
 </html>
