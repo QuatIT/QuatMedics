@@ -118,6 +118,7 @@ echo send_mail($send_to,$copy,$body,$subj);
 <link rel="stylesheet" href="../css/maruti-style.css" />
 <link rel="stylesheet" href="../css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="../assets/css/font-awesome2.css" />
+<link rel="icon" href="../quatmedics.png" type="image/x-icon" style="width:50px;">
         <style>
         .active{
             background-color: #209fbf;
@@ -142,7 +143,7 @@ echo send_mail($send_to,$copy,$body,$subj);
 
 <!--Header-part-->
 <div id="header">
-  <h1><a href="quatadmin-index.html"> QUAT MEDICS ADMIN</a></h1>
+  <h1><a href="index"> QUATMEDIC ADMIN</a></h1>
 </div>
 <!--close-Header-part-->
 

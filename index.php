@@ -142,7 +142,7 @@ clearstatcache();
 <html lang="en">
 
 <head>
-        <title>QUAT MEDICS</title>
+        <title>QUATMEDIC</title>
         <meta charset="UTF-8" />
         <meta http-equiv="expires" content="Mon, 26 Jul 1997 05:00:00 GMT"/>
         <meta http-equiv="pragma" content="no-cache" />
@@ -150,8 +150,8 @@ clearstatcache();
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
         <link rel="stylesheet" href="css/maruti-login.css" />
-	<link rel="stylesheet" href="assets/css/font-awesome.css" />
-<!--	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
+        <link rel="stylesheet" href="assets/css/font-awesome2.css" />
+        <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 	<style>
 	       body{background: #eee url(light_honeycomb.png);}
 	</style>

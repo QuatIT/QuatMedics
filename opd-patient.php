@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
-<!--<link rel="stylesheet" href="css/font-awesome.min.css" />-->
+<link rel="stylesheet" href="css/font-awesome.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -17,8 +17,6 @@
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="assets/css/font-awesome2.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
-<!--<link rel="stylesheet" href="assets/css/font-awesome.css" />-->
-<!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
 
         <style>
         .active{
@@ -290,13 +288,13 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                               <td style="text-align: center;"> <?php echo $patient['dob']; ?></td>
                               <td style="text-align: center;">
                                    <a href="#" data-toggle="modal" data-target="#squarespaceModal<?php echo $patient['patientID']; ?>">
-                                       <span class="btn btn-primary fa fa-eye"></span>
+                                       <span class="btn btn-primary fa fa-user-md"> vitals</span>
                                   </a> ||
                                   <a href="id-card?pid=<?php echo $patient['patientID'];?>" title="Patient Card">
-                                    <span class="btn btn-success fa fa-image"></span>
+                                    <span class="btn btn-success fa fa-image"> card</span>
                                   </a> ||
-                                  <a href="#?pid=<?php echo $patient['patientID'];?>" title="Update Patient Details">
-                                    <span class="btn btn-primary fa fa-edit"></span>
+                                  <a href="updatepatient?ptid=<?php echo $patient['patientID'];?>" title="Update Patient Details">
+                                    <span class="btn btn-primary fa fa-edit"> edit</span>
                                   </a>
 
                               </td>
@@ -386,7 +384,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
 
                                                 <img src='<?php echo $patient['patient_image']; ?>' width=120 height=350 ><br><br>
 
-                                                         <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
+                                                         <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php echo $patient['patientID']; ?>" ><i class="fa fa-stethoscope"></i> Check Vitals <i class="fa fa-arrow-right"></i></a>
                                                     </div>
 <!--                                                </div>-->
 <!--                                                <div class="span6">-->
@@ -630,7 +628,7 @@ window.onload = function () {
         function modey(val){
             // load the select option data into a div
                 $('#loader').html("Please Wait...");
-                $('#modeload').load('loads/mode.php?id='+val+'&pid=<?php echo $_GET["pid"]; ?>', function(){
+                $('#modeload').load('loads/mode.php?id='+val+'&pid=<?php echo @$_GET["pid"]; ?>', function(){
                 $('#loader').html("");
                });
         }
@@ -655,7 +653,7 @@ window.onload = function () {
         function ccInsure(val){
             // load the select option data into a div
                 $('#loader').html("Please Wait...");
-                $('#ccmodeload').load('loads/ccmode.php?id='+val+'&pid=<?php echo $_GET["pid"]; ?>', function(){
+                $('#ccmodeload').load('loads/ccmode.php?id='+val+'&pid=<?php echo @$_GET["pid"]; ?>', function(){
                 $('#loader').html("");
                });
         }

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC ADMIN</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -16,9 +16,31 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="assets/css/font-awesome2.css" />
+<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <style>
 .active{
     background-color: #209fbf;
+}
+
+
+/*
+.password{
+    position: relative;
+}
+*/
+
+/*
+.password input[type="password"]{
+    padding-right: 30px;
+}
+*/
+
+.controls .fa,#pass .fa,#cpass .fa {
+    display:none;
+    right: 15px;
+    position: absolute;
+    top: 12px;
+    cursor:pointer;
 }
 </style>
 </head>
@@ -34,8 +56,7 @@ $centerID = $_SESSION['centerID'];
     $staffIDs = $user->find_num_staffID($centerID) + 1;
 
     if(isset($_POST['btnSave'])){
-
-        $staffID =  substr(filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING), 0, 5)."-".sprintf('%06s',$staffIDs);
+        $staffID =  substr(filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING), 0, 5).".".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$staffIDs);
         $firstName =  filter_input(INPUT_POST, "firstName", FILTER_SANITIZE_STRING);
         $lastName =  filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING);
         $otherName =  filter_input(INPUT_POST, "otherName", FILTER_SANITIZE_STRING);
@@ -45,40 +66,45 @@ $centerID = $_SESSION['centerID'];
         $staffCategory =  filter_input(INPUT_POST, "staffCategory", FILTER_SANITIZE_STRING);
         $staffDepartment =  filter_input(INPUT_POST, "staffDepartment", FILTER_SANITIZE_STRING);
         $email =  filter_input(INPUT_POST, "email", FILTER_SANITIZE_STRING);
+        $phone =  filter_input(INPUT_POST, "phone", FILTER_SANITIZE_STRING);
 
         $username =  filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING);
-        $password =  filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
+        $password =  filter_input(INPUT_POST, "pwd", FILTER_SANITIZE_STRING);
+        $password2 =  filter_input(INPUT_POST, "pwd2", FILTER_SANITIZE_STRING);
         $userID = $staffID;
 
         $centerID = $_SESSION['centerID'];
 
 		$sql_user = select("SELECT * FROM staff WHERE email='$email' ");
+		$sql_user2 = select("SELECT * FROM staff WHERE phone='$phone' ");
 		if(count($sql_user) < 1){
+            if(count($sql_user2) < 1){
 
-        $centerUser = $user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$centerID);
+        $centerUser = $user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$phone,$centerID);
 
         if($centerUser){
 
             $accessLevel = $staffDepartment;
+//          $userCredential = User::centerUserLogin($staffID,$username,$password,$accessLevel,$centerID);
+            $userCredential = $user->saveUserCredential($staffID,$username,$password,$accessLevel,$centerID,$userID);
+//
+//            $send_to = $email;
+//            $body = "Dear ".$firstName.", <br> Kindly find below your access to QUATMedic. <br><br> Username: ".$username."<br>Password: ".$password."<br><br> Thank you.";
+//            $subj = "QUATMEDIC LOGIN ACCESS";
+//            $copy = '';
+//
+//            //send mail
+//            echo send_mail($send_to,$copy,$body,$subj);
 
-
-//            $userCredential = User::centerUserLogin($staffID,$username,$password,$accessLevel,$centerID);
-            $userCredential = User::saveUserCredential($staffID,$username,$password,$accessLevel,$centerID,$userID);
-
-            $send_to = $email;
-            $body = "Dear ".$firstName.", <br> Kindly find below your access to QUATMedic. <br><br> Username: ".$username."<br>Password: ".$password."<br><br> Thank you.";
-            $subj = "QUATMEDIC LOGIN ACCESS";
-            $copy = '';
-
-            //send mail
-            echo send_mail($send_to,$copy,$body,$subj);
-
-            $success = "USER DATA CREATED SUCCESSFULLY";
+            $success = "STAFF DATA CREATED SUCCESSFULLY";
         }else{
-            $error = "FAILED TO CREATE USER DATA";
+            $error = "FAILED TO CREATE STAFF DATA";
         }
+        }else{
+                $error = "STAFF PHONE ALREADY EXIST";
+            }
 		}else{
-			$error = "USER DATA ALREADY EXIST";
+			$error = "STAFF EMAIL ALREADY EXIST";
 		}
     }
 
@@ -124,18 +150,18 @@ $centerID = $_SESSION['centerID'];
       <div class="row-fluid">
           <div class="span12">
            <?php
-                              if($success){
-                              ?>
-                              <div class="alert alert-success">
-                          <strong>Success!</strong> <?php echo $success; ?>
-                        </div>
-                              <?php } if($error){
-                                  ?>
-                              <div class="alert alert-danger">
-                          <strong>Error!</strong> <?php echo $error; ?>
-                        </div>
-                              <?php
-                              } ?>
+              if($success){
+              ?>
+              <div class="alert alert-success">
+          <strong>Success!</strong> <?php echo $success; ?>
+        </div>
+              <?php } if($error){
+                  ?>
+              <div class="alert alert-danger">
+          <strong>Error!</strong> <?php echo $error; ?>
+        </div>
+              <?php
+              } ?>
           </div>
         <div class="widget-box">
             <div class="widget-title">
@@ -169,17 +195,17 @@ $centerID = $_SESSION['centerID'];
                     </div>
                 </div>
                 <div id="tab2" class="tab-pane">
-                    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data" name="password_validate" id="password_validate" novalidate="novalidate" onsubmit="return confirm('CONFIRM SAVE.');">
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Staff ID :</label>
+                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Staff ID :</label>
                                <div class="controls">
                                   <input type="text" class="span11" name="staffID" value="<?php echo $staffIDs; ?>" required readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">First Name :</label>
+                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> First Name :</label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="First Name" name="firstName" required/>
                                 </div>
@@ -191,7 +217,7 @@ $centerID = $_SESSION['centerID'];
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Date Of Birth</label>
+                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Date Of Birth</label>
                                 <div class="controls">
                                   <input type="date" class="span11" name="dob" required />
                                 </div>
@@ -199,19 +225,19 @@ $centerID = $_SESSION['centerID'];
                               <div class="control-group">
                                 <label class="control-label"> Email</label>
                                 <div class="controls">
-                                  <input type="email" class="span11" name="email" placeholder="Email" />
+                                  <input type="email" class="span11" name="email" placeholder="Valid Email" />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> Specialty</label>
+                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Phone</label>
+                                <div class="controls">
+                                  <input type="tel" class="span11" name="phone" placeholder="Active Phone Number" />
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label">Specialty</label>
                                 <div class="controls">
                                   <input type="text" class="span11" name="specialty" placeholder="specialized In..." />
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label"> User Name</label>
-                                <div class="controls">
-                                  <input type="text"  class="span11" name="userName" placeholder="User Name..." required />
                                 </div>
                               </div>
                           </div>
@@ -229,17 +255,18 @@ $centerID = $_SESSION['centerID'];
                                     <option value="Psychologist"> Psychologist</option>
                                     <option value="Therapist"> Therapist</option>
                                     <option value="Acountant"> Acountant</option>
+                                    <option value="Other"> Other</option>
                                   </select>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Last Name :</label>
+                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Last Name :</label>
                                <div class="controls">
                                   <input type="text" class="span11" name="lastName" placeholder="Last Name" required/>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> Gender</label>
+                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Gender</label>
                                 <div class="controls">
                                   <select name="gender" >
                                         <option value="default"> </option>
@@ -249,9 +276,9 @@ $centerID = $_SESSION['centerID'];
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> Staff Department</label>
+                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Staff Department</label>
                                 <div class="controls">
-                                  <select name="staffDepartment" >
+                                  <select name="staffDepartment" required>
                                     <option value="default"> </option>
                                       <?php
                                         $dep = select("SELECT * FROM department ");
@@ -270,15 +297,29 @@ $centerID = $_SESSION['centerID'];
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Password</label>
+                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> User Name</label>
                                 <div class="controls">
-                                  <input type="password"  class="span11" name="password" placeholder="Password..." required />
+                                  <input type="text"  class="span11" name="userName" placeholder="User Name..." required />
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Password</label>
+                                <div class="controls">
+                                  <input type="password"  class="span11" id="pwd" name="pwd" placeholder="PASSWORD" required />
+                                    <span class="fa fa-eye"></span>
+                                </div>
+                              </div>
+                              <div class="control-group">
+                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Confirm Password</label>
+                                <div class="controls">
+                            <input type="password" id="pwd2" class="span11" name="pwd2" placeholder="CONFIRM PASSWORD" required />
+                                    <span class="fa fa-eye"></span>
                                 </div>
                               </div>
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Staff</button>
+                                <button type="submit" name="btnSave" class="btn btn-success labell btn-block span10"><i class="fa fa-save"></i> Save Staff</button>
                               </div>
                           </div>
                       </div>
@@ -292,26 +333,44 @@ $centerID = $_SESSION['centerID'];
 <div class="row-fluid">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
-<script src="js/excanvas.min.js"></script>
+
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.ui.custom.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.flot.min.js"></script>
-<script src="js/jquery.flot.resize.min.js"></script>
-<script src="js/jquery.peity.min.js"></script>
-<script src="js/fullcalendar.min.js"></script>
-<script src="js/jquery.dataTables.min.js"></script>
-<script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
 <script src="js/select2.min.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
 <script src="js/maruti.js"></script>
+<script src="js/maruti.form_validation.js"></script>
+
+
+<script src="js/excanvas.min.js"></script>
+<!--<script src="js/jquery.min.js"></script>-->
+<!--<script src="js/jquery.ui.custom.js"></script>-->
+<!--<script src="js/bootstrap.min.js"></script>-->
+<!--<script src="js/bootstrap-colorpicker.js"></script>-->
+<script src="js/bootstrap-datepicker.js"></script>
+<!--<script src="js/jquery.flot.min.js"></script>-->
+<!--<script src="js/jquery.flot.resize.min.js"></script>-->
+<!--<script src="js/jquery.peity.min.js"></script>-->
+<!--<script src="js/fullcalendar.min.js"></script>-->
+<script src="js/jquery.dataTables.min.js"></script>
+<!--<script src="js/bootstrap-colorpicker.js"></script>-->
+<!--<script src="js/bootstrap-datepicker.js"></script>-->
+<script src="js/jquery.uniform.js"></script>
+<script src="js/select2.min.js"></script>
+<!-- <script src="js/jquery.validate.js"></script>-->
+<!--<script src="js/maruti.js"></script>-->
 <script src="js/maruti.tables.js"></script>
 <script src="js/maruti.dashboard.js"></script>
-<script src="js/maruti.chat.js"></script>
+<!--<script src="js/maruti.chat.js"></script>-->
 <script src="js/maruti.form_common.js"></script>
+<!--<script src="js/maruti.form_validation.js"></script>-->
+
+
+
+
 <!--<script src="js/maruti.js"></script> -->
 <script>
   function newpatient(){

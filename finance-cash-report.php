@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -15,7 +15,8 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="assets/css/font-awesome2.css" />
+<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
     <style>
         .active{
             background-color: #209fbf;
@@ -87,9 +88,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                     <td><?php echo $transRow['Amount'];?></td>
                     <td><?php echo $transRow['activity'];?></td>
                   </tr>
-                  <?php }}else{?>
-                  <tr><td colspan="5"> NO ACCOUNT TRANSACTION SAVED.</td></tr>
-                  <?php }?>
+                  <?php }}?>
               </tbody>
             </table>
           </div>

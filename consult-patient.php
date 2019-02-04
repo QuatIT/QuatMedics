@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -15,7 +15,8 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="assets/css/font-awesome2.css" />
+<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <link rel="stylesheet" type="text/css" href="assets/js1/jquery-ui.css" />
 <!--
     <style>
@@ -29,7 +30,10 @@
 		table, tr, td {
 			border: 1px solid transparent;
 		}
-	</style>
+
+    #ul{background-color: #eee;cursor: pointer;}
+    #li{padding:12px;}
+</style>
 </head>
 <body>
 
@@ -548,14 +552,15 @@ if($medIDNum > 0 && $piecesNum > 0) {
                 <div class="control-group">
                 <label class="control-label"> KEYWORD</label>
                   <div class="controls">
-                    <input type="text" name="keyword" class="span11" onchange="">
+                    <input type="text" name="keyword" id="notes_input" class="span11" on="kwrd(this.value);">
+                      <div id="diseaseList"></div>
                   </div>
                 </div>
 
                 <div class="control-group">
                 <label class="control-label"> NOTE DETAILS</label>
                   <div class="controls">
-                      <textarea class="span11" name="noteDetails" rows="6" ><?php echo @$consultrow['docNotes'];?></textarea>
+                      <textarea class="span11" id="noteDet" name="noteDetails" rows="6" ><?php echo @$consultrow['docNotes'];?></textarea>
                   </div>
               </div>
              </div>
@@ -1203,6 +1208,50 @@ function medtype(val){
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
+</script>
+<script>
+//$(document).ready(function(){
+  $('#notes_input').keyup(function(){
+    var query = $(this).val();
+//alert(query);
+    if(query != ''){
+      $.ajax({
+        url:"search.php",
+        method:"post",
+        data:{query:query},
+        success:function(data){
+          $('#diseaseList').fadeIn();
+          $('#diseaseList').html(data);
+        }
+      });
+    }else{
+      $('#diseaseList').fadeOut();
+      $('#diseaseList').html("");
+    }
+  });
+  $(document).on('click','#li',function(){
+    $('#notes_input').val($(this).text());
+    $('#diseaseList').fadeOut();
+
+  });
+
+       setInterval("my_function();",1000);
+
+    function my_function(){
+      var ss = document.getElementById('notes_input').value;
+//     document.getElementById('noteDet').innerHTML = $('#noteDet').load('loads/keyword.php?kwd='+ ss);
+    }
+//     var hh =  $('#notes_input').val();
+
+//});
+
+//function kwrd(hh){
+//    // load the select option data into a div
+//        $('#loader').html("Please Wait...");
+//        $('#noteDet').load('loads/keyword.php?kwd='+hh, function(){
+//        $('#loader').html("");
+//       });
+//}
 </script>
 </body>
 </html>

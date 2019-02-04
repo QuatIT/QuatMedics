@@ -16,9 +16,9 @@ foreach($load_centeruser as $cuser){
   <td><?php echo $cuser['staffID']; ?></td>
   <td> <?php echo $cuser['firstName']." ".$cuser['otherName']." ".$cuser['lastName']; ?></td>
   <td> <?php echo $cuser['departmentID']; ?></td>
-  <td> </td>
+  <td> <?php echo $cuser['phone']; ?></td>
   <td style="text-align: center;">
-       <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
+       <a href="updateuser?uid=<?php echo $cuser['staffID']; ?>"> <span class="btn btn-info fa fa-edit"> Edit</span></a>
   </td>
 </tr>
 

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC ADMIN</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="assets/css/font-awesome2.css" />
+<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <style>
 .active{
     background-color: #209fbf;
@@ -25,35 +26,48 @@
 <body>
 
 <?php
-    include 'layout/head.php';
+include 'layout/head.php';
 
-	$centerID = $_SESSION['centerID'];
-    //generate centerLabID
-    $lab = new Lab;
-    $centerLabIDs = $lab->find_num_Lab($centerID) + 1;
-
-    $success = '';
-    $error = '';
+$centerID = $_SESSION['centerID'];
+//generate centerLabID
+$lab = new Lab;
 
 
-    if(isset($_POST['btnSave'])){
+$success = '';
+$error = '';
 
 
-      $centerID = $_SESSION['centerID'];
-      $centerLabID =  "LAB.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$centerLabIDs);
-      $WardName =  filter_input(INPUT_POST, "WardName", FILTER_SANITIZE_STRING);
-
-        $lab_sql = insert("INSERT INTO lablist(labID,labName,centerID) VALUES('$centerLabID','$WardName','$centerID') ");
-
-        if($lab_sql){
-            $success = "LAB created Successfully";
-        }else{
-            $error = "LAB couldn't Successfully";
-        }
-
+if(isset($_POST['btnSave'])){
+    $centerID = $_SESSION['centerID'];
+    $numlab = count($_POST['labName']);
+    if($numlab > 0){
+            for($n=0; $n<$numlab; $n++){
+                if($_POST['labName'][$n] != ''){
+                    $centerLabIDs = $lab->find_num_Lab($centerID) + 1;
+                    $centerLabID =  "LAB.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$centerLabIDs);
+                    $labName = trim($_POST['labName'][$n]);
+                    //check if test exits already..
+                    $chk = select("SELECT * FROM lablist WHERE labName='$labName' AND centerID='$centerID'");
+                    if($chk){
+                        $error = "<script>document.write('LAB TEST NAME ALREADY EXITS.');</script>";
+                    }else{
+                        $lab_sql = insert("INSERT INTO lablist(labID,labName,centerID) VALUES('$centerLabID','$labName','$centerID') ");
+                        if($lab_sql){
+                            $success = "<script>document.write('LAB CREATED SUCCESSFULL');window.location.href='centerlab-index';</script>";
+                        }else{
+                            $error = "<script>document.write('LAB CREATION FAILED, TRY AGAIN');</script>";
+                        }
+                    }
+                }else{
+                    $error = "<script>document.write('EMPTY FIELD.');</script>";
+                }
+            }
+    }else{
+        $error = "<script>document.write('NO LAB TEST ENTERED.');</script>";
     }
+}
 
-    ?>
+?>
 
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -82,33 +96,61 @@
   </div>
   <div class="container-fluid">
       <h3 class="quick-actions">LAB MANAGEMENT</h3>
-           <?php
-                              if($success){
-                              ?>
-                              <div class="alert alert-success">
-                          <strong>Success!</strong> <?php echo $success; ?>
-                        </div>
-                              <?php } if($error){
-                                  ?>
-                              <div class="alert alert-danger">
-                          <strong>Error!</strong> <?php echo $error; ?>
-                        </div>
-                              <?php
-                              } ?>
+<?php
+if($success){
+?>
+<div class="alert alert-success">
+<strong>Success!</strong> <?php echo $success; ?>
+</div>
+<?php } if($error){
+  ?>
+<div class="alert alert-danger">
+<strong>Error!</strong> <?php echo $error; ?>
+</div>
+<?php
+} ?>
       <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs labell">
-                    <li class="active"><a data-toggle="tab" href="#tab1">MedCenter Lab</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Lab</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Laboratory Tests</a></li>
+<!--                    <li><a data-toggle="tab" href="#tab2">Add New Lab</a></li>-->
                 </ul>
             </div>
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
-                    <div class="widget-box">
+                    <form method="post" enctype="multipart/form-data" onsubmit="return confirm('CONFIRM SAVE.');">
+                        <div class="span6">
+                        <table class="table table-bordered" id="dynamic_field">
+							  <tr>
+							  	<td colspan="2" style="height:10px;">
+								  	<h4 class="text-center" style="height:10px;"> CREATE LABORATORY TESTS</h4>
+								  </td>
+							  </tr>
+							<tr>
+								<td>
+									<input type="text" class="span11" name="labName[]" placeholder="Lab Test Name" required/>
+								</td>
+								<td>
+                                    <button type="button" name="add" id="add" class="btn btn-primary btn-block labell">ADD LAB TEST</button>
+                                </td>
+							</tr>
+						</table>
+
+                        <div class="widget-content nopadding">
+                              <div class="form-actions">
+                                  <i class="span5"></i>
+                                  <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span6"><i class="fa fa-save"></i> Save Lab Test</button>
+                              </div>
+                          </div>
+
+                        </div>
+                    </form>
+                    <div class="span6" style="padding:0px;">
+                         <div class="widget-box" style="margin:0px;">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
-                        <h5 class="labell">List Of Lab</h5>
+                        <h5 class="labell">List Of Laboratory tests</h5>
                       </div>
                       <div class="widget-content nopadding">
                         <table class="table table-bordered data-table">
@@ -124,13 +166,12 @@
                               $lablist = select("SELECT * FROM lablist WHERE centerID='".$_SESSION['centerID']."'");
                               if($lablist){
                                   foreach($lablist as $labrow){
-
                               ?>
                             <tr>
                               <td><?php echo $labrow['labID']; ?></td>
                               <td><?php echo $labrow['labName'];?></td>
                               <td style="text-align: center;">
-                                   <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
+                                   <a href="updatelab?lid=<?php echo $labrow['labID'];?>"> <span class="btn btn-info labell fa fa-edit"> Edit</span> </a>
                               </td>
                             </tr>
                               <?php }} ?>
@@ -138,34 +179,7 @@
                         </table>
                       </div>
                     </div>
-                </div>
-                <div id="tab2" class="tab-pane">
-                    <form action="" method="post" class="form-horizontal">
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Laboratory ID :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="labID" value="<?php echo $centerLabIDs; ?>" required readonly/>
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Laboratory Name :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="WardName" placeholder="Lab Name" required/>
-                                </div>
-                              </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Laboratory</button>
-                              </div>
-                          </div>
-                      </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -219,6 +233,20 @@
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
+</script>
+<script>
+//    $(document).ready(function(){
+        var i=1;
+        $('#add').click(function(){
+            i++;
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" class="span11" name="labName[]" placeholder="Lab Test Name" required/></td><td style="text-align:center;"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+//    });
 </script>
 </body>
 </html>

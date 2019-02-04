@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
-<!--<link rel="stylesheet" href="assets/css/font-awesome.css" />-->
+<link rel="stylesheet" href="css/font-awesome.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -33,7 +33,8 @@
     if($_SESSION['accessLevel']=='OPD' || $_SESSION['username']=='rik'){
 
     //generate $PatientID
-    $PatientIDs = Patient::find_num_PatientBYID($centerID) + 1;
+    $pat = new Patient();
+    $PatientIDs = $pat->find_num_PatientBYID($centerID) + 1;
 
     $success = '';
     $error = '';
@@ -72,7 +73,7 @@
 
 		if(count($pat_sql) < 1){
 
-        $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination,$hometown,$tin);
+        $createPatient = $pat->createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination,$hometown,$tin);
 
         if($createPatient){
              $success = "<script>document.write('PATIENT DETAIL ADDED SUCCESSFULLY');

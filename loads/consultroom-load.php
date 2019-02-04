@@ -16,7 +16,7 @@ foreach($load_consultroom as $room){
   <td><?php echo $room['roomID']; ?></td>
   <td> <?php echo $room['roomName']; ?></td>
   <td style="text-align: center;">
-       <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
+       <a href="updateconsultation?cid=<?php echo $room['roomID']; ?>"> <span class="btn btn-info btn-sm labell fa fa-edit"> Edit</span></a>
   </td>
 </tr>
 

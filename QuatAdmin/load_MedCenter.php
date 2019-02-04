@@ -30,11 +30,11 @@ foreach($load_MedCenter as $medCenterRow){
   <td>
    <a href="#?cid=<?php echo $medCenterRow['centerID'];?>"> <span class="btn btn-success fa fa-edit"></span></a> ||
       <?php if($medCenterRow['activestatus'] == 'ACTIVE'){?>
-   <a onclick="return confirm('DEACTIVATE CENTER.');" href="#?cid=<?php echo $medCenterRow['centerID'];?>"> <span class="btn btn-danger fa fa-times-circle"></span></a>
+   <a onclick="return confirm('DEACTIVATE CENTER.');" href="deactivate?cid=<?php echo $medCenterRow['centerID'];?>"> <span class="btn btn-danger labell fa fa-times-circle"> DEACTIVATE</span></a>
       <?php }?>
 
       <?php if($medCenterRow['activestatus'] == 'INACTIVE'){?>
-   <a onclick="return confirm('ACTIVATE CENTER.');" href="#?cid=<?php echo $medCenterRow['centerID'];?>"> <span class="btn btn-success fa fa-check-circle"></span></a>
+   <a onclick="return confirm('ACTIVATE CENTER.');" href="activate?cid=<?php echo $medCenterRow['centerID'];?>"> <span class="btn btn-success fa labell fa-check-circle"> ACTIVATE</span></a>
       <?php }?>
 
 <!--       <a href="#" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#myModal<?php #echo $medCenterRow['centerID']; ?>"><i class="fa fa-envelope"></i> Recharge SMS</a>-->

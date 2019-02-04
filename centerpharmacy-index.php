@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC ADMIN</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -15,7 +15,8 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="assets/css/font-awesome2.css" />
+<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <style>
 .active{
     background-color: #209fbf;
@@ -34,22 +35,55 @@
     $success = '';
     $error = '';
 
-    if(isset($_POST['btnSave'])){
+//    if(isset($_POST['btnSave'])){
+//
+//      $centerID = $_SESSION['centerID'];
+//      $pharmacyID =  "PH.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$pharmacyIDs);
+//      $pharmacyName =  filter_input(INPUT_POST, "pharmacyName", FILTER_SANITIZE_STRING);
+////        $status = FREE;
+//
+//        $pharm = insert("INSERT INTO pharmacy(pharmacyID,pharmacyName,centerID,dateregistered) VALUES('$pharmacyID','$pharmacyName','$centerID',CURDATE())");
+//
+//        if($pharm){
+//            $success = "PHARMACY CREATED";
+//        }else{
+//            $error = "PHARMACY CREATION FAILED";
+//        }
+//
+//    }
 
-      $centerID = $_SESSION['centerID'];
-      $pharmacyID =  "PH.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$pharmacyIDs);
-      $pharmacyName =  filter_input(INPUT_POST, "pharmacyName", FILTER_SANITIZE_STRING);
-//        $status = FREE;
 
-        $pharm = insert("INSERT INTO pharmacy(pharmacyID,pharmacyName,centerID,dateregistered) VALUES('$pharmacyID','$pharmacyName','$centerID',CURDATE())");
+if(isset($_POST['btnSave'])){
+    $centerID = $_SESSION['centerID'];
+    $numCon = count($_POST['pharmacyName']);
+//    $status = FREE;
 
-        if($pharm){
-            $success = "PHARMACY CREATED";
-        }else{
-            $error = "PHARMACY CREATION FAILED";
-        }
-
+    if($numCon > 0){
+            for($n=0; $n<$numCon; $n++){
+                if($_POST['pharmacyName'][$n] != ''){
+                    $pharmacyIDs =count(select("SELECT * FROM pharmacy WHERE centerID='$centerID'")) + 1;
+                    $pharmacyID =  "PH.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$pharmacyIDs);
+                    $pharmacyName = trim($_POST['pharmacyName'][$n]);
+                    //check if test exits already..
+                    $chk = select("SELECT * FROM pharmacy WHERE pharmacyName='$pharmacyName' AND centerID='$centerID'");
+                    if($chk){
+                        $error = "<script>document.write('PHARMACY ALREADY EXITS.');</script>";
+                    }else{
+                         $pharm = insert("INSERT INTO pharmacy(pharmacyID,pharmacyName,centerID,dateregistered) VALUES('$pharmacyID','$pharmacyName','$centerID',CURDATE())");
+                        if($pharm){
+                            $success = "<script>document.write('PHARMACY CREATED SUCCESSFULL');window.location.href='centerpharmacy-index';</script>";
+                        }else{
+                            $error = "<script>document.write('PHARMACY CREATION FAILED, TRY AGAIN');</script>";
+                        }
+                    }
+                }else{
+                    $error = "<script>document.write('EMPTY FIELD.');</script>";
+                }
+            }
+    }else{
+        $error = "<script>document.write('NO CONSULTING ROOM ENTERED.');</script>";
     }
+}
 
     ?>
 
@@ -99,11 +133,39 @@
             <div class="widget-title">
                 <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab1">Pharmacies</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Pharmacy</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
+
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="span6">
+<!--                          <div class="widget-content nopadding">-->
+                               <table class="table table-bordered" id="dynamic_field">
+							  <tr>
+							  	<td colspan="2" style="height:10px;">
+								  	<h4 class="text-center" style="height:10px;"> CREATE PHARMACY / DISPENSARY</h4>
+								  </td>
+							  </tr>
+							<tr>
+								<td>
+									<input type="text" class="span11" name="pharmacyName[]" placeholder="Pharmacy / Dispensary Name" required/>
+								</td>
+								<td>
+                                    <button type="button" name="add" id="add" class="btn btn-primary btn-block labell">ADD MORE</button>
+                                </td>
+							</tr>
+						</table>
+                              <div class="form-actions">
+                                  <i class="span6"></i>
+                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span5"><i class="
+                                    fa fa-save"></i> Save Pharmacy</button>
+                              </div>
+<!--                          </div>-->
+                        </div>
+                    </form>
+
+                    <div class="span6">
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
@@ -122,34 +184,7 @@
                         </table>
                       </div>
                     </div>
-                </div>
-                <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Pharmacy ID :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="pharmacyID" value="<?php echo $pharmacyIDs; ?>" required readonly/>
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Pharmacy Name :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="pharmacyName" placeholder="Consultation Room Name" required/>
-                                </div>
-                              </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary btn-block span10">Save Pharmacy</button>
-                              </div>
-                          </div>
-                      </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -217,6 +252,20 @@
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
+</script>
+<script>
+//    $(document).ready(function(){
+        var i=1;
+        $('#add').click(function(){
+            i++;
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" class="span11" name="pharmacyName[]" placeholder="Pharmacy / Dispensary Name" required/></td><td style="text-align:center;"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+//    });
 </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC ADMIN</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -15,7 +15,8 @@
 <link rel="stylesheet" href="css/select2.css" />
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
-<link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="stylesheet" href="assets/css/font-awesome2.css" />
+<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <style>
 .active{
     background-color: #209fbf;
@@ -30,32 +31,42 @@
     $centerID = $_SESSION['centerID'];
     $consultation = new Consultation();
     //generate $PatientID
-    $consultRoomIDs = $consultation->loadConsultRoomByidd($centerID)+ 1;
+//    $consultRoomIDs = $consultation->loadConsultRoomByidd($centerID)+ 1;
 
     $success = '';
     $error = '';
+if(isset($_POST['saveCon'])){
+    $centerID = $_SESSION['centerID'];
+    $numCon = count($_POST['consultName']);
+    $status = FREE;
 
-    if(isset($_POST['btnSave'])){
-
-      $consultRoomID =  "CR.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultRoomIDs);
-      $roomName =  filter_input(INPUT_POST, "departmentName", FILTER_SANITIZE_STRING);
-        $status = FREE;
-
-		$sql = select("SELECT * FROM consultingroom WHERE roomName='".$roomName."' && centerID='".$centerID."' ");
-		if(count($sql)<1){
-
-        $consultRoom = $consultation->createConsultRoom($consultRoomID,$centerID,$roomName,$status);
-
-        if($consultRoom){
-            $success = "CONSULTING ROOM CREATED";
-        }else{
-            $error = "CONSULTING ROOM FAILED";
-        }
-		}else{
-			 $error = "CONSULTING ROOM ALREADY EXIST";
-		}
-
+    if($numCon > 0){
+            for($n=0; $n<$numCon; $n++){
+                if($_POST['consultName'][$n] != ''){
+                    $consultRoomIDs = $consultation->loadConsultRoomByidd($centerID)+ 1;
+                    $consultRoomID =  "CR.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$consultRoomIDs);
+                    $consultName = trim($_POST['consultName'][$n]);
+                    //check if test exits already..
+                    $chk = select("SELECT * FROM consultingroom WHERE roomName='$consultName' AND centerID='$centerID'");
+                    if($chk){
+                        $error = "<script>document.write('CONSULTING ROOM ALREADY EXITS.');</script>";
+                    }else{
+                        $wardsql = $consultation->createConsultRoom($consultRoomID,$centerID,$consultName,$status);
+                        if($wardsql){
+                            $success = "<script>document.write('CONSULTING ROOM CREATED SUCCESSFULL');window.location.href='centerconsultation-index';</script>";
+                        }else{
+                            $error = "<script>document.write('CONSULTING ROOM CREATION FAILED, TRY AGAIN');</script>";
+                        }
+                    }
+                }else{
+                    $error = "<script>document.write('EMPTY FIELD.');</script>";
+                }
+            }
+    }else{
+        $error = "<script>document.write('NO CONSULTING ROOM ENTERED.');</script>";
     }
+}
+
 
     ?>
 
@@ -105,57 +116,57 @@
             <div class="widget-title">
                 <ul class="nav nav-tabs labell">
                     <li class="active"><a data-toggle="tab" href="#tab1">Consultation Rooms</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Consulting Room</a></li>
+<!--                    <li><a data-toggle="tab" href="#tab2">Add New Consulting Room</a></li>-->
                 </ul>
             </div>
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
-                    <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                        <h5 class="labell">List Of Consulting Rooms</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr class="labell">
-                              <th>Consulting Room ID</th>
-                              <th>Consulting Room Name</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody id="consultroom"></tbody>
-                        </table>
-                      </div>
-                    </div>
-                </div>
-                <div id="tab2" class="tab-pane">
-                    <form action="#" method="post" class="form-horizontal">
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Consulting Room ID :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="consultRoomID" value="<?php echo $consultRoomIDs; ?>" required readonly/>
-                                </div>
-                              </div>
+                    <form method="post" enctype="multipart/form-data" onsubmit="return confirm('CONFIRM SAVE.');">
+                        <div class="span6">
+                            <table class="table table-bordered" id="dynamic_field">
+							  <tr>
+							  	<td colspan="2" style="height:10px;">
+								  	<h4 class="text-center" style="height:10px;"> CREATE CONSULTING ROOMS</h4>
+								  </td>
+							  </tr>
+							<tr>
+								<td>
+									<input type="text" class="span11" name="consultName[]" placeholder="Room Name" required/>
+								</td>
+								<td>
+                                    <button type="button" name="add" id="add" class="btn btn-primary btn-block labell">ADD ROOM</button>
+                                </td>
+							</tr>
+						</table>
+                          <div class="form-actions">
+                              <i class="span6"></i>
+                            <button type="submit" name="saveCon" class="btn btn-primary labell btn-block span5"><i class="
+                                fa fa-save"></i> Save Room</button>
                           </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Room Name :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="departmentName" placeholder="Consultation Room Name" required/>
-                                </div>
-                              </div>
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span10">Save Consulting Room</button>
-                              </div>
-                          </div>
-                      </div>
+
+                        </div>
                     </form>
+
+                    <div class="span6">
+                        <div class="widget-box">
+                          <div class="widget-title">
+                             <span class="icon"><i class="icon-th"></i></span>
+                            <h5 class="labell">List Of Consulting Rooms</h5>
+                          </div>
+                          <div class="widget-content nopadding">
+                            <table class="table table-bordered data-table">
+                              <thead>
+                                <tr class="labell">
+                                  <th>Consulting Room ID</th>
+                                  <th>Consulting Room Name</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody id="consultroom"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -223,6 +234,20 @@
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
+</script>
+<script>
+//    $(document).ready(function(){
+        var i=1;
+        $('#add').click(function(){
+            i++;
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" class="span11" name="consultName[]" placeholder="Room Name" required/></td><td style="text-align:center;"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+//    });
 </script>
 </body>
 </html>

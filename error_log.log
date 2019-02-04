@@ -1,14 +1,1 @@
-[31-Jan-2019 14:28:37 Africa/Accra] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'ACC-GOODM-000001' for key 'PRIMARY' in X:\xammp\htdocs\quatmedic\assets\core\connection.php:54
-Stack trace:
-#0 X:\xammp\htdocs\quatmedic\assets\core\connection.php(54): PDOStatement->execute()
-#1 X:\xammp\htdocs\quatmedic\QuatAdmin\medcenter-index.php(78): insert('INSERT INTO acc...')
-#2 {main}
-  thrown in X:\xammp\htdocs\quatmedic\assets\core\connection.php on line 54
-[31-Jan-2019 14:32:36 Africa/Accra] PHP Notice:  Undefined index: username in X:\xammp\htdocs\quatmedic\logout.php on line 10
-[31-Jan-2019 14:32:36 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 10
-[31-Jan-2019 14:32:36 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 10
-[31-Jan-2019 14:32:36 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 10
-[31-Jan-2019 14:32:36 Africa/Accra] PHP Notice:  Undefined index: username in X:\xammp\htdocs\quatmedic\logout.php on line 30
-[31-Jan-2019 14:32:36 Africa/Accra] PHP Notice:  Undefined index: password in X:\xammp\htdocs\quatmedic\logout.php on line 31
-[31-Jan-2019 14:32:36 Africa/Accra] PHP Notice:  Undefined index: accessLevel in X:\xammp\htdocs\quatmedic\logout.php on line 32
-[31-Jan-2019 14:32:36 Africa/Accra] PHP Notice:  Undefined index: centerID in X:\xammp\htdocs\quatmedic\logout.php on line 33
+

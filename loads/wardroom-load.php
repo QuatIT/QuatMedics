@@ -15,10 +15,11 @@ foreach($load_wardroom as $ward){
 ?>
 
 <tr>
-  <td><?php echo $ward['wardID']; ?></td>
+<!--  <td><?php // echo $ward['wardID']; ?></td>-->
   <td> <?php echo $ward['wardName']; ?></td>
+  <td> <?php echo $ward['numOfBeds']; ?></td>
   <td style="text-align: center;">
-       <a href="#"> <span class="btn btn-primary fa fa-eye"></span></a>
+       <a href="updateward?wid=<?php echo $ward['wardID'];?>"> <span class="btn btn-info labell fa fa-edit"> Edit</span></a>
   </td>
 </tr>
 

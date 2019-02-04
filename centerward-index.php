@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC ADMIN</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="css/maruti-style.css" />
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="assets/css/font-awesome.css" />
+<link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 <style>
 .active{
     background-color: #209fbf;
@@ -26,32 +27,73 @@
 
 
 <?php
-    include 'layout/head.php';
-	$centerID = $_SESSION['centerID'];
+include 'layout/head.php';
+$centerID = $_SESSION['centerID'];
 
-    //generate $PatientID
-    $ward = new Ward();
-    $wardIDs = $ward->find_num_ward($centerID) + 1;
+//generate $PatientID
+$ward = new Ward();
+//    $wardIDs = $ward->find_num_ward($centerID) + 1;
 
-    $success = '';
-    $error = '';
+$success = '';
+$error = '';
 
-    if(isset($_POST['btnSave'])){
+//    if(isset($_POST['btnSave'])){
+//
+//      $centerID = $_SESSION['centerID'];
+//      $WardID =  "WD.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$wardIDs);
+//      $wardName =  filter_input(INPUT_POST, "wardName", FILTER_SANITIZE_STRING);
+//      $numOfBeds =  filter_input(INPUT_POST, "numOfBeds", FILTER_SANITIZE_STRING);
+//
+//        $wardRoom = $ward->createWard($WardID,$centerID,$wardName,$numOfBeds);
+//
+//        if($wardRoom){
+//            $success = "WARD CREATED";
+//        }else{
+//            $error = "WARD NOT CREATED";
+//        }
+//
+//    }
 
-      $centerID = $_SESSION['centerID'];
-      $WardID =  "WD.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$wardIDs);
-      $wardName =  filter_input(INPUT_POST, "WardName", FILTER_SANITIZE_STRING);
-      $numOfBeds =  filter_input(INPUT_POST, "numOfBeds", FILTER_SANITIZE_STRING);
+if(isset($_POST['btnSave'])){
+    $centerID = $_SESSION['centerID'];
+    $numward = count($_POST['wardName']);
+    $numbed = count($_POST['numOfBeds']);
 
-        $wardRoom = $ward->createWard($WardID,$centerID,$wardName,$numOfBeds);
+    $string1 = trim('emegency');
+    $string2 = trim('emergency ward');
+    if(($numward > 0) && ($numbed > 0)){
+            for($n=0,$b=0; $n<$numward,$b<$numbed; $n++,$b++){
+                if(($_POST['wardName'][$n] != '') && ($_POST['numOfBeds'][$b] != '')){
+                    $wardIDs = $ward->find_num_ward($centerID) + 1;
+                    $WardID =  "WD.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$wardIDs);
+                    $wardName = trim($_POST['wardName'][$n]);
+                    $numOfBeds = trim($_POST['numOfBeds'][$b]);
 
-        if($wardRoom){
-            $success = "WARD CREATED";
-        }else{
-            $error = "WARD NOT CREATED";
-        }
+                    if( (strcasecmp($string1,$wardName) != 0 ) || (strcasecmp($string2,$wardName) !=0)){
+                        $error = "<script>document.write('EMERGENCY MODULE ALREADY EXIST');</script>";
+                    }else{
+                        //check if test exits already..
+                        $chk = select("SELECT * FROM wardlist WHERE wardName='$wardName' AND centerID='$centerID'");
+                        if($chk){
+                            $error = "<script>document.write('WARD NAME ALREADY EXITS.');</script>";
+                        }else{
+                             $wardRoom = $ward->createWard($WardID,$centerID,$wardName,$numOfBeds);
+                            if($wardRoom){
+                                $success = "<script>document.write('WARD CREATED SUCCESSFULL');window.location.href='centerward-index';</script>";
+                            }else{
+                                $error = "<script>document.write('WARD CREATION FAILED, TRY AGAIN');</script>";
+                            }
+                        }
+                    }
 
+                }else{
+                    $error = "<script>document.write('EMPTY FIELDS.');</script>";
+                }
+            }
+    }else{
+        $error = "<script>document.write('NO LAB TEST ENTERED.');</script>";
     }
+}
 
     ?>
 
@@ -77,7 +119,7 @@
   <div id="content-header">
     <div id="breadcrumb">
         <a title="Go to Home" class="tip-bottom"><i class="icon-home"></i> HOME</a>
-        <a title="Ward Management" class="tip-bottom"><i class="icon-folder-open"></i> Ward</a>
+        <a title="Ward Management" class="tip-bottom"><i class="icon-folder-close"></i> WARD</a>
     </div>
   </div>
   <div class="container-fluid">
@@ -99,65 +141,68 @@
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs labell">
-                    <li class="active"><a data-toggle="tab" href="#tab1">MedCenter Ward</a></li>
-                    <li><a data-toggle="tab" href="#tab2">Add New Ward</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Center Wards</a></li>
+<!--                    <li><a data-toggle="tab" href="#tab2">Add New Ward</a></li>-->
                 </ul>
             </div>
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
-                    <div class="widget-box">
-                      <div class="widget-title">
-                         <span class="icon"><i class="icon-th"></i></span>
-                        <h5 class="labell">List Of Ward</h5>
-                      </div>
-                      <div class="widget-content nopadding">
-                        <table class="table table-bordered data-table">
-                          <thead>
-                            <tr class="labell">
-                              <th>Ward ID</th>
-                              <th>Ward Name</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody id="ward_room"></tbody>
-                        </table>
-                      </div>
-                    </div>
-                </div>
-                <div id="tab2" class="tab-pane">
-                    <form action="" method="post" class="form-horizontal">
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Ward ID :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="WardID" value="<?php echo $wardIDs; ?>" required readonly/>
-                                </div>
-                              </div>
-                              <div class="control-group">
-                                <label class="control-label">Number OF Beds :</label>
-                               <div class="controls">
-                                  <input type="number" min="0" class="span11" name="numOfBeds" required/>
-                                </div>
-                                  <div class="controls"></div>
-                              </div>
-                          </div>
-                      </div>
-                    <div class="span6">
-                          <div class="widget-content nopadding">
-                              <div class="control-group">
-                                <label class="control-label">Ward Name :</label>
-                               <div class="controls">
-                                  <input type="text" class="span11" name="WardName" placeholder="Ward Name" required/>
-                                </div>
-                              </div>
+                    <form method="post" enctype="multipart/form-data" onsubmit="return confirm('CONFIRM SAVE.');">
+                        <div class="span6">
+                            <table class="table table-bordered" id="dynamic_field">
+                                  <tr>
+                                    <td colspan="2" style="height:10px;">
+                                        <h4 class="text-center" style="height:10px;"> CREATE WARDS</h4>
+                                      </td>
+                                  </tr>
+                                <tr class="labell">
+                                    <th>Ward Name</th>
+                                    <th>No. Of Beds</th>
+                                    <th> Action</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" class="span11" name="wardName[]" placeholder="Ward Name" required/>
+                                    </td>
+                                    <td>
+                                        <input type="number" min="1" class="span11" name="numOfBeds[]" placeholder="Number Of Beds" required/>
+                                    </td>
+                                    <td>
+                                        <button type="button" name="add" id="add" class="btn btn-primary btn-block labell">ADD WARD</button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="widget-content nopadding">
                               <div class="form-actions">
-                                  <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span10">Save Ward</button>
+                                  <i class="span6"></i>
+                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span5"><i class="fa fa-save"></i> Save Ward</button>
                               </div>
                           </div>
-                      </div>
+                        </div>
                     </form>
+
+                    <div class="span6">
+                        <div class="widget-box" style="margin:0px;">
+                          <div class="widget-title">
+                             <span class="icon"><i class="icon-th"></i></span>
+                            <h5 class="labell">List Of Ward</h5>
+                          </div>
+                          <div class="widget-content nopadding">
+                            <table class="table table-bordered data-table">
+                              <thead>
+                                <tr class="labell">
+<!--                                  <th>Ward ID</th>-->
+                                  <th>Ward Name</th>
+                                  <th>No. Of Beds</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody id="ward_room"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -228,6 +273,20 @@
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
+</script>
+<script>
+//    $(document).ready(function(){
+        var i=1;
+        $('#add').click(function(){
+            i++;
+            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" class="span11" name="wardName[]" placeholder="Ward Name" required/></td><td><input type="number" min="1" class="span11" name="numOfBeds[]" placeholder="Number Of Beds" required/></td><td style="text-align:center;"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+//    });
 </script>
 </body>
 </html>
