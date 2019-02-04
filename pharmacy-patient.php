@@ -251,17 +251,22 @@ input:checked + .slider:before {
                           <th>Number</th>
                           <th>Medicine</th>
                           <th>Dosage</th>
+                          <th>Price</th>
                           <th>Action</th>
                           <th>comment</th>
                       </thead>
                       <tbody>
 
-                          <?php foreach($pre_med as $med){ ?>
+                          <?php
+                                foreach($pre_med as $med){
+                                $medtotal+=$med['medprice'];
+                          ?>
 
                              <tr>
                                   <td><?php echo $counter++; ?></td>
                                   <td><?php echo $med['medicine']; ?></td>
                                   <td><?php echo $med['dosage']; ?></td>
+                                  <td style="text-align:center;"><?php echo "Ghc ".$med['medprice']; ?></td>
 
                                  <?php if($med['confirm']=='UNCONFIRMED'){ ?>
                                     <td colspan="2" style="text-align:center;">
@@ -340,6 +345,13 @@ input:checked + .slider:before {
 
                                 </tr>
                  <?php   }?>
+                      <tr><td colspan="6"></td></tr>
+                      <tr>
+                        <td colspan="2"></td>
+                        <td style="font-weight:bolder; text-align:right;">TOTAL</td>
+                        <td style="font-weight:bolder; text-align:center;"><?php echo "Ghc ".$medtotal;?></td>
+                        <td colspan="2"></td>
+                      </tr>
                       </tbody>
                     </table>
                       <div class="form-actions">
