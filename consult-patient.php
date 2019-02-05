@@ -552,17 +552,17 @@ if($medIDNum > 0 && $piecesNum > 0) {
                 <div class="control-group">
                 <label class="control-label"> KEYWORD</label>
                   <div class="controls">
-                    <input type="text" name="keyword" id="notes_input" class="span11" on="kwrd(this.value);">
+                    <input type="text" name="keyword" id="notes_input" autofocus autocomplete="on" class="span11" onlive="kwrd(this.value);">
                       <div id="diseaseList"></div>
                   </div>
                 </div>
-
-                <div class="control-group">
+<span id="noteDet"></span>
+                <!-- <div class="control-group">
                 <label class="control-label"> NOTE DETAILS</label>
                   <div class="controls">
-                      <textarea class="span11" id="noteDet" name="noteDetails" rows="6" ><?php echo @$consultrow['docNotes'];?></textarea>
+                      <textarea class="span11" id="noteDet" name="noteDetails" rows="6" ><?php #echo $_SESSION['wordrow']; ?></textarea>
                   </div>
-              </div>
+              </div> -->
              </div>
              <div class="form-actions">
                   <i class="span7"></i>
@@ -1232,26 +1232,32 @@ function resetMenu() {
   $(document).on('click','#li',function(){
     $('#notes_input').val($(this).text());
     $('#diseaseList').fadeOut();
-
+		doc_keywrd();
   });
 
-       setInterval("my_function();",1000);
+			 function findAndReplace(string, target, replacement) {
 
-    function my_function(){
+			  var i = 0, length = string.length;
+
+			  for (i; i < length; i++) {
+
+			    string = string.replace(target, replacement);
+
+			  }
+
+			  return string;
+
+			 }
+
+    function doc_keywrd(){
       var ss = document.getElementById('notes_input').value;
-//     document.getElementById('noteDet').innerHTML = $('#noteDet').load('loads/keyword.php?kwd='+ ss);
+			var result;
+		str = findAndReplace(ss, " ", "%20");
+
+    $('#noteDet').load('loads/keyword.php?kwd='+ str);
+
     }
-//     var hh =  $('#notes_input').val();
 
-//});
-
-//function kwrd(hh){
-//    // load the select option data into a div
-//        $('#loader').html("Please Wait...");
-//        $('#noteDet').load('loads/keyword.php?kwd='+hh, function(){
-//        $('#loader').html("");
-//       });
-//}
 </script>
 </body>
 </html>
