@@ -1,5 +1,5 @@
 #redirection when page not found
-ErrorDocument 404 http://localhost/quatmedic/404
+ErrorDocument 404 http://localhost:8080/quatmedic/404
 
 
 #Hides all file extensions in the url

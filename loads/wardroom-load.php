@@ -15,7 +15,6 @@ foreach($load_wardroom as $ward){
 ?>
 
 <tr>
-<!--  <td><?php // echo $ward['wardID']; ?></td>-->
   <td> <?php echo $ward['wardName']; ?></td>
   <td> <?php echo $ward['numOfBeds']; ?></td>
   <td style="text-align: center;">

@@ -37,13 +37,54 @@ $error = '';
 if(isset($_POST['saveAccount'])){
 	//count number of service entered..
 	$nameNum = count( $_POST['accountName']);
-	$typeNum = count( $_POST['accountType']);
+	$typeNum = count( $_POST['accountPurpose']);
+    $accountType = trim('REVENUE');
 	//check number of services..
 	if($nameNum > 0 && $typeNum >0){
 		//saving services into database...
 		for($n=0, $t=0; $n<$nameNum, $t<$typeNum; $n++,$t++){
-				if(trim($_POST['accountName'][$n] != '') && trim($_POST['accountType'][$t] != '')) {
+				if(trim($_POST['accountName'][$n] != '') && trim($_POST['accountPurpose'][$t] != '')) {
 					$accountName = trim( $_POST["accountName"][$n]);
+					$accountPurpose = trim( $_POST["accountPurpose"][$t]);
+//						$serviceType = trim("Service");
+					//generate account ID
+					$accIDs = $consultation->loadAccPrices($centerID) + 1;
+					$accountID = "ACC-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$accIDs);
+
+					//check account name if already entered else save account..
+					$accExist = select("SELECT * FROM accounts WHERE accountName='$accountName' AND centerID='$centerID'");
+					if($accExist){
+						$error = "<script>document.write('Account Already Saved..');</script>";
+					}else{
+						$saveService = insert("INSERT INTO accounts(accountID,centerID,accountName,accountPurpose,accountType,dateInsert) VALUES('$accountID','$centerID','$accountName','$accountPurpose','$accountType','$dateToday')");
+						if($saveService){
+							$success = "<script>document.write('Account Saved.');window.location='center-account';</script>";
+						}else{
+							$error = "<script>document.write('Account Not Saved, Try Again.');</script>";
+						}
+					}
+				}
+		}
+	}else{
+		$error = "<script>document.write('Empty Fields, Try Again.');</script>";
+	}
+}
+
+
+//saving Ledger Account..
+if(isset($_POST['saveLedger'])){
+	//count number of service entered..
+	$nameNum = count( $_POST['accountName']);
+	$actpup = count( $_POST['accountPurpose']);
+	$actype = count( $_POST['accountType']);
+//    $accountType = trim('REVENUE');
+	//check number of services..
+	if($nameNum > 0 && $actpup >0  && $actype > 0){
+		//saving services into database...
+		for($n=0, $p=0, $t=0; $n<$nameNum, $p<$actpup, $t<$actype; $n++,$p++,$t++){
+				if(trim($_POST['accountName'][$n] != '') && trim($_POST['accountPurpose'][$p] != '') && trim($_POST['accountType'][$t] != '')) {
+					$accountName = trim(strtoupper($_POST["accountName"][$n]));
+					$accountPurpose = trim( $_POST["accountPurpose"][$p]);
 					$accountType = trim( $_POST["accountType"][$t]);
 //						$serviceType = trim("Service");
 					//generate account ID
@@ -55,7 +96,7 @@ if(isset($_POST['saveAccount'])){
 					if($accExist){
 						$error = "<script>document.write('Account Already Saved..');</script>";
 					}else{
-						$saveService = insert("INSERT INTO accounts(accountID,centerID,accountName,accountType,dateInsert) VALUES('$accountID','$centerID','$accountName','$accountType','$dateToday')");
+						$saveService = insert("INSERT INTO accounts(accountID,centerID,accountName,accountPurpose,accountType,dateInsert) VALUES('$accountID','$centerID','$accountName','$accountPurpose','$accountType','$dateToday')");
 						if($saveService){
 							$success = "<script>document.write('Account Saved.');window.location='center-account';</script>";
 						}else{
@@ -247,14 +288,20 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
             <div class="widget-content tab-content">
                 <div id="tab1" class="tab-pane active">
 <!--            <div class="widget-box">-->
-				<div class="span6">
+				<div class="span7">
                     <form action="#" method="post" class="form-horizontal">
 						  <table class="table table-bordered" id="dynamic_field4">
+
 							  <tr>
 							  	<td colspan="3" style="height:10px;">
 								  	<h4 class="text-center" style="height:10px;"> CREATE ACCOUNT</h4>
 								  </td>
 							  </tr>
+                              <tr>
+                                  <th> ACCOUNT NAME</th>
+                                  <th> ACCOUNT PURPOE</th>
+                                  <th> ACTION</th>
+                              </tr>
 							<tr>
 								<td style="width:30%;">
 									<select class="span" name="accountName[]" required>
@@ -266,11 +313,11 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
 									</select>
 								</td>
 								<td>
-									<select class="span" name="accountType[]" required>
+									<select class="span" name="accountPurpose[]" required>
 										<option value="CREDIT"> CREDIT ACCOUNT </option>
 									</select>
 								</td>
-								<td><button type="button" name="add" id="add4" class="btn btn-primary labell">Add Account</button></td>
+								<td style="text-align:center;"><button type="button" name="add" id="add4" class="btn btn-primary labell">Add Account</button></td>
 							</tr>
 						</table>
 						  <div class="form-actions">
@@ -278,9 +325,50 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
 							  <button type="submit" name="saveAccount" class="btn btn-primary btn-block labell span6"><i class="fa fa-save"></i> Save Account</button>
 						  </div>
               		</form>
+
+                    <hr/>
+
+                    <form action="#" method="post" class="form-horizontal">
+						  <table class="table table-bordered" id="dynamic_field6">
+							  <tr>
+							  	<td colspan="3" style="height:10px;">
+								  	<h4 class="text-center" style="height:10px;"> LEDGER ACCOUNTS</h4>
+								  </td>
+							  </tr>
+                              <tr>
+                                  <th> ACCOUNT NAME</th>
+                                  <th> ACCOUNT PURPOSE</th>
+                                  <th> ACCOUNT TYPE</th>
+                                  <th> ACTION</th>
+                              </tr>
+							<tr>
+								<td style="width:30%;">
+									<input type="text" name="accountName[]" required />
+								</td>
+								<td>
+									<select class="span" name="accountPurpose[]" required>
+										<option value="CREDIT"> CREDIT </option>
+										<option value="DEBIT"> DEBIT </option>
+									</select>
+								</td>
+								<td>
+									<select class="span" name="accountType[]" required>
+										<option value="EXPENSE"> EXPENSE ACCOUNT </option>
+										<option value="INCOME"> INCOME ACCOUNT </option>
+										<option value="REVENUE"> REVENUE ACCOUNT </option>
+									</select>
+								</td>
+								<td style="text-align:center;"><button type="button" name="add" id="add6" class="btn btn-primary labell">ADD LEDGER</button></td>
+							</tr>
+						</table>
+						  <div class="form-actions">
+							  <i class="span5"></i>
+							  <button type="submit" name="saveLedger" class="btn btn-primary btn-block labell span6"><i class="fa fa-save"></i> SAVE LEDGER</button>
+						  </div>
+              		</form>
 				</div>
 
-                    <div class="span6">
+                    <div class="span5">
                         <div class="widget-box" style="margin:0px;">
                           <div class="widget-title">
                              <span class="icon"><i class="icon-th"></i></span>
@@ -603,40 +691,24 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
 <!--<script src="js/maruti.js"></script> -->
-
-<!--
-<script type="text/javascript">
-  // This function is called from the pop-up menus to transfer to
-  // a different page. Ignore if the value returned is a null string:
-  function goPage (newURL) {
-
-      // if url is empty, skip the menu dividers and reset the menu selection to default
-      if (newURL != "") {
-
-          // if url is "-", it is this page -- reset the menu:
-          if (newURL == "-" ) {
-              resetMenu();
-          }
-          // else, send page to designated URL
-        else {
-            document.location.href = newURL;
-          }
-      }
-  }
-
-// resets the menu selection upon entry to this page:
-function resetMenu() {
-   document.gomenu.selector.selectedIndex = 2;
-}
-</script>
--->
-
 <script>
 //    $(document).ready(function(){
         var i=1;
         $('#add4').click(function(){
             i++;
             $('#dynamic_field4').append('<tr id="row'+i+'"><td><select class="span" name="accountName[]" required><option value="OPD"> OPD </option><option value="CONSULTATION"> CONSULTATION </option><option value="LABORATORY"> LABORATORY </option><option value="WARD"> WARD </option><option value="PHARMACY"> PHARMACY </option></select></td><td><select class="span" name="accountType[]" required><option value="CREDIT"> CREDIT ACCOUNT </option></select></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+//    });
+//    $(document).ready(function(){
+        var i=1;
+        $('#add6').click(function(){
+            i++;
+            $('#dynamic_field6').append('<tr id="row'+i+'"><td style="width:30%;"><input type="text" name="accountName" required /></td><td><select class="span" name="accountPurpose[]" required><option value="CREDIT"> CREDIT </option><option value="DEBIT"> DEBIT </option></select></td><td><select class="span" name="accountType[]" required><option value="EXPENSE"> EXPENSE ACCOUNT </option><option value="INCOME"> INCOME ACCOUNT </option><option value="REVENUE"> REVENUE ACCOUNT </option></select></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){

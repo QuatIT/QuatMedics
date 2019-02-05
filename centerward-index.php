@@ -37,30 +37,14 @@ $ward = new Ward();
 $success = '';
 $error = '';
 
-//    if(isset($_POST['btnSave'])){
-//
-//      $centerID = $_SESSION['centerID'];
-//      $WardID =  "WD.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$wardIDs);
-//      $wardName =  filter_input(INPUT_POST, "wardName", FILTER_SANITIZE_STRING);
-//      $numOfBeds =  filter_input(INPUT_POST, "numOfBeds", FILTER_SANITIZE_STRING);
-//
-//        $wardRoom = $ward->createWard($WardID,$centerID,$wardName,$numOfBeds);
-//
-//        if($wardRoom){
-//            $success = "WARD CREATED";
-//        }else{
-//            $error = "WARD NOT CREATED";
-//        }
-//
-//    }
-
 if(isset($_POST['btnSave'])){
     $centerID = $_SESSION['centerID'];
     $numward = count($_POST['wardName']);
     $numbed = count($_POST['numOfBeds']);
 
-    $string1 = trim('emegency');
-    $string2 = trim('emergency ward');
+//    $string1 = trim('emegency');
+//    $string2 = trim('emergency ward');
+
     if(($numward > 0) && ($numbed > 0)){
             for($n=0,$b=0; $n<$numward,$b<$numbed; $n++,$b++){
                 if(($_POST['wardName'][$n] != '') && ($_POST['numOfBeds'][$b] != '')){
@@ -69,9 +53,6 @@ if(isset($_POST['btnSave'])){
                     $wardName = trim($_POST['wardName'][$n]);
                     $numOfBeds = trim($_POST['numOfBeds'][$b]);
 
-                    if( (strcasecmp($string1,$wardName) != 0 ) || (strcasecmp($string2,$wardName) !=0)){
-                        $error = "<script>document.write('EMERGENCY MODULE ALREADY EXIST');</script>";
-                    }else{
                         //check if test exits already..
                         $chk = select("SELECT * FROM wardlist WHERE wardName='$wardName' AND centerID='$centerID'");
                         if($chk){
@@ -84,16 +65,59 @@ if(isset($_POST['btnSave'])){
                                 $error = "<script>document.write('WARD CREATION FAILED, TRY AGAIN');</script>";
                             }
                         }
-                    }
+//                    }
 
                 }else{
                     $error = "<script>document.write('EMPTY FIELDS.');</script>";
                 }
             }
     }else{
-        $error = "<script>document.write('NO LAB TEST ENTERED.');</script>";
+        $error = "<script>document.write('NO WARD ENTERED.');</script>";
     }
 }
+//
+//
+//if(isset($_POST['btnSave'])){
+//    $centerID = $_SESSION['centerID'];
+//    $numward = count($_POST['wardName']);
+//    $numbed = count($_POST['numOfBeds']);
+//
+//    $string1 = trim('emegency');
+//    $string2 = trim('emergency ward');
+//
+//    if(($numward > 0) && ($numbed > 0)){
+//            for($n=0,$b=0; $n<$numward,$b<$numbed; $n++,$b++){
+//                if(($_POST['wardName'][$n] != '') && ($_POST['numOfBeds'][$b] != '')){
+//                    $wardIDs = $ward->find_num_ward($centerID) + 1;
+//                    $WardID =  "WD.".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$wardIDs);
+//                    $wardName = trim($_POST['wardName'][$n]);
+//                    $numOfBeds = trim($_POST['numOfBeds'][$b]);
+//
+//                    if( (strcmp($string1,$wardName) != 0 ) || (strcasecmp($string2,$wardName) != 0)){
+//                        $error = "<script>document.write('EMERGENCY MODULE ALREADY EXIST');</script>";
+//                    }else{
+//                        //check if test exits already..
+//                        $chk = select("SELECT * FROM wardlist WHERE wardName='$wardName' AND centerID='$centerID'");
+//                        if($chk){
+//                            $error = "<script>document.write('WARD NAME ALREADY EXITS.');</script>";
+//                        }else{
+//                             $wardRoom = $ward->createWard($WardID,$centerID,$wardName,$numOfBeds);
+//                            if($wardRoom){
+//                                $success = "<script>document.write('WARD CREATED SUCCESSFULL');window.location.href='centerward-index';</script>";
+//                            }else{
+//                                $error = "<script>document.write('WARD CREATION FAILED, TRY AGAIN');</script>";
+//                            }
+//                        }
+//                    }
+//
+//                }else{
+//                    $error = "<script>document.write('EMPTY FIELDS.');</script>";
+//                }
+//            }
+//    }else{
+//        $error = "<script>document.write('NO WARD ENTERED.');</script>";
+//    }
+//}
 
     ?>
 
@@ -188,7 +212,7 @@ if(isset($_POST['btnSave'])){
                             <h5 class="labell">List Of Ward</h5>
                           </div>
                           <div class="widget-content nopadding">
-                            <table class="table table-bordered data-table">
+                            <table id="example" class="table table-bordered data-table">
                               <thead>
                                 <tr class="labell">
 <!--                                  <th>Ward ID</th>-->
@@ -197,7 +221,24 @@ if(isset($_POST['btnSave'])){
                                   <th>Action</th>
                                 </tr>
                               </thead>
-                              <tbody id="ward_room"></tbody>
+                              <tbody>
+                            <?php
+                        $load_wardroom = select("SELECT * FROM wardlist WHERE centerID='".$_SESSION['centerID']."' ORDER BY centerID ASC");
+
+                                foreach($load_wardroom as $ward){
+
+                                ?>
+
+                                <tr>
+                                  <td> <?php echo $ward['wardName']; ?></td>
+                                  <td> <?php echo $ward['numOfBeds']; ?></td>
+                                  <td style="text-align: center;">
+                                       <a href="updateward?wid=<?php echo $ward['wardID'];?>"> <span class="btn btn-info labell fa fa-edit"> Edit</span></a>
+                                  </td>
+                                </tr>
+
+                                <?php  } ?>
+                            </tbody>
                             </table>
                           </div>
                         </div>
@@ -222,7 +263,6 @@ if(isset($_POST['btnSave'])){
 <script src="js/jquery.flot.resize.min.js"></script>
 <script src="js/jquery.peity.min.js"></script>
 <script src="js/fullcalendar.min.js"></script>
-<script src="js/jquery.dataTables.min.js"></script>
 <script src="js/bootstrap-colorpicker.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="js/jquery.uniform.js"></script>
@@ -232,48 +272,27 @@ if(isset($_POST['btnSave'])){
 <script src="js/maruti.dashboard.js"></script>
 <script src="js/maruti.chat.js"></script>
 <script src="js/maruti.form_common.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/dataTables.bootstrap.min.js"></script>
 <!--<script src="js/maruti.js"></script> -->
 
+<!--
 
-    <script>
-  function ward_Room(){
-        xmlhttp=new XMLHttpRequest();
-        xmlhttp.open("GET","loads/wardroom-load.php",false);
-        xmlhttp.send(null);
-        document.getElementById("ward_room").innerHTML=xmlhttp.responseText;
-    }
-        ward_Room();
-
-        setInterval(function(){
-            ward_Room();
-        },3000);
-    </script>
-
-
-
-<script type="text/javascript">
-  // This function is called from the pop-up menus to transfer to
-  // a different page. Ignore if the value returned is a null string:
-  function goPage (newURL) {
-
-      // if url is empty, skip the menu dividers and reset the menu selection to default
-      if (newURL != "") {
-
-          // if url is "-", it is this page -- reset the menu:
-          if (newURL == "-" ) {
-              resetMenu();
-          }
-          // else, send page to designated URL
-          else {
-            document.location.href = newURL;
-          }
-      }
-  }
-// resets the menu selection upon entry to this page:
-function resetMenu() {
-   document.gomenu.selector.selectedIndex = 2;
+<script>
+function ward_Room(){
+    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","loads/wardroom-load.php",false);
+    xmlhttp.send(null);
+    document.getElementById("ward_room").innerHTML=xmlhttp.responseText;
 }
+    ward_Room();
+
+    setInterval(function(){
+        ward_Room();
+    },3000);
 </script>
+-->
+
 <script>
 //    $(document).ready(function(){
         var i=1;
@@ -287,6 +306,12 @@ function resetMenu() {
             $('#row'+button_id+'').remove();
         });
 //    });
+
+//$(document).ready(function() {
+$('#example').DataTable({
+"lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+//});
+
 </script>
 </body>
 </html>
