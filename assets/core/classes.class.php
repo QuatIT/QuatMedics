@@ -166,8 +166,8 @@
       return $result;
     }
 
-    public function find_ward(){
-      $result=query("SELECT * FROM wardlist ");
+    public function find_ward($centerID){
+      $result=query("SELECT * FROM wardlist WHERE centerID='$centerID' ");
       return $result;
     }
 

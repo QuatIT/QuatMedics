@@ -53,31 +53,31 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 	$labTotal = 0;
 	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='PRIVATE' AND consultID='$serviceID' AND confirm='CONFIRMED'");
 	foreach($fetchlab as $labRow){
-					$getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
-						  foreach($getlabName as $labNmRow){}
-		              $labTotal += $labRow['labprice'];
+        $getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
+        foreach($getlabName as $labNmRow){}
+        $labTotal += $labRow['labprice'];
 	}
 
 	//get medicine charges...
 	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND consultID='$serviceID'");
-					  if($getPresciptionID){
-						  foreach($getPresciptionID as $presRow){
-							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
-							  foreach($getMeds as $medrow){
+    if($getPresciptionID){
+      foreach($getPresciptionID as $presRow){
+          $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
+          foreach($getMeds as $medrow){
 
-							  }
-						  }
-					  }
+          }
+      }
+    }
 
-	//get medinine total
-	@ $medtotal = 0;
-   @$getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
-		  foreach($getMeds as $medrow){
-			  $medtotal+=$medrow['medprice'];
-		  }
+    //get medinine total
+    $medtotal = 0;
+    $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."' AND confirm='CONFIRMED'");
+    foreach($getMeds as $medrow){
+      $medtotal+=$medrow['medprice'];
+    }
 
-	$overall =($consultPrice+$medtotal);
-	$overallTotal = "GHC ".$overall;
+    $overall =($consultPrice+$medtotal+$labTotal);
+    $overallTotal = "GHC ".$overall;
 ?>
 
 <div id="search">
@@ -131,12 +131,6 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 			<input type="text" style="font-weight:bolder;" class="span11" name="overall" value="<?php echo $overallTotal;?>" readonly/>
 							</div>
 						  </div>
-<!--
-						  <div class="form-actions">
-							  <i class="span1"></i>
-							<button type="submit" name="makeAllPaymeny" class="btn btn-primary btn-block span10"> Make Payment</button>
-						  </div>
--->
 					  </div>
 				</form>
 		</div>
@@ -222,6 +216,10 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                         </td>
 					  </tr>
 					  <?php }?>
+					  <tr>
+					  	<td colspan="3" style="text-align:right"> <b>Total</b></td>
+					  	<td><b><?php echo "Ghc ".$labTotal; ?></b></td>
+					  </tr>
 				  </tbody>
               </table>
               <?php }?>
@@ -242,7 +240,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 				  <tbody>
 
 					  <?php
-					  	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND dateInsert='$consultDate'");
+					  	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND consultID='$serviceID'");
 					  if($getPresciptionID){
 						  foreach($getPresciptionID as $presRow){
 							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."' AND confirm='CONFIRMED'");
@@ -277,17 +275,10 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                          <tr>
                             <td colspan="5" style="text-align:center;" > NO MEDICATION PRESCRIBED.</td>
                         </tr>
-                      <?php }
-					  $total = 0;
-					   @$getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
-							  foreach($getMeds as $medrow){
-								  $total+=$medrow['medprice'];
-							  }
-					  ?>
+                      <?php }?>
 					  <tr>
 					  	<td colspan="2" style="text-align:right"> <b>Total</b></td>
-					  	<td colspan="3"> <b><?php echo "Ghc ".$total;?></b></td>
-
+					  	<td colspan="3"> <b><?php echo "Ghc ".$medtotal;?></b></td>
 					  </tr>
 
 				  </tbody>

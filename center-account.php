@@ -71,22 +71,59 @@ if(isset($_POST['saveAccount'])){
 }
 
 
+//LEDGER ACCOUNT POSTINGS...........
+    if(isset($_POST['POSTACC'])){
+        $creditAccID = trim(htmlentities($_POST['creditaccount']));
+        $creditAccBalance = trim(htmlentities($_POST['creditAccBalance']));
+        $debititAccID = trim(htmlentities($_POST['debitaccount']));
+        $debitAccBalance = trim(htmlentities($_POST['debitAccBalance']));
+        $amount = trim(htmlentities($_POST['amount']));
+        $naration = trim(htmlentities($_POST['naration']));
+        $activityType = trim('POST');
+
+        if($creditAccID === $debititAccID){
+            $error = "<script>document.write('CREDIT AND DEBIT CAN NOT BE THE SAME.');</script>";
+        }else{
+            //account calculations, crediting and debiting..
+            $newCreditBalance = ($creditAccBalance + $amount);
+            $newDebitBalance = ($debitAccBalance - $amount);
+
+            //update credit account...
+            $updateCredit = update("UPDATE accounts SET accBalance='$newCreditBalance' WHERE accountID='$creditAccID'");
+            if($updateCredit){
+                //update debit account...
+                $updatedebit = update("UPDATE accounts SET accBalance='$newDebitBalance' WHERE accountID='$debititAccID'");
+                if($updatedebit){
+                    //insert account post into transaction table...
+                    $insertTransaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,creditAccBalance,debitAcc,debitAccBalance,Amount,staffID,activityType,activity,dateInsert) VALUES('$centerID','$creditAccID','$creditAccBalance','$debititAccID','$debitAccBalance','$amount','$staffID','$activityType','$naration','$dateToday')");
+                    if($insertTransaction){
+                        $success = "<script>document.write('ACCOUNT POSTING SUCCESS.');window.location.href='center-account';</script>";
+                    }else{
+                       $error = "<script>document.write('ACCOUNT POSTING FAILED, TRY AGAIN.');</script>";
+                    }
+                }else{
+                    $error = "<script>document.write('DEBIT ACCOUNT NOT UPDATED, TRY AGAIN.');</script>";
+                }
+            }else{
+              $error = "<script>document.write('CREDIT ACCOUNT NOT UPDATED, TRY AGAIN.');</script>";
+            }
+        }
+    }
+
 //saving Ledger Account..
 if(isset($_POST['saveLedger'])){
 	//count number of service entered..
 	$nameNum = count( $_POST['accountName']);
-	$actpup = count( $_POST['accountPurpose']);
 	$actype = count( $_POST['accountType']);
-//    $accountType = trim('REVENUE');
+//	$actype = count( $_POST['acc']);
+    $accountPurpose = trim('BOTH');
 	//check number of services..
-	if($nameNum > 0 && $actpup >0  && $actype > 0){
+	if($nameNum >0  && $actype > 0){
 		//saving services into database...
-		for($n=0, $p=0, $t=0; $n<$nameNum, $p<$actpup, $t<$actype; $n++,$p++,$t++){
-				if(trim($_POST['accountName'][$n] != '') && trim($_POST['accountPurpose'][$p] != '') && trim($_POST['accountType'][$t] != '')) {
+		for($n=0, $t=0; $n<$nameNum, $t<$actype; $n++,$t++){
+				if(trim($_POST['accountName'][$n] != '') && trim($_POST['accountType'][$t] != '')) {
 					$accountName = trim(strtoupper($_POST["accountName"][$n]));
-					$accountPurpose = trim( $_POST["accountPurpose"][$p]);
 					$accountType = trim( $_POST["accountType"][$t]);
-//						$serviceType = trim("Service");
 					//generate account ID
 					$accIDs = $consultation->loadAccPrices($centerID) + 1;
 					$accountID = "ACC-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$accIDs);
@@ -279,14 +316,15 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs labell">
-                    <li class="active"><a data-toggle="tab" href="#tab1">ACCOUNT MANAGEMENT</a></li>
-                    <li><a data-toggle="tab" href="#tab2">SERVICE CHARGES</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab2">SERVICE CHARGES</a></li>
                     <li><a data-toggle="tab" href="#tab3">LAB TESTS CHARGES</a></li>
                     <li><a data-toggle="tab" href="#tab4">WARD CHARGES</a></li>
+                    <li><a data-toggle="tab" href="#tab1">ACCOUNT MANAGEMENT</a></li>
+                    <li><a data-toggle="tab" href="#tab5">LEDGER MANAGEMENT</a></li>
                 </ul>
             </div>
             <div class="widget-content tab-content">
-                <div id="tab1" class="tab-pane active">
+                <div id="tab1" class="tab-pane">
 <!--            <div class="widget-box">-->
 				<div class="span7">
                     <form action="#" method="post" class="form-horizontal">
@@ -337,19 +375,12 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
 							  </tr>
                               <tr>
                                   <th> ACCOUNT NAME</th>
-                                  <th> ACCOUNT PURPOSE</th>
                                   <th> ACCOUNT TYPE</th>
                                   <th> ACTION</th>
                               </tr>
 							<tr>
 								<td style="width:30%;">
 									<input type="text" name="accountName[]" required />
-								</td>
-								<td>
-									<select class="span" name="accountPurpose[]" required>
-										<option value="CREDIT"> CREDIT </option>
-										<option value="DEBIT"> DEBIT </option>
-									</select>
 								</td>
 								<td>
 									<select class="span" name="accountType[]" required>
@@ -376,8 +407,9 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
                           <div class="widget-content nopadding">
                                 <table class="table table-bordered table-stripped data-table">
                                     <thead>
+                                        <th> ACCOUNT ID</th>
                                         <th> ACCOUNT NAME</th>
-                                        <th> ACOUNT TYPE</th>
+<!--                                        <th> ACOUNT TYPE</th>-->
                                         <th> ACCOUNT BALANCE</th>
                                     </thead>
                                     <tbody>
@@ -387,8 +419,9 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
                                             foreach($allAcc as $accRow){
                                         ?>
                                         <tr>
+                                            <td><?php echo $accRow['accountID'];?></td>
                                             <td><?php echo $accRow['accountName'];?></td>
-                                            <td><?php echo $accRow['accountType'];?></td>
+<!--                                            <td><?php // echo $accRow['accountType'];?></td>-->
                                             <td><?php echo $accRow['accBalance'];?></td>
                                         </tr>
                                         <?php }}?>
@@ -400,50 +433,114 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
                 </div>
 
 
-        <div id="tab2" class="tab-pane">
-            <div class="row-fluid">
-				<div class="span6">
-                    <form action="#" method="post" class="form-horizontal">
-						  <table class="table table-bordered" id="dynamic_field2">
-							  <tr>
-							  	<td colspan="3" style="height:10px;">
-								  	<h4 class="text-center" style="height:10px;"> SERVICE PRICING</h4>
-								  </td>
-							  </tr>
-                              <?php
-                              $n = 2;
-                                for($t=0;$t<$n;$t++){
-                              ?>
-							<tr>
-								<td>
-									<select class="span" name="serviceName[]">
-										<option>-- Select Service --</option>
-										<option value="CONSULTATION"> CONSULTATION </option>
-										<option value="ID CARD"> HOSPITAL CARD</option>
-									</select>
-								</td>
-								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td>
-								<td><select class="span" name="modeOfPayment[]" required>
-										<option>-- Payment Mode --</option>
 
-									<?php
-										$modePayment = select("select * FROM mode_of_payment ");
-										if($modePayment){
-											foreach($modePayment as $modePay){ ?>
-									<option><?php echo $modePay['type']; ?></option>
-										<?php }} ?>
-									?>
-									</select>
-								</td>
-							</tr>
-                              <?php }?>
-						</table>
-						  <div class="form-actions">
-							  <i class="span5"></i>
-							  <button type="submit" name="saveServiceprices" class="btn btn-primary btn-block labell span6"><i class="fa fa-save"></i> Save Prices</button>
-						  </div>
-              		</form>
-				</div>
+<div id="tab5" class="tab-pane">
+    <form method="post" enctype="multipart/form-data" onsubmit="return confirm('CONFIRM POST ACCOUNT');">
+        <div class="row-fluid">
+            <table class="table table-bordered" style="width:100%;">
+                <tr>
+                    <th>CREDIT ACCOUNT <span style="color:red; font-size:150%;">*</span></th>
+                    <th>ACCOUNT NUMBER</th>
+                    <th>ACCOUNT BALANCE</th>
+                </tr>
+                <tr>
+                    <td style="width:33%;">
+                       <select class="span12" name="creditaccount" onchange="ac_code(this.value);" required>
+                           <option> </option>
+                            <?php
+                           $crsql = select("SELECT * FROM accounts WHERE accountPurpose='BOTH' AND centerID='$centerID'");
+                           if($crsql){
+                               foreach($crsql as $crrow){
+                           ?>
+                           <option value="<?php echo $crrow['accountID'];?>" ><?php echo $crrow['accountName'];?></option>
+                           <?php }}?>
+                       </select>
+                    </td>
+
+                    <td id="ca"></td>
+                    <td id="ca1"></td>
+                </tr>
+                 <tr>
+                    <th>DEBIT ACCOUNT <span style="color:red; font-size:150%;">*</span></th>
+                    <th>ACCOUNT NUMBER</th>
+                    <th>ACCOUNT BALANCE</th>
+                </tr>
+                <tr>
+                    <td>
+                   <select class="span12" name="debitaccount" onchange="dr_code(this.value);" required>
+                       <option> </option>
+                        <?php
+                       $crsql = select("SELECT * FROM accounts WHERE accountPurpose='BOTH' AND centerID='$centerID'");
+                       if($crsql){
+                           foreach($crsql as $crrow){
+                       ?>
+                       <option value="<?php echo $crrow['accountID'];?>" ><?php echo $crrow['accountName'];?></option>
+                       <?php }}?>
+                   </select>
+                    </td>
+                    <td id="da"></td>
+                    <td id="da1"></td>
+                </tr>
+
+                 <tr class="labell">
+                    <th> AMOUNT <span style="color:red; font-size:150%;">*</span></th>
+                    <th> NARATION <span style="color:red; font-size:150%;">*</span></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td><input type="number" min="1" class="span12" name="amount" required/></td>
+                    <td><textarea name="naration" class="span12" required></textarea></td>
+                    <td><button type="submit" name="POSTACC" class="btn btn-primary labell btn-block span12">POST ACCOUNT</button></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+
+<div id="tab2" class="tab-pane active">
+    <div class="row-fluid">
+        <div class="span6">
+            <form action="#" method="post" class="form-horizontal">
+                  <table class="table table-bordered" id="dynamic_field2">
+                      <tr>
+                        <td colspan="3" style="height:10px;">
+                            <h4 class="text-center" style="height:10px;"> SERVICE PRICING</h4>
+                          </td>
+                      </tr>
+                      <?php
+                      $n = 2;
+                        for($t=0;$t<$n;$t++){
+                      ?>
+                    <tr>
+                        <td>
+                            <select class="span" name="serviceName[]">
+                                <option>-- Select Service --</option>
+                                <option value="CONSULTATION"> CONSULTATION </option>
+                                <option value="ID CARD"> HOSPITAL CARD</option>
+                            </select>
+                        </td>
+                        <td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td>
+                        <td><select class="span" name="modeOfPayment[]" required>
+                                <option>-- Payment Mode --</option>
+
+                            <?php
+                                $modePayment = select("select * FROM mode_of_payment ");
+                                if($modePayment){
+                                    foreach($modePayment as $modePay){ ?>
+                            <option><?php echo $modePay['type']; ?></option>
+                                <?php }} ?>
+                            ?>
+                            </select>
+                        </td>
+                    </tr>
+                      <?php }?>
+                </table>
+                  <div class="form-actions">
+                      <i class="span5"></i>
+                      <button type="submit" name="saveServiceprices" class="btn btn-primary btn-block labell span6"><i class="fa fa-save"></i> Save Prices</button>
+                  </div>
+            </form>
+        </div>
 
 				<div class="span6">
                      <div class="widget-box" style="margin:0px;">
@@ -708,7 +805,7 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
         var i=1;
         $('#add6').click(function(){
             i++;
-            $('#dynamic_field6').append('<tr id="row'+i+'"><td style="width:30%;"><input type="text" name="accountName" required /></td><td><select class="span" name="accountPurpose[]" required><option value="CREDIT"> CREDIT </option><option value="DEBIT"> DEBIT </option></select></td><td><select class="span" name="accountType[]" required><option value="EXPENSE"> EXPENSE ACCOUNT </option><option value="INCOME"> INCOME ACCOUNT </option><option value="REVENUE"> REVENUE ACCOUNT </option></select></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field6').append('<tr id="row'+i+'"><td style="width:30%;"><input type="text" name="accountName[]" required /></td><td><select class="span" name="accountType[]" required><option value="EXPENSE"> EXPENSE ACCOUNT </option><option value="INCOME"> INCOME ACCOUNT </option><option value="REVENUE"> REVENUE ACCOUNT </option></select></td><td style="text-align:center;"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){
@@ -716,6 +813,33 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
             $('#row'+button_id+'').remove();
         });
 //    });
+</script>
+
+<script>
+function ac_code(val){
+	// load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#ca').load('ca_code.php?id='+val, function(){
+		$('#loader').html("");
+       });
+
+        $('#ca1').load('ca_code1.php?id='+val, function(){
+		$('#loader').html("");
+       });
+}
+</script>
+<script>
+function dr_code(val){
+	// load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#da').load('da_code.php?id='+val, function(){
+		$('#loader').html("");
+       });
+
+        $('#da1').load('da_code1.php?id='+val, function(){
+		$('#loader').html("");
+       });
+}
 </script>
 </body>
 </html>

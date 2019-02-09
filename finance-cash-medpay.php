@@ -14,6 +14,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 //get id
 $id = $_GET['id'];
 $dateToday = trim(date('Y-m-d'));
+$activityType = trim('PAYMENT');
 
 //Get prescribed medicine charges details...
 $presmeds = select("SELECT * FROM prescribedmeds WHERE prescribeid='$id'");
@@ -32,18 +33,20 @@ foreach($prescription as $prescibeRow){
 }
 
 //select Pharmacy credit account...
-$getPhacc = select("SELECT * FROM Accounts WHERE centerID='$centerID' AND accountName='PHARMACY' AND accountType='CREDIT'");
+$getPhacc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountName='PHARMACY' AND accountPurpose='CREDIT'");
 if($getPhacc){
 	foreach($getPhacc as $phAccRow){
+		$PhCrID = $phAccRow['accountID'];
 		$PhCrAcc = $phAccRow['accBalance'];
 		$PhCrName = $phAccRow['accountName'];
 	}
 }
 
 //select center debit account..
-$getCenterDBAcc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountType='DEBIT' AND accountName='BANK ACCOUNT'");
+$getCenterDBAcc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountPurpose='DEBIT' AND accountName='BANK ACCOUNT'");
 if($getCenterDBAcc){
 	foreach($getCenterDBAcc as $centerDBrow){
+		$cnterDBID = $centerDBrow['accountID'];
 		$cnterDBAcc = $centerDBrow['accBalance'];
 		$cnterDBName = $centerDBrow['accountName'];
 	}
@@ -56,14 +59,14 @@ $newDebbal =  ($cnterDBAcc-$medprice);
 $newCrBal = ($PhCrAcc+$medprice);
 
 //update CREDIT account...
-$updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountName='$PhCrName' AND accountType='CREDIT'");
+$updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountID='$PhCrID' AND accountPurpose='CREDIT'");
 
 //update DEBIT account...
-$updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerID='$centerID' AND accountName='$cnterDBName' AND accountType='DEBIT'");
+$updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerID='$centerID' AND accountID='$cnterDBID' AND accountPurpose='DEBIT'");
 
 //insert transaction..
 $activity = 'Payment For '.$medicine;
-$transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,debitAcc,Amount,patientID,staffID,activity,dateInsert) VALUES('$centerID','$PhCrName','$cnterDBName','$medprice','$patientID','$staffID','$activity','$dateInsert')");
+$transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,creditAccBalance,debitAcc,debitAccBalance,Amount,patientID,staffID,activityType,activity,dateInsert) VALUES('$centerID','$PhCrID','$PhCrAcc','$cnterDBID','$cnterDBAcc','$medprice','$patientID','$staffID','$activityType','$activity','$dateInsert')");
 
 //update consult prescribedmeds row..
 $status = trim("Paid");

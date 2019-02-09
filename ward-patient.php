@@ -27,11 +27,11 @@
 <?php
     include 'layout/head.php';
 if($_SESSION['accessLevel']=='WARD' || $_SESSION['username']=='rik'){
-    $wardc =new Ward;
+    $wardc = new Ward;
     $wardID = $_GET['wrdno'];
     $wardByID = $wardc->find_by_ward_id($wardID);
     foreach($wardByID as $ward_id){}
-    $ward = $wardc->find_ward();
+    $ward = $wardc->find_ward($centerID);
     ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>

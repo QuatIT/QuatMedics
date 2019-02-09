@@ -55,15 +55,21 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
         <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-briefcase"></i> CASH PAYMENT</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">CASH PAYMENT</h3>
 
-      <div class="row">
-
-		  <div class="span12">
-<!--        <div class="widget-box">-->
-<!--            <div class="widget-content tab-content">-->
-<!--                <div id="tab1" class="tab-pane active">-->
+            <div class="row-fluid">
+        <div class="widget-box">
+            <div class="widget-title">
+                <ul class="nav nav-tabs labell">
+                    <li class="active"><a data-toggle="tab" href="#tab1">CONSULTATION & MEDS</a></li>
+                    <li><a data-toggle="tab" href="#tab2">LABORATORY PAYMENTS</a></li>
+                    <li><a data-toggle="tab" href="#tab3">WARD PAYMENTS</a></li>
+                    <li><a data-toggle="tab" href="#tab4">PAYMENT HISTORY</a></li>
+                </ul>
+            </div>
+            <div class="widget-content tab-content">
+                <div id="tab1" class="tab-pane active">
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
@@ -81,7 +87,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							  <?php
-		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND serviceName='CONSULTATION'");
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND serviceName='CONSULTATION' AND dateinsert='$dateToday'");
 							  if($fetchAll){
 								  foreach($fetchAll as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -91,20 +97,17 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 							  	<td> <?php echo $PrivateRow['patientID'];?></td>
 							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
 							  	<td> <?php echo $PrivateRow['servicePrice'];?></td>
-							  	<td> <a href="finance-cash-detail?id=<?php echo $PrivateRow['id'];?>&pid=<?php echo $PrivateRow['patientID'];?>"><i class="btn btn-success btn-md fa fa-eye"></i></a></td>
+							  	<td style="text-align:center;"> <a href="finance-cash-detail?id=<?php echo $PrivateRow['id'];?>&pid=<?php echo $PrivateRow['patientID'];?>"><i class="btn btn-success btn-md fa fa-eye labell"> VIEW DETAILS</i></a></td>
 							  </tr>
 							  <?php }}}?>
                           </tbody>
                         </table>
                       </div>
                     </div>
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>		  -->
-		  </div>
+                </div>
 
-		  <div class="span12">
-                    <div class="widget-box">
+                <div id="tab2" class="tab-pane">
+                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
                          <h5>LABORATORY CHARGES</h5>
@@ -136,9 +139,9 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
 							  	<td> <?php echo $labRow['labName'];?></td>
 							  	<td> <?php echo $PrivateRow['labprice'];?></td>
-							  	<td>
+							  	<td style="text-align:center;">
 									<?php if($PrivateRow['paystatus'] == 'Not Paid'){?>
-									<a onclick="return confirm('Confirm Payment');" href="finance-cash-labpay?id=<?php echo $PrivateRow['id'];?>"><i class="btn btn-success btn-md fa fa-check"></i></a>
+									<a onclick="return confirm('Confirm Payment');" href="finance-cash-labpay?id=<?php echo $PrivateRow['id'];?>"><i class="btn btn-success btn-md fa fa-check labell"> MAKE PAYMENT</i> </a>
 								   <?php }?>
 
 									<?php if($PrivateRow['paystatus'] == 'Paid'){?>
@@ -151,18 +154,9 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                         </table>
                       </div>
                     </div>
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>		  -->
-		  </div>
+                </div>
 
-      </div>
-
-      <div class="row-fluid">
-      		  <div class="span12">
-<!--        <div class="widget-box">-->
-<!--            <div class="widget-content tab-content">-->
-<!--                <div id="tab1" class="tab-pane active">-->
+                <div id="tab3" class="tab-pane">
                     <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
@@ -195,9 +189,9 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
 							  	<td> <?php echo $warddets['wardName'];?></td>
 							  	<td> <?php echo $wardRow['charge'];?></td>
-							  	<td>
+							  	<td style="text-align:center;">
 									<?php if($wardRow['paystatus'] == 'Not Paid'){?>
-									<a href="finance-ward-details?id=<?php echo $wardRow['assignID'];?>"><i class="btn btn-success btn-md fa fa-eye"></i></a>
+									<a href="finance-ward-details?id=<?php echo $wardRow['assignID'];?>"><i class="btn btn-success btn-md fa fa-eye labell"> VIEW DETAILS</i></a>
 								   <?php }?>
 
 									<?php if($wardRow['paystatus'] == 'Paid'){?>
@@ -210,10 +204,46 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                         </table>
                       </div>
                     </div>
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>		  -->
-		  </div>
+                </div>
+
+                <div id="tab4" class="tab-pane">
+                    <div class="widget-box">
+                      <div class="widget-title">
+                         <span class="icon"><i class="icon-th"></i></span>
+                         <h5>CONSULTATION AND MEDICATION CHARGES</h5>
+                      </div>
+                      <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th>PID</th>
+                              <th> NAME</th>
+                              <th> CONSULTATION</th>
+                              <th> ACTION</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+							  <?php
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND serviceName='CONSULTATION'");
+							  if($fetchAll){
+								  foreach($fetchAll as $PrivateRow){
+									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
+									  foreach($pdet as $prow){
+							  ?>
+							  <tr>
+							  	<td> <?php echo $PrivateRow['patientID'];?></td>
+							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
+							  	<td> <?php echo $PrivateRow['servicePrice'];?></td>
+							  	<td style="text-align:center;"> <a href="finance-cash-detail?id=<?php echo $PrivateRow['id'];?>&pid=<?php echo $PrivateRow['patientID'];?>"><i class="btn btn-success btn-md fa fa-eye labell"> VIEW DETAILS</i></a></td>
+							  </tr>
+							  <?php }}}?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
       </div>
   </div>
 </div>
@@ -256,30 +286,6 @@ function dis(){
     setInterval(function(){
         dis();
     },1000);
-</script>
-
-<script type="text/javascript">
-  // This function is called from the pop-up menus to transfer to
-  // a different page. Ignore if the value returned is a null string:
-  function goPage (newURL) {
-
-      // if url is empty, skip the menu dividers and reset the menu selection to default
-      if (newURL != "") {
-
-          // if url is "-", it is this page -- reset the menu:
-          if (newURL == "-" ) {
-              resetMenu();
-          }
-          // else, send page to designated URL
-          else {
-            document.location.href = newURL;
-          }
-      }
-  }
-// resets the menu selection upon entry to this page:
-function resetMenu() {
-   document.gomenu.selector.selectedIndex = 2;
-}
 </script>
 </body>
 </html>

@@ -57,10 +57,10 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
         <a title="CASH PAYMENT" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT</a>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
       <h3 class="quick-actions">INSURANCE PAYMENT</h3>
 
-      <div class="row">
+      <div class="row-fluid">
 
 		  <div class="span12">
 <!--        <div class="widget-box">-->
@@ -104,6 +104,8 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 <!--            </div>-->
 <!--        </div>		  -->
 		  </div>
+      </div>
+      <div class="row-fluid">
 		  <div class="span12">
 <!--        <div class="widget-box">-->
 <!--            <div class="widget-content tab-content">-->

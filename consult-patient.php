@@ -756,7 +756,12 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 			<input type="text" name="prescribeCode" value="<?php echo $prescribeCode;?>" readonly class="span12" />
                       </td>
 
-					<td class="labell"> PHARMACY</td>
+					<td colspan="2" rowspan="2">
+                        <textarea class="span12" rows="3" placeholder="SYMPTOMS" name="symptoms" placeholder="Symptoms" required><?php echo @$consultrow['docNotes'];?></textarea>
+                      </td>
+				  </tr>
+				  <tr>
+                    <td class="labell"> PHARMACY</td>
 					<td>
 					  <select name="pharmacyID" class="span12" required>
 
@@ -773,11 +778,8 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 					  </td>
 				  </tr>
 				  <tr>
-					<td colspan="4"><textarea class="span12" placeholder="SYMPTOMS" name="symptoms" placeholder="Symptoms" required><?php echo @$consultrow['docNotes'];?></textarea>  </td>
-				  </tr>
-				  <tr>
 					  <td colspan="2">
-					       <table border="0" class="table table-bordered" id="diagnosis" style="margin-top:20px;">
+					       <table border="0" class="table table-bordered" id="diagnosis" style="margin-top:10px; background:#f8f7f7;">
                             <thead>
                             <th colspan="2" class="labell">Diagnosis</th>
                            </thead>
@@ -785,18 +787,20 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                                     <td>
                                         <input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12">
                                     </td>
-                                    <td>
-                                        <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success labell">+</button>
+                                    <td style="text-align:center;">
+                                        <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success labell">add Diagnose</button>
                                     </td>
                                 </tr>
                         </table>
 					  </td>
+
+<!--
 					  <br>
                       <br>
+-->
 
 					  <td colspan="2">
-<!--					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>-->
-					   <table border="0" class="table table-bordered" id="investigation" style="margin-top:20px;">
+					   <table border="0" class="table table-bordered" id="investigation" style="margin-top:10px; background:#f8f7f7;">
                            <thead>
                             <th colspan="2" class="labell">Investigation</th>
                            </thead>
@@ -804,8 +808,8 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                                     <td>
                                         <input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12">
                                     </td>
-                                    <td>
-                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success labell">+</button>
+                                    <td style="text-align:center;">
+                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success labell">add investigation</button>
                                     </td>
                                 </tr>
                             </table>
@@ -1153,7 +1157,7 @@ $(".alert").delay(7000).slideUp(1000, function() {
     var i = 1;
     $('#add_diagnosis').click(function() {
         i++;
-        $('#diagnosis').append('<tr id="row' + i + '"> <td><input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12"></td><td><button type="button" name="remove_diagnosis" id="' + i + '" class="btn btn-danger btn_remove_diagnosis">X</button></td></tr>');
+        $('#diagnosis').append('<tr id="row' + i + '"> <td><input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12"></td><td style="text-align:center;"><button type="button" name="remove_diagnosis" id="' + i + '" class="btn btn-danger btn_remove_diagnosis">X</button></td></tr>');
     });
     $(document).on('click', '.btn_remove_diagnosis', function() {
         var button_id = $(this).attr("id");
@@ -1165,7 +1169,7 @@ $(".alert").delay(7000).slideUp(1000, function() {
     var i = 1;
     $('#add_investigation').click(function() {
         i++;
-        $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12"></td><td><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
+        $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12"></td><td style="text-align:center;"><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
     });
     $(document).on('click', '.btn_remove_investigation', function() {
         var button_id = $(this).attr("id");

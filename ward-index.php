@@ -60,8 +60,8 @@ $wardID = $_GET['wrdno'];
 $wardByID = $WARD->find_by_ward_id($wardID);
 foreach($wardByID as $ward_id){}
 //    }else{
-$ward = $WARD->find_ward();
 $centerID= $centerName['centerID'];
+$ward = $WARD->find_ward($centerID);
 
 //}
 

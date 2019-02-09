@@ -180,25 +180,25 @@ $centerUser=$user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Staff ID :</label>
+                                <label class="control-label">Staff ID <span style="color:red; font-size:130%;">*</span> </label>
                                <div class="controls">
                                   <input type="text" class="span11" name="staffID" value="<?php echo $staffrow['staffID']; ?>" required readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> First Name :</label>
+                                <label class="control-label">First Name <span style="color:red; font-size:130%;">*</span> </label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="First Name" name="firstName" value="<?php echo $staffrow['firstName'];?>" required/>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Other Name :</label>
+                                <label class="control-label">Other Name </label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Other Name(s)" value="<?php echo $staffrow['otherName'];?>" name="otherName" />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Date Of Birth</label>
+                                <label class="control-label">Date Of Birth <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="date" class="span11" name="dob" value="<?php echo $staffrow['dob'];?>" required />
                                 </div>
@@ -210,7 +210,7 @@ $centerUser=$user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Phone</label>
+                                <label class="control-label">Phone <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="tel" class="span11" name="phone" value="<?php echo $staffrow['phone'];?>" placeholder="Active Phone Number" />
                                 </div>
@@ -241,13 +241,13 @@ $centerUser=$user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Last Name :</label>
+                                <label class="control-label">Last Name <span style="color:red; font-size:130%;">*</span> </label>
                                <div class="controls">
                               <input type="text" class="span11" value="<?php echo $staffrow['lastName'];?>" name="lastName" placeholder="Last Name" required/>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Gender</label>
+                                <label class="control-label">Gender <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <select name="gender" >
                                         <option value="<?php echo $staffrow['gender'];?>"> <?php echo $staffrow['gender'];?></option>
@@ -257,7 +257,7 @@ $centerUser=$user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Staff Department</label>
+                                <label class="control-label">Staff Department <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <select name="staffDepartment" required>
                                     <option value="<?php echo $staffrow['departmentID'];?>"> <?php echo $staffrow['departmentID'];?></option>
@@ -278,20 +278,20 @@ $centerUser=$user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> User Name</label>
+                                <label class="control-label">User Name <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text"  class="span11" value="<?php echo $cuserrow['userName'];?>" name="userName" placeholder="User Name..." required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Password</label>
+                                <label class="control-label">Password <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
             <input type="password" value="<?php echo $cuserrow['password'];?>"  class="span11" id="pwd" name="pwd" placeholder="PASSWORD" required />
                                     <span class="fa fa-eye"></span>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Confirm Password</label>
+                                <label class="control-label">Confirm Password <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                             <input type="password" id="pwd2" value="<?php echo $cuserrow['password'];?>"  class="span11" name="pwd2" placeholder="CONFIRM PASSWORD" required />
                                     <span class="fa fa-eye"></span>

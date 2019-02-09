@@ -14,6 +14,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 
 $id = $_GET['id'];
 $dateToday = trim(date('Y-m-d'));
+$activityType = trim('PAYMENT');
 
 //Get consultation charges details...
 $consultdet = select("SELECT * FROM paymentfixed WHERE id='$id'");
@@ -25,18 +26,20 @@ foreach($consultdet as $consultRow){
 }
 
 //select Consultation credit account...
-$getConacc = select("SELECT * FROM Accounts WHERE centerID='$centerID' AND accountName='CONSULTATION' AND accountType='CREDIT'");
+$getConacc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountName='CONSULTATION' AND accountPurpose='CREDIT'");
 if($getConacc){
 	foreach($getConacc as $conAccRow){
+		$ConCrID = $conAccRow['accountID'];
 		$ConCrAcc = $conAccRow['accBalance'];
 		$ConCrName = $conAccRow['accountName'];
 	}
 }
 
 //select center debit account..
-$getCenterDBAcc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountType='DEBIT' AND accountName='BANK ACCOUNT'");
+$getCenterDBAcc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountPurpose='DEBIT' AND accountName='BANK ACCOUNT'");
 if($getCenterDBAcc){
 	foreach($getCenterDBAcc as $centerDBrow){
+		$cnterDBID = $centerDBrow['accountID'];
 		$cnterDBAcc = $centerDBrow['accBalance'];
 		$cnterDBName = $centerDBrow['accountName'];
 	}
@@ -49,24 +52,24 @@ $newDebbal =  ($cnterDBAcc-$conPrice);
 $newCrBal = ($ConCrAcc+$conPrice);
 
 //update CREDIT account...
-$updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountName='".$ConCrName."' AND accountType='CREDIT'");
+$updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountID='".$ConCrID."' AND accountPurpose='CREDIT'");
 
 //update DEBIT account...
-$updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerID='$centerID' AND accountName='".$cnterDBName."' AND accountType='DEBIT'");
+$updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerID='$centerID' AND accountID='".$cnterDBID."' AND accountPurpose='DEBIT'");
 
 //insert transaction..
 $activity = 'PAYMENT FOR CONSULTATION';
-$transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,debitAcc,Amount,patientID,staffID,activity,dateInsert) VALUES('$centerID','$ConCrName','$cnterDBName','$conPrice','$patientID','$staffID','$activity','$dateInsert')");
+$transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,creditAccBalance,debitAcc,debitAccBalance,Amount,patientID,staffID,activityType,activity,dateInsert) VALUES('$centerID','$ConCrID','$ConCrAcc','$cnterDBID','$cnterDBAcc','$conPrice','$patientID','$staffID','$activityType','$activity','$dateInsert')");
 
 //update consult paymentfixed row..
 $status = trim("Paid");
 $update = update("UPDATE paymentfixed SET status='$status' WHERE id='$id'");
 
 if($update){
-    echo "<script>alert('Lab Payment Done.!');</script>";
+    echo "<script>alert('CONSULTATION PAYMENT DONE.!');</script>";
      header("Location:". $_SESSION['current_page']);
 }else{
-     echo "<script>alert('Lab Payment Not Done.!');</script>";
+     echo "<script>alert('CONSULTATION PAYMENT FAILED, TRY AGAIN.!');</script>";
      header("Location:". $_SESSION['current_page']);
 }
 ?>

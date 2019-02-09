@@ -19,11 +19,13 @@
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
 
 <!--<link rel="stylesheet" href="assets/css/font-awesome.css" />-->
+<!--
         <style>
         .active{
             background-color: #209fbf;
         }
     </style>
+-->
 </head>
 <body>
 
@@ -97,7 +99,7 @@
 <div id="sidebar">
     <ul>
     <li><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-    <li class="active"> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
+    <li class="active" style="background-color: #209fbf;"> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
     <li> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
     <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
     </ul>
@@ -161,25 +163,26 @@
 
                 <div id="tab2" class="tab-pane">
                     <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="row-fluid">
                     <div class="span6">
                           <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                             <h5>Personal-info</h5>
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Patient ID :</label>
+                                <label class="control-label">Patient ID  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" value="<?php echo $PatientIDs; ?>" name="patientId" required readonly />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Last Name :</label>
+                                <label class="control-label">Last Name  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Last Name" name="lastName" required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Gender:</label>
+                                <label class="control-label">Gender  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <label>
                                     <input type="radio" name="gender" value="Male" /> Male
@@ -190,7 +193,7 @@
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Blood Group</label>
+                                <label class="control-label">Blood Group </label>
                                 <div class="controls">
                                   <select name="bloodGroup" >
                                     <option value="default"> -- Blood Group --</option>
@@ -206,13 +209,13 @@
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Home Address :</label>
+                                <label class="control-label">Home Address </label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Home Address" name="homeAddress" />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Upload Image :</label>
+                                <label class="control-label">Upload Image </label>
                                 <div class="controls">
                                   <input type="file" class="span11" placeholder="Home Address" name="image" />
                                 </div>
@@ -224,20 +227,20 @@
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> First Name :</label>
+                                <label class="control-label">First Name  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="First name" name="firstName" required/>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Other Name(s) :</label>
+                                <label class="control-label">Other Name(s) </label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Other names" name="otherName" />
                                 </div>
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Date Of Birth</label>
+                                <label class="control-label">Date Of Birth  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="date"  class="span11" name="dob" required />
                                 </div>
@@ -245,40 +248,35 @@
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Home Town Address:</label>
+                                <label class="control-label">Home Town Address </label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Home Town Address" name="hometown" />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Mobile Number:</label>
+                                <label class="control-label">Mobile Number  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
-                                  <input type="tel" class="span11" placeholder="Mobile Number" name="mobileNumber" required/>
+                                  <input type="tel" class="span11" placeholder="Active Mobile Number" name="mobileNumber" required/>
                                 </div>
-                              </div>
-
-                              <div class="form-actions">
-                                  <i class="span1"></i>
-                                  <a data-toggle="tab" href="#tab3" class="btn btn-primary btn-block labell" > Next Step >></a>
                               </div>
                           </div>
                       </div>
                 </div>
 
-                <div id="tab3" class="tab-pane">
+                <div class="row-fluid">
                     <div class="span6">
                           <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
                             <h5>Guardian-info</h5>
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red;">*</span> Guardian Name :</label>
+                                <label class="control-label">Guardian Name  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Guardian Name" name="guardianName" required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Gender:</label>
+                                <label class="control-label">Gender  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <label>
                                     <input type="radio" name="guardianGender" value="Male" /> Male
@@ -289,7 +287,7 @@
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Mobile Number :</label>
+                                <label class="control-label">Mobile Number  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="tel" class="span11" placeholder="Active Mobile Number" name="guardianPhone" required />
                                 </div>
@@ -302,7 +300,7 @@
                           <div class="widget-content nopadding">
 
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Relationship</label>
+                                <label class="control-label">Relationship <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text"  class="span11" name="guardianRelation" placeholder="Relationship with Guardian" required />
                                 </div>
@@ -310,14 +308,14 @@
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Home Address :</label>
+                                <label class="control-label">Home Address </label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Home Address" name="guardianAddress" />
                                 </div>
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label">TIN Number :</label>
+                                <label class="control-label">TIN Number </label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="TAX ID NUMBER" name="tin" />
                                 </div>
@@ -329,13 +327,12 @@
                               </div>
                           </div>
                       </div>
-
+                    </div>
                 </form>
 
-                </div>
             </div>
 
-        </div>
+            </div></div>
       </div>
   </div>
 </div>

@@ -98,19 +98,22 @@ thead th {
     padding: 8px;
 }
 
+/*
 #containerWARD {
-/*  min-width: 310px;
-  max-width: 800px;*/
+  min-width: 310px;
+  max-width: 800px;
   height: 400px;
   margin: 0 auto
 }
+*/
 
     </style>
 
 </head>
 <body>
 
-<?php include 'layout/head.php';
+<?php
+include 'layout/head.php';
 
 if($_SESSION['username'] ==''){
     echo "<script>window.location.href='logout'</script>";
@@ -119,7 +122,7 @@ if($_SESSION['username'] ==''){
 $centerID=$_SESSION['centerID'];
 @$roomID = $_GET['roomID'];
 $update_consulting = update("UPDATE consultingroom SET status='free' WHERE roomID='$roomID'");
-$dashboard = new Dashboard;
+$dashboard = new Dashboard();
 
  ?>
 
@@ -139,10 +142,8 @@ $dataPoints = array(
 //	array("label"=>"No. of Compay Patient", "y"=>$companyPatient),
 //	array("label"=>"No. of Free Consulting Room", "y"=>$availableConsultingRoom),
 //	array("label"=>"No. of Free Consulting Room", "y"=>$occupiedConsultingRoom)
-)
- ?>
-
-<?php } ?>
+);
+} ?>
 
 
 
@@ -154,7 +155,6 @@ $date = date('Y-m-d');
 foreach($get_pat as $get_pats){
   $all_consult=$get_pats['allx'];
 }
-
 
 
   $get_insurance = select("SELECT COUNT(mode) as insurance FROM consultation WHERE centerID='".$_SESSION['centerID']."'&& mode ='Insurance'&& dateInsert=CURDATE() && insuranceType='NHIS'");
@@ -201,14 +201,6 @@ foreach($room_ward as $room_wards){}
 
 
 <!--    CONSULTATION DASHBOARD-->
-  <?php if($_SESSION['accessLevel']=='LABORATORY'){ ?>
-<script>
-
-</script>
-<?php } ?>
-
-
-
 <?php
 if($_SESSION['accessLevel']=='CONSULTATION'){
  //totalAwaiting
@@ -227,20 +219,7 @@ array("label"=>"No. of Patients in Ward", "y"=>$wardPatient)
 //	array("label"=>"No. of Free Consulting Room", "y"=>$occupiedConsultingRoom)
 )
 ?>
-
 <?php } ?>
-
-
-<!--    CONSULTATION DASHBOARD-->
-<?php if($_SESSION['accessLevel']=='CONSULTATION'){ ?>
-<script>
-
-
-
-
-</script>
-<?php } ?>
-
 
 
 <!--    OPD DASHBOARD-->
@@ -284,13 +263,26 @@ $dataPoints = array(
 
 <div id="sidebar">
     <ul>
-    <li class="active"><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+
+    <?php if($_SESSION['accessLevel'] == 'WARD'){ ?>
+        <li class="active">
+            <a href="medics-index<?php if($_GET['wrdno'] !=''){ $wardID = $_GET['wrdno']; echo "?wrdno=".$_GET['wrdno'];} ?> ">
+            <i class="icon icon-home"></i> <span>Dashboard</span></a>
+        </li>
+        <?php }elseif($_SESSION['accessLevel'] == 'CONSULTATION'){?>
+        <li class="active">
+            <a href="medics-index<?php if($_GET['roomID'] !=''){$roomID=$_GET['roomID']; echo "?roomID=".$_GET['roomID']; }?> ">
+                <i class="icon icon-home"></i> <span>Dashboard</span></a>
+        </li>
+        <?php }else{?>
+        <li class="active"><a href="medics-index"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
+        <?php } ?>
 
         <?php if($_SESSION['accessLevel'] == 'OPD'){ ?>
         <li> <a href="opd-index"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
         <li> <a href="opd-patient?tab=opd-patient"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
-<!--        <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>-->
-        <li> <a href="consult-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+        <li><a href="opd-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
+<!--        <li> <a href="consult-appointment"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>-->
         <?php } ?>
 
         <?php if($_SESSION['accessLevel'] == 'CONSULTATION'){ ?>
@@ -353,25 +345,12 @@ $dataPoints = array(
   <div class="container-fluid">
 <?php if($_SESSION['accessLevel']=='center_admin'){ ?>
    	<div class="quick-actions_homepage">
-    <ul class="quick-actions">
-<!--          <li> <a href="centerconsultation-index"> <i class="icon-cabinet"></i> CONSULTATION</a></li>-->
-<!--          <li> <a href="centeruser-index"> <i class="icon-people"></i> STAFF </a> </li>-->
-<!--          <li> <a href="centerward-index"> <i class="fa fa-folder-open fa-3x"></i> <br/> WARD </a> </li>-->
-<!--          <li> <a href="centerpharmacy-index"> <i class="fa fa-plus-square fa-3x"></i> <br/> PHARMACY</a> </li>-->
-<!--          <li> <a href="centerlab-index"> <i class="icon-search"></i> LABORATORY </a> </li>-->
-<!--          <li> <a href="smsrequest-index"> <i class="fa fa-envelope fa-3x"></i><br> SMS REQUEST </a> </li>-->
-<!--          <li> <a href="center-account"> <i class="icon-survey"></i>ACCOUNTS </a> </li>-->
-        </ul>
+    <ul class="quick-actions"></ul>
    </div>
 <?php }
-      if($_SESSION['accessLevel']=='CONSULTATION'){
-//        $room = Consultation::find_consultingroom();
-        $room = select("SELECT * FROM consultingroom WHERE centerID='$centerID' AND status='".FREE."' || status='' ");
-
-      ?>
-
-
-
+  if($_SESSION['accessLevel']=='CONSULTATION'){
+    $room = select("SELECT * FROM consultingroom WHERE centerID='$centerID' AND status='".FREE."' || status='' ");
+  ?>
 <?php if(empty($_GET['roomID'])){ ?>
     <div id="modal">
     <div class="modalconent text-center">
@@ -386,63 +365,98 @@ $dataPoints = array(
 <?php }} ?>
 
 
-        <div class="row-fluid">
-<!--
-      <div class="span6">
-        <div class="widget-box">
-          <div class="widget-title"> <span class="icon"> <i class="icon-signal"></i> </span>
-            <h5>Line chart</h5>
-          </div>
-          <div class="widget-content">
-            <div class="chart"></div>
-          </div>
-        </div>
+<div class="row-fluid">
+  <div class="span12">
+    <div class="widget-box">
+      <div class="widget-title">
+          <span class="icon"> <i class="icon-signal"></i> </span>
       </div>
+        <div class="widget-content">
 
+<!-- ===============================================  START OPD DASHBOARD ===============================================-->
+<?php if($_SESSION['accessLevel']=='OPD'){
 
+$op = select("SELECT COUNT(*) as op_value FROM patient WHERE centerID='".$_SESSION['centerID']."' && dateRegistered=CURDATE()");
+foreach($op as $ops){$ops['op_value'];}
 
--->
+$opx = select("SELECT COUNT(*) as opx_value FROM patient WHERE centerID='".$_SESSION['centerID']."' ");
+foreach($opx as $opxs){$opxs['opx_value'];}
 
-      <div class="span12">
-        <div class="widget-box">
-          <div class="widget-title"> <span class="icon"> <i class="icon-signal"></i> </span>
-<!--            <h5>Pie chart</h5>-->
-          </div>
-          <div class="widget-content">
+?>
+<div id="containerOPD">
+<script>
+// Make monochrome colors
+var pieColors = (function () {
+  var colors = [],
+    base = Highcharts.getOptions().colors[0],
+    i;
 
+  for (i = 0; i < 10; i += 1) {
+    // Start out with a darkened base color (negative brighten), and end
+    // up with a much brighter color
+    colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+  }
+  return colors;
+}());
 
+// Build the chart
+Highcharts.chart('containerOPD', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'column'
+  },
+  title: {
+    text: 'QUATMEDIC OUT PATIENT DEPARTMENT'
+  },
+  tooltip: {
+//    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      colors: pieColors,
+      dataLabels: {
+        enabled: true,
+//        format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+        distance: -50,
+        filter: {
+//          property: 'percentage',
+          operator: '>',
+          value: 4
+        }
+      }
+    }
+  },
+  series: [{
+    name: 'Number Of Patients',
+    data: [
+      { name: 'NEW PATIENTS <?php echo $ops['op_value']; ?>', y: <?php echo $ops['op_value']; ?>},
+      { name: 'OLD PATIENTS <?php echo $opxs['opx_value']; ?>', y: <?php echo $opxs['opx_value']; ?> }
 
+    ]
+  }]
+});
+</script>
+</div>
+<?php }?>
+<!-- ===============================================  END OPD DASHBOARD ===============================================-->
 
-
+<!-- ===============================================  START CONSULTATION DASHBOARD ====================================-->
 <?php if($_SESSION['accessLevel']=='CONSULTATION'){
 
-  $consult_all = select("SELECT COUNT(*) as c_all FROM consultation WHERE centerID='".$_SESSION['centerID']."'&& dateInsert = CURDATE()");
-  foreach($consult_all as $consult_allx){$consult_total= $consult_allx['c_all'];}
+$consult_all = select("SELECT COUNT(*) as c_all FROM consultation WHERE centerID='".$_SESSION['centerID']."'&& dateInsert = CURDATE()");
+foreach($consult_all as $consult_allx){$consult_total= $consult_allx['c_all'];}
 
 $consult_wait = select("SELECT COUNT(*) as con1 FROM consultation WHERE centerID='".$_SESSION['centerID']."'&& status !='sent_to_pharmacy' && dateInsert = CURDATE() ");
 foreach($consult_wait as $consult_waitx){$waiting = $consult_waitx['con1'];}
 
 $consult_discharge = select("SELECT COUNT(*) as con2 FROM consultation WHERE centerID='".$_SESSION['centerID']."' && status = 'sent_to_pharmacy' || status = 'sent_to_ward' || status = 'sent_to_emergency' && dateInsert = CURDATE()");
 foreach($consult_discharge as $consult_discharges){$discharged = $consult_discharges['con2'];}
-
-//echo "<script>alert('{$discharged}')</script>";
-
-// consultation calculation
-//waiting patients
-// $wait_pat =($waiting)/($consult_total)*100;
-
-//discharged patients
-// $disch_pat =($discharged)/($consult_total)*100;
-
-
-
-
-// echo "<script>alert({$disch_pat})</script>";
-
-  ?>
-
-<br>
-  <div id="containerCON" style="min-width: 310px; height: 320px; margin: 0 auto;" ></div>
+?>
+<div id="containerCON">
 
 <script>
 
@@ -505,220 +519,117 @@ Highcharts.chart('containerCON', {
     data: [
       { name: 'Waiting Patients <?php echo $w_patx['wait_pat'];?>', y:<?php echo $w_patx['wait_pat'];?> },
       { name: 'Discharged Patients <?php echo $disx['dis_pat'];?>', y:<?php echo $disx['dis_pat'];?>}
-
-
-
-
     ]
   }]
 });
-
-
 
 </script>
-
+</div>
 <?php }} ?>
 
+<!-- ===============================================  END CONSULTAION DASHBOARD ===============================================-->
 
 
+<!-- ===============================================  START PHARMACY DASHBOARD ===============================================-->
+<?php if($_SESSION['accessLevel']=='PHARMACY'){
+$c_id = select("SELECT * FROM prescriptions WHERE centerID = '".$_SESSION['centerID']."'");
+foreach($c_id as $c_idx){
+$phar_count = select("SELECT COUNT(*) as phar_all FROM prescribedmeds WHERE dateInsert=CURDATE()");
+foreach($phar_count as $phar_counts){ $phar_all=$phar_counts['phar_all'];}
 
+$pharma = select("SELECT COUNT(*) as pharma_served FROM prescribedmeds WHERE prescribeStatus='served' && dateInsert=CURDATE()");
+foreach($pharma as $pharmas){
+$served = $pharmas['pharma_served'];}
 
-             <?php if($_SESSION['accessLevel']=='OPD'){
-// echo "<script>alert('{$_SESSION['centerID']}')</script>";
+ $pharma_not = select("SELECT COUNT(*) as pharma_non FROM prescribedmeds WHERE prescribeID='".$c_idx['prescribeID']."' && prescribeStatus !='served' && dateInsert=CURDATE()");
+foreach($pharma_not as $pharma_notx){
+$unserved = $pharma_notx['pharma_non'];}
 
+//PHARMACY CALCULATION
+$cal_served = $served;
+$cal_unserved = $unserved;?>
 
-
-?>
-              <?php
-
-    $op = select("SELECT COUNT(*) as op_value FROM patient WHERE centerID='".$_SESSION['centerID']."' && dateRegistered=CURDATE()");
-    foreach($op as $ops){$ops['op_value'];}
-
-    $opx = select("SELECT COUNT(*) as opx_value FROM patient WHERE centerID='".$_SESSION['centerID']."' ");
-    foreach($opx as $opxs){$opxs['opx_value'];}
-
-    ?>
-
-<div id="containerOPD" style="width: 400px; height: 400px; max-width: 700px; margin: 0 auto"></div>
-
+<div id="containerPHARMA">
 <script>
-
-
-// Make monochrome colors
-var pieColors = (function () {
-  var colors = [],
-    base = Highcharts.getOptions().colors[0],
-    i;
-
-  for (i = 0; i < 10; i += 1) {
-    // Start out with a darkened base color (negative brighten), and end
-    // up with a much brighter color
-    colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
-  }
-  return colors;
-}());
-
-// Build the chart
-Highcharts.chart('containerOPD', {
-  chart: {
-    plotBackgroundColor: null,
-    plotBorderWidth: null,
-    plotShadow: false,
-    type: 'column'
-  },
-  title: {
-    text: 'QUATMEDIC OUT PATIENT DEPARTMENT'
-  },
-  tooltip: {
-//    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-  },
-  plotOptions: {
-    pie: {
-      allowPointSelect: true,
-      cursor: 'pointer',
-      colors: pieColors,
-      dataLabels: {
-        enabled: true,
-//        format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-        distance: -50,
-        filter: {
-//          property: 'percentage',
-          operator: '>',
-          value: 4
+Highcharts.chart('containerPHARMA', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'PHARMACY DEPARTMENT'
+    },
+    subtitle: {
+        text: 'Served and Unserved Drug Prescriptions'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
         }
-      }
-    }
-  },
-  series: [{
-    name: 'Number Of Patients',
-    data: [
-      { name: 'NEW PATIENTS <?php echo $ops['op_value']; ?>', y: <?php echo $ops['op_value']; ?>},
-      { name: 'OLD PATIENTS <?php echo $opxs['opx_value']; ?>', y: <?php echo $opxs['opx_value']; ?> }
+    },
+    yAxis: {
+         min: 0,
+        // max: 100,
+        title: {
+            text: 'Quantity'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        // pointFormat: 'Drug Amount: <b>{point.y:.100f} %</b>'
+    },
+    series: [{
+        name: '<?php echo $_SESSION['centerID']; ?>',
+        data: [
+            ['Served Prescriptions', <?php echo $cal_served;?>],
+            ['Unserved Prescriptions', <?php echo $cal_unserved;?>]
 
-    ]
-  }]
+        ],
+        dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: 'red',
+            align: 'right',
+            // format: '{point.y:.100f}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
 });
+</script>
+</div>
+<?php }} ?>
+<!-- ===============================================  END PHARMACY DASHBOARD ===============================================-->
 
 
-    </script>
 
-<?php }?>
-
-
-
-              <?php
-
-
-              ?>
-
-              <?php if($_SESSION['accessLevel']=='PHARMACY'){
-                 //PHARMACY
-              $c_id = select("SELECT * FROM prescriptions WHERE centerID = '".$_SESSION['centerID']."'");
-              foreach($c_id as $c_idx){
-              $phar_count = select("SELECT COUNT(*) as phar_all FROM prescribedmeds WHERE dateInsert=CURDATE()");
-              foreach($phar_count as $phar_counts){ $phar_all=$phar_counts['phar_all'];}
-
-              $pharma = select("SELECT COUNT(*) as pharma_served FROM prescribedmeds WHERE prescribeStatus='served' && dateInsert=CURDATE()");
-              foreach($pharma as $pharmas){
-                $served = $pharmas['pharma_served'];}
-
-                 $pharma_not = select("SELECT COUNT(*) as pharma_non FROM prescribedmeds WHERE prescribeID='".$c_idx['prescribeID']."' && prescribeStatus !='served' && dateInsert=CURDATE()");
-              foreach($pharma_not as $pharma_notx){
-                $unserved = $pharma_notx['pharma_non'];}
-
-                //PHARMACY CALCULATION
-
-                $cal_served = $served;
-
-
-                $cal_unserved = $unserved;?>
-
-                 <div id="containerPHARMA" style="min-width: 400px; height: 650px; margin: 0 auto">
-
-              </div>
-                <script>
-
-//Highcharts.chart('containerPHARMA', {
-//    chart: {
-//        type: 'column'
-//    },
-//    title: {
-//        text: 'PHARMACY DEPARTMENT'
-//    },
-//    subtitle: {
-//        text: 'Served and Unserved Drug Prescriptions'
-//    },
-//    xAxis: {
-//        type: 'category',
-//        labels: {
-//            rotation: -45,
-//            style: {
-//                fontSize: '13px',
-//                fontFamily: 'Verdana, sans-serif'
-//            }
-//        }
-//    },
-//    yAxis: {
-//         min: 0,
-//        // max: 100,
-//        title: {
-//            text: 'Quantity'
-//        }
-//    },
-//    legend: {
-//        enabled: false
-//    },
-//    tooltip: {
-//        // pointFormat: 'Drug Amount: <b>{point.y:.100f} %</b>'
-//    },
-//    series: [{
-//        name: '<?php echo $_SESSION['centerID']; ?>',
-//        data: [
-//            ['Served Prescriptions', <?php echo $cal_served;?>],
-//            ['Unserved Prescriptions', <?php echo $cal_unserved;?>]
-//
-//        ],
-//        dataLabels: {
-//            enabled: true,
-//            rotation: -90,
-//            color: 'red',
-//            align: 'right',
-//            // format: '{point.y:.100f}', // one decimal
-//            y: 10, // 10 pixels down from the top
-//            style: {
-//                fontSize: '13px',
-//                fontFamily: 'Verdana, sans-serif'
-//            }
-//        }
-//    }]
-//});
-
-
-                </script>
-
-              <?php }} ?>
-
-
+<!-- ===============================================  START INVENTORY DASHBOARD ===============================================-->
 <?php if($_SESSION['accessLevel']=='INVENTORY'){?>
 
 
 <?php } ?>
+<!-- ===============================================  END INVENTORY DASHBOARD ===============================================-->
 
+
+
+<!-- ===============================================  START WARD DASHBOARD ===============================================-->
 <?php if($_SESSION['accessLevel']=='WARD'){?>
-
-  <span style="margin-left:750px;font-size:22px;">WARD DEPARTMENT</span><br>
-
-
-
-  <div id="containerWARD" style="width:1000px;">
-<br>
-    <table class="table table-bordered" style="">
+<!--  <span style="margin-left:750px;font-size:22px;">WARD DEPARTMENT</span><br>-->
+  <div id="containerWARD">
+    <table class="table table-bordered" style="width:100%;">
       <thead>
-        <tr>
         <th>WARD NAME</th>
         <th>AVAILABLE BEDS</th>
         <th>NUMBER OF PATIENTS</th>
-      </tr>
       </thead>
       <tbody>
         <tr>
@@ -731,7 +642,6 @@ Highcharts.chart('containerOPD', {
         foreach($num_pat as $num_patx){}
 
           ?>
-
           <td style="background-color:lightblue;text-align:center;"><?php echo $ward_details['wardName']; ?></td>
           <td style="background-color:lightyellow;text-align:center;"><?php echo $ward_bedx['w_bed']; ?></td>
           <td style="background-color:azure;text-align:center"><?php echo $num_patx['n_pat']; ?></td>
@@ -739,15 +649,15 @@ Highcharts.chart('containerOPD', {
         <?php } ?>
       </tbody>
     </table>
-
-
   </div>
-
-
-
 <?php } ?>
+<!-- ===============================================  END WARD DASHBOARD ===============================================-->
 
+
+
+<!-- ===============================================  START FINANCE DASHBOARD =============================================-->
 <?php
+        if($_SESSION['accessLevel']=='FINANCE'){
 
 //OPD
  $fins = select("SELECT COUNT(creditAcc) as fins_value FROM accounttransaction WHERE creditAcc='OPD' && dateInsert=CURDATE() ");
@@ -772,16 +682,12 @@ Highcharts.chart('containerOPD', {
 //EMERGENCY
                 $emergs = select("SELECT COUNT(creditAcc) as emergs_value FROM accounttransaction WHERE creditAcc='EMERGENCY' && dateInsert=CURDATE() ");
               foreach($emergs as $emergsx){ $emergsx['emergs_value'];}
-
 ?>
 
-<?php if($_SESSION['accessLevel']=='FINANCE'){?>
 
-<div id="containerFIN"></div>
+<div id="containerFIN">
 
-  <script>
-
-
+<script>
 Highcharts.chart('containerFIN', {
     chart: {
         type: 'pie',
@@ -818,26 +724,24 @@ Highcharts.chart('containerFIN', {
 });
 
   </script>
-
-
+</div>
 <?php } ?>
+<!-- ===============================================  END FINANCE DASHBOARD ===============================================-->
 
 
-              <?php if($_SESSION['accessLevel']=='LABORATORY'){ ?>
-
-
-                <div id="result"></div>
-<table id="table-sparkline" class='table table-bordered' style="width:1100px;">
+<!-- ===============================================  START LABORATORY DASHBOARD =============================================-->
+<?php if($_SESSION['accessLevel']=='LABORATORY'){ ?>
+<div id="result">
+<table id="table-sparkline" class="table table-bordered">
     <thead>
         <tr>
-            <th style='font-weight:bolder;font-size:22px;background-color:lightblue;'>LABORATORY TYPE</th>
-            <th style='font-weight:bolder;font-size:22px;background-color:lightblue;'>RESULT COUNT</th>
-            <th style='font-weight:bolder;font-size:22px;background-color:lightblue;'>NUMBER OF PATIENTS</th>
-
+            <th>LABORATORY TYPE</th>
+            <th>RESULT COUNT</th>
+            <th>NUMBER OF PATIENTS</th>
         </tr>
     </thead>
     <tbody id="tbody-sparkline">
-  <tr>
+<!--  <tr>-->
       <?php
       $lab_type = select("SELECT * FROM lablist WHERE centerID='".$_SESSION['centerID']."'");
       foreach($lab_type as $lab_types){
@@ -845,27 +749,16 @@ Highcharts.chart('containerFIN', {
         foreach($REZ as $REZX){}
           $p_count = select("SELECT COUNT(patientID) as pat_count FROM labresults WHERE centerID='".$_SESSION['centerID']."' && labID='".$lab_types['labID']."' && dateInsert=CURDATE()");
         foreach($p_count as $p_counts){}
-
-
- //        $lab_count = select("SELECT COUNT(patientID) as lab_num FROM labresult WHERE labID='".$lab_types['labID']."'");
- // foreach($lab_count as $lab_counts){}
         ?>
-</tr>
-      <td style='text-align:center;'><?php echo $lab_types['labName'];?></td>
-      <td style='text-align:center;'><?php echo $REZX['REZ_COUNT'];?></td>
-      <td style='text-align:center;'><?php echo $p_counts['pat_count'];?></td>
-
-
-
-</tr>
+        <tr>
+          <td style='text-align:center;'><?php echo $lab_types['labName'];?></td>
+          <td style='text-align:center;'><?php echo $REZX['REZ_COUNT'];?></td>
+          <td style='text-align:center;'><?php echo $p_counts['pat_count'];?></td>
+        </tr>
     <?php }  ?>
-
-
     </tbody>
 </table>
-
-
-                <script>
+<script>
 Highcharts.SparkLine = function (a, b, c) {
     var hasRenderToArg = typeof a === 'string' || a.nodeName,
         options = arguments[hasRenderToArg ? 1 : 0],
@@ -1019,22 +912,17 @@ function doChunk() {
 }
 doChunk();
 
-
-
-                </script>
-
-
-              <?php } ?>
-
+</script>
+</div>
+<?php } ?>
+<!-- ===============================================  END LABORATORY DASHBOARD ===============================================-->
+</div>
 
           </div>
         </div>
       </div>
     </div>
   </div>
-<!--</div>-->
-<!--</div>-->
-</div>
 <div class="row-fluid">
   <div id="footer" class="span12"> 2018 &copy; QUAT MEDICS ADMIN BY  <a href="http://quatitsolutions.com" target="_blank"><b>QUAT IT SOLUTIONS</b></a> </div>
 </div>
@@ -1057,32 +945,6 @@ window.onload = function () {
         document.getElementById('modal').style.display = "none"
     };
 };
-</script>
-
-
-<script type="text/javascript">
-  // This function is called from the pop-up menus to transfer to
-  // a different page. Ignore if the value returned is a null string:
-  function goPage (newURL) {
-
-      // if url is empty, skip the menu dividers and reset the menu selection to default
-      if (newURL != "") {
-
-          // if url is "-", it is this page -- reset the menu:
-          if (newURL == "-" ) {
-              resetMenu();
-          }
-          // else, send page to designated URL
-          else {
-            document.location.href = newURL;
-          }
-      }
-  }
-
-// resets the menu selection upon entry to this page:
-function resetMenu() {
-   document.gomenu.selector.selectedIndex = 2;
-}
 </script>
 </body>
 </html>

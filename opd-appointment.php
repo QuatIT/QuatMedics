@@ -35,10 +35,14 @@
 		$appointment_reason = $_POST['appointment_reason'];
 		$patient = $_POST['patient'];
 		$doctor = $_POST['doctor'];
-		$sms = $_POST['radios'];
+        if($_POST['radios'] != ''){
+		  $sms = $_POST['radios'];
+        }
 		$centerID = $_SESSION['centerID'];
 
-		$appointNumber = "APTMNT.".$centerID."-".count(select("select * from doctorappointment WHERE centerID='".$_SESSION['centerID']."' ")) + 1;
+        $Selapp = select("select * from doctorappointment WHERE centerID='".$_SESSION['centerID']."' ");
+        $numapp = count($Selapp);
+        $appointNumber = "APP.".$centerID."-".($numapp + 1);
 
 		$apt_sql = insert("INSERT INTO doctorappointment(appointNumber,staffID,patientID,appointmentDate,appointmentTime,sms,reason,centerID,status,dateInsert) VALUES('$appointNumber','$doctor','$patient','$appointmentDate','$appointmentTime','$sms','$appointment_reason','$centerID','pending',CURDATE()) ");
 
@@ -130,7 +134,7 @@
 								  foreach($staffquery as $stafrow){}
 							  ?>
                             <tr>
-                              <td><img width="40px" src='<?php echo $PATIENT_UPLOAD.$patrow['patient_image'];?>'></td>
+                              <td><img width="90px" src='<?php echo $patrow['patient_image'];?>'></td>
                               <td><?php echo $aprow['patientID']; ?></td>
                               <td><?php echo $patrow['firstName']." ".$patrow['otherName']." ".$patrow['lastName']; ?></td>
                               <td><?php echo $stafrow['firstName']." ".$stafrow['otherName']." ".$stafrow['lastName']; ?></td>
@@ -214,7 +218,7 @@
                                   <select name="doctor" class="" >
                                     <option value="default"> -- Select Doctor --</option>
 									  <?php
-										  $doc_sql = select("SELECT * FROM staff WHERE centerID='".$_SESSION['centerID']."' ");
+										  $doc_sql = select("SELECT * FROM staff WHERE centerID='".$_SESSION['centerID']."' AND staffCategory='Doctor' ");
 									  foreach($doc_sql as $doc_row){
 									  ?>
                                     <option value="<?php echo $doc_row['staffID']; ?>"><?php echo $doc_row['firstName']." ".$doc_row['otherName']." ".$doc_row['lastName']; ?></option>

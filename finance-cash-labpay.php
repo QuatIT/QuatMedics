@@ -22,6 +22,7 @@ foreach($getdetails as $detailRow){
 	$patientID = $detailRow['patientID'];
 //	$staffID = $detailRow['staffID'];
 }
+$activityType = trim('PAYMENT');
 $status = trim("Paid");
 
 //get Lab Name for transaction table..
@@ -33,18 +34,20 @@ if($getlabName){
 }
 
 //select lab credit account...
-$getlabacc = select("SELECT * FROM Accounts WHERE centerID='$centerID' AND accountName='LABORATORY' AND accountType='CREDIT'");
+$getlabacc = select("SELECT * FROM Accounts WHERE centerID='$centerID' AND accountName='LABORATORY' AND accountPurpose='CREDIT'");
 if($getlabacc){
 	foreach($getlabacc as $labaccRow){
+		$labCrID = $labaccRow['accountID'];
 		$labCrAcc = $labaccRow['accBalance'];
 		$labCrName = $labaccRow['accountName'];
 	}
 }
 
 //select center debit account..
-$getCenterDBAcc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountType='DEBIT' AND accountName='BANK ACCOUNT'");
+$getCenterDBAcc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountPurpose='DEBIT' AND accountName='BANK ACCOUNT'");
 if($getCenterDBAcc){
 	foreach($getCenterDBAcc as $centerDBrow){
+		$cnterDBID = $centerDBrow['accountID'];
 		$cnterDBAcc = $centerDBrow['accBalance'];
 		$cnterDBName = $centerDBrow['accountName'];
 	}
@@ -57,23 +60,23 @@ $newDebbal =  ($cnterDBAcc-$labprice);
 $newCrBal = ($labCrAcc+$labprice);
 
 //update CREDIT account...
-$updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountName='".$labCrName."' AND accountType='CREDIT'");
+$updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountName='".$labCrName."' AND accountPurpose='CREDIT'");
 
 //update DEBIT account...
-$updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerID='$centerID' AND accountName='".$cnterDBName."' AND accountType='DEBIT'");
+$updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerID='$centerID' AND accountName='".$cnterDBName."' AND accountPurpose='DEBIT'");
 
 //insert transaction..
 $activity = 'PAYMENT FOR '.$labName;
-$transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,debitAcc,Amount,patientID,staffID,activity,dateInsert) VALUES('$centerID','$labCrName','$cnterDBName','$labprice','$patientID','$staffID','$activity','$dateToday')");
+$transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,creditAccBalance,debitAcc,debitAccBalance,Amount,patientID,staffID,activityType,activity,dateInsert) VALUES('$centerID','$labCrID','$labCrAcc','$cnterDBID','$cnterDBAcc','$labprice','$patientID','$staffID','$activityType','$activity','$dateToday')");
 
 //update lab results row..
 $update = update("UPDATE labresults SET paystatus='$status' WHERE id='$id'");
 
 if($update){
-    echo "<script>alert('Lab Payment Done.!'); window.location='finance-cash';</script>";
-//     header("Location:". $_SESSION['current_page']);
+    echo "<script>alert('Lab Payment Done.!');</script>";
+     header("Location:". $_SESSION['current_page']);
 }else{
-     echo "<script>alert('Lab Payment Not Done.!'); window.location='finance-cash';</script>";
-//     header("Location:". $_SESSION['current_page']);
+     echo "<script>alert('Lab Payment Not Done.!');</script>";
+     header("Location:". $_SESSION['current_page']);
 }
 ?>

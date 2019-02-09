@@ -151,19 +151,19 @@ $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Patient ID :</label>
+                                <label class="control-label">Patient ID  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" value="<?php echo $patRow['patientID']; ?>" name="patientId" required readonly />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Last Name :</label>
+                                <label class="control-label">Last Name  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" value="<?php echo $patRow['lastName'];?>" name="lastName" required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Gender:</label>
+                                <label class="control-label">Gender <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <label>
                                     <input type="radio" name="gender" value="Male" /> Male
@@ -191,13 +191,13 @@ $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Home Address :</label>
+                                <label class="control-label">Home Address </label>
                                 <div class="controls">
                                   <input type="text" class="span11" value="<?php echo $patRow['homeAddress'];?>" name="homeAddress" />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Upload Image :</label>
+                                <label class="control-label">Upload Image </label>
                                 <div class="controls">
                                   <input type="file" class="span11" placeholder="Home Address" name="image" />
                                 </div>
@@ -209,32 +209,32 @@ $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> First Name :</label>
+                                <label class="control-label">First Name  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" value="<?php echo $patRow['firstName'];?>" name="firstName" required/>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Other Name(s) :</label>
+                                <label class="control-label">Other Name(s) </label>
                                 <div class="controls">
                                   <input type="text" class="span11" value="<?php echo $patRow['otherName'];?>" name="otherName" />
                                 </div>
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Date Of Birth</label>
+                                <label class="control-label">Date Of Birth  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="date"  class="span11" value="<?php echo $patRow['dob'];?>" name="dob" required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Home Town Address:</label>
+                                <label class="control-label">Home Town Address </label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Home Town Address" value="<?php echo $patRow['hometown'];?>" name="hometown" />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Mobile Number:</label>
+                                <label class="control-label">Mobile Number  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="tel" class="span11" placeholder="Mobile Number" value="<?php echo $patRow['phoneNumber'];?>" name="mobileNumber" required/>
                                 </div>
@@ -251,13 +251,13 @@ $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
                           </div>
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red;">*</span> Guardian Name :</label>
+                                <label class="control-label">Guardian Name  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" value="<?php echo $patRow['guardianName'];?>" name="guardianName" required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Gender:</label>
+                                <label class="control-label">Gender  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <label>
                                     <input type="radio" name="guardianGender" value="Male" /> Male
@@ -268,7 +268,7 @@ $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Mobile Number :</label>
+                                <label class="control-label">Mobile Number  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="tel" class="span11" value="<?php echo $patRow['guardianPhone'];?>" name="guardianPhone" required />
                                 </div>
@@ -281,7 +281,7 @@ $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
                           <div class="widget-content nopadding">
 
                               <div class="control-group">
-                                <label class="control-label"> <span style="color:red;">*</span> Relationship</label>
+                                <label class="control-label">Relationship  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text"  class="span11" name="guardianRelation" value="<?php echo $patRow['guardianRelation'];?>" required />
                                 </div>
@@ -289,14 +289,14 @@ $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Home Address :</label>
+                                <label class="control-label">Home Address </label>
                                 <div class="controls">
                                   <input type="text" class="span11" value="<?php echo $patRow['guardianAddress'];?>" name="guardianAddress" />
                                 </div>
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label">TIN Number :</label>
+                                <label class="control-label">TIN Number </label>
                                 <div class="controls">
                                   <input type="text" class="span11" value="<?php echo $patRow['tin'];?>" name="tin" />
                                 </div>
