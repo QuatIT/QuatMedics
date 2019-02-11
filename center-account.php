@@ -495,6 +495,48 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
             </table>
         </div>
     </form>
+    <form method="post" enctype="multipart/form-data" >
+        <div class="row-fluid">
+            <table class="table table-bordered data-table">
+                <thead>
+                    <th>ID</th>
+                    <th>CREDIT ACCOUNT</th>
+                    <th>CREDIT ACCOUNT BALANCE</th>
+                    <th>DEBIT ACCOUNT</th>
+                    <th>DEBIT ACCOUNT BALANCE</th>
+                    <th> AMOUNT</th>
+                    <th> NARATION</th>
+                </thead>
+                <tbody>
+                    <?php
+                    $ledsql = select("SELECT * FROM accounttransaction WHERE centerID='$centerID' AND activityType='POST'");
+                    if($ledsql){
+                        foreach($ledsql as $ledgRow){
+                            $creditAccID = $ledgRow['creditAcc'];
+                            $debitAccID = $ledgRow['debitAcc'];
+
+                            //get credit account name
+                            $cresql = select("SELECT * FROM accounts WHERE accountID='$creditAccID'");
+                            foreach($cresql as $creditrow){}
+
+                            //get debit account name
+                            $debsql = select("SELECT * FROM accounts WHERE accountID='$debitAccID'");
+                            foreach($debsql as $debitrow){}
+                    ?>
+                    <tr>
+                        <td><?php echo $ledgRow['id'];?></td>
+                        <td><?php echo $creditrow['accountName'];?></td>
+                        <td><?php echo $ledgRow['creditAccBalance'];?></td>
+                        <td><?php echo $debitrow['accountName'];?></td>
+                        <td><?php echo $ledgRow['debitAccBalance'];?></td>
+                        <td><?php echo $ledgRow['Amount'];?></td>
+                        <td><?php echo $ledgRow['activity'];?></td>
+                    </tr>
+                    <?php }}?>
+                </tbody>
+            </table>
+        </div>
+    </form>
 </div>
 
 <div id="tab2" class="tab-pane active">

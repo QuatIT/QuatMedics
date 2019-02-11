@@ -14,7 +14,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 //get assignid
 $id = $_GET['id'];
 $dateToday = trim(date('Y-m-d'));
-
+$activityType =  trim("PAYMENT");
 //get admit details..
 $assigndet = select("SELECT * FROM wardassigns WHERE assignID='$id'");
 foreach($assigndet as $assignRow){}
@@ -28,18 +28,20 @@ $warddet = select("SELECT * FROM wardlist WHERE wardID='".$assignRow['wardID']."
 foreach($warddet as $wardrow){}
 
 //select Ward credit account...
-$getWdacc = select("SELECT * FROM Accounts WHERE centerID='$centerID' AND accountName='WARD' AND accountType='CREDIT'");
+$getWdacc = select("SELECT * FROM Accounts WHERE centerID='$centerID' AND accountName='WARD' AND accountPurpose='CREDIT'");
 if($getWdacc){
 	foreach($getWdacc as $wdAccRow){
+		$wdCrID = $wdAccRow['accountID'];
 		$wdCrAcc = $wdAccRow['accBalance'];
 		$wdCrName = $wdAccRow['accountName'];
 	}
 }
 
 //select center debit account..
-$getCenterDBAcc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountType='DEBIT' AND accountName='BANK ACCOUNT'");
+$getCenterDBAcc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountType='DEBIT' AND accountPurpose='BANK ACCOUNT'");
 if($getCenterDBAcc){
 	foreach($getCenterDBAcc as $centerDBrow){
+		$cnterDBID = $centerDBrow['accountID'];
 		$cnterDBAcc = $centerDBrow['accBalance'];
 		$cnterDBName = $centerDBrow['accountName'];
 	}
@@ -60,7 +62,7 @@ if($updateCredit){
     if($updateDebit){
         //insert transaction..
         $activity = 'Payment For Ward Discharge From '.$wardrow['wardName'];
-        $transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,debitAcc,Amount,patientID,staffID,activity,dateInsert) VALUES('$centerID','$wdCrName','$cnterDBName','".$assignRow['charge']."','".$assignRow['patientID']."','$staffID','$activity','$dateInsert')");
+        $transaction = insert("INSERT INTO accounttransaction(centerID,creditAcc,creditAccBalance,debitAcc,debitAccBalance,Amount,patientID,staffID,activityType,activity,dateInsert) VALUES('$centerID','$wdCrID','$wdCrAcc','$cnterDBID','$cnterDBAcc','".$assignRow['charge']."','".$assignRow['patientID']."','$staffID','$activityType','$activity','$dateInsert')");
 
         if($transaction){
            //update wardassigns row..

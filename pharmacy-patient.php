@@ -303,6 +303,8 @@ input:checked + .slider:before {
 
                                                     $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='$chkbox' WHERE prescribeid='".$med['prescribeid']."' ");
 
+                                                    $chk_sql2 = update("UPDATE prescription SET prescribeStatus='$chkbox' WHERE prescribeCode='".$med['prescribeCode']."' ");
+
 													$med = select("select * from prescribedmeds where prescribeid='".$med['prescribeid']."' ");
 													foreach($med as $medic_row){}
 

@@ -60,13 +60,19 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
   <div class="container-fluid">
       <h3 class="quick-actions">INSURANCE PAYMENT</h3>
 
-      <div class="row-fluid">
-
-		  <div class="span12">
-<!--        <div class="widget-box">-->
-<!--            <div class="widget-content tab-content">-->
-<!--                <div id="tab1" class="tab-pane active">-->
-                    <div class="widget-box">
+    <div class="row-fluid">
+        <div class="widget-box">
+            <div class="widget-title">
+                <ul class="nav nav-tabs labell">
+                    <li class="active"><a data-toggle="tab" href="#tab1">CONSULTATION & MEDS</a></li>
+                    <li><a data-toggle="tab" href="#tab2">LABORATORY PAYMENTS</a></li>
+                    <li><a data-toggle="tab" href="#tab3">WARD PAYMENTS</a></li>
+<!--                    <li><a data-toggle="tab" href="#tab4">PAYMENT HISTORY</a></li>-->
+                </ul>
+            </div>
+            <div class="widget-content tab-content">
+                <div id="tab1" class="tab-pane active">
+                                        <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
                          <h5>CONSULTATION AND MEDICATION CHARGES</h5>
@@ -100,17 +106,10 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                         </table>
                       </div>
                     </div>
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>		  -->
-		  </div>
-      </div>
-      <div class="row-fluid">
-		  <div class="span12">
-<!--        <div class="widget-box">-->
-<!--            <div class="widget-content tab-content">-->
-<!--                <div id="tab1" class="tab-pane active">-->
-                    <div class="widget-box">
+                </div>
+
+                <div id="tab2" class="tab-pane">
+                                        <div class="widget-box">
                       <div class="widget-title">
                          <span class="icon"><i class="icon-th"></i></span>
                          <h5>LABORATORY CHARGES</h5>
@@ -162,11 +161,60 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                         </table>
                       </div>
                     </div>
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>		  -->
-		  </div>
+                </div>
 
+                                <div id="tab3" class="tab-pane">
+                    <div class="widget-box">
+                      <div class="widget-title">
+                         <span class="icon"><i class="icon-th"></i></span>
+                         <h5>WARD CHARGES</h5>
+                      </div>
+                      <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th>PID</th>
+                              <th>NAME</th>
+                              <th>WARD NAME</th>
+                              <th>PRICE</th>
+                              <th>ACTION</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+							   <?php
+	$fetchward = select("SELECT * FROM wardassigns WHERE centerID='".$_SESSION['centerID']."' AND paymode !='Private' AND paystatus='Not Paid' AND charge !='0'");
+							  if($fetchward){
+								  foreach($fetchward as $wardRow){
+									  $pdet = select("select * from patient where patientID='".$wardRow['patientID']."'");
+									  foreach($pdet as $prow){}
+
+									  $warddet = select("SELECT * FROM wardlist WHERE wardID='".$wardRow['wardID']."'");
+									  foreach($warddet as $warddets){}
+							  ?>
+							  <tr>
+							  	<td> <?php echo $wardRow['patientID'];?></td>
+							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
+							  	<td> <?php echo $warddets['wardName'];?></td>
+							  	<td> <?php echo $wardRow['charge'];?></td>
+							  	<td style="text-align:center;">
+									<?php if($wardRow['paystatus'] == 'Not Paid'){?>
+									<a href="finance-ward-details?id=<?php echo $wardRow['assignID'];?>"><i class="btn btn-success btn-md fa fa-eye labell"> VIEW DETAILS</i></a>
+								   <?php }?>
+
+									<?php if($wardRow['paystatus'] == 'Paid'){?>
+									<span class="label label-success text-center"><?php  echo $PrivateRow['paystatus'];?></span>
+								   <?php }?>
+								</td>
+							  </tr>
+							  <?php }}?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
       </div>
   </div>
 </div>

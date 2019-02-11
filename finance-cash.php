@@ -58,7 +58,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
   <div class="container-fluid">
       <h3 class="quick-actions">CASH PAYMENT</h3>
 
-            <div class="row-fluid">
+    <div class="row-fluid">
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs labell">

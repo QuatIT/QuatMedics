@@ -14,6 +14,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 //get assignid
 $id = $_GET['id'];
 $dateToday = trim(date('Y-m-d'));
+$activityType =  trim("PAYMENT");
 
 //get admit meds details..
 $assigndet = select("SELECT * FROM wardmeds WHERE medID='$id'");
@@ -28,18 +29,20 @@ $warddet = select("SELECT * FROM wardlist WHERE wardID='".$assignRow['wardID']."
 foreach($warddet as $wardrow){}
 
 //select Pharmacy credit account...
-$getPhacc = select("SELECT * FROM Accounts WHERE centerID='$centerID' AND accountName='PHARMACY' AND accountType='CREDIT'");
+$getPhacc = select("SELECT * FROM Accounts WHERE centerID='$centerID' AND accountName='PHARMACY' AND accountPurpose='CREDIT'");
 if($getPhacc){
 	foreach($getPhacc as $phAccRow){
+		$PhCrID = $phAccRow['accountID'];
 		$PhCrAcc = $phAccRow['accBalance'];
 		$PhCrName = $phAccRow['accountName'];
 	}
 }
 
 //select center debit account..
-$getCenterDBAcc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountType='DEBIT' AND accountName='BANK ACCOUNT'");
+$getCenterDBAcc = select("SELECT * FROM accounts WHERE centerID='$centerID' AND accountPurpose='DEBIT' AND accountName='BANK ACCOUNT'");
 if($getCenterDBAcc){
 	foreach($getCenterDBAcc as $centerDBrow){
+		$cnterDBID = $centerDBrow['accountID'];
 		$cnterDBAcc = $centerDBrow['accBalance'];
 		$cnterDBName = $centerDBrow['accountName'];
 	}
@@ -52,10 +55,10 @@ $newDebbal =  ($cnterDBAcc-$assignRow['charge']);
 $newCrBal = ($PhCrAcc+$assignRow['charge']);
 
 //update CREDIT account...
-$updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountName='$PhCrName' AND accountType='CREDIT'");
+$updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountID='$PhCrID' AND accountPurpose='CREDIT'");
 
 //update DEBIT account...
-$updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerID='$centerID' AND accountName='$cnterDBName' AND accountType='DEBIT'");
+$updateDebit = update("UPDATE accounts SET accBalance='$newDebbal' WHERE centerID='$centerID' AND accountID='$cnterDBID' AND accountPurpose='DEBIT'");
 
 //insert transaction..
 $activity = 'Payment For '.$assignRow['medicine'];
