@@ -75,9 +75,9 @@ $centerID = $_SESSION['centerID'];
 
         $centerID = $_SESSION['centerID'];
 
-		$sql_user = select("SELECT * FROM staff WHERE email='$email' ");
+//		$sql_user = select("SELECT * FROM staff WHERE email='$email' ");
 		$sql_user2 = select("SELECT * FROM staff WHERE phone='$phone' ");
-		if(count($sql_user) < 1){
+//		if(count($sql_user) < 1){
             if(count($sql_user2) < 1){
 
         $centerUser = $user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$phone,$centerID);
@@ -103,9 +103,9 @@ $centerID = $_SESSION['centerID'];
         }else{
                 $error = "STAFF PHONE ALREADY EXIST";
             }
-		}else{
-			$error = "STAFF EMAIL ALREADY EXIST";
-		}
+//		}else{
+//			$error = "STAFF EMAIL ALREADY EXIST";
+//		}
     }
 
 	// fetch vitals
@@ -199,25 +199,25 @@ $centerID = $_SESSION['centerID'];
                     <div class="span6">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Staff ID :</label>
+                                <label class="control-label">Staff ID <span style="color:red; font-size:130%;">*</span> </label>
                                <div class="controls">
                                   <input type="text" class="span11" name="staffID" value="<?php echo $staffIDs; ?>" required readonly/>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> First Name :</label>
+                                <label class="control-label"> First Name <span style="color:red; font-size:130%;">*</span> </label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="First Name" name="firstName" required/>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Other Name :</label>
+                                <label class="control-label">Other Name </label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Other Name(s)" name="otherName" />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Date Of Birth</label>
+                                <label class="control-label">Date Of Birth <span style="color:red; font-size:130%;">*</span> </label>
                                 <div class="controls">
                                   <input type="date" class="span11" name="dob" required />
                                 </div>
@@ -229,7 +229,7 @@ $centerID = $_SESSION['centerID'];
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Phone</label>
+                                <label class="control-label">Phone <span style="color:red; font-size:130%;">*</span> </label>
                                 <div class="controls">
                                   <input type="tel" class="span11" name="phone" placeholder="Active Phone Number" />
                                 </div>
@@ -245,9 +245,9 @@ $centerID = $_SESSION['centerID'];
                     <div class="span6">
                           <div class="widget-content nopadding">
                                <div class="control-group">
-                                <label class="control-label"> Staff Category</label>
+                                <label class="control-label"> Staff Category <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
-                                  <select name="staffCategory" >
+                                  <select name="staffCategory" required >
                                     <option value="default"> </option>
                                     <option value="Doctor"> Doctor</option>
                                     <option value="Nurse"> Nurse</option>
@@ -260,13 +260,13 @@ $centerID = $_SESSION['centerID'];
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Last Name :</label>
+                                <label class="control-label">Last Name <span style="color:red; font-size:130%;">*</span> </label>
                                <div class="controls">
                                   <input type="text" class="span11" name="lastName" placeholder="Last Name" required/>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Gender</label>
+                                <label class="control-label">Gender <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <select name="gender" >
                                         <option value="default"> </option>
@@ -276,15 +276,15 @@ $centerID = $_SESSION['centerID'];
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Staff Department</label>
+                                <label class="control-label">Staff Department <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <select name="staffDepartment" required>
                                     <option value="default"> </option>
                                       <?php
-                                        $dep = select("SELECT * FROM department ");
+                                        $dep = select("SELECT * FROM department");
                                         foreach($dep as $dept){
                                       ?>
-                                        <option value="<?php echo $dept['departmentID']; ?>"> <?php echo $dept['departmentName']; ?></option>
+                                        <option value="<?php echo $dept['departmentName']; ?>"> <?php echo $dept['departmentName']; ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>
@@ -297,20 +297,20 @@ $centerID = $_SESSION['centerID'];
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> User Name</label>
+                                <label class="control-label">User Name <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text"  class="span11" name="userName" placeholder="User Name..." required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Password</label>
+                                <label class="control-label">Password <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="password"  class="span11" id="pwd" name="pwd" placeholder="PASSWORD" required />
                                     <span class="fa fa-eye"></span>
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label"><span style="color:red; font-size:130%;">*</span> Confirm Password</label>
+                                <label class="control-label">Confirm Password <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                             <input type="password" id="pwd2" class="span11" name="pwd2" placeholder="CONFIRM PASSWORD" required />
                                     <span class="fa fa-eye"></span>
@@ -385,29 +385,5 @@ $centerID = $_SESSION['centerID'];
             newpatient();
         },3000);
     </script>
-
-<script type="text/javascript">
-  // This function is called from the pop-up menus to transfer to
-  // a different page. Ignore if the value returned is a null string:
-  function goPage (newURL) {
-
-      // if url is empty, skip the menu dividers and reset the menu selection to default
-      if (newURL != "") {
-
-          // if url is "-", it is this page -- reset the menu:
-          if (newURL == "-" ) {
-              resetMenu();
-          }
-          // else, send page to designated URL
-          else {
-            document.location.href = newURL;
-          }
-      }
-  }
-// resets the menu selection upon entry to this page:
-function resetMenu() {
-   document.gomenu.selector.selectedIndex = 2;
-}
-</script>
 </body>
 </html>

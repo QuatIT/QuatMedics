@@ -232,7 +232,7 @@ if(empty($labresult) && empty($file)){
 												</td>
 												<td>
                                                     <?php if($labtxt['type']=='0'){?>
-                                                    <input type="file" class="span11" name="file[]" accept="application/pdf" <?php if($labtxt['confirm']=='UNCONFIRMED'){ echo 'readonly';}?>/>
+<input type="file" class="span11" name="file[]" accept="application/pdf" <?php if($labtxt['confirm']=='UNCONFIRMED'){ echo 'disabled';}?>/>
                                                     <?php }
                                                      if($labtxt['type']=='1'){
                                                     ?>
@@ -255,7 +255,7 @@ if(empty($labresult) && empty($file)){
 
                                                 <td style="text-align:center;">
                                                     <?php
-                                                        if($labtxt['paymode'] == 'Private'){
+                                                        if($labtxt['paymode'] == 'CASH'){
                                                             if($labtxt['paystatus'] == 'Not Paid'){?>
                                                                     <span style="background-color:#c92929;" class="label label-danger labell text-center"><?php  echo $labtxt['paystatus'];?></span>
                                                                 <?php }
@@ -271,7 +271,7 @@ if(empty($labresult) && empty($file)){
 
                                                 <td style="text-align:center;">
                                                     <?php if($labtxt['confirm']=='UNCONFIRMED'){ ?>
-                                                    <a href="lab-confirm?id=<?php echo $labtxt['id']; ?>" onclick="return confirm('CONFIRM LAB');" class="btn btn-primary btn-sm"><i class="fa fa-check fa-sm"></i></a>
+                                                    <a href="lab-confirm?id=<?php echo $labtxt['id']; ?>" onclick="return confirm('CONFIRM LAB');" class="btn btn-primary btn-sm labell"><i class="fa fa-check fa-sm"> Confirm</i></a>
                                                     <?php } ?>
                                                     <?php if($labtxt['confirm']=='CONFIRMED'){ ?>
                                                     <label class="btn btn-success btn-sm"><i class="fa fa-check-circle fa-sm"></i></label>

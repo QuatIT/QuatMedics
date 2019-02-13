@@ -118,7 +118,7 @@
 						</td>
 					  <td style='text-align: center;'>
 						  <a href='lab-patient.php?patientID=<?php echo $fet_pats['patientID']."&rID=".$fet_pats['labRequestID']; ?>'>
-							  <span class='btn btn-primary fa fa-eye'></span>
+							  <span class='btn btn-primary fa fa-eye labell'> View Details</span>
 						  </a>
 					  </td>
                         </tr>

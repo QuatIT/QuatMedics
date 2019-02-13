@@ -112,9 +112,15 @@ if($labNumber > 0) {
             //get labName from lablist table...
             $getLabName = select("SELECT labName FROM lablist where labID='$labID'");
             foreach($getLabName as $labName){}
-            //get lab price from prices table using the name...
-            $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
-            foreach($getLp as $labPrice){}
+            if($paymode == 'CASH'){
+                //get lab price from prices table using the name...
+                $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."' AND modePayment='$paymode'");
+                foreach($getLp as $labPrice){}
+                }else{
+                //get lab price from prices table using the name...
+                $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."' AND modePayment='".$consultrow['insuranceType']."'");
+                foreach($getLp as $labPrice){}
+            }
 
 $insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,confirm,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$confirm','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
 
@@ -586,55 +592,55 @@ if($medIDNum > 0 && $piecesNum > 0) {
 </div>
 <!-- ============================== END OF DOCTORS NOTE TAB =============================================      -->
 
-                        <div id="tab2" class="tab-pane">
-                             <form action="" method="post" class="form-horizontal">
-								 <div class="span6">
-									 <div class="widget-content nopadding">
-									 	<div class="control-group">
-                                        <label class="control-label"> CONSULTING ROOM</label>
-                                          <div class="controls">
-                                            <input type="text" name="consultroom" class="span11" value="<?php echo $roomID?>" readonly>
-                                          </div>
-                                      	</div>
-										 	<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
-                                      <div class="control-group">
-                                        <label class="control-label">PAYMENT MODE :</label>
-                                        <div class="controls">
-                                          <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
-                                        </div>
-                                      </div>
-                                      <?php } ?>
-									 </div>
-								 </div>
-								 <div class="span6">
-									 <div class="widget-content nopadding">
-									 	<div class="control-group">
-                                        <label class="control-label"> STAFF ID</label>
-                                          <div class="controls">
-                                            <input type="text" name="staffid" class="span11" value="<?php echo $staffID;?>" readonly>
-                                          </div>
-                                      </div>
-									 </div>
-										 <div class="control-group">
-                                        <label class="control-label">REQUEST LAB TEST</label>
-                                        <div class="controls">
-                                          <select multiple name="labName[]">
-                                               <?php
-                                            $lablist = select("SELECT * from lablist WHERE centerID='".$_SESSION['centerID']."'");
-                                            foreach($lablist as $labrow){
-                                            ?>
-                                    <option value="<?php echo $labrow['labID'];?>"><?php echo $labrow['labName'];?></option>
-                                              <?php }?>
-                                          </select>
-                                        </div>
-                                      </div>
-									 <div class="form-actions">
-                                          <i class="span1"></i>
-                        <button type="submit" name="reqLab" class="btn btn-primary btn-block span10"> Request Lab</button>
-                                      </div>
-								 </div>
-                            </form>
-                        </div>
+<div id="tab2" class="tab-pane">
+     <form action="" method="post" class="form-horizontal">
+         <div class="span6">
+             <div class="widget-content nopadding">
+                <div class="control-group">
+                <label class="control-label"> CONSULTING ROOM</label>
+                  <div class="controls">
+                    <input type="text" name="consultroom" class="span11" value="<?php echo $roomID?>" readonly>
+                  </div>
+                </div>
+                    <?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
+              <div class="control-group">
+                <label class="control-label">PAYMENT MODE :</label>
+                <div class="controls">
+                  <input type="text" class="span11" name="paymode" value="<?php echo $consultrow['mode'];?>" readonly/>
+                </div>
+              </div>
+              <?php } ?>
+             </div>
+         </div>
+         <div class="span6">
+             <div class="widget-content nopadding">
+                <div class="control-group">
+                <label class="control-label"> STAFF ID</label>
+                  <div class="controls">
+                    <input type="text" name="staffid" class="span11" value="<?php echo $staffID;?>" readonly>
+                  </div>
+              </div>
+             </div>
+                 <div class="control-group">
+                <label class="control-label">REQUEST LAB TEST</label>
+                <div class="controls">
+                  <select multiple name="labName[]">
+                       <?php
+                    $lablist = select("SELECT * from lablist WHERE centerID='".$_SESSION['centerID']."'");
+                    foreach($lablist as $labrow){
+                    ?>
+            <option value="<?php echo $labrow['labID'];?>"><?php echo $labrow['labName'];?></option>
+                      <?php }?>
+                  </select>
+                </div>
+              </div>
+             <div class="form-actions">
+                  <i class="span1"></i>
+<button type="submit" name="reqLab" class="btn btn-primary btn-block span10"> Request Lab</button>
+              </div>
+         </div>
+    </form>
+</div>
 
 <!-- ============================== START ADMIT TO WARD TAB =============================================-->
 <div id="tab3" class="tab-pane">
@@ -701,7 +707,7 @@ if($medIDNum > 0 && $piecesNum > 0) {
                 <tr>
                     <td>
                         <?php
-							if($consultrow['mode'] == 'Insurance'){
+							if($consultrow['mode'] == 'INSURANCE'){
                                 $insuranceType = $consultrow['insuranceType'];
 							?>
 							<select name="medicine[]" class="span11">
@@ -710,7 +716,7 @@ if($medIDNum > 0 && $piecesNum > 0) {
 
 						  	$centerNHISLevel = $centerName['centerNhisLevel'];
 //						  	$level = explode(" ",$centerNHISLevel);
-$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='Private'");
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='CASH'");
 								if($meds){
 								foreach($meds as $medrow){
 							?>
@@ -718,7 +724,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php }} ?>
 							</select>
 							<?php }else{
-                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH'");
 							?>
                          <select name="medicine[]" class="span11">
                                 <option></option>
@@ -768,7 +774,12 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 			<input type="text" name="prescribeCode" value="<?php echo $prescribeCode;?>" readonly class="span12" />
                       </td>
 
-					<td class="labell"> PHARMACY</td>
+					<td colspan="2" rowspan="2">
+                        <textarea class="span12" rows="3" placeholder="SYMPTOMS" name="symptoms" placeholder="Symptoms" required><?php echo @$consultrow['docNotes'];?></textarea>
+                      </td>
+				  </tr>
+				  <tr>
+                    <td class="labell"> PHARMACY</td>
 					<td>
 					  <select name="pharmacyID" class="span12" required>
 
@@ -785,11 +796,8 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 					  </td>
 				  </tr>
 				  <tr>
-					<td colspan="4"><textarea class="span12" placeholder="SYMPTOMS" name="symptoms" placeholder="Symptoms" required><?php echo @$consultrow['docNotes'];?></textarea>  </td>
-				  </tr>
-				  <tr>
 					  <td colspan="2">
-					       <table border="0" class="table table-bordered" id="diagnosis" style="margin-top:20px;">
+					       <table border="0" class="table table-bordered" id="diagnosis" style="margin-top:10px; background:#f8f7f7;">
                             <thead>
                             <th colspan="2" class="labell">Diagnosis</th>
                            </thead>
@@ -797,18 +805,15 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                                     <td>
                                         <input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12">
                                     </td>
-                                    <td>
-                                        <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success labell">+</button>
+                                    <td style="text-align:center;">
+                                        <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success labell">add Diagnose</button>
                                     </td>
                                 </tr>
                         </table>
 					  </td>
-					  <br>
-                      <br>
 
 					  <td colspan="2">
-<!--					<td colspan="3"><textarea class="span12" name="diagnoses" placeholder="Diagnosis" required></textarea>  </td>-->
-					   <table border="0" class="table table-bordered" id="investigation" style="margin-top:20px;">
+					   <table border="0" class="table table-bordered" id="investigation" style="margin-top:10px; background:#f8f7f7;">
                            <thead>
                             <th colspan="2" class="labell">Investigation</th>
                            </thead>
@@ -816,8 +821,8 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                                     <td>
                                         <input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12">
                                     </td>
-                                    <td>
-                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success labell">+</button>
+                                    <td style="text-align:center;">
+                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success labell">add investigation</button>
                                     </td>
                                 </tr>
                             </table>
@@ -854,7 +859,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 					<tr>
 						<td style="width:40%;">
 							<?php
-							if($consultrow['mode'] == 'Insurance'){
+							if($consultrow['mode'] == 'INSURANCE'){
                                 $insuranceType = $consultrow['insuranceType'];
 							?>
 							<select name="medName[]" class="span11">
@@ -862,8 +867,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php
 
 						  	$centerNHISLevel = $centerName['centerNhisLevel'];
-//						  	$level = explode(" ",$centerNHISLevel);
-$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='Private'");
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='CASH'");
 								if($meds){
 									foreach($meds as $medrow){
 							?>
@@ -871,7 +875,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php }} ?>
 							</select>
 							<?php }else{
-                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH'");
 							?>
                             <select name="medName[]" class="span11">
                                 <option></option>

@@ -51,7 +51,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 
 	//get lab details...
 	$labTotal = 0;
-	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='PRIVATE' AND consultID='$serviceID' AND confirm='CONFIRMED'");
+	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='CASH' AND consultID='$serviceID' AND confirm='CONFIRMED'");
 	foreach($fetchlab as $labRow){
         $getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
         foreach($getlabName as $labNmRow){}

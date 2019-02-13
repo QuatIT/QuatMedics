@@ -76,32 +76,13 @@ $bedNumber = $WARD->get_bed_id()+1;
 
 //add new bed
   if(isset($_POST['btnSave'])){
-
-    //$bedNumber = filter_input(INPUT_POST, "bedNumber", FILTER_SANITIZE_STRING);
     $bedDescription = filter_input(INPUT_POST, "bedDescription", FILTER_SANITIZE_STRING);
-//        $bedCharge = filter_input(INPUT_POST, "bedCharge", FILTER_SANITIZE_STRING);
     $bedStatus = "Free";
-
-   $bed = $WARD->saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$wardID,$bedStatus);
-    if($bed){
-        //$success = "BED CREATED SUCCESSFULLY;";
-
-         $success= 'BED CREATED SUCCESSFULLY!';
-         //echo $success;
+$savebed = insert("INSERT INTO bedlist(centerID,bedID,bedNumber,bedDescription,wardID,status) VALUES('$centerID','$bedID','$bedNumber','$bedDescription','$wardID','$bedStatus')");
+    if($savebed){
+        $success = "<script>document.write('BED CREATED SUCCESSFULL');</script>";
     }else{
-        //$error = "";
-//            $error= 'BED NOT CREATED';
-        //echo $error;
-//            $bedNumber = Ward::get_bed_id()+1;
-//             $bed = Ward::saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
-//             if($bed){
-//            //$success = "BED CREATED SUCCESSFULLY;";
-//
-//             $success= 'BED CREATED SUCCESSFULLY!';
-//             //echo $success;
-//        }else{
-              $error= 'BED NOT CREATED';
-//             }
+      $error= 'BED NOT CREATED';
     }
 }
 
@@ -192,7 +173,7 @@ $bedNumber = $WARD->get_bed_id()+1;
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="saveBed" class="btn btn-primary labell btn-block span10">SAVE BED</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span10">SAVE BED</button>
                               </div>
                           </div>
                       </div>

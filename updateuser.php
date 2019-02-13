@@ -53,7 +53,7 @@ if($cusersql){
     //generate centerID
 //    $staffIDs = $user->find_num_staffID($centerID) + 1;
 
-    if(isset($_POST['UPDATE'])){
+    if(isset($_POST['UPDATESTAFF'])){
         $firstName =  filter_input(INPUT_POST, "firstName", FILTER_SANITIZE_STRING);
         $lastName =  filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING);
         $otherName =  filter_input(INPUT_POST, "otherName", FILTER_SANITIZE_STRING);
@@ -67,31 +67,24 @@ if($cusersql){
         $username =  filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING);
         $password =  filter_input(INPUT_POST, "pwd", FILTER_SANITIZE_STRING);
         $password2 =  filter_input(INPUT_POST, "pwd2", FILTER_SANITIZE_STRING);
-        $userID = $staffID;
+        $userID = $stfID;
 
         $centerID = $_SESSION['centerID'];
 
-		$sql_user = select("SELECT * FROM staff WHERE email='$email' ");
-		$sql_user2 = select("SELECT * FROM staff WHERE phone='$phone' ");
-		if(count($sql_user) < 1){
-            if(count($sql_user2) < 1){
-
-$centerUser=$user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$phone,$centerID);
-
-        if($centerUser){
-
-            $accessLevel = $staffDepartment;
-            $userCredential = $user->saveUserCredential($staffID,$username,$password,$accessLevel,$centerID,$userID);
-            $success = "STAFF DATA CREATED SUCCESSFULLY";
+        if($password !== $password2){
+            $error = "PASSWORDS DO NOT MATCH";
         }else{
-            $error = "FAILED TO CREATE STAFF DATA";
-        }
-        }else{
-                $error = "STAFF PHONE ALREADY EXIST";
+
+        $updatestaff = update("UPDATE staff SET firstName='$firstName', lastName='$lastName', otherName='$otherName', gender='$gender', dob='$dob', specialty='$specialty', staffCategory='$staffCategory', departmentID='$staffDepartment', email='$email', phone='$phone', centerID='$centerID' WHERE staffID='$userID'");
+
+            if($updatestaff){
+                $updateuser = update("update centeruser SET userName='$username', password='$password' WHERE staffID='$userID'");
+                $success = "<script>document.write('STAFF DATA UPDATED SUCCESSFULLY');window.location.href='centeruser-index';</script>";
+            }else{
+                $error = "FAILED TO UPDATE STAFF DATA";
             }
-		}else{
-			$error = "STAFF EMAIL ALREADY EXIST";
-		}
+
+        }
     }
 
 ?>
@@ -243,7 +236,7 @@ $centerUser=$user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender
                               <div class="control-group">
                                 <label class="control-label">Last Name <span style="color:red; font-size:130%;">*</span> </label>
                                <div class="controls">
-                              <input type="text" class="span11" value="<?php echo $staffrow['lastName'];?>" name="lastName" placeholder="Last Name" required/>
+            <input type="text" class="span11" value="<?php echo $staffrow['lastName'];?>" name="lastName" placeholder="Last Name" required/>
                                 </div>
                               </div>
                               <div class="control-group">
@@ -260,7 +253,11 @@ $centerUser=$user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender
                                 <label class="control-label">Staff Department <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <select name="staffDepartment" required>
-                                    <option value="<?php echo $staffrow['departmentID'];?>"> <?php echo $staffrow['departmentID'];?></option>
+                                      <?php
+                                      $dep = select("SELECT * FROM department WHERE departmentID='".$staffrow['departmentID']."' ");
+                                        foreach($dep as $deptrw){}
+                                      ?>
+                                    <option value="<?php echo $deptrw['departmentID'];?>"> <?php echo $deptrw['departmentName'];?></option>
                                       <?php
                                         $dep = select("SELECT * FROM department ");
                                         foreach($dep as $dept){
@@ -271,12 +268,14 @@ $centerUser=$user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender
                                 </div>
                               </div>
 
+<!--
                               <div class="control-group">
                                 <label class="control-label"> Work License</label>
                                 <div class="controls">
                                   <input type="file" accept="application/pdf" class="span11" name="license"  />
                                 </div>
                               </div>
+-->
                               <div class="control-group">
                                 <label class="control-label">User Name <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
@@ -300,7 +299,7 @@ $centerUser=$user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="btnSave" class="btn btn-success labell btn-block span10">Update Staff</button>
+                                <button type="submit" name="UPDATESTAFF" class="btn btn-success labell btn-block span10">Update Staff</button>
                               </div>
                           </div>
                       </div>
