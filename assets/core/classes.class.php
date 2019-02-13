@@ -180,7 +180,7 @@
 
 
    public function saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$wardID,$bedStatus){
-        $result = insert("INSERT INTO bedlist(centerID,bedID,bedNumber,bedDescription,wardID,status) VALUES('".$centerID."','".$bedID."','".$bedNumber."','".$bedDescription."','".$bedCharge."','".$wardID."','".$bedStatus."') ");
+        $result = insert("INSERT INTO bedlist(centerID,bedID,bedNumber,bedDescription,wardID,status) VALUES('".$centerID."','".$bedID."','".$bedNumber."','".$bedDescription."','".$wardID."','".$bedStatus."') ");
            return $result;
     }
 

@@ -93,7 +93,7 @@ $bedNumber = $WARD->get_bed_id()+1;
 //            $error= 'BED NOT CREATED';
         //echo $error;
 //            $bedNumber = Ward::get_bed_id()+1;
-//             $bed = Ward::saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$bedCharge,$wardID,$bedStatus);
+//             $bed = Ward::saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$wardID,$bedStatus);
 //             if($bed){
 //            //$success = "BED CREATED SUCCESSFULLY;";
 //
