@@ -167,7 +167,7 @@ $consultAssignPatient1 = $consultation->consultAssignPatient($consultID,$staffID
 
 
 //select consultaion price..
-    if($mode == "Private"){
+    if($mode == "CASH"){
 		$conPrice = select("SELECT * FROM prices WHERE serviceName='CONSULTATION' AND centerID='".$_SESSION['centerID']."' AND modePayment='$mode'");
 		foreach($conPrice as $conRow){}
     }else{
@@ -425,7 +425,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                     <div class="span6" id="vitals">
                           <div class="widget-content nopadding">
                               <div class="control-group">
-                                <label class="control-label">Patient :</label>
+                                <label class="control-label">Patient <span style="color:red; font-size:130%;">*</span></label>
                                <div class="controls">
                                   <select name="patientID" id="patientId" class="" onchange="pname(this.value);">
                                         <?php
@@ -438,40 +438,33 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label">Mode of Payment:</label>
+                                <label class="control-label">Mode of Payment  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <select class="span11" name="mode" onchange="modey(this.value);">
                                         <option value=""></option>
-                                        <option value="Private">Private</option>
-                                        <option value="Insurance">Health Insurance</option>
-                                        <option value="Company">Company</option>
+                                        <option value="CASH"> CASH</option>
+                                        <option value="INSURANCE"> INSURANCE</option>
+                                        <option value="COMPANY">COMPANY</option>
                                     </select>
                                 </div>
                               </div>
 
                              <span id="modeload"></span>
 
-                                     <!-- <div class="control-group">
-                                       <label class="control-label">Expire Date:</label>
-                                       <div class="controls">
-                                         <input type="date" id="modeload" class="span11" placeholder="Expire Date" value="<?php #echo $_SESSION['exp_date']; ?>" name="exp_date" readonly />
-                                       </div>
-                                     </div> -->
-
                               <div class="control-group">
-                                <label class="control-label">Body Temperature:</label>
+                                <label class="control-label">Body Temperature  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Body Temperature" name="bodytemp" required />
                                 </div>
                               </div>
 							  <div class="control-group">
-                                <label class="control-label">Weight</label>
+                                <label class="control-label">Weight <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text"  class="span11" name="weight" placeholder="Weight" required />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Other Health Details :</label>
+                                <label class="control-label">Other Health Details </label>
                                 <div class="controls">
                                     <textarea class="span11" name="otherHealth"></textarea>
                                 </div>
@@ -483,27 +476,27 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
 
                               <?php if(!empty($_GET['pid'])){ ?>
                                <div class="control-group">
-                                <label class="control-label">Full Name :</label>
+                                <label class="control-label">Full Name <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" required readonly value="<?php echo $pID['firstName']." ".$pID['otherName']." ".$pID['lastName']; ?>" id="FullName" class="span11" placeholder="Full name" name="FullName" />
                                 </div>
                               </div>
                           <?php }else{echo '<span id="fname"></span>';} ?>
                               <div class="control-group">
-                                <label class="control-label">Pulse Rate :</label>
+                                <label class="control-label">Pulse Rate  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Pulse Rate" name="pulseRate" />
                                 </div>
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label">Respiration Rate :</label>
+                                <label class="control-label">Respiration Rate  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text" class="span11" placeholder="Respiration Rate" name="respirationRate" />
                                 </div>
                               </div>
                               <div class="control-group">
-                                <label class="control-label">Blood Pressure</label>
+                                <label class="control-label">Blood Pressure <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <input type="text"  class="span11" name="bloodPressure" placeholder="Blood Pressure" required />
                                 </div>
@@ -511,7 +504,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
 
 
                                <div class="control-group">
-                                <label class="control-label">Assign Consulting Room</label>
+                                <label class="control-label">Consulting Room  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
                                   <select name="consultRoom" >
                                     <option value="default"> -- Select Consulting Room --</option>
@@ -524,9 +517,6 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                                       <?php } ?>
 
                                     </optgroup>
-                                    <!-- <optgroup label="Laboratory">Laboratory
-                                        <option value="sent_to_lab">Laboratory</option>
-                                    </optgroup> -->
 
                                   </select>
                                 </div>
@@ -534,14 +524,14 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
                               </div>
 
                               <div class="control-group">
-                                <label class="control-label"> Assign Lab: </label>
+                                <label class="control-label"> Assign Lab </label>
                                   <div class="controls">
                                     <input type="checkbox" value="sent_to_lab" name="assign_lab" onchange="labchk(this.value);">
                                   </div>
                               </div>
 
                                <div class="control-group">
-                                <label class="control-label">Select Lab Request: </label>
+                                <label class="control-label">Select Lab Request </label>
                                 <div class="controls">
                                   <select multiple name="labName[]" id="labchkload">
                                     <option></option>

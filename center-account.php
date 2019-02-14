@@ -70,6 +70,47 @@ if(isset($_POST['saveAccount'])){
 	}
 }
 
+//saving mode of payment...
+if(isset($_POST['saveMode'])){
+    $numMode = count($_POST['paymode']);
+    $numType = count($_POST['payType']);
+
+    if($numMode > 0 && $numType > 0){
+        for($m=0, $t=0; $m<$numMode, $t<$numType; $m++, $t++){
+            if(trim($_POST['paymode'][$m] != '') && trim($_POST['payType'][$t] != '')){
+                $paymodefetch = select("SELECT * FROM mode_of_payment WHERE centerID='$centerID'");
+                $numModfetch = count($paymodefetch)+1;
+                $modeID = "PM-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$numModfetch);
+                $paymode = trim($_POST['paymode'][$m]);
+                $payType = trim($_POST['payType'][$t]);
+
+                if($paymode == 'PRIVATE' && $payType != 'CASH' || $paymode == 'INSURANCE' && $payType == 'CASH'){
+                    $error = "<script>document.write('CASH PAYMODE MUST HAVE CASH PAY TYPE');</script>";
+                }else{
+                    $CHECKMODE = select("SELECT * FROM mode_of_payment WHERE centerID='$centerID' AND mode='$paymode' AND Type='$payType'");
+                    if($CHECKMODE){
+                        $error = "<script>document.write('PAYMODE ALREADY EXIST.');</script>";
+                    }else{
+                       $saveMode = insert("INSERT INTO mode_of_payment(id,centerID,mode,type,dateInsert) VALUES('$modeID','$centerID','$paymode','$payType','$dateToday')");
+
+                        $accIDs = $consultation->loadAccPrices($centerID) + 1;
+                        $accountID = "ACC-".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$accIDs);
+                        $accountPurpose = trim('BOTH');
+                        $accountType = trim('HOLDING');
+                        $saveAcc = insert("INSERT INTO accounts(accountID,centerID,accountName,accountPurpose,accountType,dateInsert) VALUES('$accountID','$centerID','$payType','$accountPurpose','$accountType','$dateToday')");
+
+                        if($saveMode && $saveAcc){
+                            $success = "<script>document.write('PAYMODE CREATED SUCCESFULL.');</script>";
+                        }else{
+                            $error = "<script>document.write('PAYMODE CREATION FAILED, TRY AGAIN.');</script>";
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 //LEDGER ACCOUNT POSTINGS...........
     if(isset($_POST['POSTACC'])){
@@ -316,7 +357,8 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs labell">
-                    <li class="active"><a data-toggle="tab" href="#tab2">SERVICE CHARGES</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab6">PAYMENT MODES</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab2">SERVICE CHARGES</a></li>
                     <li><a data-toggle="tab" href="#tab3">LAB TESTS CHARGES</a></li>
                     <li><a data-toggle="tab" href="#tab4">WARD CHARGES</a></li>
                     <li><a data-toggle="tab" href="#tab1">ACCOUNT MANAGEMENT</a></li>
@@ -387,6 +429,7 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
 										<option value="EXPENSE"> EXPENSE ACCOUNT </option>
 										<option value="INCOME"> INCOME ACCOUNT </option>
 										<option value="REVENUE"> REVENUE ACCOUNT </option>
+										<option value="HOLDING"> HOLDING ACCOUNT </option>
 									</select>
 								</td>
 								<td style="text-align:center;"><button type="button" name="add" id="add6" class="btn btn-primary labell">ADD LEDGER</button></td>
@@ -539,7 +582,88 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
     </form>
 </div>
 
-<div id="tab2" class="tab-pane active">
+<div id="tab6" class="tab-pane active">
+    <div class="row-fluid">
+        <div class="span6">
+            <form action="#" method="post" class="form-horizontal">
+                  <table class="table table-bordered" id="dynamic_field7">
+                      <tr>
+                        <td colspan="3" style="height:10px;">
+                            <h4 class="text-center" style="height:10px;"> MODE OF PAYMENT</h4>
+                          </td>
+                      </tr>
+                      <?php
+//                      $n = 2;
+//                        for($t=0;$t<$n;$t++){
+                      ?>
+                    <tr>
+                        <td>
+                            <select class="span11" name="paymode[]" onchange="pmode(this.value)">
+<!--                                <option>-- Select Mode --</option>-->
+<!--                                <option value="PRIVATE"> PRIVATE / CASH </option>-->
+                                <option value="INSURANCE"> INSURANCE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="span11" name="payType[]">
+<!--                                <option value="CASH"> CASH </option>-->
+                                <option value="NHIS"> NHIS </option>
+                                <option value="ACACIA"> ACACIA </option>
+                                <option value="VITALITY"> VITALITY </option>
+                            </select>
+                        </td>
+                        <td style="text-align:center;">
+                           <button type="button" name="add" id="add7" class="btn btn-primary labell">Add More</button>
+                        </td>
+                    </tr>
+                      <?php //}?>
+                </table>
+                  <div class="form-actions">
+                      <i class="span5"></i>
+                      <button type="submit" name="saveMode" class="btn btn-primary btn-block labell span6"><i class="fa fa-save"></i> Save Pay Mode</button>
+                  </div>
+            </form>
+        </div>
+
+				<div class="span6">
+                     <div class="widget-box" style="margin:0px;">
+                          <div class="widget-title">
+                             <span class="icon"><i class="icon-th"></i></span>
+                          </div>
+                          <div class="widget-content nopadding">
+                            <table class="table table-bordered table-stripped data-table">
+                                <thead>
+                                    <th> PAY MODE</th>
+                                    <th> PAY TYPE</th>
+                                    <th> ACTION</th>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $allService = select("SELECT * FROM mode_of_payment WHERE centerID='$centerID'");
+                                    if($allService){
+                                        foreach($allService as $serviceRow){
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $serviceRow['mode'];?></td>
+                                        <td><?php echo $serviceRow['type'];?></td>
+                                        <td style="text-align:center;">
+                                            <a href="#?sid=<?php echo $serviceRow['id'];?>" class="btn btn-primary">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <?php }}?>
+                                </tbody>
+                            </table>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+<div id="tab2" class="tab-pane">
     <div class="row-fluid">
         <div class="span6">
             <form action="#" method="post" class="form-horizontal">
@@ -561,9 +685,10 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
                                 <option value="ID CARD"> HOSPITAL CARD</option>
                             </select>
                         </td>
-                        <td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required /></td>
+                        <td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" /></td>
                         <td><select class="span" name="modeOfPayment[]" required>
                                 <option>-- Payment Mode --</option>
+                                <option value="CASH"> CASH </option>
 
                             <?php
                                 $modePayment = select("select * FROM mode_of_payment ");
@@ -650,9 +775,10 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
 										<?php }}?>
 									</select>
 								</td>
-								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required/></td>
+								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11"/></td>
 								<td><select class="span" name="modeOfPayment[]" required>
 										<option>-- Payment Mode --</option>
+                                            <option value="CASH"> CASH </option>
 
 									<?php
 										$modePayment = select("select * FROM mode_of_payment ");
@@ -739,10 +865,10 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
 										<?php }}?>
 									</select>
 								</td>
-								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11" required/></td>
+								<td><input type="number" step="any" min="1" name="servicePrice[]" placeholder="Price" class="span11"/></td>
 								<td><select class="span" name="modeOfPayment[]" required>
 										<option>-- Payment Mode --</option>
-
+                                        <option value="CASH"> CASH </option>
 									<?php
 										$modePayment = select("select * FROM mode_of_payment ");
 										if($modePayment){
@@ -855,6 +981,19 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
             $('#row'+button_id+'').remove();
         });
 //    });
+//    });
+//    $(document).ready(function(){
+        var i=1;
+        $('#add7').click(function(){
+            i++;
+            $('#dynamic_field7').append('<tr id="row'+i+'"><td><select class="span11" name="paymode[]" ><option value="INSURANCE"> INSURANCE</option></select></td><td><select class="span11" name="payType[]"><option value="NHIS"> NHIS </option><option value="ACACIA"> ACACIA </option><option value="VITALITY"> VITALITY </option></select></td><td style="text-align:center;"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id+'').remove();
+        });
+//    });
 </script>
 
 <script>
@@ -870,11 +1009,26 @@ function ac_code(val){
        });
 }
 </script>
+
 <script>
 function dr_code(val){
 	// load the select option data into a div
         $('#loader').html("Please Wait...");
         $('#da').load('da_code.php?id='+val, function(){
+		$('#loader').html("");
+       });
+
+        $('#da1').load('da_code1.php?id='+val, function(){
+		$('#loader').html("");
+       });
+}
+</script>
+
+<script>
+function pmode(val){
+	// load the select option data into a div
+        $('#loader').html("Please Wait...");
+        $('#col').load('pmode.php?mode='+val, function(){
 		$('#loader').html("");
        });
 

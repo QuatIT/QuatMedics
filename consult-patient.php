@@ -122,9 +122,16 @@ if($labNumber > 0) {
             //get labName from lablist table...
             $getLabName = select("SELECT labName FROM lablist where labID='$labID'");
             foreach($getLabName as $labName){}
-            //get lab price from prices table using the name...
-            $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."'");
-            foreach($getLp as $labPrice){}
+
+            if($paymode == 'CASH'){
+                //get lab price from prices table using the name...
+                $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."' AND modePayment='$paymode'");
+                foreach($getLp as $labPrice){}
+                }else{
+                //get lab price from prices table using the name...
+                $getLp = select("SELECT * FROM prices WHERE serviceName='".$labName['labName']."' AND modePayment='".$consultrow['insuranceType']."'");
+                foreach($getLp as $labPrice){}
+            }
 
 $insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,centerID,patientID,staffID,consultingRoom,status,paymode,confirm,paystatus,labprice,dateInsert) VALUES('$labReqID','".$_GET['conid']."','$labID','".$_SESSION['centerID']."','$patientID','$staffID','$roomID','$status','$paymode','$confirm','$paystatus','".$labPrice['servicePrice']."','".$consultrow['dateInsert']."')");
 
@@ -690,7 +697,7 @@ if($medIDNum > 0 && $piecesNum > 0) {
                 <tr>
                     <td>
                         <?php
-							if($consultrow['mode'] == 'Insurance'){
+							if($consultrow['mode'] == 'INSURANCE'){
                                 $insuranceType = $consultrow['insuranceType'];
 							?>
 							<select name="medicine[]" class="span11">
@@ -699,7 +706,7 @@ if($medIDNum > 0 && $piecesNum > 0) {
 
 						  	$centerNHISLevel = $centerName['centerNhisLevel'];
 //						  	$level = explode(" ",$centerNHISLevel);
-$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='Private'");
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='CASH'");
 								if($meds){
 								foreach($meds as $medrow){
 							?>
@@ -707,7 +714,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php }} ?>
 							</select>
 							<?php }else{
-                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH'");
 							?>
                          <select name="medicine[]" class="span11">
                                 <option></option>
@@ -794,11 +801,6 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                         </table>
 					  </td>
 
-<!--
-					  <br>
-                      <br>
--->
-
 					  <td colspan="2">
 					   <table border="0" class="table table-bordered" id="investigation" style="margin-top:10px; background:#f8f7f7;">
                            <thead>
@@ -846,7 +848,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 					<tr>
 						<td style="width:40%;">
 							<?php
-							if($consultrow['mode'] == 'Insurance'){
+							if($consultrow['mode'] == 'INSURANCE'){
                                 $insuranceType = $consultrow['insuranceType'];
 							?>
 							<select name="medName[]" class="span11">
@@ -854,8 +856,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php
 
 						  	$centerNHISLevel = $centerName['centerNhisLevel'];
-//						  	$level = explode(" ",$centerNHISLevel);
-$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='Private'");
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND level='$centerNHISLevel' AND medFrom='$insuranceType' OR  medFrom='CASH'");
 								if($meds){
 									foreach($meds as $medrow){
 							?>
@@ -863,7 +864,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php }} ?>
 							</select>
 							<?php }else{
-                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH'");
 							?>
                             <select name="medName[]" class="span11">
                                 <option></option>
@@ -1189,30 +1190,6 @@ function medtype(val){
 }
 </script>
 
-<script type="text/javascript">
-  // This function is called from the pop-up menus to transfer to
-  // a different page. Ignore if the value returned is a null string:
-  function goPage (newURL) {
-
-      // if url is empty, skip the menu dividers and reset the menu selection to default
-      if (newURL != "") {
-
-          // if url is "-", it is this page -- reset the menu:
-          if (newURL == "-" ) {
-              resetMenu();
-          }
-          // else, send page to designated URL
-          else {
-            document.location.href = newURL;
-          }
-      }
-  }
-
-// resets the menu selection upon entry to this page:
-function resetMenu() {
-   document.gomenu.selector.selectedIndex = 2;
-}
-</script>
 <script>
 //$(document).ready(function(){
   $('#notes_input').keyup(function(){

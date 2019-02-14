@@ -270,7 +270,7 @@ input:checked + .slider:before {
 
                                  <?php if($med['confirm']=='UNCONFIRMED'){ ?>
                                     <td colspan="2" style="text-align:center;">
-                                    <a onclick="return confirm('CONFIRM PURCHASE.');" href="pharmacy-confirmmed?id=<?php echo $med['prescribeid'];?>" class="btn btn-primary btn-sm" title="Confirm Purchase"><i class="fa fa-check"></i></a>
+                                    <a onclick="return confirm('CONFIRM PURCHASE.');" href="pharmacy-confirmmed?id=<?php echo $med['prescribeid'];?>" class="btn btn-primary btn-sm" title="Confirm Purchase"><i class="fa fa-check"> CONFIRM</i></a>
                                     </td>
                                  <?php }
                                  if($med['confirm']=='CONFIRMED'){

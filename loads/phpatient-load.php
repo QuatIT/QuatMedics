@@ -25,7 +25,7 @@ $sqlll = select("SELECT * FROM patient WHERE patientID='".$newpatient['patientID
   <td> <?php echo $srowss['firstName']." ".$srowss['otherName']." ".$srowss['lastName']; ?></td>
   <td> <?php echo $slz['paystatus']; ?></td>
   <td> <?php echo $slz['prescribeStatus']; ?></td>
-  <td>
+  <td style="text-align:center;">
 	  <?php
 
 		  #if($slz['paystatus']=="Not Paid" ){
@@ -33,7 +33,8 @@ $sqlll = select("SELECT * FROM patient WHERE patientID='".$newpatient['patientID
 <!--	  <a href="pharmacy-main2?patid=<?php #echo $newpatient['patientID']; ?>&code=<?php #echo $newpatient['perscriptionCode']; ?>" class="btn btn-primary">Process Payment</a>-->
 	  <?php #}else{ ?>
 	  <a href="pharmacy-patient?code=<?php echo $newpatient['perscriptionCode']; ?>" class="btn btn-warning">Serve Medicine</a>
-	  <?php #} ?> </td>
+	  <?php #} ?>
+    </td>
 
 </tr>
 

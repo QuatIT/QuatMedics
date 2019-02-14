@@ -104,7 +104,7 @@ include 'layout/head.php';
         <a title="INSURANCE PAYMENT DETAILS" class="tip-bottom"><i class="icon-file"></i> INSURANCE PAYMENT DETAILS</a>
     </div>
   </div>
-  <div class="container-fluid">
+  <div class="container">
       <h3 class="quick-actions">INSURANCE PAYMENT DETAILS</h3>
 
       <div class="row-fluid">
@@ -133,12 +133,6 @@ include 'layout/head.php';
 			<input type="text" style="font-weight:bolder;" class="span11" name="overall" value="<?php echo $overallTotal;?>" readonly/>
 							</div>
 						  </div>
-<!--
-						  <div class="form-actions">
-							  <i class="span1"></i>
-							<button type="submit" name="makeAllPaymeny" class="btn btn-primary btn-block span10"> Make Payment</button>
-						  </div>
--->
 					  </div>
 				</form>
 		</div>
@@ -168,7 +162,9 @@ include 'layout/head.php';
 						</td>
 					  </tr>
 				  </tbody>
-
+              </table>
+              <?php if($fetchlab){?>
+              <table class="table table-bordered">
 				  <tr>
 				  		<th> LAB TEST </th>
 				  		<th colspan="2"> PRICE</th>
@@ -196,6 +192,11 @@ include 'layout/head.php';
 					  </tr>
 					  <?php }?>
 				  </tbody>
+              </table>
+              <?php }?>
+
+
+              <table class="table table-bordered">
 				  <tr>
 				  		<th> MEDICATION </th>
 				  		<th> DOSAGE</th>

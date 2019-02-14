@@ -8,11 +8,10 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 }
 
 @$_SESSION['exp_date'];
-//$q = "PNT-0001";
 $q = $_REQUEST['id'];
 $pid = $_REQUEST['pid'];
 
-if($q == 'Insurance'){
+if($q == 'INSURANCE'){
 
 $sql = select("select * from patient where patientID='$pid' ");
 foreach($sql as $row){}
@@ -21,54 +20,42 @@ foreach($sql as $row){}
 
 
  <div class="control-group">
-                                <label class="control-label">Type of Insurance:</label>
-                                <div class="controls">
-                                   <select class="span11" name="insuranceType" onchange="ccInsure(this.value)">
-                                        <option value=""></option>
-                                        <option value="NHIS">NHIS</option>
-                                        <option value="Vitality">Vitality</option>
-                                        <option value="Mutuality">Mutuality</option>
-                                        <option value="Acacia">Acacia Health</option>
-                                    </select>
-                                </div>
-                              </div>
+<label class="control-label">Type of Insurance <span style="color:red; font-size:130%;">*</span></label>
+<div class="controls">
+   <select class="span11" name="insuranceType" onchange="ccInsure(this.value)">
+        <option value=""></option>
+       <?php
+       $selmode = select("SELECT * FROM mode_of_payment WHERE centerID='".$_SESSION['centerID']."' AND mode='INSURANCE'");
+        foreach($selmode as $moderow){
+       ?>
+        <option value="<?php echo $moderow['type'];?>"><?php echo $moderow['type'];?></option>
+       <?php }?>
+    </select>
+</div>
+</div>
 
-
-        <div class="control-group">
-          <label class="control-label">Expire Date:</label>
-          <div class="controls">
-            <input type="date" class="span11" placeholder="Expire Date" value="<?php echo $row['insurance_exp']; ?>" name="exp_date" required />
-          </div>
-        </div>
+<div class="control-group">
+  <label class="control-label">Expire Date  <span style="color:red; font-size:130%;">*</span></label>
+  <div class="controls">
+    <input type="date" class="span11" placeholder="Expire Date" value="<?php echo $row['insurance_exp']; ?>" name="exp_date" required />
+  </div>
+</div>
 
 
 <span id="ccmodeload"></span>
 
-<!--
-                              <div class="control-group">
-                                <label class="control-label">Insurance Number:</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Insurance Number" name="insuranceNumber" required />
-                                </div>
-                              </div>
--->
 <?php
-                     }elseif($q == 'Company'){
+}elseif($q == 'COMPANY'){
 
 ?>
-
-
-                              <div class="control-group">
-                                <label class="control-label">Company Name:</label>
-                                <div class="controls">
-                                  <input type="text" class="span11" placeholder="Company Name" name="company" required />
-                                </div>
-                              </div>
+<div class="control-group">
+    <label class="control-label">Company Name <span style="color:red; font-size:130%;">*</span></label>
+    <div class="controls">
+      <input type="text" class="span11" placeholder="Company Name" name="company" required />
+    </div>
+</div>
 
 <?php
 }
-//elseif($q == 'Private'){
-//    echo '';
-//}
 
 ?>

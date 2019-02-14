@@ -87,7 +87,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							  <?php
-		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND serviceName='CONSULTATION' AND dateinsert='$dateToday'");
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='CASH' AND serviceName='CONSULTATION' AND dateinsert='$dateToday'");
 							  if($fetchAll){
 								  foreach($fetchAll as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -125,7 +125,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							   <?php
-	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND paystatus='Not Paid' AND confirm='CONFIRMED'");
+	$fetchlab = select("SELECT * FROM labresults WHERE centerID='".$_SESSION['centerID']."' AND paymode='CASH' AND paystatus='Not Paid' AND confirm='CONFIRMED'");
 							  if($fetchlab){
 								  foreach($fetchlab as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
@@ -175,7 +175,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							   <?php
-	$fetchward = select("SELECT * FROM wardassigns WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND paystatus='Not Paid' AND charge !='0'");
+	$fetchward = select("SELECT * FROM wardassigns WHERE centerID='".$_SESSION['centerID']."' AND paymode='CASH' AND paystatus='Not Paid' AND charge !='0'");
 							  if($fetchward){
 								  foreach($fetchward as $wardRow){
 									  $pdet = select("select * from patient where patientID='".$wardRow['patientID']."'");
@@ -224,7 +224,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							  <?php
-		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='Private' AND serviceName='CONSULTATION'");
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='CASH' AND serviceName='CONSULTATION'");
 							  if($fetchAll){
 								  foreach($fetchAll as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");

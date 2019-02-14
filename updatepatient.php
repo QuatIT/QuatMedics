@@ -2,11 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>QUAT MEDICS ADMIN</title>
+<title>QUATMEDIC</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
-<!--<link rel="stylesheet" href="assets/css/font-awesome.css" />-->
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/colorpicker.css" />
@@ -17,15 +16,6 @@
 <link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
 <link rel="stylesheet" href="assets/css/font-awesome2.css" />
 <link rel="icon" href="quatmedics.png" type="image/x-icon" style="width:50px;">
-
-<!--<link rel="stylesheet" href="assets/css/font-awesome.css" />-->
-        <style>
-/*
-        .active{
-            background-color: #209fbf;
-        }
-*/
-    </style>
 </head>
 <body>
 
@@ -38,59 +28,47 @@ if(isset($_GET['ptid'])){
 }
 //Fetch Patient..
 $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
-        if($fpat){
-            foreach($fpat as $patRow){}
-        }
+if($fpat){
+    foreach($fpat as $patRow){}
+}
 
     $success = '';
     $error = '';
-//
-//    if(isset($_POST['btnSave'])){
-//
-//      $centerID = $_SESSION['centerID'];
-//      $patientId = substr(filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING), 0, 5)."-".sprintf('%06s',$PatientIDs);
-//      $firstName = filter_input(INPUT_POST, "firstName", FILTER_SANITIZE_STRING);
-//      $lastName = filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING);
-//      $otherName = filter_input(INPUT_POST, "otherName", FILTER_SANITIZE_STRING);
-//      $dob = filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING);
-//      $gender = filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING);
-//      $bloodGroup = filter_input(INPUT_POST, "bloodGroup", FILTER_SANITIZE_STRING);
-//      $homeAddress = filter_input(INPUT_POST, "homeAddress", FILTER_SANITIZE_STRING);
-//      $hometown = filter_input(INPUT_POST, "hometown", FILTER_SANITIZE_STRING);
-//      $phoneNumber = filter_input(INPUT_POST, "mobileNumber", FILTER_SANITIZE_STRING);
-//
-//      $guardianName = filter_input(INPUT_POST, "guardianName", FILTER_SANITIZE_STRING);
-//      $guardianGender = filter_input(INPUT_POST, "guardianGender", FILTER_SANITIZE_STRING);
-//      $guardianPhone = filter_input(INPUT_POST, "guardianPhone", FILTER_SANITIZE_STRING);
-//      $guardianRelation = filter_input(INPUT_POST, "guardianRelation", FILTER_SANITIZE_STRING);
-//      $guardianAddress = filter_input(INPUT_POST, "guardianAddress", FILTER_SANITIZE_STRING);
-//      $tin = filter_input(INPUT_POST, "TIN", FILTER_SANITIZE_STRING);
-//
-//
-//		//image upload
-//		$fileName =trim($_FILES['image']['tmp_name']);
-//		$image = explode(".",trim($_FILES['image']['name']));
-//		$new_image = $patientId."_".round(microtime(true)) . '.' . end($image);
-//		$filedestination = $PATIENT_UPLOAD.$new_image;
-//		//                  move_uploaded_file($fileName, "uploads/company/{$new_image}");
-//		move_uploaded_file($fileName, $filedestination);
-//
-//		$pat_sql = select("SELECT * FROM patient WHERE firstName='$firstName' && otherName='$otherName' && lastName='$lastName' && gender='$gender' && phoneNumber='$phoneNumber' && homeAddress='$homeAddress' && dob='$dob' && tin='$tin' ");
-//
-//		if(count($pat_sql) < 1){
-//
-//        $createPatient = Patient::createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination,$hometown,$tin);
-//
-//        if($createPatient){
-//             $success = "<script>document.write('PATIENT DETAIL ADDED SUCCESSFULLY');
-//                                    window.location.href='opd-patient?tab=vitals&pid={$patientId}' </script>";
-//        }
-//		}else{
-//			$error = "PATIENT ALREADY EXIST";
-//		}
-//    }
-//
 
+    if(isset($_POST['updatePatient'])){
+
+      $centerID = $_SESSION['centerID'];
+      $firstName = filter_input(INPUT_POST, "firstName", FILTER_SANITIZE_STRING);
+      $lastName = filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING);
+      $otherName = filter_input(INPUT_POST, "otherName", FILTER_SANITIZE_STRING);
+      $dob = filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING);
+      $gender = filter_input(INPUT_POST, "gender", FILTER_SANITIZE_STRING);
+      $bloodGroup = filter_input(INPUT_POST, "bloodGroup", FILTER_SANITIZE_STRING);
+      $homeAddress = filter_input(INPUT_POST, "homeAddress", FILTER_SANITIZE_STRING);
+      $hometown = filter_input(INPUT_POST, "hometown", FILTER_SANITIZE_STRING);
+      $phoneNumber = filter_input(INPUT_POST, "mobileNumber", FILTER_SANITIZE_STRING);
+
+      $guardianName = filter_input(INPUT_POST, "guardianName", FILTER_SANITIZE_STRING);
+      $guardianGender = filter_input(INPUT_POST, "guardianGender", FILTER_SANITIZE_STRING);
+      $guardianPhone = filter_input(INPUT_POST, "guardianPhone", FILTER_SANITIZE_STRING);
+      $guardianRelation = filter_input(INPUT_POST, "guardianRelation", FILTER_SANITIZE_STRING);
+      $guardianAddress = filter_input(INPUT_POST, "guardianAddress", FILTER_SANITIZE_STRING);
+      $tin = filter_input(INPUT_POST, "tin", FILTER_SANITIZE_STRING);
+
+
+		//image upload
+		$fileName =trim($_FILES['image']['tmp_name']);
+		$image = explode(".",trim($_FILES['image']['name']));
+		$new_image = $patID."_".round(microtime(true)) . '.' . end($image);
+		$filedestination = $PATIENT_UPLOAD.$new_image;
+		move_uploaded_file($fileName, $filedestination);
+
+        $updatePatient = update("UPDATE patient SET firstName='$firstName', lastName='$lastName', otherName='$otherName', dob='$dob', gender='$gender', bloodGroup='$bloodGroup', homeAddress='$homeAddress', phoneNumber='$phoneNumber', guardianName='$guardianName', guardianGender='$guardianGender', guardianPhone='$guardianPhone', guardianRelation='$guardianRelation', guardianAddress='$guardianAddress', hometown='$hometown', patient_image='$filedestination', tin='$tin' WHERE patientID='$patID' ");
+        if($updatePatient){
+             $success = "<script>document.write('PATIENT UPDATED SUCCESSFULLY');
+                                    window.location.href='opd-patient?tab=opd-patient'; </script>";
+        }
+    }
 
     ?>
 
@@ -165,12 +143,19 @@ $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
                               <div class="control-group">
                                 <label class="control-label">Gender <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
+                                    <select name="gender">
+                                        <option value="<?php echo $patRow['gender'];?>"><?php echo $patRow['gender'];?></option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+<!--
                                   <label>
                                     <input type="radio" name="gender" value="Male" /> Male
                                     </label>
                                   <label>
                                     <input type="radio" name="gender" value="Female" /> Female
                                     </label>
+-->
                                 </div>
                               </div>
                               <div class="control-group">
@@ -259,12 +244,21 @@ $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
                               <div class="control-group">
                                 <label class="control-label">Gender  <span style="color:red; font-size:130%;">*</span></label>
                                 <div class="controls">
+                                    <select name="guardianGender">
+                                        <option value="<?php echo $patRow['guardianGender'];?>"><?php echo $patRow['guardianGender'];?></option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+<!--
                                   <label>
                                     <input type="radio" name="guardianGender" value="Male" /> Male
                                     </label>
+-->
+<!--
                                   <label>
                                     <input type="radio" name="guardianGender" value="Female" /> Female
                                     </label>
+-->
                                 </div>
                               </div>
                               <div class="control-group">
@@ -304,7 +298,7 @@ $fpat =  select("SELECT * FROM patient WHERE patientID='$patID'");
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" class="btn btn-primary btn-block labell span10" name="up">Update Patient</button>
+                                <button type="submit" class="btn btn-primary btn-block labell span10" name="updatePatient">Update Patient</button>
                               </div>
                           </div>
                       </div>
