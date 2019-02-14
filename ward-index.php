@@ -55,60 +55,29 @@ if($_SESSION['accessLevel']=='WARD'){
 $success = '';
 $error = '';
 $wardID = $_GET['wrdno'];
-
 //    if(!empty($wardID)){
 $wardByID = $WARD->find_by_ward_id($wardID);
 foreach($wardByID as $ward_id){}
 //    }else{
 $centerID= $centerName['centerID'];
 $ward = $WARD->find_ward($centerID);
-
 //}
-
-
 //bed id
 //$bed_ID = ward::get_bed_id() + 1;
 $bed_ID = count(select("SELECT * FROM bedlist ")) + 1;
 $bedID ="BED-".substr($centerID,0,12)."-".substr($wardID,0,8)."-".sprintf('%01s',$bed_ID);
 $bedNumber = $WARD->get_bed_id()+1;
-
-
-
 //add new bed
   if(isset($_POST['btnSave'])){
-
-    //$bedNumber = filter_input(INPUT_POST, "bedNumber", FILTER_SANITIZE_STRING);
     $bedDescription = filter_input(INPUT_POST, "bedDescription", FILTER_SANITIZE_STRING);
-//        $bedCharge = filter_input(INPUT_POST, "bedCharge", FILTER_SANITIZE_STRING);
     $bedStatus = "Free";
-
-   $bed = $WARD->saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$wardID,$bedStatus);
-    if($bed){
-        //$success = "BED CREATED SUCCESSFULLY;";
-
-         $success= 'BED CREATED SUCCESSFULLY!';
-         //echo $success;
+$savebed = insert("INSERT INTO bedlist(centerID,bedID,bedNumber,bedDescription,wardID,status) VALUES('$centerID','$bedID','$bedNumber','$bedDescription','$wardID','$bedStatus')");
+    if($savebed){
+        $success = "<script>document.write('BED CREATED SUCCESSFULL');</script>";
     }else{
-        //$error = "";
-//            $error= 'BED NOT CREATED';
-        //echo $error;
-//            $bedNumber = Ward::get_bed_id()+1;
-//             $bed = Ward::saveBeds($centerID,$bedID,$bedNumber,$bedDescription,$wardID,$bedStatus);
-//             if($bed){
-//            //$success = "BED CREATED SUCCESSFULLY;";
-//
-//             $success= 'BED CREATED SUCCESSFULLY!';
-//             //echo $success;
-//        }else{
-              $error= 'BED NOT CREATED';
-//             }
+      $error= 'BED NOT CREATED';
     }
 }
-
-
-
-
-
     ?>
 
     <?php if(empty($_GET['wrdno'])){ ?>
@@ -192,7 +161,7 @@ $bedNumber = $WARD->get_bed_id()+1;
 
                               <div class="form-actions">
                                   <i class="span1"></i>
-                                <button type="submit" name="saveBed" class="btn btn-primary labell btn-block span10">SAVE BED</button>
+                                <button type="submit" name="btnSave" class="btn btn-primary labell btn-block span10">SAVE BED</button>
                               </div>
                           </div>
                       </div>
