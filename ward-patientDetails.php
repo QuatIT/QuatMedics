@@ -198,7 +198,7 @@ $get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER
   //request ID
   $request_blood = new B_Request();
     $r_blood = $request_blood->Request_blood()+1;
-    $Request_id = 'REQ-EME-'.substr($centerName['centerName'], 0, 3)."-".sprintf('%06s', $r_blood);
+    $Request_id = 'REQ-WRD-'.substr($centerName['centerName'], 0, 3)."-".sprintf('%06s', $r_blood);
 
     //blood request action
 if(isset($_POST['send'])){
@@ -367,6 +367,8 @@ if(isset($_POST['moveToAcc'])){
                      <li><a data-toggle="tab" href="#tab6">PATIENT VITALS</a></li>
                     <li><a data-toggle="tab" href="#tab2">PATIENT TREATMENT</a></li>
                     <li><a data-toggle="tab" href="#tab5"> NURSE'S CHECKLIST</a></li>
+                    <li><a data-toggle="tab" href="#tabRequest">BLOOD REQUEST</a></li>
+                    <li><a data-toggle="tab" href="#tabAction">BLOOD REQUEST ACTION - &nbsp;<?php echo $req_cnts['request_co'];?></a></li>
                     <!-- <li><a data-toggle="tab" href="#tab3">Doctor's Remarks</a></li> -->
                     <li><a data-toggle="tab" href="#tab4">TREATEMENT HISTORY</a></li>
                     <li><a data-toggle="tab" href="#tab7">PATIENT DISCHARGE</a></li>
@@ -657,6 +659,187 @@ Plotly.newPlot('myDivPressure', num);
 </div>
 
 <!-- ============================== END OF VITALS GRAPH TAB ==================================-->
+
+<!-- ============START BLOOD REQUEST AND ACTION==================================-->
+
+
+<div id="tabAction" class="tab-pane">
+<!--  <form action='' method='post'>-->
+    <div class="widget-box">
+      <div class="widget-title">
+         <span class="icon"><i class="icon-th"></i></span>
+        <h5>BLOOD REQUEST ACTION</h5>
+      </div>
+      <div class="widget-content nopadding">
+    <form action="" method="post">
+      <br>
+       <div class="control-group" style='text-align:center';>
+                <label class="control-label">Request ID </label>
+                <div class="controls">
+<input type="text" style='text-align:center;' class="span4" value='<?php echo @$req_status['requestID'];  ?>' name="req_id" id="req_id"  readonly>
+                </div>
+              </div>
+
+               <div class="control-group" style='text-align:center';>
+                <label class="control-label">Action By </label>
+                <div class="controls">
+                  <input type="text" class="span4" style='text-align:center;' value='<?php echo @$req_status['approved_by'];  ?>' name="act_by" id="act_by" readonly>
+                </div>
+              </div>
+
+                <div class="control-group" style='text-align:center;'>
+                <label class="control-label">Time Of Action </label>
+                <div class="controls">
+                  <input type="text" class="span4" style='text-align:center;' value='<?php echo @$req_status['request_time']; ?>' name="time_act" id="time_act" readonly>
+                </div>
+              </div>
+
+                <div class="control-group" style='text-align:center';>
+                <label class="control-label">Status</label>
+                <div class="controls">
+                  <input type="text" style='text-align:center;' class="span4" value='<?php echo @$req_status['status']; ?>' name="stat" id="stat" readonly>
+                    <!-- <p class="text-left" style="margin-top: 20px;margin-left: 400px;"><input type="reset" class="btn btn-primary" style='width:340px;' name="accept" id="accept" value="ACCEPT STATUS"></p>  -->
+
+                </div>
+              </div>
+
+            <p class="text-left" style="margin-top: 20px;margin-left: 390px;">
+                <input type="submit" class="btn btn-primary" style='width:360px;'name="sub_mitx" id="sub_mitx" value="CONFIRM RECEIPT">
+            </p>
+          </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="tabRequest" class="tab-pane">
+    <div class="row-fluid" style="margin:0px;">
+          <div class="span12">
+            <div class="widget-box">
+              <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                <h5 class="labell">BLOOD REQUEST FORM</h5>
+              </div>
+              <div class="widget-content nopadding">
+                <form action="#" method="get" class="form-horizontal">
+                <div class="row">
+                    <div class="span6">
+                      <div class="control-group">
+                        <label class="control-label">Blood Type :</label>
+                        <div class="controls">
+                          <select name="blood_type" id="blood_type" class="span11">
+                                <option value=""></option>
+                                <?php foreach($fet_type as $fet_types){ ?>
+                                <option value="<?php echo $fet_types['bloodID'];?>"><?php echo $fet_types['bloodGroup']; ?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="span6">
+                        <div class="control-group" >
+                        <label class="control-label">Request ID</label>
+                        <div class="controls">
+                            <input type='text' class='span11' name='' id='' value='<?php  echo $Request_id; ?>' readonly>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span6">
+                       <div class="control-group">
+                        <label class="control-label">Blood ID </label>
+                        <div class="controls">
+                          <input type="text" class="span11" name="blood_id" id="blood_id" readonly>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="span6">
+                        <div class="control-group" >
+                        <label class="control-label">Patient Name</label>
+                        <div class="controls">
+                          <input type="text" class="span11" name="patient_name" id="patient_name" value='<?php echo $pID['patientName'];?>' readonly>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span6">
+                     <div class="control-group">
+                        <label class="control-label">Request From </label>
+                        <div class="controls">
+                          <input type="text" class="span11" value='<?php echo $user_creds['accessLevel']; ?>' name="request_from" readonly>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="span6">
+                     <div class="control-group">
+                        <label class="control-label">Blood Quantity</label>
+                        <div class="controls">
+                          <input type="number" min="1" class="span11" name="quantity" id="quantity" >
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span6">
+                        <div class="control-group">
+                        <label class="control-label">Staff ID </label>
+                        <div class="controls">
+                          <input type="text" class="span11" value='<?php echo $user_creds['staffID'];?>' name="staff_id" readonly>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="span6">
+                         <div class="control-group">
+                        <label class="control-label">Date:</label>
+                        <div class="controls">
+                          <input type="date" class="span11" value='<?php echo date('Y-m-d') ?>' name="dateInsert" readonly>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span6">
+                        <div class="control-group">
+                        <label class="control-label">Patient ID </label>
+                        <div class="controls">
+                          <input type="text" class="span11" name="patient_id" id="patient_id" value='<?php echo $get_PID;?>' readonly>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="span6">
+                        <div class="control-group">
+                        <label class="control-label">Request Action:</label>
+                        <div class="controls">
+                      <input type="text" class="span11" value='<?php  echo $req_action; ?>' name="req_action" id="req_action" readonly>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span6"></div>
+                    <div class="span6">
+                      <div class="form-actions" style="margin:0px;">
+                          <div class="span2"></div>
+                        <button type="submit" name="send" id='send' class="btn btn-primary labell span8">SEND REQUEST</button>
+                      </div>
+                    </div>
+                </div>
+                </form>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============END BLOOD REQUEST AND ACTION==================================-->
+
 
 
 
