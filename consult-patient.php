@@ -162,14 +162,15 @@ if(isset($_POST['adWard'])){
     $diagnoses = filter_input(INPUT_POST, "diagnoses", FILTER_SANITIZE_STRING);
     $bedID = filter_input(INPUT_POST, "bedID", FILTER_SANITIZE_STRING);
     $status = SENT_TO_WARD;
+
 	$medsNum = count($_POST['medicine']);
-//	$dosagesNum = count($_POST['dosage']);
     $piecesNum = count( $_POST['pieces']);
     $adayNum = count( $_POST['aday']);
     $totalDaysNum = count( $_POST['totalDays']);
     $paystatus = "Not Paid";
     $paymode =  filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
     $admitDate = date("Y-m-d");
+
     //generate wardassign IDs
     $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
     if(count($wardasignsql) >=1){
@@ -186,6 +187,25 @@ if(isset($_POST['adWard'])){
     if($bedID == 'NO BED AVAILABLE'){
         $error = "<script>document.write('NO BED SELECTED, TRY AGAIN.');</script>";
     }else{
+
+        if($medsNum < 0 || empty($medsNum)){
+    $insertassign = insert("INSERT INTO wardassigns(assignID,wardID,consultID,bedID,patientID,staffID,admitDate,admitDetails,centerID,consultingroom,paymode,paystatus,dateInsert) VALUES('$assignID','$wardID','$conid','$bedID','$patientID','$staffID','$admitDate','$admitDetails','$centerID','$roomID','$paymode','$paystatus','".$consultrow['dateInsert']."')");
+
+    //update bed status to occupied..
+    $updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$bedID'");
+
+            if($insertassign && $updateBedStatus){
+                $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
+                if($updatePatient){
+                    $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
+                    echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
+                }
+            }else{
+                $error =  "ERROR: PATIENT ADMITTION NOT SAVED";
+            }
+
+        }else{
+
           //INSERT MEDICINE AS PATIENT IS ADMITTED..
 		for($m=0, $p=0, $a=0, $t=0; $m<$medsNum, $p<$piecesNum, $a<$adayNum, $t<$totalDaysNum; $m++,$p++,$a++,$t++){
 				if(trim($_POST['medicine'][$m] != '') && trim($_POST['pieces'][$p] != '') && trim($_POST['aday'][$a] != '') && trim($_POST['totalDays'][$t] != '') ) {
@@ -214,6 +234,7 @@ if(isset($_POST['adWard'])){
                             $medprice = trim($unitPrice);
                         }
                     }
+
 $confirm = trim('CONFIRMED');
 $insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID,medicine,dosage,diagnoses,symptoms,paymode,confirm,paystatus,charge,dateInsert) VALUES('$assignID','$patientID','$staffID','$wardID','$medicine','$dosage','$diagnoses','$symptoms','$paymode','$confirm','$paystatus','$medprice','".$consultrow['dateInsert']."')");
 
@@ -223,19 +244,19 @@ $insertWardMeds = insert("INSERT INTO wardMeds(assignID,patientID,staffID,wardID
 //update bed status to occupied..
 $updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$bedID'");
 
-    if($insertassign && $updateBedStatus){
-        $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
-        if($updatePatient){
-            $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
+        if($insertassign && $updateBedStatus){
+            $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
+            if($updatePatient){
+                $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
                 echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
-                }
-            }else{
-                $error =  "ERROR: PATIENT ADMITTION NOT SAVED";
             }
-            }else{
-            $error = "<script>document.write('WARD PRESCRIPTION FAILED TO SAVE, TRY AGAIN.');</script>";
+        }else{
+            $error =  "ERROR: PATIENT ADMITTION NOT SAVED";
         }
-
+    }else{
+        $error = "<script>document.write('WARD PRESCRIPTION FAILED TO SAVE, TRY AGAIN.');</script>";
+    }
+                }
             }
 
         }
