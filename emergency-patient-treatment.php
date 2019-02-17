@@ -196,7 +196,7 @@ foreach($bl_id as $bl_ids){}
 
 
 
-
+//blood request action
 if(isset($_POST['send'])){
 $request_id = filter_input(INPUT_POST,'request_id',FILTER_SANITIZE_STRING);
 $blood_type= filter_input(INPUT_POST,'blood_type',FILTER_SANITIZE_STRING);

@@ -628,22 +628,29 @@ Highcharts.chart('containerPHARMA', {
     <table class="table table-bordered" style="width:100%;">
       <thead>
         <th>WARD NAME</th>
-        <th>AVAILABLE BEDS</th>
+        <th>BED CAPACITY</th>
         <th>NUMBER OF PATIENTS</th>
       </thead>
       <tbody>
         <tr>
         <?php
-        $ward_detail = select("SELECT * FROM wardlist WHERE centerID='".$_SESSION['centerID']."'");
+        //ward names
+//        $ward_detail = select("SELECT DISTINCT(wardName) FROM wardlist WHERE centerID='".$_SESSION['centerID']."'");
+//        foreach($ward_detail as $ward_details){
+     $ward_detail = select("SELECT * FROM wardlist WHERE centerID='".$_SESSION['centerID']."'");
         foreach($ward_detail as $ward_details){
-          $ward_bed = select("SELECT COUNT(*) as w_bed FROM bedlist WHERE centerID='".$_SESSION['centerID']."' && bedID='".$ward_details['wardID']."' && status !='occupied' && doe=CURDATE()");
+          //# of beds in ward
+          $ward_bed = select("SELECT COUNT(bedNumber) as w_bed FROM bedlist WHERE centerID='".$_SESSION['centerID']."' && wardID='".$ward_details['wardID']."' && status ='free' && doe=CURDATE()");
         foreach($ward_bed as $ward_bedx){$ward_bedx['w_bed'];}
-        $num_pat = select("SELECT COUNT(patientID) as n_pat FROM wardassigns WHERE centerID='".$_SESSION['centerID']."' && wardID='".$ward_details['wardID']."' && doe=CURDATE()");
+        //number of beds in ward
+        $num_pat = select("SELECT COUNT(patientID) as n_pat FROM wardassigns WHERE centerID='".$_SESSION['centerID']."' && wardID='".$ward_details['wardID']."' && dateInsert=CURDATE()");
         foreach($num_pat as $num_patx){}
+
+          // echo "<script>alert('{$ward_details['wardID']}')</script>";
 
           ?>
           <td style="background-color:lightblue;text-align:center;"><?php echo $ward_details['wardName']; ?></td>
-          <td style="background-color:lightyellow;text-align:center;"><?php echo $ward_bedx['w_bed']; ?></td>
+          <td style="background-color:lightyellow;text-align:center;"><?php echo $ward_details['numOfBeds']; ?></td>
           <td style="background-color:azure;text-align:center"><?php echo $num_patx['n_pat']; ?></td>
         </tr>
         <?php } ?>

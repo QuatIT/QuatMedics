@@ -376,7 +376,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
 <!--
                                                   <div class="form-group">
                                                     <label for="exampleInputPassword1">&nbsp;</label>
-                                                    <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php //echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
+                                                    <a class="btn btn-primary pull-right" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<#?php //echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
                                                   </div>
 -->
 
@@ -391,7 +391,7 @@ $insertCON = insert("INSERT INTO paymentfixed (patientID,centerID,paymode,servic
 <!--
                                                    <div class="form-group">
                                                     <label for="exampleInputPassword1">&nbsp;</label>
-                                                    <a class="btn btn-primary" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<?php #echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
+                                                    <a class="btn btn-primary" style="margin-right:40px;" href="opd-patient?tab=vitals&pid=<#?php #echo $patient['patientID']; ?>" >Check Vitals <i class="fa fa-arrow-right"></i></a>
                                                   </div>
 -->
 <!--                                                </div>-->

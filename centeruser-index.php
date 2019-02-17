@@ -21,20 +21,16 @@
 .active{
     background-color: #209fbf;
 }
-
-
 /*
 .password{
     position: relative;
 }
 */
-
 /*
 .password input[type="password"]{
     padding-right: 30px;
 }
 */
-
 .controls .fa,#pass .fa,#cpass .fa {
     display:none;
     right: 15px;
@@ -50,11 +46,9 @@
 $centerID = $_SESSION['centerID'];
     $success = '';
     $error = '';
-
     $user = new User();
     //generate centerID
     $staffIDs = $user->find_num_staffID($centerID) + 1;
-
     if(isset($_POST['btnSave'])){
         $staffID =  substr(filter_input(INPUT_POST, "lastName", FILTER_SANITIZE_STRING), 0, 5).".".substr($centerName['centerName'], 0, 5)."-".sprintf('%06s',$staffIDs);
         $firstName =  filter_input(INPUT_POST, "firstName", FILTER_SANITIZE_STRING);
@@ -67,23 +61,17 @@ $centerID = $_SESSION['centerID'];
         $staffDepartment =  filter_input(INPUT_POST, "staffDepartment", FILTER_SANITIZE_STRING);
         $email =  filter_input(INPUT_POST, "email", FILTER_SANITIZE_STRING);
         $phone =  filter_input(INPUT_POST, "phone", FILTER_SANITIZE_STRING);
-
         $username =  filter_input(INPUT_POST, "userName", FILTER_SANITIZE_STRING);
         $password =  filter_input(INPUT_POST, "pwd", FILTER_SANITIZE_STRING);
         $password2 =  filter_input(INPUT_POST, "pwd2", FILTER_SANITIZE_STRING);
         $userID = $staffID;
-
         $centerID = $_SESSION['centerID'];
-
 //		$sql_user = select("SELECT * FROM staff WHERE email='$email' ");
 		$sql_user2 = select("SELECT * FROM staff WHERE phone='$phone' ");
 //		if(count($sql_user) < 1){
             if(count($sql_user2) < 1){
-
         $centerUser = $user->saveUserData($staffID,$firstName,$lastName,$otherName,$gender,$dob,$specialty,$staffCategory,$staffDepartment,$email,$phone,$centerID);
-
         if($centerUser){
-
             $accessLevel = $staffDepartment;
 //          $userCredential = User::centerUserLogin($staffID,$username,$password,$accessLevel,$centerID);
             $userCredential = $user->saveUserCredential($staffID,$username,$password,$accessLevel,$centerID,$userID);
@@ -95,7 +83,6 @@ $centerID = $_SESSION['centerID'];
 //
 //            //send mail
 //            echo send_mail($send_to,$copy,$body,$subj);
-
             $success = "STAFF DATA CREATED SUCCESSFULLY";
         }else{
             $error = "FAILED TO CREATE STAFF DATA";
@@ -107,15 +94,10 @@ $centerID = $_SESSION['centerID'];
 //			$error = "STAFF EMAIL ALREADY EXIST";
 //		}
     }
-
 	// fetch vitals
-
 //$get_vit = select("SELECT * FROM ward_vitals WHERE patientID ='$patientID' ORDER BY id DESC LIMIT 1");
-
 //NURSE CHECKLIST
 //$checklist=select("SELECT * FROM review_tb WHERE patientID = '$patientID'");
-
-
 ?>
 
 
@@ -380,7 +362,6 @@ $centerID = $_SESSION['centerID'];
         document.getElementById("centeruser").innerHTML=xmlhttp.responseText;
     }
         newpatient();
-
         setInterval(function(){
             newpatient();
         },3000);
