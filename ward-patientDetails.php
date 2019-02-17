@@ -23,6 +23,8 @@
 <script src="chart/series-label.js"></script>
 <script src="chart/exporting.js"></script>
 <script src="chart/export-data.js"></script>
+    <script src="chart/jquery-3.1.1.min.js"></script>
+
 
     <style>
         .control-label{
@@ -363,12 +365,12 @@ if(isset($_POST['moveToAcc'])){
                 <ul class="nav nav-tabs lae=bell">
                     <li class="active"><a data-toggle="tab" href="#tab1">ADMISSION DETAILS</a></li>
                  <?php if($_SESSION['accessLevel']=='WARD' || $_SESSION['accessLevel']=='CONSULTATION' || $_SESSION['username']=='rik'){ ?>
-                    <li><a data-toggle="tab" href="#tab9">VITALS(GRAPHICALS)</a></li>
-                     <li><a data-toggle="tab" href="#tab6">PATIENT VITALS</a></li>
-                    <li><a data-toggle="tab" href="#tab2">PATIENT TREATMENT</a></li>
+                    <li><a data-toggle="tab" href="#tab9">GRAPHICALS</a></li>
+                     <li><a data-toggle="tab" href="#tab6">VITALS</a></li>
+                    <li><a data-toggle="tab" href="#tab2">TREATMENT</a></li>
                     <li><a data-toggle="tab" href="#tab5"> NURSE'S CHECKLIST</a></li>
                     <li><a data-toggle="tab" href="#tabRequest">BLOOD REQUEST</a></li>
-                    <li><a data-toggle="tab" href="#tabAction">BLOOD REQUEST ACTION - &nbsp;<?php echo $req_cnts['request_co'];?></a></li>
+                    <li><a data-toggle="tab" href="#tabAction">REQUEST ACTION - &nbsp;<?php echo $req_cnts['request_co'];?></a></li>
                     <!-- <li><a data-toggle="tab" href="#tab3">Doctor's Remarks</a></li> -->
                     <li><a data-toggle="tab" href="#tab4">TREATEMENT HISTORY</a></li>
                     <li><a data-toggle="tab" href="#tab7">PATIENT DISCHARGE</a></li>
@@ -704,7 +706,7 @@ Plotly.newPlot('myDivPressure', num);
               </div>
 
             <p class="text-left" style="margin-top: 20px;margin-left: 390px;">
-                <input type="submit" class="btn btn-primary" style='width:360px;'name="sub_mitx" id="sub_mitx" value="CONFIRM RECEIPT">
+                <input type="submit" class="btn btn-primary" style='width:360px;margin-left:70px;'name="sub_mitx" id="sub_mitx" value="CONFIRM RECEIPT">
             </p>
           </form>
         </div>
@@ -759,7 +761,7 @@ Plotly.newPlot('myDivPressure', num);
                         <div class="control-group" >
                         <label class="control-label">Patient Name</label>
                         <div class="controls">
-                          <input type="text" class="span11" name="patient_name" id="patient_name" value='<?php echo $pID['patientName'];?>' readonly>
+                          <input type="text" class="span11" name="patient_name" id="patient_name" value='<?php echo $patDetails['firstName'].' '.$patDetails['otherName'].' '.$patDetails['lastName'];?>' readonly>
                         </div>
                       </div>
                     </div>
@@ -808,7 +810,7 @@ Plotly.newPlot('myDivPressure', num);
                         <div class="control-group">
                         <label class="control-label">Patient ID </label>
                         <div class="controls">
-                          <input type="text" class="span11" name="patient_id" id="patient_id" value='<?php echo $get_PID;?>' readonly>
+                          <input type="text" class="span11" name="patient_id" id="patient_id" value='<?php echo  $patientID;?>' readonly>
                         </div>
                       </div>
                     </div>
@@ -827,7 +829,7 @@ Plotly.newPlot('myDivPressure', num);
                     <div class="span6">
                       <div class="form-actions" style="margin:0px;">
                           <div class="span2"></div>
-                        <button type="submit" name="send" id='send' class="btn btn-primary labell span8">SEND REQUEST</button>
+                        <button type="submit" name="send" id='send'  class="btn btn-primary labell span8">SEND REQUEST</button>
                       </div>
                     </div>
                 </div>
@@ -1298,3 +1300,16 @@ function resetMenu() {
 </body>
 </html>
 <?php }else{echo "<script>window.location='404'</script>";}?>
+<script>
+  //select list
+  $(document).ready(function(){
+    $('#blood_type').change(function(){
+     let txtbox = $('#blood_type option:selected');
+
+     document.getElementById('blood_id').value = txtbox.val();
+ });
+
+  });
+
+
+</script>
