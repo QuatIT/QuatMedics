@@ -45,7 +45,7 @@ foreach($fetchstaff as $staffdetails){
       <?php }?>
     </td>
   <td style="text-align: center;">
-       <a href="consult-patient?conid=<?php echo $consultRow['consultID'];?>&roomID=<?php echo $roomID;?>"> <span class="btn btn-primary fa fa-eye"></span></a>
+       <a href="consult-patient?conid=<?php echo $consultRow['consultID'];?>&roomID=<?php echo $roomID;?>"> <span class="btn btn-primary fa fa-eye labell "> View</span></a>
   </td>
 </tr>
 
