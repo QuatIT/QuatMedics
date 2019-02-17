@@ -39,12 +39,12 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
    	$conid = $_GET['conid'];
     $roomID = $_GET['roomID'];
 	$patientID = $_GET['patientID'];
-	$lbr = $_GET['lbr'];
-      $labres = select("SELECt * From labresults WHERE labRequestID='$lbr'");
-        foreach($labres as $labrevRow){
-            $labdet = select("select * from lablist where labID='".$labrevRow['labID']."'");
-            foreach($labdet as $labrw){}
-        }
+    $lbr = $_GET['lbr'];
+    $labres = select("SELECT * From labresults WHERE labRequestID='$lbr'");
+    foreach($labres as $labrevRow){
+        $labdet = select("select * from lablist where labID='".$labrevRow['labID']."'");
+        foreach($labdet as $labrw){}
+    }
 
 	$rm = select("SELECT * FROM consultingroom WHERE roomID='$roomID' ");
 	foreach($rm as $r){}
@@ -103,6 +103,12 @@ if(isset($_POST['reqLab'])){
     $labNumber = count($_POST['labName']);
 	    $paymode = filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
         $confirm = trim('UNCONFIRMED');
+
+    $labres = select("SELECT * From labresults WHERE labRequestID='$lbr'");
+    foreach($labres as $labrevRow){
+        $updateResult = update("UPDATE labresults SET status='Reviewed' WHERE id='".$labrevRow['id']."'");
+    }
+
 if($labNumber > 0) {
     for($i=0; $i<$labNumber; $i++){
         if(trim($_POST["labName"][$i] != '')){
@@ -127,7 +133,7 @@ $insertLabReq = insert("INSERT INTO labresults(labRequestID,consultID,labID,cent
     if($insertLabReq){
          $success =  "LAB REQUEST SENT SUCCESSFULLY";
         $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
-        $updateResult = update("UPDATE labresults SET status='Reviewed' WHERE id='".$labrevRow['id']."'");
+
         echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
     }else{
         $error =  "ERROR: LAB REQUEST NOT SENT";
@@ -162,6 +168,12 @@ if(isset($_POST['adWard'])){
     $paymode =  filter_input(INPUT_POST, "paymode", FILTER_SANITIZE_STRING);
     $admitDate = date("Y-m-d");
     //generate wardassign IDs
+
+    $labres = select("SELECT * From labresults WHERE labRequestID='$lbr'");
+    foreach($labres as $labrevRow){
+        $updateResult = update("UPDATE labresults SET status='Reviewed' WHERE id='".$labrevRow['id']."'");
+    }
+
     $wardasignsql = select("SELECT assignID From wardassigns order by assignID DESC limit 1");
     if(count($wardasignsql) >=1){
         foreach($wardasignsql as $assignrow){
@@ -216,7 +228,7 @@ $updateBedStatus = update("UPDATE bedlist SET status='Occupied' WHERE bedID='$be
 
     if($insertassign && $updateBedStatus){
         $updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
-        $updateResult = update("UPDATE labresults SET status='Reviewed' WHERE id='".$labrevRow['id']."'");
+
         if($updatePatient){
             $success =  "PATIENT ADMITTION SAVE SUCCESSFULLY";
                 echo "<script>window.location='consult-index?roomID={$roomID}';</script>";
@@ -268,6 +280,11 @@ if(isset($_POST['presMeds'])){
         foreach($investigation2 as $investigate_rowd){
             $invest1 .= $investigate_rowd."<br>";
         }
+
+    $labres = select("SELECT * From labresults WHERE labRequestID='$lbr'");
+    foreach($labres as $labrevRow){
+        $updateResult = update("UPDATE labresults SET status='Reviewed' WHERE id='".$labrevRow['id']."'");
+    }
 
 if($diagnosis_new > 0){
     for($b=0; $b<$diagnosis_new; $b++){
@@ -336,13 +353,14 @@ if($medIDNum > 0 && $piecesNum > 0) {
 
         $confirm = trim('UNCONFIRMED');
 		$insertMedsz = insert("INSERT INTO prescribedmeds(centerID,prescribeCode,medicine,dosage,totalMeds,prescribeStatus,paystatus,medprice,paymode,confirm,dateInsert) VALUES('$centerID','$prescribeCode','$medicine','$dosage','$totalMeds','$prescribeStatus','$paystatus','$medprice','$paymode','$confirm', '".$consultrow['dateInsert']."')");
+
+
 					}
 		}
 
   if($insertpresciption=true && $insertMedsz=true){
 		$success =  "PRESCRIPTION SENT SUCCESSFULLY";
 		$updatePatient = update("UPDATE consultation set status='$status' where patientID='$patientID' AND consultID='$conid'");
-        $updateResult = update("UPDATE labresults SET status='Reviewed' WHERE id='".$labrevRow['id']."'");
 
             //sms
             $medcen = select("SELECT * FROM medicalcenter WHERE centerID='".$_SESSION['centerID']."' ");

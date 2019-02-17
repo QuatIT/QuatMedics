@@ -224,7 +224,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                           </thead>
                           <tbody>
 							  <?php
-		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='CASH' AND serviceName='CONSULTATION'");
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND paymode='CASH' AND serviceName='CONSULTATION' AND dateInsert>CURDATE()");
 							  if($fetchAll){
 								  foreach($fetchAll as $PrivateRow){
 									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
