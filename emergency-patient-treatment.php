@@ -198,6 +198,8 @@ foreach($bl_id as $bl_ids){}
 
 //blood request action
 if(isset($_POST['send'])){
+echo "<>alert('hi')<>";
+
 $request_id = filter_input(INPUT_POST,'request_id',FILTER_SANITIZE_STRING);
 $blood_type= filter_input(INPUT_POST,'blood_type',FILTER_SANITIZE_STRING);
 $blood_id= filter_input(INPUT_POST,'blood_id',FILTER_SANITIZE_STRING);
@@ -207,7 +209,7 @@ $patient_id = filter_input(INPUT_POST,'patient_id',FILTER_SANITIZE_STRING);
 $quantity = filter_input(INPUT_POST,'quantity',FILTER_SANITIZE_STRING);
 // $dateInsert = filter_input(INPUT_POST,'dateInsert',FILTER_SANITIZE_STRING);
 
-  $capture_request = insert("INSERT INTO bloodrequest(bloodID,requestID,request,patientID,quantity,staffID,status,approved_by,request_time,dateInsert,date_approved)VALUES('$blood_id','$Request_id','$request_from','$patient_id','$quantity','$staff_id','','','' ,CURDATE(),'')");
+  $capture_request = insert("INSERT INTO bloodrequest(bloodID,requestID,request,patientID,quantity,staffID,status,approved_by,request_time,flag,confirm,dateInsert,date_approved)VALUES('$blood_id','$request_id','$request_from','$patient_id','$quantity','$staff_id','','','' ,'','','',CURDATE(),'')");
   if($capture_request){
     echo "<script>alert('Request Has Been Sent');window.location='emergency-index.php'</script>";
   }
@@ -687,7 +689,7 @@ Plotly.newPlot('myDivPressure', num);
                         <div class="control-group" >
                         <label class="control-label">Request ID</label>
                         <div class="controls">
-                            <input type='text' class='span11' name='' id='' value='<?php  echo $Request_id; ?>' readonly>
+                            <input type='text' class='span11' name='request_id' id='request_id' value='<?php  echo $Request_id; ?>' readonly>
                         </div>
                       </div>
                     </div>
@@ -759,14 +761,14 @@ Plotly.newPlot('myDivPressure', num);
                         </div>
                       </div>
                     </div>
-                    <div class="span6">
+                   <!--  <div class="span6">
                         <div class="control-group">
                         <label class="control-label">Request Action:</label>
                         <div class="controls">
                       <input type="text" class="span11" value='<?php  echo $req_action; ?>' name="req_action" id="req_action" readonly>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="row">
