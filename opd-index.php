@@ -77,6 +77,14 @@
 
         $createPatient = $pat->createPatient($centerID,$patientId,$firstName,$lastName,$otherName,$dob,$gender,$bloodGroup,$homeAddress,$phoneNumber,$guardianName,$guardianGender,$guardianPhone,$guardianRelation,$guardianAddress,$filedestination,$hometown,$tin);
 
+        //get opd card charges...
+        $cardsql = select("SELECT * FROM prices WHERE serviceName='ID CARD' AND centerID='$centerID'");
+            //insert card charge..
+        if($cardsql){
+            foreach($cardsql as $cardrow){}
+          $insertcharge = insert("INSERT into paymentfixed(patientID,centerID,paymode,serviceID,serviceName,servicePrice,serviceType,status,dateinsert) VALUES('$patientId','$centerID','CASH','".$cardrow['serviceID']."','".$cardrow['serviceName']."','".$cardrow['servicePrice']."','".$cardrow['serviceType']."','Not Paid','$dateToday')");
+        }
+
         if($createPatient){
              $success = "<script>document.write('PATIENT DETAIL ADDED SUCCESSFULLY');
                                     window.location.href='opd-patient?tab=vitals&pid={$patientId}' </script>";

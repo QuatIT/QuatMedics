@@ -62,6 +62,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
         <div class="widget-box">
             <div class="widget-title">
                 <ul class="nav nav-tabs labell">
+                    <li><a data-toggle="tab" href="#tab5">CARD PAYMENTS</a></li>
                     <li class="active"><a data-toggle="tab" href="#tab1">CONSULTATION & MEDS</a></li>
                     <li><a data-toggle="tab" href="#tab2">LABORATORY PAYMENTS</a></li>
                     <li><a data-toggle="tab" href="#tab3">WARD PAYMENTS</a></li>
@@ -69,6 +70,45 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
                 </ul>
             </div>
             <div class="widget-content tab-content">
+                <div id="tab5" class="tab-pane">
+                    <div class="widget-box">
+                      <div class="widget-title">
+                         <span class="icon"><i class="icon-th"></i></span>
+                         <h5> CARD PAYMENTS</h5>
+                      </div>
+                      <div class="widget-content nopadding">
+                        <table class="table table-bordered data-table">
+                          <thead>
+                            <tr>
+                              <th>PID</th>
+                              <th> NAME</th>
+                              <th> AMOUNT</th>
+                              <th> ACTION</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+							  <?php
+		$fetchAll = select("SELECT * FROM paymentfixed WHERE centerID='".$_SESSION['centerID']."' AND serviceName='ID CARD' AND dateinsert='$dateToday' AND status='Not Paid'");
+							  if($fetchAll){
+								  foreach($fetchAll as $PrivateRow){
+									  $pdet = select("select * from patient where patientID='".$PrivateRow['patientID']."'");
+									  foreach($pdet as $prow){
+							  ?>
+							  <tr>
+							  	<td> <?php echo $PrivateRow['patientID'];?></td>
+							  	<td> <?php echo $prow['lastName']." ".$prow['firstName']." ".$prow['otherName'];?></td>
+							  	<td> <?php echo $PrivateRow['servicePrice'];?></td>
+							  	<td style="text-align:center;">
+        <a onclick="return confirm('CONFIRM CARD PAYMENT.');" href="finance-card-pay?id=<?php echo $PrivateRow['id'];?>"><i class="btn btn-success btn-md fa fa-check"> Make Payment</i></a></td>
+							  </tr>
+							  <?php }}}?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
+
+
                 <div id="tab1" class="tab-pane active">
                     <div class="widget-box">
                       <div class="widget-title">
