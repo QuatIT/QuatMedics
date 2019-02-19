@@ -629,7 +629,7 @@ Highcharts.chart('containerPHARMA', {
       <thead>
         <th>WARD NAME</th>
         <th>BED CAPACITY</th>
-        <th>NUMBER OF PATIENTS</th>
+        <th>PATIENTS PER DAY</th>
       </thead>
       <tbody>
         <tr>
@@ -638,7 +638,7 @@ Highcharts.chart('containerPHARMA', {
 //        $ward_detail = select("SELECT DISTINCT(wardName) FROM wardlist WHERE centerID='".$_SESSION['centerID']."'");
 //        foreach($ward_detail as $ward_details){
      $ward_detail = select("SELECT * FROM wardlist WHERE centerID='".$_SESSION['centerID']."'");
-        foreach($ward_detail as $ward_details){
+        foreach($ward_detail as $ward_details){$ward_details['wardID'];$ward_details['wardName'];
           //# of beds in ward
           $ward_bed = select("SELECT COUNT(bedNumber) as w_bed FROM bedlist WHERE centerID='".$_SESSION['centerID']."' && wardID='".$ward_details['wardID']."' && status ='free' && doe=CURDATE()");
         foreach($ward_bed as $ward_bedx){$ward_bedx['w_bed'];}
