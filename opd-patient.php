@@ -84,7 +84,8 @@
 
     //generate consultID
         $consultation = new Consultation;
-    $consultIDs = $consultation->find_num_consults() + 1;
+//    $consultIDs = $consultation->find_num_consults() + 1;
+    $consultIDs = count(select("SELECT * FROM consultation")) + 1;
 
     //get StaffID
     $staffIDss = select("SELECT * FROM centeruser WHERE userName='".$_SESSION['username']."' AND  password='".$_SESSION['password']."'  AND  centerID='".$_SESSION['centerID']."' ");

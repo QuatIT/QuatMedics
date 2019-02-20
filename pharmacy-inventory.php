@@ -127,7 +127,7 @@
 //					$dia = insert("INSERT INTO diagnose_tb(patientID,consultID,diagnosis,dateRegistered,diagnose_by,centerID,diagnoseID) VALUES('".$conrow['patientID']."','".$_GET['conid']."','$diagd',CURDATE(),'".$_SESSION['username']."','".$_SESSION['centerID']."','$diagd_id')");
 
 
-		$store = insert("INSERT INTO pharmacy_inventory(medicine_id,medicine_name,no_of_boxes,no_of_piece,no_of_bottles,expire_date,manufacture_date,company_name,invoice_number,entered_by,price,centerID,mode_of_payment,Type,dateRegistered) VALUES('$medID','$medicine_name','$no_of_boxes','$no_of_piece','$no_of_bottles','$expire_date','$manufacture_date','$company_name','$invoice_number','".$_SESSION['username']."','$pxc','".$_SESSION['centerID']."','$medc','$typ',CURDATE() ) ");
+		$store = insert("INSERT INTO pharmacy_inventory(medicine_id,medicine_name,no_of_boxes,no_of_piece,no_of_bottles,expire_date,manufacture_date,company_name,invoice_number,entered_by,price,centerID,mode_of_payment,medFrom,Type,dateRegistered) VALUES('$medID','$medicine_name','$no_of_boxes','$no_of_piece','$no_of_bottles','$expire_date','$manufacture_date','$company_name','$invoice_number','".$_SESSION['username']."','$pxc','".$_SESSION['centerID']."','$medc','$medc','$typ',CURDATE() ) ");
 
 		if($store){
             $success = $medicine_name." stock taken successfully";
@@ -280,7 +280,7 @@
                                     <td style="width:40%;">
                                         <select name="mode[]" class="span12" >
                                             <option value=""></option>
-                                            <option value="PRIVATE">PRIVATE</option>
+                                            <option value="CASH">CASH</option>
                                             <option value="NHIS">NHIS</option>
                                         </select>
                                     </td>
@@ -478,7 +478,7 @@ window.onload = function () {
             var i = 1;
             $('#add').click(function() {
                 i++;
-                $('#diagnosis').append('<tr id="row' + i + '"> <td><div class="control-group"><select name="mode[]" class="span12" ><option value=""></option><option value="PRIVATE">PRIVATE</option><option value="NHIS">NHIS</option></select></div></td><td><input type="text" name="px[]" placeholder="Price" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove">X</button></td></tr>');
+                $('#diagnosis').append('<tr id="row' + i + '"> <td><div class="control-group"><select name="mode[]" class="span12" ><option value=""></option><option value="CASH">CASH</option><option value="NHIS">NHIS</option></select></div></td><td><input type="text" name="px[]" placeholder="Price" class="form-control"></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove">X</button></td></tr>');
             });
 
             $(document).on('click', '.btn_remove', function() {
