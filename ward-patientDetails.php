@@ -818,7 +818,7 @@ Plotly.newPlot('myDivPressure', num);
                         <div class="control-group">
                         <label class="control-label">Request Action:</label>
                         <div class="controls">
-                      <input type="text" class="span11" value='<?php  echo $req_action; ?>' name="req_action" id="req_action" readonly>
+                      <input type="text" class="span11" value='<?php  echo @$req_action; ?>' name="req_action" id="req_action" readonly>
                         </div>
                       </div>
                     </div>
@@ -848,7 +848,7 @@ Plotly.newPlot('myDivPressure', num);
 <!-- =========================  START OF TAB 2 ============================   -->
 
 <div id="tab2" class="tab-pane">
-    <form action="#" method="post" id="add_name" enctype="multipart/form-data" class="form-horizontal">
+    <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
           <div class="widget-content nopadding">
               <table class="table table-bordered" id="dynamic_field">
                   <tr>
@@ -869,16 +869,16 @@ Plotly.newPlot('myDivPressure', num);
 					<tr>
 						<td style="width:40%;">
 							<?php
-							if($pat['paymode'] == 'Insurance'){
-                                $insuranceType = $pat['insuranceType'];
+							if($pat['paymode'] == 'NHIS'){
+                                $insuranceType = $pat['paymode'];
 							?>
-							<select name="medName[]" class="span11">
+							<select name="medicine[]" class="span11">
 								<option></option>
 							 <?php
 
 						  	$centerNHISLevel = $centerName['centerNhisLevel'];
 //						  	$level = explode(" ",$centerNHISLevel);
-$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='$insuranceType' OR  medFrom='Private'");
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='$insuranceType' OR  medFrom='CASH'");
 								if($meds){
 									foreach($meds as $medrow){
 							?>
@@ -886,7 +886,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php }} ?>
 							</select>
 							<?php }else{
-                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH'");
 							?>
                               <select name="medicine[]" class="span11">
                                 <option></option>
@@ -1267,7 +1267,7 @@ function resetMenu() {
     marker: {
       symbol: 'square'
     },
-    data: [<?php echo  $graph_temp;?>,<?php echo  $graph_temp;?>,<?php echo  $graph_temp;?>, {
+    data: [<?php echo  @$graph_temp;?>,<?php echo  @$graph_temp;?>,<?php echo  @$graph_temp;?>, {
       // y: 26.5,
         // y: 24,
       marker: {
@@ -1287,7 +1287,7 @@ function resetMenu() {
       marker: {
         symbol: 'url(https://www.highcharts.com/samples/graphics/snow.png)'
       }
-    }, <?php echo  $graph_pressure;?>,<?php echo  $graph_pressure;?>,<?php echo  $graph_pressure;?>,]
+    }, <?php echo  @$graph_pressure;?>,<?php echo  @$graph_pressure;?>,<?php echo  @$graph_pressure;?>,]
   }]
 });
 
