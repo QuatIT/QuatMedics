@@ -885,7 +885,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php }} ?>
 							</select>
 							<?php }else{
-                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH' ");
 							?>
                             <select name="medName[]" class="span11">
                                 <option></option>
@@ -895,12 +895,16 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                                 ?>
                             <option value="<?php echo $medrowx['medicine_id']; ?>">
                         <?php
-                                if($medrowx['Type']=='solid'){
-                                    $stockleft = $medrowx['no_of_piece'];
-                                }
-                                if($medrowx['Type']=='liquid'){
+                                if($medrowx['no_of_piece']=='0'){
                                     $stockleft = $medrowx['no_of_bottles'];
                                 }
+				 if($medrowx['no_of_bottles']=='0'){
+                                    $stockleft = $medrowx['no_of_piece'];
+                                }
+
+                               /* if($medrowx['Type']=='liquid'){
+                                    $stockleft = $medrowx['no_of_bottles'];
+                                }*/
                                 echo $medrowx['medicine_name'].' -- '.$stockleft.' Left'; ?>
                                 </option>
                                 <?php }}?>

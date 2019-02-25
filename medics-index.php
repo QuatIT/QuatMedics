@@ -662,33 +662,80 @@ Highcharts.chart('containerPHARMA', {
 
 
 
-<!-- ===============================================  START FINANCE DASHBOARD =============================================-->
+<!-- ======================================  START FINANCE DASHBOARD ==================-->
 <?php
         if($_SESSION['accessLevel']=='FINANCE'){
-
 //OPD
- $fins = select("SELECT COUNT(creditAcc) as fins_value FROM accounttransaction WHERE creditAcc='OPD' && dateInsert=CURDATE() ");
-              foreach($fins as $finsx){ $finsx['fins_value'];}
+$match_name = select("SELECT * FROM accounts WHERE accountName='OPD'");
+foreach($match_name  as $match_names){$match_names['accountID'];$match_names['accountName'];
+$match_number = select("SELECT COUNT(*) as numz FROM accounttransaction WHERE creditAcc='".$match_names['accountID']."'&& dateInsert=CURDATE() ");
+foreach($match_number as $match_numbers){}
+}
 
 //CONSULTATION
- $cons = select("SELECT COUNT(creditAcc) as cons_value FROM accounttransaction WHERE creditAcc='CONSULTATION' && dateInsert=CURDATE() ");
-              foreach($cons as $consx){ $consx['cons_value'];}
+$con_name = select("SELECT * FROM accounts WHERE accountName='CONSULTATION'");
+foreach($con_name  as $con_names){$con_names['accountID'];$con_names['accountName'];
+$con_number = select("SELECT COUNT(*) as numz FROM accounttransaction WHERE creditAcc='".$con_names['accountID']."'&& dateInsert=CURDATE() ");
+foreach($con_number as $con_numbers){}
+}
 
 //WARD
-     $wards = select("SELECT COUNT(creditAcc) as wards_value FROM accounttransaction WHERE creditAcc='WARD' && dateInsert=CURDATE() ");
-              foreach($wards as $wardsx){ $wardsx['wards_value'];}
+$ward_name = select("SELECT * FROM accounts WHERE accountName='WARD'");
+foreach($ward_name  as $ward_names){$ward_names['accountID'];$ward_names['accountName'];
+$ward_number = select("SELECT COUNT(*) as numz FROM accounttransaction WHERE creditAcc='".$ward_names['accountID']."'&& dateInsert=CURDATE() ");
+foreach($ward_number as $ward_numbers){}
+}
 
 //LABORATORY
-                $labs = select("SELECT COUNT(creditAcc) as wards_value FROM accounttransaction WHERE creditAcc='LABORATORY' && dateInsert=CURDATE() ");
-              foreach($labs  as $labsx){ $labsx['wards_value'];}
+$lab_name = select("SELECT * FROM accounts WHERE accountName='LABORATORY'");
+foreach($lab_name  as $lab_names){$lab_names['accountID'];$lab_names['accountName'];
+$lab_number = select("SELECT COUNT(*) as numz FROM accounttransaction WHERE creditAcc='".$lab_names['accountID']."'&& dateInsert=CURDATE() ");
+foreach($lab_number as $lab_numbers){}
+}
 
 //PHARMACY
-                $phars = select("SELECT COUNT(creditAcc) as phars_value FROM accounttransaction WHERE creditAcc='PHARMACY' && dateInsert=CURDATE() ");
-              foreach($phars as $pharsx){ $pharsx['phars_value'];}
+$pharm_name = select("SELECT * FROM accounts WHERE accountName='PHARMACY'");
+foreach($pharm_name  as $pharm_names){$pharm_names['accountID'];$pharm_names['accountName'];
+$pharm_number = select("SELECT COUNT(*) as numz FROM accounttransaction WHERE creditAcc='".$pharm_names['accountID']."'&& dateInsert=CURDATE() ");
+foreach($pharm_number as $pharm_numbers){}
+}
 
 //EMERGENCY
-                $emergs = select("SELECT COUNT(creditAcc) as emergs_value FROM accounttransaction WHERE creditAcc='EMERGENCY' && dateInsert=CURDATE() ");
-              foreach($emergs as $emergsx){ $emergsx['emergs_value'];}
+$emerg_name = select("SELECT * FROM accounts WHERE accountName='EMERGENCY'");
+foreach($emerg_name  as $emerg_names){$emerg_names['accountID'];$emerg_names['accountName'];
+$emerg_number = select("SELECT COUNT(*) as numz FROM accounttransaction WHERE creditAcc='".$emerg_names['accountID']."' && dateInsert=CURDATE()");
+foreach($emerg_number as $emerg_numbers){}
+}
+
+
+
+
+// //OPD
+//  $fins = select("SELECT COUNT(creditAcc) as fins_value FROM accounttransaction WHERE creditAcc='OPD' && dateInsert=CURDATE() ");
+//               foreach($fins as $finsx){ $finsx['fins_value'];}
+
+// //CONSULTATION
+//  $cons = select("SELECT COUNT(creditAcc) as cons_value FROM accounttransaction WHERE creditAcc='CONSULTATION' && dateInsert=CURDATE() ");
+//               foreach($cons as $consx){ $consx['cons_value'];}
+
+// //WARD
+//      $wards = select("SELECT COUNT(creditAcc) as wards_value FROM accounttransaction WHERE creditAcc='WARD' && dateInsert=CURDATE() ");
+//               foreach($wards as $wardsx){ $wardsx['wards_value'];}
+
+// //LABORATORY
+//                 $labs = select("SELECT COUNT(creditAcc) as wards_value FROM accounttransaction WHERE creditAcc='LABORATORY' && dateInsert=CURDATE() ");
+//               foreach($labs  as $labsx){ $labsx['wards_value'];}
+
+// //PHARMACY
+//                 $phars = select("SELECT COUNT(creditAcc) as phars_value FROM accounttransaction WHERE creditAcc='PHARMACY' && dateInsert=CURDATE() ");
+//               foreach($phars as $pharsx){ $pharsx['phars_value'];}
+
+// //EMERGENCY
+//                 $emergs = select("SELECT COUNT(creditAcc) as emergs_value FROM accounttransaction WHERE creditAcc='EMERGENCY' && dateInsert=CURDATE() ");
+//               foreach($emergs as $emergsx){ $emergsx['emergs_value'];}
+
+
+
 ?>
 
 
@@ -719,12 +766,12 @@ Highcharts.chart('containerFIN', {
         name: 'Delivered amount',
         data: [
             // ['<?php #echo $dept_names['creditAcc']; ?>', <?php #echo $dept_ctx['dept_no']; ?>]
-            ['OPD <?php echo $finsx['fins_value']; ?>', <?php echo $finsx['fins_value']; ?>],
-            ['CONSULTATION <?php echo $consx['cons_value']; ?>', <?php echo $consx['cons_value']; ?>],
-            ['WARD <?php echo $wardsx['wards_value']; ?>', <?php echo $wardsx['wards_value']; ?>],
-            ['LABORATORY <?php echo $labsx['wards_value']; ?>', <?php echo $labsx['wards_value']; ?>],
-            ['PHARMACY <?php echo $pharsx['phars_value']; ?>', <?php echo $pharsx['phars_value']; ?>],
-            ['EMERGENCY <?php echo $emergsx['emergs_value']; ?>', <?php echo $emergsx['emergs_value']; ?>]
+            ['OPD <?php  echo  $match_numbers['numz']; ?>', <?php  echo  $match_numbers['numz']; ?>],
+            ['CONSULTATION <?php echo  $con_numbers['numz']; ?>', <?php echo  $con_numbers['numz']; ?>],
+            ['WARD <?php echo $ward_numbers['numz']; ?>', <?php echo $ward_numbers['numz']; ?>],
+            ['LABORATORY <?php echo $lab_numbers['numz']; ?>', <?php echo $lab_numbers['numz']; ?>],
+            ['PHARMACY <?php echo $pharm_numbers['numz']; ?>', <?php echo $pharm_numbers['numz']; ?>],
+            ['EMERGENCY <?php echo $emerg_numbers['numz']; ?>', <?php echo $emerg_numbers['numz']; ?>]
 
         ]
     }]

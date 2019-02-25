@@ -239,15 +239,39 @@ if(empty($labresult) && empty($file)){
                                                     <a><?php echo $labtxt['labResult']; ?></a>
                                                     <?php } ?>
                                                 </td>
-
+                                                    <!--Kofi Codes for Urine parameters-->
 												<td>
+
                                                     <?php if($labtxt['type']=='0'){?>
-                                                    <textarea class="span11" rows="2" cols="25" name="txtresult[]" <?php if($labtxt['confirm']=='UNCONFIRMED'){ echo 'readonly';}?>></textarea>
+                                                    <textarea class="span11" rows="6" cols="25" style='text-align:left;' name="txtresult[]" <?php if($labtxt['confirm']=='UNCONFIRMED'){ echo 'readonly';}?>>
+                                                    <?php if($labname['labName']=='U/RE'){ echo "\n";
+                                                          echo "APPEARANCE:\n";
+                                                          echo "COLOR:\n";
+                                                          echo "PROTEIN:\n";
+                                                          echo "GLUCOSE:\n";
+                                                          echo "UROBILINOGEN:\n";
+                                                          echo "BILIRUBIN:\n";
+                                                          echo "LEUCOCYTES:\n";
+                                                          echo "KETONE:\n";
+                                                          echo "BLOOD:\n";
+                                                          echo "NITRITE:\n";
+                                                          echo "EPITHELIAL CELLS:\n" ;
+                                                          echo "PUS CELLS:\n";
+                                                          echo "PROTEIN:\n";
+                                                          echo "CRYSTALS:\n";
+                                                          echo "RBCS:\n";
+
+                                                        }?>
+                                                        <?php if($labname['labName']=='FBC'){?>
+
+                                                        }?>
+                                                    </textarea>
                                                     <?php }
                                                      if($labtxt['type']=='2'){
                                                     ?>
                                                     <textarea class="span11" rows="2" cols="25" name="txtresult[]" readonly><?php echo $labtxt['labResult']; ?></textarea>
                                                     <?php } ?>
+
                                                 </td>
                                                 <td style="text-align:center;">
                                                     <?php echo $labtxt['labprice']; ?>
