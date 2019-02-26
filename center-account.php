@@ -610,6 +610,7 @@ $saveService = insert("INSERT INTO prices(serviceID,centerID,serviceName,service
                                 <option value="NHIS"> NHIS </option>
                                 <option value="ACACIA"> ACACIA </option>
                                 <option value="VITALITY"> VITALITY </option>
+                                <option value="COSMOPOLITAN"> COSMOPOLITAN </option>
                             </select>
                         </td>
                         <td style="text-align:center;">

@@ -713,9 +713,9 @@ if($medIDNum > 0 && $piecesNum > 0) {
                   </tr>
                   <tr>
 						<th style="width:60%;"> MEDICINE NAME</th>
-						<th> INTAKES</th>
-						<th> / DAY</th>
-						<th> No.OF DAYS</th>
+						<th> NO. OF DOSE</th>
+						<th> DOSE PER DAY</th>
+						<th> NO. OF DAYS</th>
 					</tr>
                   <?php
                   $total = 4;
@@ -778,7 +778,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
          </div>
     </form>
 </div>
-<!-- ======================== END ADMIT TO WARD TAB ===================-->
+<!-- ============================ END ADMIT TO WARD TAB =============================-->
 
 
 <!-- ======================== START MEDICATION PRESCRIPTION TAB ===================-->
@@ -833,14 +833,14 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 					  <td colspan="2">
 					   <table border="0" class="table table-bordered" id="investigation" style="margin-top:10px; background:#f8f7f7;">
                            <thead>
-                            <th colspan="2" class="labell">Investigation</th>
+                            <th colspan="2" class="labell">MEDICAL EXAMINATION</th>
                            </thead>
                                 <tr>
                                     <td>
-                                        <input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12">
+                                        <input type="text" name="investigation_new[]" placeholder="EXAMINATION" class="form-control span12">
                                     </td>
                                     <td style="text-align:center;">
-                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success labell">add investigation</button>
+                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success labell">ADD EXAMINATION</button>
                                     </td>
                                 </tr>
                             </table>
@@ -863,10 +863,10 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 				  </div>
 				  <?php } ?>
 					<thead class="labell">
-						<th style="width:40%;"> Medicine Name</th>
-						<th> No of intakes / Pieces</th>
-						<th> Intakes Per Day</th>
-						<th> Number Of Days</th>
+						<th style="width:40%;"> MEDICINE</th>
+						<th> NO. OF DOSE</th>
+						<th> DOSE PER DAY</th>
+						<th> NO. OF DAYS</th>
 					</thead>
 				  <tbody>
 					<?php
@@ -893,7 +893,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php }} ?>
 							</select>
 							<?php }else{
-                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH' ");
 							?>
                             <select name="medName[]" class="span11">
                                 <option></option>
@@ -903,12 +903,16 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                                 ?>
                             <option value="<?php echo $medrowx['medicine_id']; ?>">
                         <?php
-                                if($medrowx['Type']=='solid'){
-                                    $stockleft = $medrowx['no_of_piece'];
-                                }
-                                if($medrowx['Type']=='liquid'){
+                                if($medrowx['no_of_piece']=='0'){
                                     $stockleft = $medrowx['no_of_bottles'];
                                 }
+				 if($medrowx['no_of_bottles']=='0'){
+                                    $stockleft = $medrowx['no_of_piece'];
+                                }
+
+                               /* if($medrowx['Type']=='liquid'){
+                                    $stockleft = $medrowx['no_of_bottles'];
+                                }*/
                                 echo $medrowx['medicine_name'].' -- '.$stockleft.' Left'; ?>
                                 </option>
                                 <?php }}?>
@@ -930,6 +934,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
         </form>
     </div>
 <!-- ======================== END MEDICATION PRESCRIPTION TAB ===================-->
+
 
 
 
@@ -1004,12 +1009,13 @@ $(".alert").delay(7000).slideUp(1000, function() {
     $(this).alert('close');
 });
 </script>
+
 <script>
 //    $(document).ready(function(){
         var i=1;
         $('#add').click(function(){
             i++;
-            $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="medicine[]" placeholder="Medicine" class="span11" /></td><td><input type="text" name="dosage[]" placeholder="Dosage" class="span11" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+            $('#dynamic_field').append('<tr id="row'+i+'"><td style="width:10%;"><select name="medName[]" class="span11" onchange="medtype(this.value);"><option></option><?php $meds = select("SELECT Type FROM pharmacy_inventory WHERE centerID='$centerID' GROUP BY Type"); if($meds){ foreach($meds as $medrow){ ?><option value="<?php echo $medrow['Type']; ?>"> <?php  echo $medrow['Type'];?></option><?php }}?></select></td><td id="modeload"></td><td><input type="number" min="1" name="pieces[]" placeholder="e.g. 2" class="span11" required /></td><td><input type="number" min="1" name="aday[]" placeholder="e.g. 3" class="span11" required /></td><td><input type="number" min="1" name="totalDays[]" placeholder="e.g. 7" class="span11" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
         });
 
         $(document).on('click', '.btn_remove', function(){
@@ -1017,7 +1023,8 @@ $(".alert").delay(7000).slideUp(1000, function() {
             $('#row'+button_id+'').remove();
         });
 //    });
-
+	</script>
+	<script>
 //    $(document).ready(function(){
         var i=1;
         $('#add2').click(function(){
@@ -1038,7 +1045,7 @@ $(".alert").delay(7000).slideUp(1000, function() {
     var i = 1;
     $('#add_diagnosis').click(function() {
         i++;
-        $('#diagnosis').append('<tr id="row' + i + '"> <td><input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12"></td><td><button type="button" name="remove_diagnosis" id="' + i + '" class="btn btn-danger btn_remove_diagnosis">X</button></td></tr>');
+        $('#diagnosis').append('<tr id="row' + i + '"> <td><input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12"></td><td style="text-align:center;"><button type="button" name="remove_diagnosis" id="' + i + '" class="btn btn-danger btn_remove_diagnosis">X</button></td></tr>');
     });
     $(document).on('click', '.btn_remove_diagnosis', function() {
         var button_id = $(this).attr("id");
@@ -1050,7 +1057,7 @@ $(".alert").delay(7000).slideUp(1000, function() {
     var i = 1;
     $('#add_investigation').click(function() {
         i++;
-        $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12"></td><td><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
+        $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="EXAMINATION" class="form-control span12"></td><td style="text-align:center;"><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
     });
     $(document).on('click', '.btn_remove_investigation', function() {
         var button_id = $(this).attr("id");
@@ -1059,6 +1066,7 @@ $(".alert").delay(7000).slideUp(1000, function() {
 
 </script>
 <!--End of Investigation-->
+
 <script>
 function medtype(val){
     // load the select option data into a div
@@ -1068,7 +1076,57 @@ function medtype(val){
        });
 }
 </script>
+
+<script>
+//$(document).ready(function(){
+  $('#notes_input').keyup(function(){
+    var query = $(this).val();
+//alert(query);
+    if(query != ''){
+      $.ajax({
+        url:"search.php",
+        method:"post",
+        data:{query:query},
+        success:function(data){
+          $('#diseaseList').fadeIn();
+          $('#diseaseList').html(data);
+        }
+      });
+    }else{
+      $('#diseaseList').fadeOut();
+      $('#diseaseList').html("");
+    }
+  });
+  $(document).on('click','#li',function(){
+    $('#notes_input').val($(this).text());
+    $('#diseaseList').fadeOut();
+		doc_keywrd();
+  });
+
+			 function findAndReplace(string, target, replacement) {
+
+			  var i = 0, length = string.length;
+
+			  for (i; i < length; i++) {
+
+			    string = string.replace(target, replacement);
+
+			  }
+
+			  return string;
+
+			 }
+
+    function doc_keywrd(){
+      var ss = document.getElementById('notes_input').value;
+			var result;
+		str = findAndReplace(ss, " ", "%20");
+
+    $('#noteDet').load('loads/keyword.php?kwd='+ str);
+
+    }
+
+</script>
 </body>
 </html>
-
 <?php }else{echo "<script>window.location='404'</script>";}?>
