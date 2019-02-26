@@ -402,9 +402,6 @@ if($medIDNum > 0 && $piecesNum > 0) {
             $error =  "<script>document.write('NO PRESCRIPTION RECORED')</script>";
         }
 }
-
-
-
 ?>
 
 
@@ -474,14 +471,14 @@ if($medIDNum > 0 && $piecesNum > 0) {
 								<div class="span6">
 									<div class="widget-content">
 										<div class="control-group">
-                                        <label class="control-label">PATIENT ID :</label>
+                                        <label class="control-label">PATIENT ID </label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientID" value="<?php echo $patientID;?>" readonly/>
                                         </div>
                                       </div>
 										<?php if(!empty($consultrow['mode']) || $consultrow['mode']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">PAYMENT MODE :</label>
+                                        <label class="control-label">PAYMENT MODE </label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['mode'];?>" readonly/>
                                         </div>
@@ -489,26 +486,26 @@ if($medIDNum > 0 && $piecesNum > 0) {
                                       <?php } ?>
 										<?php if(!empty($consultrow['insuranceNumber']) || $consultrow['insuranceNumber']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">INSURANCE NUMBER :</label>
+                                        <label class="control-label">INSURANCE NUMBER </label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['insuranceNumber'];?>" readonly/>
                                         </div>
                                       </div>
                                       <?php } ?>
 										<div class="control-group">
-                                        <label class="control-label">BODY TEMPERATURE :</label>
+                                        <label class="control-label">BODY TEMPERATURE </label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="bodyTemp" value="<?php echo $consultrow['bodyTemperature'];?>" readonly/>
                                         </div>
                                       </div>
 										<div class="control-group">
-                                        <label class="control-label">RESPIRATION RATE :</label>
+                                        <label class="control-label">RESPIRATION RATE </label>
                                         <div class="controls">
                 <input type="text" class="span12" name="respirationRate" value="<?php echo $consultrow['respirationRate'];?>" readonly/>
                                         </div>
                                       </div>
 										<div class="control-group">
-                                        <label class="control-label">WEIGHT :</label>
+                                        <label class="control-label">WEIGHT </label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="weight" value="<?php echo $consultrow['weight'];?>" readonly/>
                                         </div>
@@ -522,7 +519,7 @@ if($medIDNum > 0 && $piecesNum > 0) {
 								<div class="span6">
                                   <div class="widget-content">
                                       <div class="control-group">
-                                        <label class="control-label">PATIENT NAME :</label>
+                                        <label class="control-label">PATIENT NAME </label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $name;?>" readonly/>
                                         </div>
@@ -531,7 +528,7 @@ if($medIDNum > 0 && $piecesNum > 0) {
 
                                         <?php if(!empty($consultrow['insuranceType']) || $consultrow['insuranceType']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">INSURANCE TYPE :</label>
+                                        <label class="control-label">INSURANCE TYPE </label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="insuranceType" value="<?php echo $consultrow['insuranceType'];?>" readonly/>
                                         </div>
@@ -540,7 +537,7 @@ if($medIDNum > 0 && $piecesNum > 0) {
 
                                       <?php if(!empty($consultrow['company']) || $consultrow['company']=='null'){ ?>
                                       <div class="control-group">
-                                        <label class="control-label">COMPANY :</label>
+                                        <label class="control-label">COMPANY </label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="patientName" value="<?php echo $consultrow['company'];?>" readonly/>
                                         </div>
@@ -548,21 +545,21 @@ if($medIDNum > 0 && $piecesNum > 0) {
                                       <?php } ?>
 
                                       <div class="control-group">
-                                        <label class="control-label">PULSE RATE :</label>
+                                        <label class="control-label">PULSE RATE </label>
                                         <div class="controls">
                                           <input type="text" class="span12" name="bloodPressure" value="<?php echo $consultrow['pulseRate'];?>" readonly/>
                                         </div>
                                       </div>
 
                                       <div class="control-group">
-                                        <label class="control-label">BLOOD PRESSURE :</label>
+                                        <label class="control-label">BLOOD PRESSURE </label>
                                         <div class="controls">
                 <input type="text" class="span12" name="bloodPressure" value="<?php echo $consultrow['bloodPressure'];?>" readonly/>
                                         </div>
                                       </div>
 
                                       <div class="control-group">
-                                        <label class="control-label">OTHER HEALTH VITALS :</label>
+                                        <label class="control-label">OTHER HEALTH VITALS </label>
                                         <div class="controls">
                                             <textarea class="span12" name="healthVitals" readonly><?php echo $consultrow['otherHealth'];?></textarea>
                                         </div>
@@ -575,16 +572,18 @@ if($medIDNum > 0 && $piecesNum > 0) {
 <!-- ============================== START DOCTORS NOTE TAB =============================================      -->
 <div id="tab6" class="tab-pane">
      <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
-         <div class="span12">
+         <div class="row-fluid">
+                <div class="span6">
              <div class="widget-content nopadding">
                 <div class="control-group">
                 <label class="control-label"> KEYWORD</label>
                   <div class="controls">
                     <input type="text" name="keyword" id="notes_input" autofocus autocomplete="on" class="span11" onlive="kwrd(this.value);">
-                      <div id="diseaseList"></div>
+
                   </div>
+                    <div style="width:100px;" id="diseaseList"></div>
                 </div>
-<span id="noteDet"></span>
+                 <span id="noteDet"></span>
                 <!-- <div class="control-group">
                 <label class="control-label"> NOTE DETAILS</label>
                   <div class="controls">
@@ -593,9 +592,53 @@ if($medIDNum > 0 && $piecesNum > 0) {
               </div> -->
              </div>
              <div class="form-actions">
-                  <i class="span7"></i>
-                <button type="submit" name="SaveNote" class="btn btn-primary btn-block labell span4"> SAVE NOTE</button>
+                  <i class="span5"></i>
+                <button type="submit" name="SaveNote" class="btn btn-primary btn-block labell span6"> SAVE NOTE</button>
               </div>
+         </div>
+         <div class="span6"></div>
+         </div>
+         <div class="row-fluid">
+
+         <div class="span12" style="magin-top:-20px;">
+            <table class="table table-bordered" style="margin-top:-30px; background:#f8f7f7;">
+                <tr>
+					  <td colspan="2">
+					       <table border="0" class="table table-bordered" id="diagnosis" style="margin-top:10px; background:#f8f7f7;">
+                            <thead>
+                            <th colspan="2" class="labell">Diagnosis</th>
+                           </thead>
+                                <tr>
+                                    <td>
+                                        <input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12">
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success labell">add Diagnose</button>
+                                    </td>
+                                </tr>
+                        </table>
+					  </td>
+
+					  <td colspan="2">
+					   <table border="0" class="table table-bordered" id="investigation" style="margin-top:10px; background:#f8f7f7;">
+                           <thead>
+                            <th colspan="2" class="labell">MEDICAL EXAMINATION</th>
+                           </thead>
+                                <tr>
+                                    <td>
+                                        <input type="text" name="investigation_new[]" placeholder="EXAMINATION" class="form-control span12">
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success labell">ADD EXAMINATION</button>
+                                    </td>
+                                </tr>
+                            </table>
+					  </td>
+					  <br>
+                      <br>
+				  </tr>
+             </table>
+         </div>
          </div>
     </form>
 </div>
@@ -706,9 +749,9 @@ if($medIDNum > 0 && $piecesNum > 0) {
                   </tr>
                   <tr>
 						<th style="width:60%;"> MEDICINE NAME</th>
-						<th> INTAKES</th>
-						<th> / DAY</th>
-						<th> No.OF DAYS</th>
+						<th> NO. OF DOSE</th>
+						<th> DOSE PER DAY</th>
+						<th> NO. OF DAYS</th>
 					</tr>
                   <?php
                   $total = 4;
@@ -771,7 +814,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
          </div>
     </form>
 </div>
-<!-- ======================== END ADMIT TO WARD TAB ===================-->
+<!-- ============================ END ADMIT TO WARD TAB =============================-->
 
 <!-- ======================== START MEDICATION PRESCRIPTION TAB ===================-->
 <div id="tab4" class="tab-pane"  style="margin:0px; padding:0px;">
@@ -805,42 +848,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 						</select>
 					  </td>
 				  </tr>
-				  <tr>
-					  <td colspan="2">
-					       <table border="0" class="table table-bordered" id="diagnosis" style="margin-top:10px; background:#f8f7f7;">
-                            <thead>
-                            <th colspan="2" class="labell">Diagnosis</th>
-                           </thead>
-                                <tr>
-                                    <td>
-                                        <input type="text" name="diagnosis_new[]" placeholder="Diagnosis" class="form-control span12">
-                                    </td>
-                                    <td style="text-align:center;">
-                                        <button type="button" name="add_diagnosis" id="add_diagnosis" class="btn btn-success labell">add Diagnose</button>
-                                    </td>
-                                </tr>
-                        </table>
-					  </td>
 
-					  <td colspan="2">
-					   <table border="0" class="table table-bordered" id="investigation" style="margin-top:10px; background:#f8f7f7;">
-                           <thead>
-                            <th colspan="2" class="labell">Investigation</th>
-                           </thead>
-                                <tr>
-                                    <td>
-                                        <input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12">
-                                    </td>
-                                    <td style="text-align:center;">
-                                        <button type="button" name="add_investigation" id="add_investigation" class="btn btn-success labell">add investigation</button>
-                                    </td>
-                                </tr>
-                            </table>
-					  </td>
-					  <br>
-                      <br>
-
-				  </tr>
 			</table>
 		 </div>
 
@@ -855,10 +863,10 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 				  </div>
 				  <?php } ?>
 					<thead class="labell">
-						<th style="width:40%;"> Medicine Name</th>
-						<th> No of intakes / Pieces</th>
-						<th> Intakes Per Day</th>
-						<th> Number Of Days</th>
+						<th style="width:40%;"> MEDICINE</th>
+						<th> NO. OF DOSE</th>
+						<th> DOSE PER DAY</th>
+						<th> NO. OF DAYS</th>
 					</thead>
 				  <tbody>
 					<?php
@@ -885,7 +893,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php }} ?>
 							</select>
 							<?php }else{
-                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH' ");
 							?>
                             <select name="medName[]" class="span11">
                                 <option></option>
@@ -895,12 +903,16 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                                 ?>
                             <option value="<?php echo $medrowx['medicine_id']; ?>">
                         <?php
-                                if($medrowx['Type']=='solid'){
-                                    $stockleft = $medrowx['no_of_piece'];
-                                }
-                                if($medrowx['Type']=='liquid'){
+                                if($medrowx['no_of_piece']=='0'){
                                     $stockleft = $medrowx['no_of_bottles'];
                                 }
+				 if($medrowx['no_of_bottles']=='0'){
+                                    $stockleft = $medrowx['no_of_piece'];
+                                }
+
+                               /* if($medrowx['Type']=='liquid'){
+                                    $stockleft = $medrowx['no_of_bottles'];
+                                }*/
                                 echo $medrowx['medicine_name'].' -- '.$stockleft.' Left'; ?>
                                 </option>
                                 <?php }}?>
@@ -1191,7 +1203,7 @@ $(".alert").delay(7000).slideUp(1000, function() {
     var i = 1;
     $('#add_investigation').click(function() {
         i++;
-        $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="Investigation" class="form-control span12"></td><td style="text-align:center;"><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
+        $('#investigation').append('<tr id="row' + i + '"> <td><input type="text" name="investigation_new[]" placeholder="EXAMINATION" class="form-control span12"></td><td style="text-align:center;"><button type="button" name="remove_investigation" id="' + i + '" class="btn btn-danger btn_remove_investigation">X</button></td></tr>');
     });
     $(document).on('click', '.btn_remove_investigation', function() {
         var button_id = $(this).attr("id");
