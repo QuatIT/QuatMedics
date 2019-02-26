@@ -869,8 +869,8 @@ Plotly.newPlot('myDivPressure', num);
 					<tr>
 						<td style="width:40%;">
 							<?php
-							if($pat['paymode'] == 'Insurance'){
-                                $insuranceType = $pat['insuranceType'];
+							if($pat['paymode'] == 'NHIS'){
+                                $insuranceType = $pat['paymode'];
 							?>
 							<select name="medName[]" class="span11">
 								<option></option>
@@ -878,7 +878,7 @@ Plotly.newPlot('myDivPressure', num);
 
 						  	$centerNHISLevel = $centerName['centerNhisLevel'];
 //						  	$level = explode(" ",$centerNHISLevel);
-$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='$insuranceType' OR  medFrom='Private'");
+$meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='$insuranceType' OR  medFrom='CASH'");
 								if($meds){
 									foreach($meds as $medrow){
 							?>
@@ -886,7 +886,7 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
 							 <?php }} ?>
 							</select>
 							<?php }else{
-                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='Private'");
+                            $medsx = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND medFrom='CASH'");
 							?>
                               <select name="medicine[]" class="span11">
                                 <option></option>
