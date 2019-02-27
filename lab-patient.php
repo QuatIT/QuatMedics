@@ -243,7 +243,7 @@ if(empty($labresult) && empty($file)){
 												<td>
 
                                                     <?php if($labtxt['type']=='0'){?>
-                                                    <textarea class="span11" rows="6" cols="25" style='text-align:left;' name="txtresult[]" <?php if($labtxt['confirm']=='UNCONFIRMED'){ echo 'readonly';}?>>
+                                                    <textarea class="span11" rows="8" cols="28" style='text-align:left;' name="txtresult[]" <?php if($labtxt['confirm']=='UNCONFIRMED'){ echo 'readonly';}?>>
                                                     <?php if($labname['labName']=='U/RE'){ echo "\n";
                                                           echo "APPEARANCE:\n";
                                                           echo "COLOR:\n";
@@ -262,8 +262,30 @@ if(empty($labresult) && empty($file)){
                                                           echo "RBCS:\n";
 
                                                         }?>
-                                                        <?php if($labname['labName']=='FBC'){?>
-
+                                                        <?php if($labname['labName']=='FBC'){
+                                                       echo "HAEMOGLOBIN:\n";
+                                                         echo "ESR:\n";
+                                                         echo "SICKLING:\n";
+                                                         echo "TOTAL WBC:\n";
+                                                         echo "LYMPHOCYTES:\n";
+                                                         echo "MID CELLS:\n";
+                                                         echo "BF FOR MPS:\n";
+                                                         echo "RDT:\n";
+                                                         echo "LYMPHOCYTES:\n";
+                                                         echo "MID CELLS:\n";
+                                                         echo "S TYPHI O:\n";
+                                                         echo "S THYPHI H:\n";
+                                                         echo "EPITH CELLS:\n";
+                                                         echo "PUS CELLS:\n";
+                                                         echo "CANDIDA:\n";
+                                                         echo "T. VAGINALIS:\n";
+                                                         echo "BLOOD PREGNANCY:\n";
+                                                         echo "RETROSCREEN:\n";
+                                                         echo "HBsAG:\n";
+                                                         echo "VDRL:\n";
+                                                         echo "BLOOD GROUP::\n";
+                                                         echo "MID CELLS:\n";
+                                                         echo "D:\n";
                                                         }?>
                                                     </textarea>
                                                     <?php }
