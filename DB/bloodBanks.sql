@@ -30,4 +30,11 @@ create table `bloodBank`(
 )engine = InnoDB;
 
 
-
+create table `qhistory`(
+	`hID` int(255) not null PRIMARY KEY AUTO_INCREMENT,
+    `centerID` varchar(100) not null,
+    `patientID` varchar(100) not null,
+    `qhistory` longtext,
+    `dateInsert` date not null,
+    `doe` timestamp
+)ENGINE = INNODB

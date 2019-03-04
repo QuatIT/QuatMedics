@@ -30,7 +30,7 @@
 
     if($_SESSION['accessLevel']=='LABORATORY' || $_SESSION['username']=='rik'){
 
-    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."' GROUP BY consultID");
+    $fet_pat=select("SELECT * FROM labresults WHERE status='".SENT_TO_LAB."' && centerID='".$_SESSION['centerID']."' && confirm='CONFIRMED' GROUP BY consultID");
 
     ?>
 <div id="search">

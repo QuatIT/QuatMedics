@@ -1,10 +1,11 @@
 
 <?php
 include '../assets/core/connection.php';
-
+$dateToday = date('Y-m-d');
 $roomID = $_GET['roomID'];
-$load_consultation = select("SELECT * FROM consultation WHERE roomID='$roomID' && status='".SENT_TO_CONSULTING."' ORDER BY doe ASC");
-
+$load_consultation = select("SELECT * FROM consultation WHERE roomID='$roomID' ORDER BY status asc");
+//$load_consultation = select("SELECT * FROM consultation WHERE roomID='$roomID' AND dateInsert='$dateToday' ORDER BY doe ASC");
+//$load_consultation = select("SELECT * FROM consultation WHERE roomID='$roomID' && doe='$dateToday' ORDER BY doe ASC");
 foreach($load_consultation as $consultRow){
     $patientID = $consultRow['patientID'];
     $staffID = $consultRow['staffID'];
@@ -37,11 +38,13 @@ foreach($fetchstaff as $staffdetails){
       <?php if($status == "sent_to_consulting"){?>
       <span class="label label-warning">Awaiting</span>
       <?php } if($status == "sent_to_lab"){?>
-      <span class="label label-info">Lab Requested</span>
+      <span class="label btn-danger">Lab Requested</span>
       <?php } if($status == "sent_to_ward"){?>
-      <span class="label label-info">Admitted To Ward</span>
+      <span class="label label-info">Inpatient</span>
       <?php } if($status == "sent_to_pharmacy"){?>
-      <span class="label label-success">Medicine Prescribed</span>
+      <span class="label label-success">Moved To Dispensary</span>
+      <?php } if($status == "Done"){?>
+      <span class="label label-success">Discharged</span>
       <?php }?>
     </td>
   <td style="text-align: center;">

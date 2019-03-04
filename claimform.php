@@ -47,28 +47,34 @@
 	foreach($consultation_sql as $consultation_row){}
 
 	$prescribedmeds = select("select * from prescribedmeds where dateInsert='$claim_date' && prescribeCode='".$prescription_row['prescribeCode']."' ");
-	$investigation = select("select * from investigation_tb where dateRegistered='$claim_date' && patientID='$patientID' && consultID='".$consultation_row['consultID']."' ");
+	// $investigation = select("select * from investigation_tb where dateRegistered='$claim_date' && patientID='$patientID' && consultID='".$consultation_row['consultID']."' ");
+
+	$investigation = select("select * from labresults where dateInsert='$claim_date' && patientID='$patientID' && consultID='".$consultation_row['consultID']."' ");
+
 	$diagnosis = select("select * from diagnose_tb where dateRegistered='$claim_date' && patientID='$patientID' && consultID='".$consultation_row['consultID']."' ");
 
 	?>
 
+<!--
 <div id="search">
   <input type="text" placeholder="Search here..."/>
   <button type="submit" class="tip-left" title="Search"><i class="icon-search icon-white"></i></button>
 </div>
+-->
 
 <!--close-top-Header-menu-->
 
+<style>
+	/* input[type='text']{background-color: transparent;border: none;} */
+</style>
+
 <div id="sidebar">
     <ul>
-<!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-<!--
-    <li> <a href="opd-index.php"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
-    <li> <a href="opd-patient.php"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
-    <li><a href="opd-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
--->
+    <li class="active"><a href="claim-index"><i class="icon icon-file"></i> <span>Claims</span></a> </li>
+    <li> <a href="batch-claim"><i class="icon icon-file"></i> <span>Batch Claims</span></a> </li>
     </ul>
 </div>
+
 
 
 
@@ -83,7 +89,7 @@
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CLAIM FORM (NHIS)</h3>
+      <h3 class="quick-actions">CLAIM FORM (<?php echo $_GET['insurance']; ?>)</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
@@ -97,24 +103,51 @@
             <div class="widget-content tab-content" style="">
 
 				<div class="container row">
-				<div class="span7" style="padding-left:20px">
+				<div class="span7" style="padding-left:20px; word-spacing: 10px;">
 					<h5 style="text-decoration:underline;">Individual Personal Detail</h5>
-					Patient ID: <input type="text" name="patient_id" value="<?php echo $patientID; ?>" readonly style="width:100px;">
-					Patient Name: <input type="text" name="patient_name"value="<?php echo $patient_row['firstName']." ".$patient_row['otherName']." ".$patient_row['lastName']; ?>" readonly style="width:300px;">
-					<br>Age: <input type="text" name="age" readonly value="<?php echo $diff->format('%y'); ?>" style="width:50px;">
-					Gender: <input type="text" name="gender" value="<?php echo $patient_row['gender']; ?>" readonly style="width:37px;">
-					NHIS No: <input type="text" name="nhis_no" value="<?php echo $consultation_row['insuranceNumber']; ?>" readonly style="width:100px;">
-					Date: <input type="text" name="date" value="<?php echo $consultation_row['dateInsert']; ?>" readonly style="width:150px;">
+					<u>Patient ID</u>: <b><?php echo strtoupper($patientID); ?></b>
+					 <u>Patient Name</u>: <b><?php echo strtoupper($patient_row['firstName']." ".$patient_row['otherName']." ".$patient_row['lastName']); ?></b>
+					<br><u>Age</u>:<b><?php echo $diff->format('%y'); ?></b>
+					<u>Gender</u>: <b><?php echo strtoupper($patient_row['gender']); ?></b>
+					<u>NHIS No</u>: <b><?php echo $consultation_row['insuranceNumber']; ?></b>
+					<u>Date</u>: <b><?php echo $consultation_row['dateInsert']; ?></b>
 					</div>
 				<div class="span5">
 					<h5 style="text-decoration:underline;">Specialties</h5>
-					<input type="checkbox" name="OUT"> Out-Patient
-					<input type="checkbox" name="IN"> In-Patient
+
+					<!-- search if patient has been to consultation -->
+				<?php
+						$search_consultation = select("select * from consultation where patientID='$patientID' && dateInsert='$claim_date' ");
+						if(count($search_consultation)>=1){
+							echo '<input type="checkbox" name="OUT" checked  onclick="return false;"> Out-Patient';
+							echo '<input type="checkbox" name="OUT" onclick="return false;"> In-Patient';
+						}
+				?>
+
+					<!-- search if patient has been to ward -->
+				<?php
+						$search_ward = select("select * from wardassigns where patientID='$patientID' && dateInsert='$claim_date' ");
+						if(count($search_ward)>=1){
+							echo '<input type="checkbox" name="OUT" onclick="return false;"> Out-Patient';
+							echo '<input type="checkbox" name="OUT" checked onclick="return false;"> In-Patient';
+						}
+				?>
+
+					<!-- search if patient has been to prescriptions -->
+				<?php
+						$search_prescriptions = select("select * from prescriptions where patientID='$patientID' && dateInsert='$claim_date' ");
+						if(count($search_prescriptions)>=1){
+							echo '<input type="checkbox" name="OUT" checked onclick="return false;"> Pharmacy';
+						}
+				?>
+
+	<!-- <input type="checkbox" name="OUT"> Out-Patient
+					<input type="checkbox" name="IN"> In-Patient -->
 
 					<hr>
 
 					<b>Number of Claims:</b> <?php $numcliams = select("select * from consultation where patientID='$patientID' && insuranceType='NHIS'"); echo @count($numcliams); ?>
-					 | <b>Claim Number:</b> <?php echo @$consultation_row['claimNumber']; ?>
+					 | <b>Claim Number:</b> <?php echo sprintf('%010d',@$consultation_row['claimNumber']); ?>
 					</div>
 					</div>
 				</div>
@@ -150,7 +183,7 @@
 								<td><?php echo @$count++; ?></td>
 								<td><?php echo @$diag_row['diagnosis']; ?></td>
 								<td><?php echo @$diag_row['icd10'];?></td>
-								<td><?php echo @$diag_row['g']?></td>
+								<td><?php echo @$diag_row['gdrg']?></td>
 								<td><?php echo @$diag_row['dateRegistered']?></td>
 								<td><a class="btn btn-link" href="update_diagnosis?id=<?php echo $diag_row['id']; ?>&pid=<?php echo $patientID; ?>&insurance=<?php echo $insurance; ?>&dinst=<?php echo $claim_date; ?>"><!--<i span="fa fa-pencil"></i>--> Update</a>
 									<!-- |	<a href="delete_diagnosis?id=<?php echo $diag_row['id']; ?>">Delete</a> -->
@@ -161,6 +194,7 @@
 					</table>
 
 
+
 					<h5 style="text-decoration:underline;">Medicine (DRUG)</h5>
 					<table class="table">
 					<thead>
@@ -168,12 +202,14 @@
 							<th>No.</th>
 							<th>Medicine</th>
 							<th>Frequency (Dosage)</th>
+              <th>Number of Intakes</th>
+              <th>Dosage per Day</th>
+              <th>Number of Days</th>
 							<th>Price</th>
 							<th>Quantity</th>
 							<th>Amount</th>
 							<th>Date</th>
 							<th>Code</th>
-							<!-- <th>Action</th> -->
 						</tr>
 						</thead>
 						<tbody>
@@ -182,20 +218,29 @@
 								foreach($prescribedmeds as $prescribedmeds_row){
 										$meds = select("select * from pharmacy_inventory where mode_of_payment='$insurance' && medicine_name='".$prescribedmeds_row['medicine']."'  ");
 										foreach($meds as $med){}
+                                    $dosage =  " ".$prescribedmeds_row['dosage'];
 
+                                    //remove numbers from string
+                                    preg_match_all('!\d+!', $dosage, $matches);
+                                    foreach($matches as $dose){}
 											// $amount = $med['price'] * $prescribedmeds_row['totalMeds'];
+
+											//get medicine code
+											$medicine_codes = select("select * from pharmacy_inventory where medicine_name = '".$prescribedmeds_row['medicine']."' ");
+											foreach($medicine_codes as $medicine_code){}
 									?>
 							<tr>
 								<td><?php echo @$counterz++; ?></td>
 								<td><?php echo @$prescribedmeds_row['medicine'];?></td>
 								<td><?php echo @$prescribedmeds_row['dosage'];?></td>
-								<td><?php echo @$med['price'];?></td>
+                <td><?php echo @$dose[0]; ?></td>
+                <td><?php echo @$dose[1]; ?></td>
+                <td><?php echo @$dose[2]; ?></td>
+								<td><?php echo @$medicine_code['price'];?></td>
 								<td><?php echo @$prescribedmeds_row['totalMeds'];?></td>
 								<td><?php echo @$prescribedmeds_row['medprice'];?></td>
 								<td><?php echo @$prescribedmeds_row['dateInsert'];?></td>
-								<!-- <td><?php #echo $amount; ?></td> -->
-								<td></td>
-								<!-- <td><a class="btn btn-link" href="update_med?id=<?php #echo $prescribedmeds_row['id']; ?>"> Update</a> | <a href="delete_med?id=<?php #echo $prescribedmeds_row['id']; ?>">Delete</a></td> -->
+								<td><?php echo @$medicine_code['medicine_id'];?></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -223,8 +268,8 @@
 							?>
 							<tr>
 								<td><?php echo @$counter++; ?></td>
-								<td><?php echo @$invest_row['examination']; ?></td>
-								<td><?php echo @$invest_row['dateRegistered']; ?></td>
+								<td><?php echo @$invest_row['labID']; ?></td>
+								<td><?php echo @$invest_row['dateInsert']; ?></td>
 								<td><a class="btn btn-link" data-toggle="modal" data-target="#update_investigation<?php echo $invest_row['id']; ?>" >Update</a>
 									<!-- | <a href="delete_investigation?id=<?php #echo $invest_row['id']; ?>">Delete</a> -->
 								</td>
@@ -288,6 +333,24 @@
 					</div>
 -->
 					</div>
+
+                    <p class="text-center">
+                        <?php if($_GET['insurance']=="ACACIA"){?>
+                            <a class="btn btn-primary" href="claims/rx-single/acacia?pid=<?php echo $_GET['pid']; ?>&insurance=<?php echo $_GET['insurance']; ?>&&dinst=<?php echo $_GET['dinst']; ?>">Print </a>
+
+                        <?php }elseif($_GET['insurance']=="COSMOPOLITAN"){?>
+
+                            <a class="btn btn-primary" href="claims/rx-single/cosmopolitan?pid=<?php echo $_GET['pid']; ?>&insurance=<?php echo $_GET['insurance']; ?>&&dinst=<?php echo $_GET['dinst']; ?>">Print </a>
+
+                        <?php }elseif($_GET['insurance']=="MOMENTUM"){?>
+
+                            <a class="btn btn-primary" href="claims/rx-single/momentum?pid=<?php echo $_GET['pid']; ?>&insurance=<?php echo $_GET['insurance']; ?>&&dinst=<?php echo $_GET['dinst']; ?>">Print </a>
+
+                        <?php }elseif($_GET['insurance']=="NHIS"){?>
+
+                            <a class="btn btn-primary" href="claims/nhis-single/nhisclaim?pid=<?php echo $_GET['pid']; ?>&insurance=<?php echo $_GET['insurance']; ?>&&dinst=<?php echo $_GET['dinst']; ?>">Print </a>
+                        <?php }?>
+                </p>
 				</div>
 
 		  </div>

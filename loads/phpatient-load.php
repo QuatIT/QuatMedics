@@ -14,7 +14,7 @@ foreach($load_newpatient as $newpatient){
 $sqlll = select("SELECT * FROM patient WHERE patientID='".$newpatient['patientID']."' ");
  foreach($sqlll as $srowss){}
 
-	$selz = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$newpatient['prescribeCode']."'  && paystatus='Not Paid' ");
+	$selz = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$newpatient['prescribeCode']."'  && paystatus='paid' ");
 		foreach($selz as $slz){}
 
 	if($slz['paystatus']=='Not Paid'){

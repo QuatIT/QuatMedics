@@ -37,8 +37,9 @@
     if(isset($_POST['btnfetch'])){
         $datefrom = $_POST['datefrom'];
         $dateto = $_POST['dateto'];
+        $claim_type = $_POST['claim_type'];
 
-        $nhis_sql = select("select * from consultation where centerID='".$_SESSION['centerID']."' && insuranceType='NHIS' && dateInsert between '$datefrom' AND '$dateto' ");
+        $nhis_sql = select("select * from consultation where centerID='".$_SESSION['centerID']."' && insuranceType='$claim_type' && dateInsert between '$datefrom' AND '$dateto' ");
 
     }
 
@@ -53,12 +54,8 @@
 
 <div id="sidebar">
     <ul>
-<!--    <li class="active"><a href="medics-index.php"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>-->
-<!--
-    <li> <a href="opd-index.php"><i class="icon icon-plus"></i> <span>New Patient</span></a> </li>
-    <li> <a href="opd-patient.php"><i class="icon icon-user"></i> <span>Old Patient</span></a> </li>
-    <li><a href="opd-appointment.php"><i class="icon icon-calendar"></i> <span>Appointments</span></a></li>
--->
+    <li class="active"><a href="claim-index"><i class="icon icon-file"></i> <span>Claims</span></a> </li>
+    <li> <a href="batch-claim"><i class="icon icon-file"></i> <span>Batch Claims</span></a> </li>
     </ul>
 </div>
 
@@ -75,7 +72,7 @@
     </div>
   </div>
   <div class="container">
-      <h3 class="quick-actions">CLAIM FORM (NHIS)</h3>
+      <h3 class="quick-actions">CLAIM FORM</h3>
 
       <div class="row-fluid">
         <div class="widget-box">
@@ -90,17 +87,35 @@
 
 				<div class="container row">
                     <form action="" method="post">
-                        <div class="span4" style="padding-left:20px">
+                        <div class="span3" style="padding-left:20px;overflow:none;">
                             <label>FROM</label>
                                 <input class="form-control span11" type="date" name="datefrom">
                             </div>
-                        <div class="span4">
+                        <div class="span3">
 
                             <label>TO</label>
                                 <input class="form-control span11" type="date" name="dateto">
 
                             </div>
-                        <div class="span4">
+
+                        <div class="span3">
+
+                            <label>Insurance Type</label>
+                                <select class="form-control span11" name="claim_type">
+                                    <option></option>
+                                    <?php
+                                        //fetch type of claims from consultation
+                                    $claim_consult = select("select * from consultation group by insuranceType ");
+                                    foreach($claim_consult as $claimType){ ?>
+                                    <option><?php echo $claimType['insuranceType']; ?></option>
+
+                                    <?php }
+                                    ?>
+                                </select>
+
+                            </div>
+
+                        <div class="span3">
 
                             <label>&nbsp;</label>
                                 <input class="btn btn-primary" type="submit" name="btnfetch" value="Search">
@@ -138,7 +153,7 @@
                                     <td><?php echo $nhis_row['patientID']; ?></td>
                                     <td><?php echo $mem_row['firstName']." ".$mem_row['otherName']." ".$mem_row['lastName'];?></td>
                                     <td><?php echo $nhis_row['insuranceType']; ?></td>
-                                    <td><a href="claimform?pid=<?php echo $nhis_row['patientID']; ?>&insurance=NHIS&dinst=<?php echo $nhis_row['dateInsert']; ?>" class="btn btn-primary">Detail</a></td>
+                                    <td><a href="claimform?pid=<?php echo $nhis_row['patientID']; ?>&insurance=<?php echo $claim_type; ?>&dinst=<?php echo $nhis_row['dateInsert']; ?>" class="btn btn-primary">Detail</a></td>
                                 </tr>
                                 <?php } ?>
                            </tbody>

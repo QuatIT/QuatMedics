@@ -24,6 +24,7 @@ foreach($getdetails as $detailRow){
 }
 $activityType = trim('PAYMENT');
 $status = trim("Paid");
+$confirm = 'CONFIRMED';
 
 //get Lab Name for transaction table..
 $getlabName = select("SELECT labName FROM lablist WHERE labID='$labID'");
@@ -58,6 +59,9 @@ $newDebbal =  ($cnterDBAcc-$labprice);
 
 //new credit account..
 $newCrBal = ($labCrAcc+$labprice);
+
+//UPDATE LAB CONFIRM STATUS
+$updateconfirm = update("UPDATE labresults SET confirm='$confirm' WHERE id='$id'");
 
 //update CREDIT account...
 $updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountName='".$labCrName."' AND accountPurpose='CREDIT'");

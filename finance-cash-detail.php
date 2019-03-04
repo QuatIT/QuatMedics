@@ -51,7 +51,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 
 	//get lab details...
 	$labTotal = 0;
-	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='CASH' AND consultID='$serviceID' AND confirm='CONFIRMED'");
+	$fetchlab = select("SELECT * FROM labresults WHERE patientID='$patid' AND paymode='CASH' AND consultID='$serviceID'");
 	foreach($fetchlab as $labRow){
         $getlabName = select("SELECT labName FROM lablist WHERE labID='".$labRow['labID']."'");
         foreach($getlabName as $labNmRow){}
@@ -69,12 +69,15 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
       }
     }
 
+        $medtotal = 0;
+if($getPresciptionID){
     //get medinine total
-    $medtotal = 0;
-    $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."' AND confirm='CONFIRMED'");
+
+    $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
     foreach($getMeds as $medrow){
       $medtotal+=$medrow['medprice'];
     }
+}
 
     $overall =($consultPrice+$medtotal+$labTotal);
     $overallTotal = "GHC ".$overall;
@@ -243,7 +246,7 @@ $_SESSION['current_page']=$_SERVER['REQUEST_URI'];
 					  	$getPresciptionID = select("SELECT * From prescriptions WHERE patientID='$patid' AND consultID='$serviceID'");
 					  if($getPresciptionID){
 						  foreach($getPresciptionID as $presRow){
-							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."' AND confirm='CONFIRMED'");
+							  $getMeds = select("SELECT * FROM prescribedmeds WHERE prescribeCode='".$presRow['prescribeCode']."'");
 							  foreach($getMeds as $medrow){
 
 					  ?>

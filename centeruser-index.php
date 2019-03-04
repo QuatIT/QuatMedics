@@ -266,7 +266,7 @@ $centerID = $_SESSION['centerID'];
                                         $dep = select("SELECT * FROM department");
                                         foreach($dep as $dept){
                                       ?>
-                                        <option value="<?php echo $dept['departmentName']; ?>"> <?php echo $dept['departmentName']; ?></option>
+                                        <option value="<?php echo $dept['departmentID']; ?>"> <?php echo $dept['departmentName']; ?></option>
                                     <?php } ?>
                                   </select>
                                 </div>

@@ -135,6 +135,93 @@ input:checked + .slider:before {
         $medcenter = select("SELECT * FROM medicalcenter WHERE centerID='".$centID."' ");
         foreach($medcenter as $center){}
 
+
+          //SERVE Medicine
+
+if(isset($_POST['btnServe'])){
+		//count number of service entered..
+		$pres = count($_POST['prescribe']);
+
+		//check number of services..
+		if($pres > 0 ){
+			//saving services into database...
+            for($n=0; $n<$pres; $n++){
+                    if(trim($_POST['prescribe'][$n] != '') ) {
+                        $presName = trim($_POST["prescribe"][$n]);
+
+                        $att_mrk = explode("*", $presName);
+                        $serve = $att_mrk[0];
+                        $patid = $att_mrk[1];
+                        $price_px = $att_mrk[2];
+                        $dosage= $att_mrk[3];
+                        $medicine_name= $att_mrk[4];
+                        $prescribeid= $att_mrk[5];
+echo "<script>alert('{$serve}--{$patid}--{$price_px}--{$dosage}--{$medicine_name}--{$prescribeid}')</script>";
+// exit();
+                        //get ministry detail
+                        // $min_det = select("select * from ministry_tb where group_id='$min_grp' ");
+                        // foreach($min_det as $mindet_row){}
+                        //
+                        // //get group detail
+                        // $grp_det = select("select * from g_ministry_tb where g_id='$min_grp' ");
+                        // foreach($grp_det as $gdet_row){}
+                        //
+                        // if(empty($mindet_row['group_name'])){
+                        //     $ministry_name = $g_min = $gdet_row['g_name'];
+                        // }elseif(empty($gdet_row['g_name'])){
+                        //     $ministry_name = $mindet_row['group_name'];
+                        // }
+
+                        $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='$serve' WHERE prescribeid='".$prescribeid."' ");
+
+                        $chk_sql2 = update("UPDATE prescriptions SET prescribeStatus='$serve' WHERE prescribeCode='".$code."' ");
+
+
+                        $med = select("select * from prescribedmeds where prescribeid='".$prescribeid."' ");
+                        foreach($med as $medic_row){}
+
+                        $phinven = select("select * from pharmacy_inventory where mode_of_payment='".$medic_row['paymode']."' && medicine_name='".$medic_row['medicine']."' ");
+                        foreach($phinven as $phinven_row){}
+
+                        if($phinven_row['no_of_bottles']=="NULL" || $phinven_row['no_of_bottles']=="0" || empty($phinven_row['no_of_bottles'])){
+                          $remaining_med = $phinven_row['no_of_piece'] - $medic_row['totalMed'];
+
+                          $up_medic = update("update pharmacy_inventory set no_of_piece='$remaining_med' where mode_of_payment='".$medic_row['paymode']."' && medicine_name='".$medic_row['medicine']."' ");
+                        }else{
+                        $remaining_med = $phinven_row['no_of_bottles'] - $medic_row['totalMed'];
+
+                          $up_medic = update("update pharmacy_inventory set no_of_piece='$remaining_med' where mode_of_payment='".$medic_row['paymode']."' && medicine_name='".$medic_row['medicine']."' ");
+                        }
+
+
+                        $release_patient = update("update patient set patient_status='' where patientID='$patid'");
+
+                                                  echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
+
+                        //get members detail
+                        // $mem_det = select("select * from membership_tb where member_id='$memb' ");
+                        // foreach($mem_det as $mem_row){}
+                        //
+                        // $mark_attendance_min = insert("insert into min_grp_attend(member_id,group_id,group_name,full_name,gender,status,date_reg,flag1,phone) values('$memb','$min_grp','$ministry_name','".$mem_row['full_name']."','".$mem_row['gender']."','".$att."',CURDATE(),'1','".$mem_row['phone_number']."')");
+//                        $mrkk = $att.'---'.$memb.'---'.$min_grp;
+//                        echo "<script>alert('{$mrkk}')</script>";
+
+//                        if(empty($checked))
+
+                           $msg = '<div class="alert alert-dismissible alert-success">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <strong>Success!</strong> Attendance Marked.
+                </div>';
+
+               		}
+            }
+		}else{
+			$error = "<script>document.write('Empty Fields, Try Again.');</script>";
+		}
+    }
+
+
+
     ?>
 <div id="search">
   <input type="text" placeholder="Search here..."/>
@@ -252,14 +339,14 @@ input:checked + .slider:before {
                           <th>Medicine</th>
                           <th>Dosage</th>
                           <th>Price</th>
-                          <th>Action</th>
+                          <th style="width:15%;">Action</th>
                           <th>comment</th>
                       </thead>
                       <tbody>
 
                           <?php
                                 foreach($pre_med as $med){
-                                $medtotal+=$med['medprice'];
+                                @$medtotal+=$med['medprice'];
                           ?>
 
                              <tr>
@@ -270,7 +357,7 @@ input:checked + .slider:before {
 
                                  <?php if($med['confirm']=='UNCONFIRMED'){ ?>
                                     <td colspan="2" style="text-align:center;">
-                                    <a onclick="return confirm('CONFIRM PURCHASE.');" href="pharmacy-confirmmed?id=<?php echo $med['prescribeid'];?>" class="btn btn-primary btn-sm" title="Confirm Purchase"><i class="fa fa-check"> CONFIRM</i></a>
+                                        <span class="btn btn-warning btn-sm btn-block"> AWAITING PAYMENT</span>
                                     </td>
                                  <?php }
                                  if($med['confirm']=='CONFIRMED'){
@@ -282,7 +369,14 @@ input:checked + .slider:before {
                                       ?>
 
                                       <span class="switch">
-  <label for="switch-id<?php echo $med['prescribeid']; ?>"><input type="checkbox"  value="served" name="prescribe<?php echo $med['prescribeid']; ?>" class="switch" id="switch-id<?php echo $med['prescribeid']; ?>">Serve</label>
+  <!-- <label for="switch-id<?php #echo $med['prescribeid']; ?>"><input type="checkbox"  value="served*<?php #echo $pat['patientID']; ?>*<?php #echo $med['medprice']; ?>*<?php #echo $med['dosage']; ?>*<?php #echo $med['medicine']; ?>" name="prescribe[]" >Serve</label> -->
+
+
+             <select name="prescribe[]">
+                <option></option>
+                <option value="served*<?php echo $pat['patientID']; ?>*<?php echo $med['medprice']; ?>*<?php echo $med['dosage']; ?>*<?php echo $med['medicine']; ?>*<?php echo $med['prescribeid']; ?>">Serve</option>
+                <!-- <option value="Absent <?php #echo $attendancex['member_id'].' '.$_POST['sel_grp']; ?>">Absent</option> -->
+</select>
 </span>
 
                                         <td><input type="text" <?php if($med['comment']){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php if($med['comment']!='NULL'){echo $med['comment'];}else{echo "";} ?>" placeholder="ENTER COMMENT / NOTE"></td>
@@ -290,55 +384,9 @@ input:checked + .slider:before {
 
                                       <?php }else{ ?>
                                                 <span class="label label-success">Served</span>
-                                             <td><input type="text" <?php if(!empty($med['comment']) || $med['comment']='null'){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="<?php if($med['comment']!='NULL'){echo $med['comment'];}else{echo "";} ?>" placeholder="ENTER COMMENT / NOTE"></td>
+                                             <td><input type="text" <?php if(!empty($med['comment']) || $med['comment']='null'){echo "readonly"; } ?> name="comment<?php echo $med['prescribeid']; ?>" value="" placeholder="ENTER COMMENT / NOTE"></td>
 
                                      <?php  }
-
-
-                                            if(isset($_POST['prescribe'.$med['prescribeid']])){
-                                                $chkbox = $_POST['prescribe'.$med['prescribeid']];
-
-                                                if($chkbox=='served'){
-                                                    $checked = 'checked';
-
-                                                    $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='$chkbox' WHERE prescribeid='".$med['prescribeid']."' ");
-
-                                                    $chk_sql2 = update("UPDATE prescription SET prescribeStatus='$chkbox' WHERE prescribeCode='".$med['prescribeCode']."' ");
-
-													$med = select("select * from prescribedmeds where prescribeid='".$med['prescribeid']."' ");
-													foreach($med as $medic_row){}
-
-													$phinven = select("select * from pharmacy_inventory where mode_of_payment='".$medic_row['paymode']."' && medicine_name='".$medic_row['medicine']."' ");
-													foreach($phinven as $phinven_row){}
-
-													if($phinven_row['no_of_bottles']=="NULL" || $phinven_row['no_of_bottles']=="0" || empty($phinven_row['no_of_bottles'])){
-														$remaining_med = $phinven_row['no_of_piece'] - $medic_row['totalMed'];
-
-														$up_medic = update("update pharmacy_inventory set no_of_piece='$remaining_med' where mode_of_payment='".$medic_row['paymode']."' && medicine_name='".$medic_row['medicine']."' ");
-													}else{
-													$remaining_med = $phinven_row['no_of_bottles'] - $medic_row['totalMed'];
-
-														$up_medic = update("update pharmacy_inventory set no_of_piece='$remaining_med' where mode_of_payment='".$medic_row['paymode']."' && medicine_name='".$medic_row['medicine']."' ");
-													}
-
-
-
-                                                    echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
-                                                }else{
-                                                    $checked = '';
-                                                     $chk_sql = update("UPDATE prescribedmeds SET prescribeStatus='Prescibed' WHERE prescribeid='".$med['prescribeid']."' ");
-                                                    echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
-                                                }
-                                            }
-
-
-
-                                                  if(isset($_POST['comment'.$med['prescribeid']])){
-                                                      $comment = $_POST['comment'.$med['prescribeid']];
-
-                                                        $comment_sql = update("UPDATE prescribedmeds SET comment='$comment' WHERE prescribeid='".$med['prescribeid']."' ");
-                                                      echo "<script>window.location.href='pharmacy-patient?code={$_GET['code']}'</script>";
-                                                  }
 
 
                                       ?>
@@ -351,7 +399,7 @@ input:checked + .slider:before {
                       <tr>
                         <td colspan="2"></td>
                         <td style="font-weight:bolder; text-align:right;">TOTAL</td>
-                        <td style="font-weight:bolder; text-align:center;"><?php echo "Ghc ".$medtotal;?></td>
+                        <td style="font-weight:bolder; text-align:center;"><?php echo "Ghc ".@$medtotal;?></td>
                         <td colspan="2"></td>
                       </tr>
                       </tbody>
@@ -362,7 +410,7 @@ input:checked + .slider:before {
                             $pres_btn = select("SELECT * FROM prescribedmeds WHERE prescribeCode='$prescode' AND prescribeStatus='served' ");
                             if(count($pres_btn)<= count(select("SELECT * FROM prescribedmeds WHERE prescribeCode='$prescode'"))){
                           ?>
-                        <button type="submit" class="btn btn-primary btn-block labell span3">Serve</button>
+                        <button type="submit" name="btnServe" class="btn btn-primary btn-block labell span3">Serve</button>
                           <?php } ?>
                       </div>
                   </form>

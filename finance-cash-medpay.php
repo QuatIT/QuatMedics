@@ -15,6 +15,7 @@ if(!$_SESSION['username'] && !$_SESSION['password'] && !$_SESSION['accessLevel']
 $id = $_GET['id'];
 $dateToday = trim(date('Y-m-d'));
 $activityType = trim('PAYMENT');
+$confirm = 'CONFIRMED';
 
 //Get prescribed medicine charges details...
 $presmeds = select("SELECT * FROM prescribedmeds WHERE prescribeid='$id'");
@@ -57,6 +58,9 @@ $newDebbal =  ($cnterDBAcc-$medprice);
 
 //new credit account..
 $newCrBal = ($PhCrAcc+$medprice);
+
+//UPDATE MEDS TO CONFIRMED..
+$confirmmeds = update("UPDATE prescribedmeds SET confirm='$confirm' WHERE prescribeid='$id'");
 
 //update CREDIT account...
 $updateCredit = update("UPDATE accounts SET accBalance='$newCrBal' WHERE centerID='$centerID' AND accountID='$PhCrID' AND accountPurpose='CREDIT'");

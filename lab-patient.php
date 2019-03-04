@@ -213,7 +213,7 @@ if(empty($labresult) && empty($file)){
 												<th>LAB RESULTS</th>
 												<th>LAB PRICE</th>
 												<th>PAY STATUS</th>
-												<th>CONFIRM</th>
+<!--												<th>CONFIRM</th>-->
 											</tr>
 											<tbody>
 												<?php
@@ -269,20 +269,11 @@ if(empty($labresult) && empty($file)){
                                                     <?php }?>
                                                 </td>
 
-                                                <td style="text-align:center;">
-                                                    <?php if($labtxt['confirm']=='UNCONFIRMED'){ ?>
-                                                    <a href="lab-confirm?id=<?php echo $labtxt['id']; ?>" onclick="return confirm('CONFIRM LAB');" class="btn btn-primary btn-sm labell"><i class="fa fa-check fa-sm"> Confirm</i></a>
-                                                    <?php } ?>
-                                                    <?php if($labtxt['confirm']=='CONFIRMED'){ ?>
-                                                    <label class="btn btn-success btn-sm"><i class="fa fa-check-circle fa-sm"></i></label>
-                                                    <?php } ?>
-                                                </td>
-
 												</tr>
 												<?php }?>
-                                                <tr><td colspan="6"></td></tr>
+                                                <tr><td colspan="5"></td></tr>
                                                 <tr>
-                                                    <td colspan="4"></td>
+                                                    <td colspan="3"></td>
                                                     <td colspan="2">
                             <button type="submit" class="btn btn-primary btn-block labell span5" name="lab_result" style="width:100%;">SEND RESULTS</button></td>
                                                 </tr>

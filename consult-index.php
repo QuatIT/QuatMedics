@@ -140,17 +140,20 @@ $room = select("SELECT * FROM consultingroom WHERE centerID='".$_SESSION['center
                     <?php
                         $lab_update = select("SELECT * FROM labresults WHERE status='".SENT_TO_CONSULTING."' && consultingRoom='".$roomID."' && centerID='".$_SESSION['centerID']."' GROUP BY labRequestID ");
                         foreach($lab_update as $labupdate){
+                            $getpat = select("SELECT * FROM patient WHERE patientID='".$labupdate['patientID']."'");
+                            foreach($getpat as $labpatdet){
                       ?>
                     <div class="new-update clearfix">
                         <i class="icon-warning-sign"></i>
                         <div class="update-done">
- <a href="consult-labreview?patientID=<?php echo $labupdate['patientID'];?>&roomID=<?php echo $roomID;?>&conid=<?php echo $labupdate['consultID'];?>&lbr=<?php echo $labupdate['labRequestID']; ?>" target="popup"  >
-                                <strong>LAB RESULT FOR <?php echo $labupdate['patientID']; ?> AVAILABLE.</strong>
+ <a style="color:black;" href="consult-labreview?patientID=<?php echo $labupdate['patientID'];?>&roomID=<?php echo $roomID;?>&conid=<?php echo $labupdate['consultID'];?>&lbr=<?php echo $labupdate['labRequestID']; ?>" target="popup"  >
+
+                                <strong>LAB RESULT FOR <?php echo $labpatdet['firstName']." ".$labpatdet['lastName']." ".$labpatdet['otherName']; ?> AVAILABLE.</strong>
                             </a>
                         </div>
                       <div class="update-date"><span class="update-day"><a href="#" class="label label-info">View</a></span></div>
                     </div>
-                      <?php } ?>
+                      <?php } } ?>
                   </div>
                 </div>
           </div>

@@ -301,15 +301,16 @@ if(isset($_POST['moveToAcc'])){
 //DISCHARGE PATIENT FROM WARD, AFTER FINANCE PAYMENT.
     if(isset($_POST['DischargePatient'])){
         $patientID = trim(htmlentities($_POST['patientID']));
-
+        $patstatus = trim(htmlentities($_POST['patstatus']));
+        $free = '';
         //SET DISCHARGE DATE..
-        $dischargedate = update("UPDATE wardassigns SET dischargeDate='$dateToday',admitstatus='DISCHARGED' WHERE assignID='$assignID'");
+        $dischargedate = update("UPDATE wardassigns SET dischargeDate='$dateToday',admitstatus='$patstatus' WHERE assignID='$assignID'");
         if($dischargedate){
             //SET PATIENT TO DISCHARGED.
                 $updatePatient = update("UPDATE consultation SET status='DONE' WHERE patientID='$patientID' AND consultID='".$pat['consultID']."'");
             if($updatePatient){
                 //RELEASE PATIENT..
-                $releasePatient = ("UPDATE patient SET patient_status ='' WHERE patientID='$patientID'");
+                $releasePatient = ("UPDATE patient SET patient_status ='$free' WHERE patientID='$patientID'");
                 if($releasePatient){
                     $success = "<script>document.write('PATIENT DISCHARGED.');window.location='ward-patient?wrdno=$wardID';</script>";
                 }else{
@@ -1124,14 +1125,30 @@ $meds = select("SELECT * FROM pharmacy_inventory WHERE centerID='$centerID' AND 
                 </div>
               </div>
 
+
+               <?php if($pat['paystatus'] =='Paid'){ ?>
+            <div class="control-group">
+                    <label class="control-label">PATIENT STATUS </label>
+                    <div class="controls">
+                        <select class="span11" name="patstatus">
+                            <option></option>
+                            <option value="Discharged">Discharged</option>
+                            <option value="Died">Died</option>
+                            <option value="Transfered Out">Transfered Out</option>
+                            <option value="Abscorned">Abscorned</option>
+                        </select>
+                    </div>
+                </div>
+                <?php }?>
+
                 <div class="form-actions">
 
                     <i class="span1"></i>
-                <?php
-                if($pat['paystatus'] =='Not Paid'){ ?>
+                <?php if($pat['paystatus'] =='Not Paid'){ ?>
     <input type="submit" name="moveToAcc" value="MOVE TO ACCOUNT" onclick="return confirm('Move To Account For Payment.');"  class="btn btn-primary btn-block labell span10" />
 
                 <?php }else{ ?>
+
     <input type="submit" name="DischargePatient" onclick="return confirm('CONFIRM DISCHARGE.');" value="DISCHARGE PATIENT" onclick="return confirm('Confirm Patient Discharge.');"  class="btn btn-primary btn-block labell span10" />
 
                 <?php }?>

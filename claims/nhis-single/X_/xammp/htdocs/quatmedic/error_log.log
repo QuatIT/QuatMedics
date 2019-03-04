@@ -1,0 +1,18 @@
+[22-Feb-2019 16:57:32 Africa/Accra] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'quat_quat.insure_data' doesn't exist in /opt/lampp/htdocs/med/assets/core/connection.php:35
+Stack trace:
+#0 /opt/lampp/htdocs/med/assets/core/connection.php(35): PDOStatement->execute()
+#1 /opt/lampp/htdocs/med/claims/nhis-single/nhisclaim.php(10): select('SELECT * FROM i...')
+#2 {main}
+  thrown in /opt/lampp/htdocs/med/assets/core/connection.php on line 35
+[22-Feb-2019 17:01:09 Africa/Accra] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'quat_quat.insure_data' doesn't exist in /opt/lampp/htdocs/med/assets/core/connection.php:35
+Stack trace:
+#0 /opt/lampp/htdocs/med/assets/core/connection.php(35): PDOStatement->execute()
+#1 /opt/lampp/htdocs/med/claims/nhis-single/nhisclaim.php(10): select('SELECT * FROM i...')
+#2 {main}
+  thrown in /opt/lampp/htdocs/med/assets/core/connection.php on line 35
+[22-Feb-2019 17:01:36 Africa/Accra] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'quat_quat.insure_data' doesn't exist in /opt/lampp/htdocs/med/assets/core/connection.php:35
+Stack trace:
+#0 /opt/lampp/htdocs/med/assets/core/connection.php(35): PDOStatement->execute()
+#1 /opt/lampp/htdocs/med/claims/nhis-single/nhisclaim.php(10): select('SELECT * FROM i...')
+#2 {main}
+  thrown in /opt/lampp/htdocs/med/assets/core/connection.php on line 35
